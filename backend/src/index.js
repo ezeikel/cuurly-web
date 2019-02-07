@@ -39,6 +39,5 @@ server.start({
     origin: process.env.FRONTEND_URL
   }
 }, ({ port }) => {
-  console.log(`Server started, listening on port ${port} for incoming requests.`,)
+  console.log(`Server started, listening on  http://localhost:${port} for incoming requests.`,)
 });
-

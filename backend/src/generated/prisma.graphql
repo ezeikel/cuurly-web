@@ -1,5 +1,4 @@
-module.exports = {
-        typeDefs: /* GraphQL */ `type AggregateCartItem {
+type AggregateCartItem {
   count: Int!
 }
 
@@ -1615,6 +1614,3 @@ input UserWhereUniqueInput {
   email: String
   username: String
 }
-`
-      }
-    

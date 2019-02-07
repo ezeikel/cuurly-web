@@ -5,7 +5,35 @@ var typeDefs = require("./prisma-schema").typeDefs;
 
 var models = [
   {
-    name: "Post",
+    name: "CartItem",
+    embedded: false
+  },
+  {
+    name: "Item",
+    embedded: false
+  },
+  {
+    name: "Location",
+    embedded: false
+  },
+  {
+    name: "Order",
+    embedded: false
+  },
+  {
+    name: "OrderItem",
+    embedded: false
+  },
+  {
+    name: "Permission",
+    embedded: false
+  },
+  {
+    name: "Shop",
+    embedded: false
+  },
+  {
+    name: "ShopType",
     embedded: false
   },
   {
