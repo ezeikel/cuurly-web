@@ -8,6 +8,7 @@ type Mutation {
   createUser(firstName: String!, lastName: String!, username: String!, email: String!): User
   createDraft(title: String!, userId: ID!): Post
   publish(postId: ID!): Post
+  signup(firstName: String!, lastName: String!, username: String!, email: String!, password: String!): User!
 }
 
 type User {

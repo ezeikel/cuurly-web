@@ -434,14 +434,20 @@ export type ShopOrderByInput =
 export type UserOrderByInput =
   | "id_ASC"
   | "id_DESC"
-  | "email_ASC"
-  | "email_DESC"
-  | "username_ASC"
-  | "username_DESC"
   | "firstName_ASC"
   | "firstName_DESC"
   | "lastName_ASC"
   | "lastName_DESC"
+  | "email_ASC"
+  | "email_DESC"
+  | "username_ASC"
+  | "username_DESC"
+  | "password_ASC"
+  | "password_DESC"
+  | "resetToken_ASC"
+  | "resetToken_DESC"
+  | "resetTokenExpiry_ASC"
+  | "resetTokenExpiry_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -542,34 +548,6 @@ export interface UserWhereInput {
   id_not_starts_with?: ID_Input;
   id_ends_with?: ID_Input;
   id_not_ends_with?: ID_Input;
-  email?: String;
-  email_not?: String;
-  email_in?: String[] | String;
-  email_not_in?: String[] | String;
-  email_lt?: String;
-  email_lte?: String;
-  email_gt?: String;
-  email_gte?: String;
-  email_contains?: String;
-  email_not_contains?: String;
-  email_starts_with?: String;
-  email_not_starts_with?: String;
-  email_ends_with?: String;
-  email_not_ends_with?: String;
-  username?: String;
-  username_not?: String;
-  username_in?: String[] | String;
-  username_not_in?: String[] | String;
-  username_lt?: String;
-  username_lte?: String;
-  username_gt?: String;
-  username_gte?: String;
-  username_contains?: String;
-  username_not_contains?: String;
-  username_starts_with?: String;
-  username_not_starts_with?: String;
-  username_ends_with?: String;
-  username_not_ends_with?: String;
   firstName?: String;
   firstName_not?: String;
   firstName_in?: String[] | String;
@@ -598,6 +576,76 @@ export interface UserWhereInput {
   lastName_not_starts_with?: String;
   lastName_ends_with?: String;
   lastName_not_ends_with?: String;
+  email?: String;
+  email_not?: String;
+  email_in?: String[] | String;
+  email_not_in?: String[] | String;
+  email_lt?: String;
+  email_lte?: String;
+  email_gt?: String;
+  email_gte?: String;
+  email_contains?: String;
+  email_not_contains?: String;
+  email_starts_with?: String;
+  email_not_starts_with?: String;
+  email_ends_with?: String;
+  email_not_ends_with?: String;
+  username?: String;
+  username_not?: String;
+  username_in?: String[] | String;
+  username_not_in?: String[] | String;
+  username_lt?: String;
+  username_lte?: String;
+  username_gt?: String;
+  username_gte?: String;
+  username_contains?: String;
+  username_not_contains?: String;
+  username_starts_with?: String;
+  username_not_starts_with?: String;
+  username_ends_with?: String;
+  username_not_ends_with?: String;
+  password?: String;
+  password_not?: String;
+  password_in?: String[] | String;
+  password_not_in?: String[] | String;
+  password_lt?: String;
+  password_lte?: String;
+  password_gt?: String;
+  password_gte?: String;
+  password_contains?: String;
+  password_not_contains?: String;
+  password_starts_with?: String;
+  password_not_starts_with?: String;
+  password_ends_with?: String;
+  password_not_ends_with?: String;
+  resetToken?: String;
+  resetToken_not?: String;
+  resetToken_in?: String[] | String;
+  resetToken_not_in?: String[] | String;
+  resetToken_lt?: String;
+  resetToken_lte?: String;
+  resetToken_gt?: String;
+  resetToken_gte?: String;
+  resetToken_contains?: String;
+  resetToken_not_contains?: String;
+  resetToken_starts_with?: String;
+  resetToken_not_starts_with?: String;
+  resetToken_ends_with?: String;
+  resetToken_not_ends_with?: String;
+  resetTokenExpiry?: String;
+  resetTokenExpiry_not?: String;
+  resetTokenExpiry_in?: String[] | String;
+  resetTokenExpiry_not_in?: String[] | String;
+  resetTokenExpiry_lt?: String;
+  resetTokenExpiry_lte?: String;
+  resetTokenExpiry_gt?: String;
+  resetTokenExpiry_gte?: String;
+  resetTokenExpiry_contains?: String;
+  resetTokenExpiry_not_contains?: String;
+  resetTokenExpiry_starts_with?: String;
+  resetTokenExpiry_not_starts_with?: String;
+  resetTokenExpiry_ends_with?: String;
+  resetTokenExpiry_not_ends_with?: String;
   cart_every?: CartItemWhereInput;
   cart_some?: CartItemWhereInput;
   cart_none?: CartItemWhereInput;
@@ -644,10 +692,13 @@ export interface CartItemCreateInput {
 }
 
 export interface UserUpdateInput {
-  email?: String;
-  username?: String;
   firstName?: String;
   lastName?: String;
+  email?: String;
+  username?: String;
+  password?: String;
+  resetToken?: String;
+  resetTokenExpiry?: String;
   permissions?: UserUpdatepermissionsInput;
   cart?: CartItemUpdateManyWithoutUserInput;
 }
@@ -782,10 +833,13 @@ export type OrderWhereUniqueInput = AtLeastOne<{
 }>;
 
 export interface UserCreateInput {
-  email?: String;
-  username?: String;
   firstName: String;
   lastName: String;
+  email?: String;
+  username?: String;
+  password: String;
+  resetToken?: String;
+  resetTokenExpiry?: String;
   permissions?: UserCreatepermissionsInput;
   cart?: CartItemCreateManyWithoutUserInput;
 }
@@ -930,10 +984,13 @@ export type OrderItemWhereUniqueInput = AtLeastOne<{
 }>;
 
 export interface UserCreateWithoutCartInput {
-  email?: String;
-  username?: String;
   firstName: String;
   lastName: String;
+  email?: String;
+  username?: String;
+  password: String;
+  resetToken?: String;
+  resetTokenExpiry?: String;
   permissions?: UserCreatepermissionsInput;
 }
 
@@ -998,10 +1055,13 @@ export interface OrderItemUpdateWithWhereUniqueNestedInput {
 }
 
 export interface UserUpdateDataInput {
-  email?: String;
-  username?: String;
   firstName?: String;
   lastName?: String;
+  email?: String;
+  username?: String;
+  password?: String;
+  resetToken?: String;
+  resetTokenExpiry?: String;
   permissions?: UserUpdatepermissionsInput;
   cart?: CartItemUpdateManyWithoutUserInput;
 }
@@ -1319,18 +1379,24 @@ export interface UserUpdateOneRequiredWithoutCartInput {
 }
 
 export interface UserUpdateManyMutationInput {
-  email?: String;
-  username?: String;
   firstName?: String;
   lastName?: String;
+  email?: String;
+  username?: String;
+  password?: String;
+  resetToken?: String;
+  resetTokenExpiry?: String;
   permissions?: UserUpdatepermissionsInput;
 }
 
 export interface UserUpdateWithoutCartDataInput {
-  email?: String;
-  username?: String;
   firstName?: String;
   lastName?: String;
+  email?: String;
+  username?: String;
+  password?: String;
+  resetToken?: String;
+  resetTokenExpiry?: String;
   permissions?: UserUpdatepermissionsInput;
 }
 
@@ -1568,10 +1634,13 @@ export interface NodeNode {
 
 export interface UserPreviousValues {
   id: ID_Output;
-  email?: String;
-  username?: String;
   firstName: String;
   lastName: String;
+  email?: String;
+  username?: String;
+  password: String;
+  resetToken?: String;
+  resetTokenExpiry?: String;
   permissions: Permission[];
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
@@ -1581,10 +1650,13 @@ export interface UserPreviousValuesPromise
   extends Promise<UserPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  email: () => Promise<String>;
-  username: () => Promise<String>;
   firstName: () => Promise<String>;
   lastName: () => Promise<String>;
+  email: () => Promise<String>;
+  username: () => Promise<String>;
+  password: () => Promise<String>;
+  resetToken: () => Promise<String>;
+  resetTokenExpiry: () => Promise<String>;
   permissions: () => Promise<Permission[]>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
@@ -1594,10 +1666,13 @@ export interface UserPreviousValuesSubscription
   extends Promise<AsyncIterator<UserPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  email: () => Promise<AsyncIterator<String>>;
-  username: () => Promise<AsyncIterator<String>>;
   firstName: () => Promise<AsyncIterator<String>>;
   lastName: () => Promise<AsyncIterator<String>>;
+  email: () => Promise<AsyncIterator<String>>;
+  username: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
+  resetToken: () => Promise<AsyncIterator<String>>;
+  resetTokenExpiry: () => Promise<AsyncIterator<String>>;
   permissions: () => Promise<AsyncIterator<Permission[]>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
@@ -2378,10 +2453,13 @@ export interface AggregateCartItemSubscription
 
 export interface User {
   id: ID_Output;
-  email?: String;
-  username?: String;
   firstName: String;
   lastName: String;
+  email?: String;
+  username?: String;
+  password: String;
+  resetToken?: String;
+  resetTokenExpiry?: String;
   permissions: Permission[];
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
@@ -2389,10 +2467,13 @@ export interface User {
 
 export interface UserPromise extends Promise<User>, Fragmentable {
   id: () => Promise<ID_Output>;
-  email: () => Promise<String>;
-  username: () => Promise<String>;
   firstName: () => Promise<String>;
   lastName: () => Promise<String>;
+  email: () => Promise<String>;
+  username: () => Promise<String>;
+  password: () => Promise<String>;
+  resetToken: () => Promise<String>;
+  resetTokenExpiry: () => Promise<String>;
   permissions: () => Promise<Permission[]>;
   cart: <T = FragmentableArray<CartItem>>(args?: {
     where?: CartItemWhereInput;
@@ -2411,10 +2492,13 @@ export interface UserSubscription
   extends Promise<AsyncIterator<User>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  email: () => Promise<AsyncIterator<String>>;
-  username: () => Promise<AsyncIterator<String>>;
   firstName: () => Promise<AsyncIterator<String>>;
   lastName: () => Promise<AsyncIterator<String>>;
+  email: () => Promise<AsyncIterator<String>>;
+  username: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
+  resetToken: () => Promise<AsyncIterator<String>>;
+  resetTokenExpiry: () => Promise<AsyncIterator<String>>;
   permissions: () => Promise<AsyncIterator<Permission[]>>;
   cart: <T = Promise<AsyncIterator<CartItemSubscription>>>(args?: {
     where?: CartItemWhereInput;

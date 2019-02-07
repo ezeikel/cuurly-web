@@ -55,15 +55,15 @@ type Order {
 
 type User {
   id: ID! @id
-  email: String @unique
-  username: String @unique
   firstName: String!
   lastName: String!
-  # password: String!
-  # resetToken: String
-  # resetTokenExpiry: String
+  email: String @unique
+  username: String @unique
+  password: String!
+  resetToken: String
+  resetTokenExpiry: String
   permissions: [Permission]
-  cart: [CartItem!]!
+  cart: [CartItem!]
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }

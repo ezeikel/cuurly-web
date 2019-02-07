@@ -31,9 +31,7 @@ function createServer() {
     resolverValidationOptions: {
       requireResolversForResolveType: false
     },
-    context: {
-      prisma
-    },
+    context: req => ({ ...req, prisma})
   });
 }
 

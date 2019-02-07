@@ -1346,10 +1346,13 @@ type Subscription {
 
 type User {
   id: ID!
-  email: String
-  username: String
   firstName: String!
   lastName: String!
+  email: String
+  username: String
+  password: String!
+  resetToken: String
+  resetTokenExpiry: String
   permissions: [Permission!]!
   cart(where: CartItemWhereInput, orderBy: CartItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CartItem!]
   createdAt: DateTime!
@@ -1363,10 +1366,13 @@ type UserConnection {
 }
 
 input UserCreateInput {
-  email: String
-  username: String
   firstName: String!
   lastName: String!
+  email: String
+  username: String
+  password: String!
+  resetToken: String
+  resetTokenExpiry: String
   permissions: UserCreatepermissionsInput
   cart: CartItemCreateManyWithoutUserInput
 }
@@ -1386,10 +1392,13 @@ input UserCreatepermissionsInput {
 }
 
 input UserCreateWithoutCartInput {
-  email: String
-  username: String
   firstName: String!
   lastName: String!
+  email: String
+  username: String
+  password: String!
+  resetToken: String
+  resetTokenExpiry: String
   permissions: UserCreatepermissionsInput
 }
 
@@ -1401,14 +1410,20 @@ type UserEdge {
 enum UserOrderByInput {
   id_ASC
   id_DESC
-  email_ASC
-  email_DESC
-  username_ASC
-  username_DESC
   firstName_ASC
   firstName_DESC
   lastName_ASC
   lastName_DESC
+  email_ASC
+  email_DESC
+  username_ASC
+  username_DESC
+  password_ASC
+  password_DESC
+  resetToken_ASC
+  resetToken_DESC
+  resetTokenExpiry_ASC
+  resetTokenExpiry_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -1417,10 +1432,13 @@ enum UserOrderByInput {
 
 type UserPreviousValues {
   id: ID!
-  email: String
-  username: String
   firstName: String!
   lastName: String!
+  email: String
+  username: String
+  password: String!
+  resetToken: String
+  resetTokenExpiry: String
   permissions: [Permission!]!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -1445,28 +1463,37 @@ input UserSubscriptionWhereInput {
 }
 
 input UserUpdateDataInput {
-  email: String
-  username: String
   firstName: String
   lastName: String
+  email: String
+  username: String
+  password: String
+  resetToken: String
+  resetTokenExpiry: String
   permissions: UserUpdatepermissionsInput
   cart: CartItemUpdateManyWithoutUserInput
 }
 
 input UserUpdateInput {
-  email: String
-  username: String
   firstName: String
   lastName: String
+  email: String
+  username: String
+  password: String
+  resetToken: String
+  resetTokenExpiry: String
   permissions: UserUpdatepermissionsInput
   cart: CartItemUpdateManyWithoutUserInput
 }
 
 input UserUpdateManyMutationInput {
-  email: String
-  username: String
   firstName: String
   lastName: String
+  email: String
+  username: String
+  password: String
+  resetToken: String
+  resetTokenExpiry: String
   permissions: UserUpdatepermissionsInput
 }
 
@@ -1498,10 +1525,13 @@ input UserUpdatepermissionsInput {
 }
 
 input UserUpdateWithoutCartDataInput {
-  email: String
-  username: String
   firstName: String
   lastName: String
+  email: String
+  username: String
+  password: String
+  resetToken: String
+  resetTokenExpiry: String
   permissions: UserUpdatepermissionsInput
 }
 
@@ -1530,34 +1560,6 @@ input UserWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  email: String
-  email_not: String
-  email_in: [String!]
-  email_not_in: [String!]
-  email_lt: String
-  email_lte: String
-  email_gt: String
-  email_gte: String
-  email_contains: String
-  email_not_contains: String
-  email_starts_with: String
-  email_not_starts_with: String
-  email_ends_with: String
-  email_not_ends_with: String
-  username: String
-  username_not: String
-  username_in: [String!]
-  username_not_in: [String!]
-  username_lt: String
-  username_lte: String
-  username_gt: String
-  username_gte: String
-  username_contains: String
-  username_not_contains: String
-  username_starts_with: String
-  username_not_starts_with: String
-  username_ends_with: String
-  username_not_ends_with: String
   firstName: String
   firstName_not: String
   firstName_in: [String!]
@@ -1586,6 +1588,76 @@ input UserWhereInput {
   lastName_not_starts_with: String
   lastName_ends_with: String
   lastName_not_ends_with: String
+  email: String
+  email_not: String
+  email_in: [String!]
+  email_not_in: [String!]
+  email_lt: String
+  email_lte: String
+  email_gt: String
+  email_gte: String
+  email_contains: String
+  email_not_contains: String
+  email_starts_with: String
+  email_not_starts_with: String
+  email_ends_with: String
+  email_not_ends_with: String
+  username: String
+  username_not: String
+  username_in: [String!]
+  username_not_in: [String!]
+  username_lt: String
+  username_lte: String
+  username_gt: String
+  username_gte: String
+  username_contains: String
+  username_not_contains: String
+  username_starts_with: String
+  username_not_starts_with: String
+  username_ends_with: String
+  username_not_ends_with: String
+  password: String
+  password_not: String
+  password_in: [String!]
+  password_not_in: [String!]
+  password_lt: String
+  password_lte: String
+  password_gt: String
+  password_gte: String
+  password_contains: String
+  password_not_contains: String
+  password_starts_with: String
+  password_not_starts_with: String
+  password_ends_with: String
+  password_not_ends_with: String
+  resetToken: String
+  resetToken_not: String
+  resetToken_in: [String!]
+  resetToken_not_in: [String!]
+  resetToken_lt: String
+  resetToken_lte: String
+  resetToken_gt: String
+  resetToken_gte: String
+  resetToken_contains: String
+  resetToken_not_contains: String
+  resetToken_starts_with: String
+  resetToken_not_starts_with: String
+  resetToken_ends_with: String
+  resetToken_not_ends_with: String
+  resetTokenExpiry: String
+  resetTokenExpiry_not: String
+  resetTokenExpiry_in: [String!]
+  resetTokenExpiry_not_in: [String!]
+  resetTokenExpiry_lt: String
+  resetTokenExpiry_lte: String
+  resetTokenExpiry_gt: String
+  resetTokenExpiry_gte: String
+  resetTokenExpiry_contains: String
+  resetTokenExpiry_not_contains: String
+  resetTokenExpiry_starts_with: String
+  resetTokenExpiry_not_starts_with: String
+  resetTokenExpiry_ends_with: String
+  resetTokenExpiry_not_ends_with: String
   cart_every: CartItemWhereInput
   cart_some: CartItemWhereInput
   cart_none: CartItemWhereInput
