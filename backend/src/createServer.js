@@ -23,7 +23,7 @@ const { prisma } = require('./generated/prisma-client')
 // Create the GraphQL Yoga Server
 function createServer() {
   return new GraphQLServer({
-    typeDefs: './schema.graphql',
+    typeDefs: 'src/schema.graphql',
     resolvers: {
       Mutation,
       Query
