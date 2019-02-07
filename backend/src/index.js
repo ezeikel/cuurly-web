@@ -1,68 +1,44 @@
-const { prisma } = require('./generated/prisma-client')
-const { GraphQLServer } = require('graphql-yoga')
+const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
+const createServer = require('./createServer');
 
-const resolvers = {
-  Query: {
-    publishedPosts(root, args, context) {
-      return context.prisma.posts({ where: { published: true } })
-    },
-    post(root, args, context) {
-      return context.prisma.post({ id: args.postId })
-    },
-    postsByUser(root, args, context) {
-      return context.prisma.user({
-        id: args.userId
-      }).posts()
-    }
-  },
-  Mutation: {
-    createDraft(root, args, context) {
-      return context.prisma.createPost(
-        {
-          title: args.title,
-          author: {
-            connect: { id: args.userId }
-          }
-        },
+const server = createServer();
 
-      )
-    },
-    publish(root, args, context) {
-      return context.prisma.updatePost(
-        {
-          where: { id: args.postId },
-          data: { published: true },
-        },
+server.express.use(cookieParser());
 
-      )
-    },
-    createUser(root, args, context) {
-      return context.prisma.createUser(
-        { name: args.name },
-      )
-    }
-  },
-  User: {
-    posts(root, args, context) {
-      return context.prisma.user({
-        id: root.id
-      }).posts()
-    }
-  },
-  Post: {
-    author(root, args, context) {
-      return context.prisma.post({
-        id: root.id
-      }).author()
-    }
+// decode the JWT so we can get the userId on each request
+server.express.use((req, res, next) => {
+  const { token } = req.cookies;
+  if (token) {
+    const { userId } = jwt.verify(token, process.env.APP_SECRET);
+    // put the userId onto the req for future request to access
+    req.userId = userId;
   }
-}
+  next();
+});
 
-const server = new GraphQLServer({
-  typeDefs: './schema.graphql',
-  resolvers,
-  context: {
-    prisma
-  },
-})
-server.start(() => console.log('Server is running on http://localhost:4000'))
+// create a middleware that populates user on each request
+
+server.express.use(async (req, res, next) => {
+  // if they arent logged in, skip this
+  if (!req.userId) {
+    return next();
+  }
+
+  // TODO: Fix this. db doesnt exist!?
+  const user = await db.query.user({ where: { id: req.userId }}, '{ id, permissions, email, name }');
+
+  req.user = user;
+  next();
+});
+
+server.start({
+  cors: {
+    credentials: true,
+    origin: process.env.FRONTEND_URL
+  }
+}, ({ port }) => {
+  console.log(`Server started, listening on port ${port} for incoming requests.`,)
+});
+
