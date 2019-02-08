@@ -6,7 +6,7 @@ const Meta = () => (
     <meta charSet="utf-8" />
     <link rel="shortcut icon" href="/static/favicon.png" />
     <link rel="stylesheet" type="text/css" href="/static/nprogress.css" />
-    <title>Crownd</title>
+    <title>Crownd - A community for all things black and mixed textured hair.</title>
   </Head>
 );
 
