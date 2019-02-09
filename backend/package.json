@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "Crownd - Backend",
   "scripts": {
-    "start": "nodemon -e js,graphql -x node src/index.js",
-    "dev": "nodemon -e js,graphql -x node --inspect src/index.js",
+    "start": "yarn bake-env && nodemon -e js,graphql -x node src/index.js",
+    "dev": "yarn bake-env && nodemon -e js,graphql -x node --inspect src/index.js",
+    "bake-env": "node ./scripts/process.env-generator.js",
     "test": "jest"
   },
   "keywords": [],
