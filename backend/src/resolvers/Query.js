@@ -12,6 +12,9 @@ const Query = {
 
     // 3. if they do, query all the users
     return ctx.prisma.users({}, info);
+  },
+  async userz (_, args, ctx, info) {
+    return ctx.prisma.users({}, info);
   }
 }
 
