@@ -6,6 +6,7 @@ import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
 import { persistCache } from 'apollo-cache-persist';
 import { defaults, resolvers } from "./store";
+import { endpoint, prodEndpoint } from '../config';
 
 const cache = new InMemoryCache();
 
@@ -28,7 +29,7 @@ const stateLink = withClientState({
 });
 
 const httpLink = new HttpLink({
-  uri: process.env.NODE_ENV === 'production' ? 'https://api.crownd.app' : 'http://localhost:4000',
+  uri: process.env.NODE_ENV === 'production' ? prodEndpoint : endpoint,
   credentials: 'include'
 });
 

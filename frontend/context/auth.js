@@ -126,10 +126,12 @@ export const withAuth = WrappedComponent => props => (
     query={CURRENT_CACHED_USER_QUERY}
     fetchPolicy='cache-only'
   >
-    {({ data: { currentUser } }) => (
-      <AuthConsumer>
-        {ctx => <WrappedComponent {...props} currentUser={currentUser} {...ctx} />}
-      </AuthConsumer>
-    )}
+    {({ data: { currentUser } }) => {
+      return (
+        <AuthConsumer>
+          {ctx => <WrappedComponent {...props} currentUser={currentUser} {...ctx} />}
+        </AuthConsumer>
+      );
+    }}
   </Query>
 );

@@ -9,17 +9,6 @@ export const CURRENT_CACHED_USER_QUERY = gql`
     firstName
     lastName
     permissions
-    cart {
-      id
-      quantity
-      item {
-        id
-        price
-        image
-        title
-        description
-      }
-    }
     isAuthenticated
     __typename
   }
