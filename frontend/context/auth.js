@@ -13,24 +13,24 @@ export const AuthContext = createContext();
 
 class Provider extends Component {
   state = {
-    signup: async ({ email, fullName, username, password }, { setSubmitting, setErrors, resetForm }) => {
+    signup: async ({ email, firstName, lastName, username, password }, { setSubmitting, setErrors, resetForm }) => {
       try {
-        const { client, history } = this.props;
+        const { client, router } = this.props;
 
         await client.mutate({
           mutation: SIGNUP_MUTATION,
-          variables: { email, fullName, username, password },
+          variables: { email, firstName, lastName, username, password },
           update: async (cache, { data: { signup:user } }) => {
             this._updateCurrentUser(cache, { ...user, isAuthenticated: true });
 
             resetForm();
 
             // redirect to homepage
-            history.push('/');
+            router.push('/');
           }
         });
       } catch (e) {
-        setErrors(formatFormErrors(e));
+        setErrors(e);
       }
       setSubmitting(false);
     },

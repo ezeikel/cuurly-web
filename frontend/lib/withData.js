@@ -1,7 +1,7 @@
 import withApollo from 'next-with-apollo';
 import ApolloClient from 'apollo-boost';
 import { endpoint, prodEndpoint } from '../config';
-import { CURRENT_CACHED_USER_QUERY } from "../apollo/queries";
+import { CURRENT_CACHED_USER_QUERY } from '../apollo/queries';
 
 function createClient({ headers }) {
   return new ApolloClient({
@@ -19,38 +19,24 @@ function createClient({ headers }) {
       resolvers: {
         Query: {
           currentUser: (_, args, { cache }) => {
-            const { currentUser } = cache.readQuery({ query: CURRENT_CACHED_USER_QUERY });
-            return currentUser;
+            return { currentUser } = cache.readQuery({ query: CURRENT_CACHED_USER_QUERY });
           }
         },
-        Mutation: {
-          toggleCart(_, variables, { cache }) {
-            // read the cartOpen value from the cache
-            const { cartOpen } = cache.readQuery({
-              query: LOCAL_STATE_QUERY,
-            });
-            // Write the cart State to the opposite
-            const data = {
-              data: { cartOpen: !cartOpen },
-            };
-            cache.writeData(data);
-            return data;
-          },
-        },
+        Mutation: {}
       },
       defaults: {
         currentUser: {
-          __typename: "CurrentUser",
-          id: "",
-          email: "",
-          username: "",
-          firstName: "",
-          lastName: "",
+          __typename: 'CurrentUser',
+          id: '',
+          email: '',
+          username: '',
+          firstName: '',
+          lastName: '',
           permissions: [],
           isAuthenticated: false
         }
-      },
-    },
+      }
+    }
   });
 }
 

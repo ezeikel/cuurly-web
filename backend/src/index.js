@@ -2,6 +2,7 @@ const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const createServer = require('./createServer');
+const { prisma } = require('./generated/prisma-client');
 
 const server = createServer();
 
@@ -26,8 +27,7 @@ server.express.use(async (req, res, next) => {
     return next();
   }
 
-  // TODO: Fix this. db doesnt exist!?
-  const user = await db.query.user({ where: { id: req.userId }}, '{ id, permissions, email, name }');
+  const user = await prisma.users({ where: { id: req.userId }}, '{ id, permissions, email, name }');
 
   req.user = user;
   next();

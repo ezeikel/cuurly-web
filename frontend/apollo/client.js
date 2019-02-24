@@ -4,7 +4,6 @@ import { withClientState } from 'apollo-link-state';
 import { HttpLink } from 'apollo-link-http';
 import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
-import { persistCache } from 'apollo-cache-persist';
 import { defaults, resolvers } from "./store";
 import { endpoint, prodEndpoint } from '../config';
 
@@ -34,16 +33,6 @@ const httpLink = new HttpLink({
 });
 
 export default async () => {
-  try {
-    await persistCache({
-      storage: window.localStorage,
-      debug: process.env.NODE_ENV !== 'production',
-      cache
-    });
-  } catch(e) {
-    console.log(`Promise rejected: Error: ${e}`);
-  }
-
   const client = new ApolloClient({
     link: ApolloLink.from([
       errorLink,
