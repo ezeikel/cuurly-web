@@ -2,7 +2,6 @@ const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const createServer = require('./createServer');
-const { prisma } = require('./generated/prisma-client');
 
 const server = createServer();
 
@@ -27,17 +26,22 @@ server.express.use(async (req, res, next) => {
     return next();
   }
 
-  const user = await prisma.users({ where: { id: req.userId }}, '{ id, permissions, email, name }');
+  const user = await server.context().prisma.users({ where: { id: req.userId }}, '{ id, permissions, email, name }');
+
+  console.log({ user });
 
   req.user = user;
   next();
 });
 
+console.log('port', process.env.PORT);
+
 server.start({
   cors: {
     credentials: true,
     origin: process.env.FRONTEND_URL
-  }
+  },
+  port: process.env.PORT
 }, ({ port }) => {
   console.log(`Server started, listening on  http://localhost:${port} for incoming requests.`,)
 });

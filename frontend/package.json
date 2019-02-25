@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Crownd - Frontend",
   "scripts": {
-    "dev": "yarn storybook && next -p 7777",
+    "dev": "next -p 3001 && start-storybook -p 9001 -c .storybook",
     "build": "next build",
     "start": "next start",
     "storybook": "start-storybook -p 9001 -c .storybook",

@@ -6,7 +6,8 @@ const defaults = require("../process.defaults");
 // variables needed by the server
 const keys = [
   "APP_SECRET",
-  "FRONTEND_URL"
+  "FRONTEND_URL",
+  "PORT"
 ];
 
 let contents =
