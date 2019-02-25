@@ -7,7 +7,7 @@ storiesOf('Button', module)
   .add('with text', () => (
     <Button>Hello Button</Button>
   ))
-  .add('submit', () => (
+  .add('type submit', () => (
     <Button type="submit">Hello Button</Button>
   ))
   .add('with some emoji', () => (
