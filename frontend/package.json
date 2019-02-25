@@ -3,9 +3,10 @@
   "version": "0.0.1",
   "description": "Crownd - Frontend",
   "scripts": {
-    "dev": "next -p 7777",
+    "dev": "yarn storybook && next -p 7777",
     "build": "next build",
     "start": "next start",
+    "storybook": "start-storybook -p 9001 -c .storybook",
     "test": "NODE_ENV=test jest --watch",
     "test-win": "SET NODE_ENV=test&& jest --watch",
     "heroku-postbuild": "next build"
@@ -40,7 +41,10 @@
     "yup": "^0.26.10"
   },
   "devDependencies": {
+    "@babel/core": "^7.3.3",
+    "@storybook/react": "^4.1.13",
     "babel-jest": "^23.6.0",
+    "babel-loader": "^8.0.5",
     "babel-plugin-module-resolver": "^3.1.1",
     "casual": "^1.5.19",
     "enzyme-to-json": "^3.3.5",
