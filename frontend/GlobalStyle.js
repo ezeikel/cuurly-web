@@ -28,7 +28,8 @@ export default createGlobalStyle`
   --spacing-huge: 64px;
   --spacing-gargantuan: 128px;
   /* Font */
-  --default-font-family: 'Open Sans', sans-serif;
+  --default-font-family: 'myriad-pro', sans-serif;
+  --heading-font-family: poppins, sans-serif;
   --default-font-size: 10px;
   --font-size-tiny: 1.4rem;
   --font-size-small: 1.6rem;
@@ -60,6 +61,13 @@ body {
   padding: 0;
   font-family: var(--default-font-family);
   font-size: 1.6rem;
+  letter-spacing: 0.05rem;
+
+}
+h1,h2,h3,h4,h5 {
+  font-family: var(--heading-font-family);
+  font-style: normal;
+  font-weight: 100;
 }
 img {
   max-width: 100%;
