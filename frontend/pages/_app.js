@@ -2,7 +2,7 @@ import App, { Container } from 'next/app';
 import { AuthProvider } from '../context/auth';
 import Page from '../components/Page';
 import { ApolloProvider } from 'react-apollo';
-import withData from '../lib/withData';
+import withApolloClient from '../apollo/withApolloClient';
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -31,4 +31,4 @@ class MyApp extends App {
   }
 }
 
-export default withData(MyApp);
+export default withApolloClient(MyApp);

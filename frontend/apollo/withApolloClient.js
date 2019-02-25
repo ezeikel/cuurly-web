@@ -1,7 +1,7 @@
 import withApollo from 'next-with-apollo';
 import ApolloClient from 'apollo-boost';
 import { endpoint, prodEndpoint } from '../config';
-import { CURRENT_CACHED_USER_QUERY } from '../apollo/queries';
+import { CURRENT_CACHED_USER_QUERY } from './queries';
 
 function createClient({ headers }) {
   return new ApolloClient({
