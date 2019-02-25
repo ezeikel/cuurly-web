@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
 const Wrapper = styled.h1`
-  font-family: poppins, sans-serif;
-  font-style: normal;
-  font-weight: 100;
+  margin: 0;
+  font-weight: 400;
+  font-size: 4.8rem;
 `;
 
 export default Wrapper;

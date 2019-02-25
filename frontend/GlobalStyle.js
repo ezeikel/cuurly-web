@@ -4,9 +4,8 @@ export default createGlobalStyle`
 /* CSS Variables */
 :root {
   /* Colors */
-  --color-primary: #1ABC9C;
-  /* --color-primary: #F7E7CE; */
-  --color-secondary: #F1D3D1;
+  --color-primary: #F9AD5A;
+  --color-secondary: #3D2C32;
   --color-tertiary: #4629D3;
   --color-radical-red: #FF3D63;
   --color-aquamarine: #62FFD3;
@@ -28,7 +27,7 @@ export default createGlobalStyle`
   --spacing-huge: 64px;
   --spacing-gargantuan: 128px;
   /* Font */
-  --default-font-family: 'myriad-pro', sans-serif;
+  --default-font-family: Roboto, sans-serif;
   --heading-font-family: poppins, sans-serif;
   --default-font-size: 10px;
   --font-size-tiny: 1.4rem;
@@ -61,13 +60,13 @@ body {
   padding: 0;
   font-family: var(--default-font-family);
   font-size: 1.6rem;
-  letter-spacing: 0.05rem;
-
+  color: var(--color-black);
 }
-h1,h2,h3,h4,h5 {
+h1, h2, h3, h4, h5 {
   font-family: var(--heading-font-family);
   font-style: normal;
   font-weight: 100;
+  color: var(--color-black);
 }
 img {
   max-width: 100%;
