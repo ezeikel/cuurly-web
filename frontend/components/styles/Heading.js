@@ -1,9 +1,22 @@
 import styled from 'styled-components';
 
-const Wrapper = styled.h1`
-  margin: 0;
-  font-weight: 400;
-  font-size: 4.8rem;
+const StyledHeading = styled.h1`
+  font-family: var(--heading-font-family);
+  font-style: normal;
+  color: var(--color-black);
 `;
 
-export default Wrapper;
+const Heading = ({ level, ...rest }) => {
+  return (
+    <StyledHeading
+      as={`h${level}`}
+      {...rest}
+    />
+  )
+};
+
+Heading.defaultProps = {
+  level: 1
+};
+
+export default Heading;

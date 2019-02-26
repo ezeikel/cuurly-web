@@ -62,12 +62,6 @@ body {
   font-size: 1.6rem;
   color: var(--color-black);
 }
-h1, h2, h3, h4, h5 {
-  font-family: var(--heading-font-family);
-  font-style: normal;
-  font-weight: 100;
-  color: var(--color-black);
-}
 img {
   max-width: 100%;
 }
@@ -79,17 +73,6 @@ ul {
   list-style-type: none;
   padding-left: 0;
   margin: 0;
-}
-button {
-  display: grid;
-  place-items: center;
-  padding: 0;
-  border: none;
-  outline: none;
-  background: none;
-  cursor: pointer;
-  font-size: 1.6rem;
-  font-family: var(--default-font-family);
 }
 /* Forms */
 select {

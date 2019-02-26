@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-const Wrapper = styled.p`
+const Paragraph = styled.p`
   margin: 0;
 `;
 
-export default Wrapper;
+export default Paragraph;
