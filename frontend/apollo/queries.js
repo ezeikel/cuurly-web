@@ -4,10 +4,10 @@ export const CURRENT_CACHED_USER_QUERY = gql`
 {
   currentUser @client {
     id
-    email
-    username
     firstName
     lastName
+    username
+    email
     permissions
     isAuthenticated
     __typename
@@ -15,26 +15,38 @@ export const CURRENT_CACHED_USER_QUERY = gql`
 }
 `;
 
-export const SIGNUP_MUTATION = gql`
-  mutation signup(
-    $email: String!,
-    $firstName: String!,
-    $lastName: String!,
-    $username: String!,
-    $password: String!,
-    ) {
-    signup(
-      email: $email
-      firstName: $firstName
-      lastName: $lastName
-      username: $username
-      password: $password
-    ) {
+export const SINGLE_USER_QUERY = gql`
+  query user($id: ID!) {
+    user(id: $id) {
       id
-      email
       firstName
       lastName
       username
+      email
+    }
+  }
+`;
+
+export const SIGNUP_MUTATION = gql`
+  mutation signup(
+    $firstName: String!,
+    $lastName: String!,
+    $username: String!,
+    $email: String!,
+    $password: String!,
+    ) {
+    signup(
+      firstName: $firstName
+      lastName: $lastName
+      username: $username
+      email: $email
+      password: $password
+    ) {
+      id
+      firstName
+      lastName
+      username
+      email
       permissions
     }
   }
@@ -44,10 +56,10 @@ export const SIGNIN_MUTATION = gql`
   mutation signin($email: String!, $password: String!) {
     signin(email: $email, password: $password) {
       id
-      email
       firstName
       lastName
       username
+      email
       permissions
     }
   }

@@ -1,5 +1,7 @@
+import Link from 'next/link';
 import styled from 'styled-components';
 import LogoFull from '../components/LogoFull';
+import Button from '../components/styles/Button';
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -11,6 +13,9 @@ const Wrapper = styled.div`
 const Home = () => (
   <Wrapper>
     <LogoFull fillColor="#000"/>
+    <Button>
+      <Link><a href="/signup">Signup</a></Link>
+    </Button>
   </Wrapper>
 );
 

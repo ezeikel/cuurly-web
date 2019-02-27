@@ -28,8 +28,6 @@ server.express.use(async (req, res, next) => {
 
   const user = await server.context().prisma.users({ where: { id: req.userId }}, '{ id, permissions, email, name }');
 
-  console.log({ user });
-
   req.user = user;
   next();
 });

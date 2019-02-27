@@ -40,6 +40,9 @@ export default createGlobalStyle`
   --header-footer: var(--header-height);
   --header-footer-wide: var( --header-height-wide);
 }
+*, *:before, *:after {
+  box-sizing: inherit;
+}
 ::-moz-selection {
   background: var(--color-primary);
   color: var(--color-white);
@@ -52,6 +55,7 @@ export default createGlobalStyle`
   box-sizing: border-box;
 }
 html {
+  box-sizing: border-box;
   font-size: var(--default-font-size);
   scroll-behavior: smooth;
 }
@@ -60,6 +64,7 @@ body {
   padding: 0;
   font-family: var(--default-font-family);
   font-size: 1.6rem;
+  line-height: 2;
   color: var(--color-black);
 }
 img {
@@ -118,7 +123,7 @@ input, textarea {
   width: 100%;
   font-weight: 300;
 } */
-// Hide fonts until webfonts have loaded to avoid FOUT
+/* Hide fonts until webfonts have loaded to avoid FOUT */
 .wf-loading {
   visibility: hidden;
 }

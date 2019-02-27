@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import Link from 'next/link';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup'
 import { withAuth } from '../context/auth';
 import Spinner from './Spinner';
+import Button from './styles/Button';
 
 const SignupSchema = Yup.object().shape({
   firstName: Yup.string()
@@ -54,7 +54,7 @@ class Signup extends Component {
             <ErrorMessage name="username" component="div" />
             <Field type="password" name="password" />
             <ErrorMessage name="password" component="div" />
-            <button type="submit" disabled={isSubmitting}>Submit</button>
+            <Button type="submit" disabled={isSubmitting}>Submit</Button>
           </Form>
         )}
       </Formik>

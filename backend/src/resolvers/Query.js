@@ -15,6 +15,9 @@ const Query = {
   },
   async userz (_, args, ctx, info) {
     return ctx.prisma.users({}, info);
+  },
+  user (_, { id }, ctx, info) {
+    return ctx.prisma.user({ id: id }, info);
   }
 }
 
