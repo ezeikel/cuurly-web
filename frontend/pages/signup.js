@@ -7,7 +7,7 @@ const Wrapper = styled.div`
   grid-row-gap: var(--spacing-medium);
   h1 {
     margin: 0;
-    font-size: 22px;
+    font-size: 2.2rem;
   }
 `;
 

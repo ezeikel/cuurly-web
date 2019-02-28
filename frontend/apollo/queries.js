@@ -15,6 +15,18 @@ export const CURRENT_CACHED_USER_QUERY = gql`
 }
 `;
 
+export const ALL_USERS_QUERY = gql`
+  query ALL_USERS_QUERY {
+    users {
+      id
+      firstName
+      lastName
+      username
+      email
+    }
+  }
+`;
+
 export const SINGLE_USER_QUERY = gql`
   query user($id: ID!) {
     user(id: $id) {

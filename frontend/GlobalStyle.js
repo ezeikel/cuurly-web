@@ -27,8 +27,8 @@ export default createGlobalStyle`
   --spacing-huge: 64px;
   --spacing-gargantuan: 128px;
   /* Font */
-  --default-font-family: Roboto, sans-serif;
-  --heading-font-family: poppins, sans-serif;
+  --default-font-family: 'Source Sans Pro', sans-serif;
+  --heading-font-family: 'Poppins', sans-serif;
   --default-font-size: 10px;
   --font-size-tiny: 1.4rem;
   --font-size-small: 1.6rem;

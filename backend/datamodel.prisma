@@ -7,81 +7,22 @@ enum Permission {
   PERMISSIONUPDATE
 }
 
-enum ShopType {
-  BARBERSHOP
-  HAIRDRESSER
-  HAIRSHOP
-}
-
-type Item {
-  id: ID! @id
-  title: String!
-  description: String!
-  image: String
-  largeImage: String
-  price: Int!
-  owner: User! @relation(link: INLINE)
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
-}
-
-type CartItem {
-  id: ID! @id
-  quantity: Int! @default(value: 1)
-  item: Item @relation(link: INLINE)
-  user: User! @relation(link: INLINE)
-}
-
-type OrderItem {
-  id: ID! @id
-  title: String!
-  description: String!
-  image: String!
-  largeImage: String!
-  price: Int!
-  quantity: Int! @default(value: 1)
-  user: User @relation(link: INLINE)
-}
-
-type Order {
-  id: ID! @id
-  items: [OrderItem!]! @relation(link: INLINE)
-  total: Int!
-  user: User! @relation(link: INLINE)
-  charge: String!
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
+enum PostType {
+  IMAGE
+  VIDEO
+  ROUTINE
 }
 
 type User {
   id: ID! @id
   firstName: String!
   lastName: String!
-  email: String @unique
   username: String @unique
+  email: String @unique
   password: String!
   resetToken: String
   resetTokenExpiry: String
   permissions: [Permission]
-  cart: [CartItem!]
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
-}
-
-type Location {
-  id: ID! @id
-  coordinates: [Float]
-  address: String
-}
-
-type Shop {
-  id: ID! @id
-  name: String
-  description: String
-  type: ShopType
-  location: Location @relation(link: INLINE)
-  open: Boolean! @default(value: false)
-  owner: User! @relation(link: INLINE)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }

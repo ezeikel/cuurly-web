@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 
 export const ALL_USERS_QUERY = gql`
   query ALL_USERS_QUERY {
-    userz {
+    users {
       id
       email
       username
