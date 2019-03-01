@@ -1,4 +1,6 @@
 function hasPermission(user, permissionsNeeded) {
+  // TODO: Everybody has permission for now
+  return;
   const matchedPermissions = user.permissions.filter(permissionTheyHave =>
     permissionsNeeded.includes(permissionTheyHave)
   );

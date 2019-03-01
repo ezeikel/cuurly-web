@@ -26,13 +26,11 @@ server.express.use(async (req, res, next) => {
     return next();
   }
 
-  const user = await server.context().prisma.users({ where: { id: req.userId }}, '{ id, permissions, email, name }');
+  const user = await server.context().prisma.user({ id: req.userId }, '{ id, permissions, email, name }');
 
   req.user = user;
   next();
 });
-
-console.log('port', process.env.PORT);
 
 server.start({
   cors: {

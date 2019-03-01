@@ -18,11 +18,21 @@ type User {
   firstName: String!
   lastName: String!
   username: String @unique
-  email: String @unique
+  email: String! @unique
   password: String!
   resetToken: String
   resetTokenExpiry: String
-  permissions: [Permission]
+  permissions: [Permission!]!
+  following: [User!]! @relation(name: "Following", link: INLINE)
+  followers: [User!]! @relation(name: "Followers", link: INLINE)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
+}
+
+type Post {
+  id: ID! @id
+  caption: String
+  image: String
+  video: String
+  type: PostType @relation(link: INLINE)
 }

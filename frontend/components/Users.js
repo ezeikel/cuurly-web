@@ -1,18 +1,6 @@
 import React, { Component } from 'react';
 import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
-
-export const ALL_USERS_QUERY = gql`
-  query ALL_USERS_QUERY {
-    users {
-      id
-      email
-      username
-      firstName
-      lastName
-    }
-  }
-`;
+import { ALL_USERS_QUERY } from '../apollo/queries';
 
 class Users extends Component {
   render() {
@@ -25,7 +13,7 @@ class Users extends Component {
             if (error) return <p>Error: {error.message}</p>;
             return (
               <ul>
-                {data.userz.map(user => <li key={user.id}>{user.firstName} || {user.username}</li>)}
+                {data.users.map(user => <li key={user.id}>{user.username}</li>)}
               </ul>
             );
           }}

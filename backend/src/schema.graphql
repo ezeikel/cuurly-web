@@ -11,12 +11,21 @@ type User {
   firstName: String!
   lastName: String!
   permissions: [Permission!]!
+  following: [User]!
+  followers: [User]!
+  posts: [Post!]!
+}
+
+type Post {
+  id: ID!
+  caption: String
+  image: String
+  video: String
 }
 
 type Query {
   users: [User]!
   user(id: ID!): User
-  userz: [User]!
 }
 
 type Mutation {

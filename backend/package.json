@@ -19,6 +19,6 @@
     "graphql-yoga": "^1.17.1",
     "jsonwebtoken": "^8.4.0",
     "nodemon": "^1.18.9",
-    "prisma-client-lib": "^1.25.7"
+    "prisma-client-lib": "^1.27.3"
   }
 }
