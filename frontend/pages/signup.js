@@ -15,7 +15,7 @@ const SignupPage = () => (
   <Wrapper>
     <h1>Sign up</h1>
     <Signup />
-    <span>Have an account? <Link href="signup"><a>Sign in</a></Link></span>
+    <span>Have an account? <Link href="/signin"><a>Sign in</a></Link></span>
   </Wrapper>
 );
 

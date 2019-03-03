@@ -14,7 +14,7 @@ const Wrapper = styled.nav`
   align-content: center;
   padding: var(--spacing-medium) var(--spacing-huge);
   background-color: var(--color-white);
-  border-bottom: 1px solid rgba(0,0,0,.0975);
+  box-shadow: 0 1px 1px rgba(0,0,0,.1);
 `;
 
 const NavActions = styled.ul`
