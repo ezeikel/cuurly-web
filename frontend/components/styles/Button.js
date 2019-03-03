@@ -21,6 +21,9 @@ const Button = styled.button`
       text-decoration: line-through;
     }
   }
+  a {
+    color: var(--color-white);
+  }
 `;
 
 export default Button;

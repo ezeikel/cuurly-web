@@ -13,6 +13,9 @@ const theme = {
 };
 
 const StyledPage = styled.div`
+  display: grid;
+  grid-template-rows: auto 1fr;
+  min-height: 100vh;
   background-color: ${({ theme }) => theme.default.white};
   color: ${({ theme }) => theme.default.textColor};
 `;

@@ -21,7 +21,7 @@ const Header = ({ theme }) => (
                   <span>{`Hello ${currentUser.firstName}`}</span>
                   <Signout />
                 </Fragment>
-              : <Link href="/signin"><a>Sign in</a></Link>
+              : null
           }
         </Wrapper>
       )}

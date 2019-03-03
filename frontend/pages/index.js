@@ -4,10 +4,9 @@ import LogoFull from '../components/LogoFull';
 import Button from '../components/styles/Button';
 
 const Wrapper = styled.div`
-  width: 100vw;
-  height: 100vh;
   display: grid;
-  place-items: center;
+  grid-template-rows: auto auto;
+  grid-row-gap: var(--spacing-huge);
 `;
 
 const Home = () => (
