@@ -5,7 +5,6 @@ const Button = styled.button`
   place-items: center;
   background-color: var(--color-primary);
   color: var(--color-white);
-  padding: var(--spacing-medium) var(--spacing-large);
   border: none;
   outline: none;
   cursor: pointer;
@@ -23,6 +22,7 @@ const Button = styled.button`
   }
   a {
     color: var(--color-white);
+    padding: var(--spacing-medium) var(--spacing-large);
   }
 `;
 

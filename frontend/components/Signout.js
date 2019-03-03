@@ -1,6 +1,12 @@
 import { withRouter } from 'next/router';
 import { Mutation } from 'react-apollo';
 import { SIGNOUT_MUTATION, CURRENT_USER_QUERY } from '../apollo/queries';
+import styled from 'styled-components';
+
+const Wrapper = styled.span`
+  text-decoration: underline;
+  cursor: pointer;
+`;
 
 const Signout = ({ router }) => (
   <Mutation
@@ -8,7 +14,7 @@ const Signout = ({ router }) => (
     refetchQueries={[{ query: CURRENT_USER_QUERY }]}
     onCompleted={() => router.push(`/`)}
   >
-    {signout => <span onClick={signout}>Sign Out</span>}
+    {signout => <Wrapper onClick={signout}>Sign Out</Wrapper>}
   </Mutation>
 );
 

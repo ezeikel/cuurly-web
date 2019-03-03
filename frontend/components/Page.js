@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled, { ThemeProvider, createGlobalStyle } from 'styled-components';
-import Header from './Header';
+import Nav from './Nav';
 import Meta from './Meta';
 
 const theme = {
@@ -14,7 +14,7 @@ const theme = {
 
 const StyledPage = styled.div`
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: 100px 1fr;
   min-height: 100vh;
   background-color: ${({ theme }) => theme.default.white};
   color: ${({ theme }) => theme.default.textColor};
@@ -32,7 +32,7 @@ class Page extends Component {
       <ThemeProvider theme={theme}>
         <StyledPage>
           <Meta />
-          <Header  theme={theme}/>
+          <Nav  theme={theme}/>
           <Inner>
             {this.props.children}
           </Inner>

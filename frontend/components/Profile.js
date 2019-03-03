@@ -11,9 +11,7 @@ class Profile extends Component {
         if (error) return <p>Error: {error.message}</p>;
         return (
           <div>
-            <h1>{firstName}</h1>
-            <h1>{lastName}</h1>
-            <h3>{username}</h3>
+            <h1>Welcome to your Profile {firstName} 👋🏿</h1>
           </div>
         );
       }}
