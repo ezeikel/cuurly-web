@@ -14,7 +14,7 @@ const Home = () => (
   <Wrapper>
     <LogoFull fillColor="#000"/>
     <Button>
-      <Link><a href="/signup">Signup</a></Link>
+      <Link href="/signin"><a>Sign in</a></Link>
     </Button>
   </Wrapper>
 );

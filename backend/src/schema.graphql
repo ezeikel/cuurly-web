@@ -24,12 +24,13 @@ type Post {
 }
 
 type Query {
+  currentUser: User
   users: [User]!
   user(id: ID!): User
 }
 
 type Mutation {
   signup(firstName: String!, lastName: String!, username: String!, email: String!, password: String!): User!
-  signin(email: String!, password: String!): User!
+  signin(username: String!, password: String!): User!
   signout: SuccessMessage
 }

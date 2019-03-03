@@ -10,6 +10,7 @@ server.express.use(cookieParser());
 // decode the JWT so we can get the userId on each request
 server.express.use((req, res, next) => {
   const { token } = req.cookies;
+
   if (token) {
     const { userId } = jwt.verify(token, process.env.APP_SECRET);
     // put the userId onto the req for future request to access
@@ -26,7 +27,10 @@ server.express.use(async (req, res, next) => {
     return next();
   }
 
-  const user = await server.context().prisma.user({ id: req.userId }, '{ id, permissions, email, name }');
+  const user = await server.context()
+    .prisma.user({
+      id: req.userId
+    }, '{ id, permissions, email, name }');
 
   req.user = user;
   next();

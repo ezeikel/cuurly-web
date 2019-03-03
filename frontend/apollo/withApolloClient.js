@@ -1,7 +1,6 @@
 import withApollo from 'next-with-apollo';
 import ApolloClient from 'apollo-boost';
 import { endpoint, prodEndpoint } from '../config';
-import { CURRENT_CACHED_USER_QUERY } from './queries';
 
 function createClient({ headers }) {
   return new ApolloClient({
@@ -17,25 +16,10 @@ function createClient({ headers }) {
     // local data
     clientState: {
       resolvers: {
-        Query: {
-          currentUser: (_, args, { cache }) => {
-            return { currentUser } = cache.readQuery({ query: CURRENT_CACHED_USER_QUERY });
-          }
-        },
+        Query: {},
         Mutation: {}
       },
-      defaults: {
-        currentUser: {
-          __typename: 'CurrentUser',
-          id: '',
-          email: '',
-          username: '',
-          firstName: '',
-          lastName: '',
-          permissions: [],
-          isAuthenticated: false
-        }
-      }
+      defaults: {}
     }
   });
 }

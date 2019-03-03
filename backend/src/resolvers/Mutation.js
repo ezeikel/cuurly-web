@@ -45,11 +45,11 @@ const Mutations = {
     // finally return user the the browser
     return user;
   },
-  async signin(_, { email, password }, ctx, info) {
+  async signin(_, { username, password }, ctx, info) {
     // 1. check if there is a user with that email
-    const user = await ctx.prisma.user({ email });
+    const user = await ctx.prisma.user({ username });
     if (!user) {
-      throw new Error(`No such user found for email ${email}`);
+      throw new Error(`No such user found for username ${username}`);
     }
     // 2. check if their password is correct
     const valid = await bcrypt.compare(password, user.password);

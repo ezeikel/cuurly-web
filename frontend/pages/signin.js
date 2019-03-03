@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import styled from 'styled-components';
-import Signup from '../components/Signup';
+import Signin from '../components/Signin';
 
 const Wrapper = styled.div`
   display: grid;
@@ -11,12 +11,12 @@ const Wrapper = styled.div`
   }
 `;
 
-const SignupPage = () => (
+const SigninPage = () => (
   <Wrapper>
-    <h1>Sign up</h1>
-    <Signup />
-    <span>Have an account? <Link href="signup"><a>Sign in</a></Link></span>
+    <h1>Sign in</h1>
+    <Signin />
+    <span>Don't have an account? <Link href="signup"><a>Sign up</a></Link></span>
   </Wrapper>
 );
 
-export default SignupPage;
+export default SigninPage;

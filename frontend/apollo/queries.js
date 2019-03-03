@@ -1,18 +1,16 @@
 import gql from "graphql-tag"
 
-export const CURRENT_CACHED_USER_QUERY = gql`
-{
-  currentUser @client {
-    id
-    firstName
-    lastName
-    username
-    email
-    permissions
-    isAuthenticated
-    __typename
+export const CURRENT_USER_QUERY = gql`
+  query {
+    currentUser {
+      id
+      firstName
+      lastName
+      username
+      email
+      permissions
+    }
   }
-}
 `;
 
 export const ALL_USERS_QUERY = gql`
@@ -65,8 +63,8 @@ export const SIGNUP_MUTATION = gql`
 `;
 
 export const SIGNIN_MUTATION = gql`
-  mutation signin($email: String!, $password: String!) {
-    signin(email: $email, password: $password) {
+  mutation signin($username: String!, $password: String!) {
+    signin(username: $username, password: $password) {
       id
       firstName
       lastName

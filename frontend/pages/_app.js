@@ -1,6 +1,5 @@
 import App, { Container } from 'next/app';
 import { ApolloProvider } from 'react-apollo';
-import { AuthProvider } from '../context/auth';
 import withApolloClient from '../apollo/withApolloClient';
 import Page from '../components/Page';
 import GlobalStyle from "../GlobalStyle";
@@ -22,12 +21,10 @@ class MyApp extends App {
     return (
       <Container>
         <ApolloProvider client={apollo}>
-          <AuthProvider>
-            <GlobalStyle />
-            <Page>
-              <Component {...pageProps}/>
-            </Page>
-          </AuthProvider>
+          <GlobalStyle />
+          <Page>
+            <Component {...pageProps}/>
+          </Page>
         </ApolloProvider>
       </Container>
     )

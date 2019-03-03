@@ -1,6 +1,15 @@
 const { hasPermission } = require('../utils');
 
 const Query = {
+  currentUser(_, args, ctx, info) {
+    // check if there is current userId
+    if (!ctx.request.userId) {
+      return null;
+    }
+    return ctx.prisma.user({
+      id: ctx.request.userId
+    }, info);
+  },
   async users(_, args, ctx, info) {
     // 1. check if they are logged in
     if (!ctx.request.userId) {
