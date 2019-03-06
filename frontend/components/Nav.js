@@ -19,7 +19,7 @@ const Wrapper = styled.nav`
 
 const NavActions = styled.ul`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   align-items: center;
   justify-items: end;
 `;
@@ -56,6 +56,9 @@ const Nav = ({ theme }) => (
             <li>Explore</li>
             <li>Liked</li>
             <li><Link href={`/user?id=${currentUser.id}`}><a>Profile</a></Link></li>
+            <li>
+              <Link href='/upload'><button>Post</button></Link>
+            </li>
           </NavActions>
         </Wrapper>
       : null

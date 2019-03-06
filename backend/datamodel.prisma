@@ -20,11 +20,12 @@ type User {
   username: String @unique
   email: String! @unique
   password: String!
+  posts: [Post!]!
+  following: [User!]! @relation(name: "Following", link: INLINE)
+  followers: [User!]! @relation(name: "Followers", link: INLINE)
   resetToken: String
   resetTokenExpiry: String
   permissions: [Permission!]!
-  following: [User!]! @relation(name: "Following", link: INLINE)
-  followers: [User!]! @relation(name: "Followers", link: INLINE)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
@@ -33,6 +34,10 @@ type Post {
   id: ID! @id
   caption: String
   image: String
+  largeImage: String
   video: String
   type: PostType @relation(link: INLINE)
+  author: User @relation(link: INLINE)
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }

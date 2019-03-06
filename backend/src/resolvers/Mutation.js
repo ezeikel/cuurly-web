@@ -70,6 +70,28 @@ const Mutations = {
     ctx.response.clearCookie('token');
     return { message: 'Goodbye!' };
   },
+  async createPost(_, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+
+    console.log('HERE!');
+
+    const post = await ctx.prisma.createPost({
+      data: {
+        author: {
+          connect: {
+            id: ctx.request.userId
+          }
+        },
+        ...args
+      }
+    }, info);
+
+    console.log({post});
+
+    return post;
+  }
 };
 
 module.exports = Mutations;

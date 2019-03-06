@@ -4,6 +4,15 @@ type SuccessMessage {
   message: String
 }
 
+type Post {
+  id: ID!
+  caption: String
+  image: String
+  largeImage: String
+  video: String
+  author: User!
+}
+
 type User {
   id: ID!
   email: String!
@@ -16,13 +25,6 @@ type User {
   posts: [Post!]!
 }
 
-type Post {
-  id: ID!
-  caption: String
-  image: String
-  video: String
-}
-
 type Query {
   currentUser: User
   users: [User]!
@@ -33,4 +35,5 @@ type Mutation {
   signup(firstName: String!, lastName: String!, username: String!, email: String!, password: String!): User!
   signin(username: String!, password: String!): User!
   signout: SuccessMessage
+  createPost(image: String!, largeImage: String!, caption: String): Post
 }

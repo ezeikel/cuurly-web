@@ -82,3 +82,19 @@ export const SIGNOUT_MUTATION = gql`
     }
   }
 `;
+
+export const CREATE_POST_MUTATION = gql`
+   mutation CREATE_POST_MUTATION (
+     $caption: String!
+     $image: String
+     $largeImage: String
+   ) {
+     createPost (
+       caption: $caption
+       image: $image
+       largeImage: $largeImage
+     ) {
+       id
+     }
+   }
+`;
