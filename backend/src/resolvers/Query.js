@@ -24,6 +24,23 @@ const Query = {
   },
   user (_, { id }, ctx, info) {
     return ctx.prisma.user({ id: id }, info);
+  },
+  async posts(_, args, ctx, info) {
+    return ctx.prisma.posts({}, info);
+  },
+  async userPosts(_, { id }, ctx, info) {
+    // if (!ctx.request.userId) {
+    //   throw new Error('You must be logged in!');
+    // }
+
+    console.log({ id });
+
+    const user = await ctx.prisma.user({ id });
+
+    console.log({ user });
+
+    console.log(user.posts);
+    return user.posts;
   }
 }
 

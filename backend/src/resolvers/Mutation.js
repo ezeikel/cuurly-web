@@ -82,7 +82,7 @@ const Mutations = {
         }
       },
       ...args
-    }, info);
+    });
 
     console.log({post});
 

@@ -20,7 +20,7 @@ type User {
   username: String @unique
   email: String! @unique
   password: String!
-  posts: [Post!]!
+  posts: [Post!]! @relation(link: INLINE)
   following: [User!]! @relation(name: "Following", link: INLINE)
   followers: [User!]! @relation(name: "Followers", link: INLINE)
   resetToken: String
@@ -35,9 +35,14 @@ type Post {
   caption: String
   image: String
   largeImage: String
-  video: String
-  type: PostType @relation(link: INLINE)
-  author: User @relation(link: INLINE)
+  published: Boolean @default(value: false)
+  author: User!
+  comments: [Comment!]!
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
+}
+
+type Comment @embedded {
+  text: String!
+  writtenBy: User!
 }

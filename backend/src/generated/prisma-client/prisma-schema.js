@@ -1,5 +1,9 @@
 module.exports = {
-        typeDefs: /* GraphQL */ `type AggregatePost {
+        typeDefs: /* GraphQL */ `type AggregateComment {
+  count: Int!
+}
+
+type AggregatePost {
   count: Int!
 }
 
@@ -11,11 +15,132 @@ type BatchPayload {
   count: Long!
 }
 
+type Comment {
+  text: String!
+  writtenBy: User!
+}
+
+type CommentConnection {
+  pageInfo: PageInfo!
+  edges: [CommentEdge]!
+  aggregate: AggregateComment!
+}
+
+input CommentCreateInput {
+  text: String!
+  writtenBy: UserCreateOneInput!
+}
+
+input CommentCreateManyInput {
+  create: [CommentCreateInput!]
+}
+
+type CommentEdge {
+  node: Comment!
+  cursor: String!
+}
+
+enum CommentOrderByInput {
+  text_ASC
+  text_DESC
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type CommentPreviousValues {
+  text: String!
+}
+
+input CommentScalarWhereInput {
+  text: String
+  text_not: String
+  text_in: [String!]
+  text_not_in: [String!]
+  text_lt: String
+  text_lte: String
+  text_gt: String
+  text_gte: String
+  text_contains: String
+  text_not_contains: String
+  text_starts_with: String
+  text_not_starts_with: String
+  text_ends_with: String
+  text_not_ends_with: String
+  AND: [CommentScalarWhereInput!]
+  OR: [CommentScalarWhereInput!]
+  NOT: [CommentScalarWhereInput!]
+}
+
+type CommentSubscriptionPayload {
+  mutation: MutationType!
+  node: Comment
+  updatedFields: [String!]
+  previousValues: CommentPreviousValues
+}
+
+input CommentSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: CommentWhereInput
+  AND: [CommentSubscriptionWhereInput!]
+  OR: [CommentSubscriptionWhereInput!]
+  NOT: [CommentSubscriptionWhereInput!]
+}
+
+input CommentUpdateManyDataInput {
+  text: String
+}
+
+input CommentUpdateManyInput {
+  create: [CommentCreateInput!]
+  deleteMany: [CommentScalarWhereInput!]
+  updateMany: [CommentUpdateManyWithWhereNestedInput!]
+}
+
+input CommentUpdateManyMutationInput {
+  text: String
+}
+
+input CommentUpdateManyWithWhereNestedInput {
+  where: CommentScalarWhereInput!
+  data: CommentUpdateManyDataInput!
+}
+
+input CommentWhereInput {
+  text: String
+  text_not: String
+  text_in: [String!]
+  text_not_in: [String!]
+  text_lt: String
+  text_lte: String
+  text_gt: String
+  text_gte: String
+  text_contains: String
+  text_not_contains: String
+  text_starts_with: String
+  text_not_starts_with: String
+  text_ends_with: String
+  text_not_ends_with: String
+  writtenBy: UserWhereInput
+  AND: [CommentWhereInput!]
+  OR: [CommentWhereInput!]
+  NOT: [CommentWhereInput!]
+}
+
 scalar DateTime
 
 scalar Long
 
 type Mutation {
+  createComment(data: CommentCreateInput!): Comment!
+  updateManyComments(data: CommentUpdateManyMutationInput!, where: CommentWhereInput): BatchPayload!
+  deleteManyComments(where: CommentWhereInput): BatchPayload!
   createPost(data: PostCreateInput!): Post!
   updatePost(data: PostUpdateInput!, where: PostWhereUniqueInput!): Post
   updateManyPosts(data: PostUpdateManyMutationInput!, where: PostWhereInput): BatchPayload!
@@ -61,9 +186,9 @@ type Post {
   caption: String
   image: String
   largeImage: String
-  video: String
-  type: PostType
-  author: User
+  published: Boolean
+  author: User!
+  comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -78,9 +203,9 @@ input PostCreateInput {
   caption: String
   image: String
   largeImage: String
-  video: String
-  type: PostType
-  author: UserCreateOneWithoutPostsInput
+  published: Boolean
+  author: UserCreateOneWithoutPostsInput!
+  comments: CommentCreateManyInput
 }
 
 input PostCreateManyWithoutAuthorInput {
@@ -92,8 +217,8 @@ input PostCreateWithoutAuthorInput {
   caption: String
   image: String
   largeImage: String
-  video: String
-  type: PostType
+  published: Boolean
+  comments: CommentCreateManyInput
 }
 
 type PostEdge {
@@ -110,10 +235,8 @@ enum PostOrderByInput {
   image_DESC
   largeImage_ASC
   largeImage_DESC
-  video_ASC
-  video_DESC
-  type_ASC
-  type_DESC
+  published_ASC
+  published_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -125,8 +248,7 @@ type PostPreviousValues {
   caption: String
   image: String
   largeImage: String
-  video: String
-  type: PostType
+  published: Boolean
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -188,24 +310,8 @@ input PostScalarWhereInput {
   largeImage_not_starts_with: String
   largeImage_ends_with: String
   largeImage_not_ends_with: String
-  video: String
-  video_not: String
-  video_in: [String!]
-  video_not_in: [String!]
-  video_lt: String
-  video_lte: String
-  video_gt: String
-  video_gte: String
-  video_contains: String
-  video_not_contains: String
-  video_starts_with: String
-  video_not_starts_with: String
-  video_ends_with: String
-  video_not_ends_with: String
-  type: PostType
-  type_not: PostType
-  type_in: [PostType!]
-  type_not_in: [PostType!]
+  published: Boolean
+  published_not: Boolean
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -245,35 +351,27 @@ input PostSubscriptionWhereInput {
   NOT: [PostSubscriptionWhereInput!]
 }
 
-enum PostType {
-  IMAGE
-  VIDEO
-  ROUTINE
-}
-
 input PostUpdateInput {
   caption: String
   image: String
   largeImage: String
-  video: String
-  type: PostType
-  author: UserUpdateOneWithoutPostsInput
+  published: Boolean
+  author: UserUpdateOneRequiredWithoutPostsInput
+  comments: CommentUpdateManyInput
 }
 
 input PostUpdateManyDataInput {
   caption: String
   image: String
   largeImage: String
-  video: String
-  type: PostType
+  published: Boolean
 }
 
 input PostUpdateManyMutationInput {
   caption: String
   image: String
   largeImage: String
-  video: String
-  type: PostType
+  published: Boolean
 }
 
 input PostUpdateManyWithoutAuthorInput {
@@ -297,8 +395,8 @@ input PostUpdateWithoutAuthorDataInput {
   caption: String
   image: String
   largeImage: String
-  video: String
-  type: PostType
+  published: Boolean
+  comments: CommentUpdateManyInput
 }
 
 input PostUpdateWithWhereUniqueWithoutAuthorInput {
@@ -369,25 +467,12 @@ input PostWhereInput {
   largeImage_not_starts_with: String
   largeImage_ends_with: String
   largeImage_not_ends_with: String
-  video: String
-  video_not: String
-  video_in: [String!]
-  video_not_in: [String!]
-  video_lt: String
-  video_lte: String
-  video_gt: String
-  video_gte: String
-  video_contains: String
-  video_not_contains: String
-  video_starts_with: String
-  video_not_starts_with: String
-  video_ends_with: String
-  video_not_ends_with: String
-  type: PostType
-  type_not: PostType
-  type_in: [PostType!]
-  type_not_in: [PostType!]
+  published: Boolean
+  published_not: Boolean
   author: UserWhereInput
+  comments_every: CommentWhereInput
+  comments_some: CommentWhereInput
+  comments_none: CommentWhereInput
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -414,6 +499,8 @@ input PostWhereUniqueInput {
 }
 
 type Query {
+  comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment]!
+  commentsConnection(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CommentConnection!
   post(where: PostWhereUniqueInput!): Post
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post]!
   postsConnection(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PostConnection!
@@ -424,6 +511,7 @@ type Query {
 }
 
 type Subscription {
+  comment(where: CommentSubscriptionWhereInput): CommentSubscriptionPayload
   post(where: PostSubscriptionWhereInput): PostSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
@@ -473,6 +561,11 @@ input UserCreateManyWithoutFollowersInput {
 input UserCreateManyWithoutFollowingInput {
   create: [UserCreateWithoutFollowingInput!]
   connect: [UserWhereUniqueInput!]
+}
+
+input UserCreateOneInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
 }
 
 input UserCreateOneWithoutPostsInput {
@@ -782,12 +875,10 @@ input UserUpdateManyWithWhereNestedInput {
   data: UserUpdateManyDataInput!
 }
 
-input UserUpdateOneWithoutPostsInput {
+input UserUpdateOneRequiredWithoutPostsInput {
   create: UserCreateWithoutPostsInput
   update: UserUpdateWithoutPostsDataInput
   upsert: UserUpsertWithoutPostsInput
-  delete: Boolean
-  disconnect: Boolean
   connect: UserWhereUniqueInput
 }
 
