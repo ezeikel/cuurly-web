@@ -75,17 +75,13 @@ const Mutations = {
       throw new Error('You must be logged in to do that!');
     }
 
-    console.log('HERE!');
-
     const post = await ctx.prisma.createPost({
-      data: {
-        author: {
-          connect: {
-            id: ctx.request.userId
-          }
-        },
-        ...args
-      }
+      author: {
+        connect: {
+          id: ctx.request.userId
+        }
+      },
+      ...args
     }, info);
 
     console.log({post});

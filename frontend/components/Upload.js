@@ -32,6 +32,8 @@ class Upload extends Component {
 
               const file = await res.json();
 
+              debugger;
+
               values.image = file.secure_url;
               values.largeImage = file.eager[0].secure_url;
 
@@ -48,8 +50,7 @@ class Upload extends Component {
             }) => (
               <Form>
                 <label htmlFor="file">Image</label>
-                <Field type="file" name="image" placeholder="Upload an image" required onChange={e => {
-                  handleChange(e);
+                <input type="file" name="image" placeholder="Upload an image" required onChange={e => {
 
                   this.setState({
                     fileUrl: URL.createObjectURL(e.target.files[0]),

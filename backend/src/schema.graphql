@@ -35,5 +35,5 @@ type Mutation {
   signup(firstName: String!, lastName: String!, username: String!, email: String!, password: String!): User!
   signin(username: String!, password: String!): User!
   signout: SuccessMessage
-  createPost(image: String!, largeImage: String!, caption: String): Post
+  createPost(image: String, largeImage: String, caption: String): Post
 }
