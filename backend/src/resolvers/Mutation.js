@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { isLoggedIn } = require('../utils');
 
 const Mutations = {
   // TODO: Remove these
@@ -70,10 +71,20 @@ const Mutations = {
     ctx.response.clearCookie('token');
     return { message: 'Goodbye!' };
   },
+  follow: (_, { id }, ctx, info) => {
+    isLoggedIn(ctx);
+
+    // update logged in users following
+    //await ctx.prisma.updateUser({ following: { update: { id: context.request.id }, {  } } })
+
+
+    //const user = await ctx.prisma.updateUser({ id });
+  },
+  unfollow: (_, args, ctx, info) => {
+
+  },
   createPost: (_, args, ctx, info) => {
-    if (!ctx.request.userId) {
-      throw new Error('You must be logged in to do that.');
-    }
+    isLoggedIn(ctx);
 
     return ctx.prisma.createPost({
       author: {
