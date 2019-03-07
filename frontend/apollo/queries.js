@@ -32,7 +32,11 @@ export const SINGLE_USER_QUERY = gql`
       firstName
       lastName
       username
-      email
+      posts {
+        id
+        image
+        caption
+      }
     }
   }
 `;

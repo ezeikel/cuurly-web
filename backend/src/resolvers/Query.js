@@ -12,9 +12,9 @@ const Query = {
   },
   async users(_, args, ctx, info) {
     // 1. check if they are logged in
-    // if (!ctx.request.userId) {
-    //   throw new Error('You must be logged in!');
-    // }
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in.');
+    }
 
     // 2. check if the user has the permissions to query all the users
     hasPermission(ctx.request.user, ['ADMIN', 'PERMISSIONUPATE']);
@@ -24,22 +24,7 @@ const Query = {
   },
   user: (_, { id }, ctx, info) => ctx.prisma.user(({ id }), info),
   posts: (_, args, ctx, info) => {
-    console.log('posts()');
     return ctx.prisma.posts({}, info);
-  },
-  async userPosts(_, { id }, ctx, info) {
-    // if (!ctx.request.userId) {
-    //   throw new Error('You must be logged in!');
-    // }
-
-    console.log({ id });
-
-    const user = await ctx.prisma.user({ id });
-
-    console.log({ user });
-
-    console.log(user.posts);
-    return user.posts;
   }
 }
 
