@@ -9,7 +9,17 @@ function createServer() {
     typeDefs: 'src/schema.graphql',
     resolvers: {
       Mutation,
-      Query
+      Query,
+      User: {
+        posts(parent) {
+          return prisma.user({ id: parent.id }).posts()
+        }
+      },
+      Post: {
+        author(parent) {
+          return prisma.post({ id: parent.id }).author()
+        }
+      }
     },
     resolverValidationOptions: {
       requireResolversForResolveType: false

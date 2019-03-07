@@ -71,9 +71,9 @@ const Mutations = {
     return { message: 'Goodbye!' };
   },
   async createPost(_, args, ctx, info) {
-    // if (!ctx.request.userId) {
-    //   throw new Error('You must be logged in to do that!');
-    // }
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
 
     const post = await ctx.prisma.createPost({
       author: {
@@ -82,7 +82,9 @@ const Mutations = {
         }
       },
       ...args
-    });
+    }, info);
+
+    console.log({post});
 
     return post;
   }
