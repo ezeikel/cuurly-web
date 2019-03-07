@@ -1,7 +1,7 @@
 const { hasPermission } = require('../utils');
 
 const Query = {
-  currentUser(_, args, ctx, info) {
+  currentUser: (_, args, ctx, info) => {
     // check if there is current userId
     if (!ctx.request.userId) {
       return null;
@@ -10,7 +10,7 @@ const Query = {
       id: ctx.request.userId
     }, info);
   },
-  async users(_, args, ctx, info) {
+  users: (_, args, ctx, info) => {
     // 1. check if they are logged in
     if (!ctx.request.userId) {
       throw new Error('You must be logged in.');
@@ -23,9 +23,7 @@ const Query = {
     return ctx.prisma.users({}, info);
   },
   user: (_, { id }, ctx, info) => ctx.prisma.user(({ id }), info),
-  posts: (_, args, ctx, info) => {
-    return ctx.prisma.posts({}, info);
-  }
+  posts: (_, args, ctx, info) => ctx.prisma.posts({}, info)
 }
 
 module.exports = Query;

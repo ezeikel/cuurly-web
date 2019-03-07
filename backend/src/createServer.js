@@ -13,6 +13,12 @@ function createServer() {
       User: {
         posts(parent) {
           return prisma.user({ id: parent.id }).posts()
+        },
+        following(parent) {
+          return prisma.user({ id: parent.id }).following()
+        },
+        followers(parent) {
+          return prisma.user({ id: parent.id }).followers()
         }
       },
       Post: {

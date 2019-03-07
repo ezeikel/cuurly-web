@@ -23,7 +23,7 @@ const Mutations = {
 
   //   )
   // },
-  async signup(_, args, ctx, info) {
+  signup: async (_, args, ctx, info) => {
     // lowercase email
     args.email = args.email.toLowerCase();
     // hash password
@@ -45,7 +45,7 @@ const Mutations = {
     // finally return user the the browser
     return user;
   },
-  async signin(_, { username, password }, ctx, info) {
+  signin: async (_, { username, password }, ctx, info) => {
     // 1. check if there is a user with that email
     const user = await ctx.prisma.user({ username });
     if (!user) {
@@ -66,16 +66,16 @@ const Mutations = {
     // 5. return the user
     return user;
   },
-  signout(_, args, ctx, info) {
+  signout: (_, args, ctx, info) => {
     ctx.response.clearCookie('token');
     return { message: 'Goodbye!' };
   },
-  async createPost(_, args, ctx, info) {
+  createPost: (_, args, ctx, info) => {
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in to do that!');
+      throw new Error('You must be logged in to do that.');
     }
 
-    const post = await ctx.prisma.createPost({
+    return ctx.prisma.createPost({
       author: {
         connect: {
           id: ctx.request.userId
@@ -83,10 +83,6 @@ const Mutations = {
       },
       ...args
     }, info);
-
-    console.log({post});
-
-    return post;
   }
 };
 
