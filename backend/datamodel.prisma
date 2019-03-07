@@ -7,12 +7,6 @@ enum Permission {
   PERMISSIONUPDATE
 }
 
-enum PostType {
-  IMAGE
-  VIDEO
-  ROUTINE
-}
-
 type User {
   id: ID! @id
   firstName: String!

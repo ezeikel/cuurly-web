@@ -22,10 +22,9 @@ const Query = {
     // 3. if they do, query all the users
     return ctx.prisma.users({}, info);
   },
-  user (_, { id }, ctx, info) {
-    return ctx.prisma.user({ id: id }, info);
-  },
-  async posts(_, args, ctx, info) {
+  user: (_, { id }, ctx, info) => ctx.prisma.user(({ id }), info),
+  posts: (_, args, ctx, info) => {
+    console.log('posts()');
     return ctx.prisma.posts({}, info);
   },
   async userPosts(_, { id }, ctx, info) {
