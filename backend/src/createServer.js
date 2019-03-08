@@ -11,9 +11,7 @@ function createServer() {
       Mutation,
       Query,
       User: {
-        posts(parent) {
-          return prisma.user({ id: parent.id }).posts()
-        },
+        posts: parent => prisma.user({ id: parent.id }).posts(),
         following(parent) {
           return prisma.user({ id: parent.id }).following()
         },
@@ -22,9 +20,7 @@ function createServer() {
         }
       },
       Post: {
-        author(parent) {
-          return prisma.post({ id: parent.id }).author()
-        }
+        author: parent => prisma.post({ id: parent.id }).author()
       }
     },
     resolverValidationOptions: {
