@@ -26,7 +26,7 @@ export const ALL_USERS_QUERY = gql`
 `;
 
 export const SINGLE_USER_QUERY = gql`
-  query user($id: ID!) {
+  query SINGLE_USER_QUERY($id: ID!) {
     user(id: $id) {
       id
       firstName
@@ -42,7 +42,7 @@ export const SINGLE_USER_QUERY = gql`
 `;
 
 export const SIGNUP_MUTATION = gql`
-  mutation signup(
+  mutation SIGNUP_MUTATION(
     $firstName: String!,
     $lastName: String!,
     $username: String!,
@@ -67,7 +67,7 @@ export const SIGNUP_MUTATION = gql`
 `;
 
 export const SIGNIN_MUTATION = gql`
-  mutation signin($username: String!, $password: String!) {
+  mutation SIGNIN_MUTATION($username: String!, $password: String!) {
     signin(username: $username, password: $password) {
       id
       firstName
@@ -80,7 +80,7 @@ export const SIGNIN_MUTATION = gql`
 `;
 
 export const SIGNOUT_MUTATION = gql`
-  mutation signout {
+  mutation SIGNOUT_MUTATION {
     signout {
       message
     }
