@@ -12,12 +12,8 @@ function createServer() {
       Query,
       User: {
         posts: parent => prisma.user({ id: parent.id }).posts(),
-        following(parent) {
-          return prisma.user({ id: parent.id }).following()
-        },
-        followers(parent) {
-          return prisma.user({ id: parent.id }).followers()
-        }
+        following: parent => prisma.user({ id: parent.id }).following(),
+        followers: parent => prisma.user({ id: parent.id }).followers()
       },
       Post: {
         author: parent => prisma.post({ id: parent.id }).author()
