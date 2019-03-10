@@ -3,27 +3,6 @@ const jwt = require('jsonwebtoken');
 const { isLoggedIn } = require('../utils');
 
 const Mutations = {
-  // TODO: Remove these
-  // createDraft(_, args, ctx) {
-  //   return ctx.prisma.createPost(
-  //     {
-  //       title: args.title,
-  //       author: {
-  //         connect: { id: args.userId }
-  //       }
-  //     },
-
-  //   )
-  // },
-  // publish(_, args, ctx) {
-  //   return ctx.prisma.updatePost(
-  //     {
-  //       where: { id: args.postId },
-  //       data: { published: true },
-  //     },
-
-  //   )
-  // },
   signup: async (_, args, ctx, info) => {
     // lowercase email
     args.email = args.email.toLowerCase();
@@ -71,16 +50,59 @@ const Mutations = {
     ctx.response.clearCookie('token');
     return { message: 'Goodbye!' };
   },
-  follow: (_, { id }, ctx, info) => {
-    isLoggedIn(ctx);
+  follow: async (_, { id }, ctx, info) => {
+    //isLoggedIn(ctx);
 
-    // update logged in users following
-    //await ctx.prisma.updateUser({ following: { update: { id: context.request.id }, {  } } })
+    // TODO: Check if already following and if so return
 
+    await ctx.prisma.updateUser({
+      where: {
+        id
+      },
+      data: {
+        followers: {
+          connect: { id: "5c7c04e824aa9a0007495114" }  //ctx.request.userId
+        }
+      }
+    });
 
-    //const user = await ctx.prisma.updateUser({ id });
+    return await ctx.prisma.updateUser({
+      where: {
+        id: "5c7c04e824aa9a0007495114" //ctx.request.userId
+      },
+      data: {
+        following: {
+          connect: { id }
+        }
+      }
+    });
   },
-  unfollow: (_, args, ctx, info) => {
+  unfollow: async (_, { id }, ctx, info) => {
+    //isLoggedIn(ctx);
+
+    // TODO: Check if already not following and if so return
+
+    await ctx.prisma.updateUser({
+      where: {
+        id
+      },
+      data: {
+        followers: {
+          disconnect: { id: "5c7c04e824aa9a0007495114" }  //ctx.request.userId
+        }
+      }
+    });
+
+    return await ctx.prisma.updateUser({
+      where: {
+        id: "5c7c04e824aa9a0007495114" //ctx.request.userId
+      },
+      data: {
+        following: {
+          disconnect: { id }
+        }
+      }
+    });
 
   },
   createPost: (_, args, ctx, info) => {

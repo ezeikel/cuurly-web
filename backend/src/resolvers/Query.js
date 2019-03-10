@@ -21,6 +21,7 @@ const Query = {
     return ctx.prisma.users({}, info);
   },
   user: (_, { id }, ctx, info) => ctx.prisma.user(({ id }), info),
+  userz: (_, args, ctx, info) => ctx.prisma.users({}, info),
   posts: (_, args, ctx, info) => ctx.prisma.posts({}, info)
 }
 
