@@ -51,9 +51,14 @@ const Mutations = {
     return { message: 'Goodbye!' };
   },
   follow: async (_, { id }, ctx, info) => {
-    //isLoggedIn(ctx);
+    isLoggedIn(ctx);
 
-    // TODO: Check if already following and if so return
+    const followers = await ctx.prisma.user({ id }, info).followers();
+    const followerIds = followers.map(follower => follower.id);
+
+    if (followerIds.includes(ctx.request.userId)) {
+      throw new Error(`You are already following ${id}`);
+    }
 
     await ctx.prisma.updateUser({
       where: {
@@ -61,14 +66,14 @@ const Mutations = {
       },
       data: {
         followers: {
-          connect: { id: "5c7c04e824aa9a0007495114" }  //ctx.request.userId
+          connect: { id: ctx.request.userId }
         }
       }
     });
 
     return await ctx.prisma.updateUser({
       where: {
-        id: "5c7c04e824aa9a0007495114" //ctx.request.userId
+        id: ctx.request.userId
       },
       data: {
         following: {
@@ -78,9 +83,14 @@ const Mutations = {
     });
   },
   unfollow: async (_, { id }, ctx, info) => {
-    //isLoggedIn(ctx);
+    isLoggedIn(ctx);
 
-    // TODO: Check if already not following and if so return
+    const followers = await ctx.prisma.user({ id }, info).followers();
+    const followerIds = followers.map(follower => follower.id);
+
+    if (!followerIds.includes(ctx.request.userId)) {
+      throw new Error(`You are not following ${id}`);
+    }
 
     await ctx.prisma.updateUser({
       where: {
@@ -88,14 +98,14 @@ const Mutations = {
       },
       data: {
         followers: {
-          disconnect: { id: "5c7c04e824aa9a0007495114" }  //ctx.request.userId
+          disconnect: { id: ctx.request.userId }
         }
       }
     });
 
     return await ctx.prisma.updateUser({
       where: {
-        id: "5c7c04e824aa9a0007495114" //ctx.request.userId
+        id: ctx.request.userId
       },
       data: {
         following: {
