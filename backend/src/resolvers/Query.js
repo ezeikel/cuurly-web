@@ -22,7 +22,21 @@ const Query = {
   },
   user: (_, { id }, ctx, info) => ctx.prisma.user(({ id }), info),
   userz: (_, args, ctx, info) => ctx.prisma.users({}, info),
-  posts: (_, args, ctx, info) => ctx.prisma.posts({}, info)
+  posts: (_, args, ctx, info) => ctx.prisma.posts({}, info),
+  feed: async (_, { id }, ctx, info) => {
+    const following = await ctx.prisma.user({ id }, info).following();
+    const followingIds = following.map(follower => follower.id);
+
+    return ctx.prisma.posts(
+      {
+        where: {
+          author: { id_in: followingIds }
+        },
+        orderBy: "createdAt_DESC"
+      },
+      info
+    );
+  }
 }
 
 module.exports = Query;

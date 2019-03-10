@@ -31,6 +31,7 @@ type Query {
   userz: [User!]! # Just for testing
   user(id: ID!): User
   posts: [Post!]!
+  feed(id: ID!): [Post!]!
 }
 
 type Mutation {
