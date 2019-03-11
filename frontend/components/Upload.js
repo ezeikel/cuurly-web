@@ -11,10 +11,19 @@ class Upload extends Component {
   };
 
   render() {
+    const { router } = this.props;
+
     return (
       <Mutation
         mutation={CREATE_POST_MUTATION}
         refetchQueries={[{ query: CURRENT_USER_QUERY }]}
+        onCompleted={({ createPost: { id } }) => {
+          // TODO: Get access to Formik methods here
+          //resetForm();
+
+          // redirect to post
+          router.push(`/post?id=${id}`);
+        }}
       >
         {(createPost, { error, loading }) => (
           <Formik
@@ -32,13 +41,10 @@ class Upload extends Component {
 
               const file = await res.json();
 
-              debugger;
-
               values.image = file.secure_url;
               values.largeImage = file.eager[0].secure_url;
 
               await createPost({ variables: values });
-              debugger;
             }}
           >
             {({
