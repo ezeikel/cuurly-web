@@ -23,6 +23,7 @@ const Query = {
   user: (_, { id }, ctx, info) => ctx.prisma.user(({ id }), info),
   userz: (_, args, ctx, info) => ctx.prisma.users({}, info),
   posts: (_, args, ctx, info) => ctx.prisma.posts({}, info),
+  post: (_, { id }, ctx, info) => ctx.prisma.post({ id }, info),
   feed: async (_, { id }, ctx, info) => {
     const following = await ctx.prisma.user({ id }, info).following();
     const followingIds = following.map(follower => follower.id);
