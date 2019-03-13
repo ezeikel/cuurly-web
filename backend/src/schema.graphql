@@ -27,7 +27,7 @@ type User {
 
 type Query {
   currentUser: User
-  users: [User!]!
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, first: Int ): [User!]!
   userz: [User!]! # Just for testing
   user(id: ID!): User
   posts: [Post!]!
