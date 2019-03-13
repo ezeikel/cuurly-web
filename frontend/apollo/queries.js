@@ -65,6 +65,19 @@ export const FEED_QUERY = gql`
   }
 `;
 
+export const SEARCH_USERS_QUERY = gql`
+  query SEARCH_USERS_QUERY($searchTerm: String!) {
+    users(
+      where: {
+        username_contains: $searchTerm,
+      }
+    ) {
+      id
+      username
+    }
+  }
+`;
+
 export const SIGNUP_MUTATION = gql`
   mutation SIGNUP_MUTATION(
     $firstName: String!,
