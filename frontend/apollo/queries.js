@@ -142,3 +142,19 @@ export const CREATE_POST_MUTATION = gql`
      }
    }
 `;
+
+export const FOLLOW_MUTATION = gql`
+   mutation FOLLOW_MUTATION ($id: ID!) {
+     follow (id: $id) {
+       id
+     }
+   }
+`
+;
+export const UNFOLLOW_MUTATION = gql`
+   mutation FOLLOW_MUTATION ($id: ID!) {
+     unfollow (id: $id) {
+       id
+     }
+   }
+`;

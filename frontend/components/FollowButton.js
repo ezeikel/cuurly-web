@@ -1,14 +1,26 @@
+import { Mutation } from 'react-apollo';
+import styled from 'styled-components';
 import CurrentUser from "./CurrentUser";
+import { SINGLE_USER_QUERY, FOLLOW_MUTATION, UNFOLLOW_MUTATION } from '../apollo/queries';
+import Button from './styles/Button';
+
+const StyledButton = styled(Button)`
+  background-color: ${props => props.mode === 'follow' ? 'var(--color-green)' : 'var(--color-red)'};
+  padding: var(--spacing-small) var(--spacing-medium);
+`;
 
 const FollowButton = ({ userId, usersFollowers }) => (
   <CurrentUser>
     {({ data: { currentUser } }) => (
       currentUser && currentUser.id !== userId ?
-        <button>
-          { usersFollowers.includes(currentUser.id) ? 'Unfollow' : 'Follow' }
-        </button>
+        <Mutation
+          mutation={usersFollowers.includes(currentUser.id) ? UNFOLLOW_MUTATION : FOLLOW_MUTATION}
+          variables={{ id: userId }}
+          refetchQueries={[{ query: SINGLE_USER_QUERY, variables: { id: userId } }]}
+        >
+          { follow => <StyledButton mode={usersFollowers.includes(currentUser.id) ? 'unfollow' : 'follow'} onClick={follow}>{ usersFollowers.includes(currentUser.id) ? 'Unfollow' : 'Follow' }</StyledButton> }
+        </Mutation>
       : null
-      /** TODO: Setup button to call Follow/Unfollow Mutation */
     )}
   </CurrentUser>
 );

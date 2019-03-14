@@ -31,7 +31,7 @@ const Query = {
         where: {
           author: { id_in: followingIds }
         },
-        orderBy: "createdAt_DESC"
+        orderBy: "createdAt_DESC", // TODO: orderBy doesn't seem to be having any effect
       },
       info
     );

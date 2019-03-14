@@ -11,9 +11,6 @@ const Button = styled.button`
   transition: background-color 0.3s ease-in-out;
   font-family: var(--default-font-family);
   font-size: 1.6rem;
-  &:hover {
-    background-color: var(--color-secondary);
-  }
   &[type="submit"] {
     &[disabled] {
       opacity: 0.7;
