@@ -37,6 +37,9 @@ export const SINGLE_USER_QUERY = gql`
         image
         caption
       }
+      followers {
+        id
+      }
     }
   }
 `;
