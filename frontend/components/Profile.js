@@ -11,14 +11,17 @@ class Profile extends Component {
       <CurrentUser>
         {({ data: { currentUser } }) => (
           <Query query={SINGLE_USER_QUERY} variables={{ id: this.props.id}}>
-            {({ data: { user: { id, firstName, lastName, username, posts, followers }}, error, loading }) => {
+            {({ data: { user: { id, firstName, lastName, username, posts, followers, following }}, error, loading }) => {
               if (loading) return <p>Loading...</p>;
               if (error) return <p>Error: {error.message}</p>;
 
               return (
                 <div>
-                  <h1>{`${currentUser && currentUser.id === id ? 'Your' : `${firstName}'s`} Profile.`}</h1>
+                  <h1>{username}</h1>
                   <FollowButton userId={id} usersFollowers={followers.map(follower => follower.id)} />
+                  <p>{posts.length} posts</p>
+                  <p>{followers.length} followers</p>
+                  <p>{following.length} following</p>
                   <section>
                     <h3>Posts</h3>
                     <ul>

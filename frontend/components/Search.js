@@ -65,15 +65,20 @@ class AutoComplete extends Component {
   };
 
   onChange = debounce(async (e, client) => {
+    const { target: { value } } = e;
+
+    if (!value) return;
+
     // turn loading on
     this.setState({
       loading: true
     });
+
     // manually query apollo client
     const res = await client.query({
       query: SEARCH_USERS_QUERY,
       variables: {
-        searchTerm: e.target.value
+        searchTerm: value
       }
     });
 
@@ -104,6 +109,7 @@ class AutoComplete extends Component {
                       className: this.state.loading ? 'loading' : '',
                       onChange: e => {
                         e.persist();
+
                         this.onChange(e, client);
                       }
                     })}

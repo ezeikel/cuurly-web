@@ -40,6 +40,9 @@ export const SINGLE_USER_QUERY = gql`
       followers {
         id
       }
+      following {
+        id
+      }
     }
   }
 `;
@@ -50,6 +53,9 @@ export const SINGLE_POST_QUERY = gql`
         id
         image
         caption
+        author {
+          username
+        }
     }
   }
 `;

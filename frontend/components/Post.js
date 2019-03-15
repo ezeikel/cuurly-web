@@ -13,7 +13,8 @@ class Post extends Component {
             <div>
               <div key={post.id}>
                 <img src={post.image} />
-                <span>{post.caption}</span>
+                <p>{post.author.username}</p>
+                <p>{post.caption}</p>
               </div>
             </div>
           );
