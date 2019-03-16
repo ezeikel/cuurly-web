@@ -4,18 +4,28 @@ enum Permission {
   PERMISSIONUPDATE
 }
 
+enum Gender {
+  MALE
+  FEMALE
+  NONBINARY
+  NOTSPECIFIED
+}
+
 type User {
   id: ID! @id
-  firstName: String!
-  lastName: String!
+  name: String
   username: String @unique
+  website: String
+  bio: String
   email: String! @unique
-  password: String!
-  posts: [Post!]! @relation(link: INLINE)
+  phoneNumber: Int
+  gender: Gender!
   following: [User!]! @relation(name: "Following", link: INLINE)
   followers: [User!]! @relation(name: "Followers", link: INLINE)
+  password: String!
   resetToken: String
   resetTokenExpiry: String
+  posts: [Post!]! @relation(name: "Posts", link: INLINE)
   permissions: [Permission!]!
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
@@ -23,17 +33,23 @@ type User {
 
 type Post {
   id: ID! @id
-  caption: String
+  author: User! @relation(name: "Posts")
   image: String
-  largeImage: String
+  caption: String
+  location: Location
   published: Boolean @default(value: false)
-  author: User!
+  likes: [User!]! @relation(name: "Likes", link: INLINE)
   comments: [Comment!]!
   createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
+}
+
+type Location @embedded {
+  latitude: Float!
+  longitude: Float!
 }
 
 type Comment @embedded {
   text: String!
   writtenBy: User!
+  createdAt: DateTime! @createdAt
 }
