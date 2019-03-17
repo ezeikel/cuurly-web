@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import { Query } from 'react-apollo';
 import { SINGLE_POST_QUERY } from '../apollo/queries';
+import LikeButton from './LikeButton';
 
 class Post extends Component {
   render() {
@@ -15,6 +16,8 @@ class Post extends Component {
                 <img src={post.image} />
                 <p>{post.author.username}</p>
                 <p>{post.caption}</p>
+                <LikeButton />
+                <input type="text" placeholder="Add a comment" />
               </div>
             </div>
           );

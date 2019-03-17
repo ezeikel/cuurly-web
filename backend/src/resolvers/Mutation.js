@@ -126,6 +126,30 @@ const Mutations = {
       },
       ...args
     }, info);
+  },
+  likePost: (_, { id }, ctx, info) => {
+    isLoggedIn(ctx);
+
+    return ctx.prisma.updatePost({
+      where: { id },
+      data: {
+        likes: {
+          connect: { id: ctx.request.user  }
+        }
+      }
+    });
+  },
+  unlikePost: (_, { id }, ctx, info) => {
+    isLoggedIn(ctx);
+
+    return ctx.prisma.updatePost({
+      where: { id },
+      data: {
+        likes: {
+          disconnect: { id: ctx.request.user  }
+        }
+      }
+    });
   }
 };
 
