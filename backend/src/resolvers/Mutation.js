@@ -134,7 +134,7 @@ const Mutations = {
       where: { id },
       data: {
         likes: {
-          connect: { id: ctx.request.user  }
+          connect: { id: ctx.request.userId  }
         }
       }
     });
@@ -146,7 +146,7 @@ const Mutations = {
       where: { id },
       data: {
         likes: {
-          disconnect: { id: ctx.request.user  }
+          disconnect: { id: ctx.request.userId  }
         }
       }
     });

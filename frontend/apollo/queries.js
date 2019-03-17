@@ -56,7 +56,11 @@ export const SINGLE_POST_QUERY = gql`
         image
         caption
         author {
+          id
           username
+        }
+        likes {
+          id
         }
     }
   }
@@ -155,6 +159,22 @@ export const FOLLOW_MUTATION = gql`
 export const UNFOLLOW_MUTATION = gql`
    mutation FOLLOW_MUTATION ($id: ID!) {
      unfollow (id: $id) {
+       id
+     }
+   }
+`;
+
+export const LIKE_POST_MUTATION = gql`
+   mutation LIKE_POST_MUTATION ($id: ID!) {
+     likePost (id: $id) {
+       id
+     }
+   }
+`
+;
+export const UNLIKE_POST_MUTATION = gql`
+   mutation UNLIKE_POST_MUTATION ($id: ID!) {
+     unlikePost (id: $id) {
        id
      }
    }
