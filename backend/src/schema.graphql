@@ -37,6 +37,7 @@ type Query {
   posts: [Post!]!
   post(id: ID!): Post
   feed(id: ID!): [Post!]!
+  likedPosts(id: ID!): [Post!]!
 }
 
 type Mutation {

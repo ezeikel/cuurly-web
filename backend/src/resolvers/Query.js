@@ -35,6 +35,17 @@ const Query = {
       },
       info
     );
+  },
+  likedPosts: async (_, { id }, ctx, info) => {
+    return ctx.prisma.posts(
+      {
+        where: {
+          likes_every: { id: id }
+        },
+        orderBy: "createdAt_DESC", // TODO: orderBy doesn't seem to be having any effect
+      },
+      info
+    );
   }
 }
 
