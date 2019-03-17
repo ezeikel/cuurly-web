@@ -6,8 +6,7 @@ export const defaults = {
     id: "",
     email: "",
     username: "",
-    firstName: "",
-    lastName: "",
+    name: "",
     permissions: [],
     isAuthenticated: false
   }

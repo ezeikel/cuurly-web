@@ -11,7 +11,7 @@ class Profile extends Component {
       <CurrentUser>
         {({ data: { currentUser } }) => (
           <Query query={SINGLE_USER_QUERY} variables={{ id: this.props.id}}>
-            {({ data: { user: { id, firstName, lastName, username, posts, followers, following }}, error, loading }) => {
+            {({ data: { user: { id, name, username, posts, followers, following }}, error, loading }) => {
               if (loading) return <p>Loading...</p>;
               if (error) return <p>Error: {error.message}</p>;
 

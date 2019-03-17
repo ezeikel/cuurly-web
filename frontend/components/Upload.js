@@ -27,7 +27,7 @@ class Upload extends Component {
       >
         {(createPost, { error, loading }) => (
           <Formik
-            initialValues={{ image: '', largeImage: '', caption: '' }}
+            initialValues={{ image: '', caption: '' }}
             onSubmit={async (values, actions) => {
               const data = new FormData();
 
@@ -42,7 +42,8 @@ class Upload extends Component {
               const file = await res.json();
 
               values.image = file.secure_url;
-              values.largeImage = file.eager[0].secure_url;
+              // TODO: Removing largeImage for now
+              // values.largeImage = file.eager[0].secure_url;
 
               await createPost({ variables: values });
             }}

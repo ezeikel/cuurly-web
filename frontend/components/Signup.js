@@ -8,11 +8,7 @@ import { CURRENT_USER_QUERY, SIGNUP_MUTATION } from '../apollo/queries';
 import { withRouter } from 'next/router';
 
 const SignupSchema = Yup.object().shape({
-  firstName: Yup.string()
-    .min(2, 'Too short')
-    .max(50, 'Too long')
-    .required('Required'),
-  lastName: Yup.string()
+  name: Yup.string()
     .min(2, 'Too short')
     .max(50, 'Too long')
     .required('Required'),
@@ -45,7 +41,7 @@ class Signup extends Component {
       >
         {(signup, { error, loading }) => (
           <Formik
-            initialValues={{ email: '', firstName: '', lastName: '', username: '', password: '' }}
+            initialValues={{ email: '', name: '', username: '', password: '' }}
             validationSchema={SignupSchema}
             onSubmit={async values => {
               //await signup(values, actions);
@@ -58,10 +54,8 @@ class Signup extends Component {
               touched
             }) => (
               <Form>
-                <Field type="text" name="firstName" />
-                <ErrorMessage name="firstName" component="div" />
-                <Field type="text" name="lastName" />
-                <ErrorMessage name="lastName" component="div" />
+                <Field type="text" name="name" />
+                <ErrorMessage name="name" component="div" />
                 <Field type="email" name="email" />
                 <ErrorMessage name="emaile" component="div" />
                 <Field type="text" name="username" />

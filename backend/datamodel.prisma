@@ -14,12 +14,12 @@ enum Gender {
 type User {
   id: ID! @id
   name: String
-  username: String @unique
+  username: String! @unique
   website: String
   bio: String
   email: String! @unique
   phoneNumber: Int
-  gender: Gender!
+  gender: Gender! @default(value: NOTSPECIFIED)
   following: [User!]! @relation(name: "Following", link: INLINE)
   followers: [User!]! @relation(name: "Followers", link: INLINE)
   password: String!

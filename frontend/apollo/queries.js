@@ -4,8 +4,7 @@ export const CURRENT_USER_QUERY = gql`
   query {
     currentUser {
       id
-      firstName
-      lastName
+      name
       username
       email
       permissions
@@ -17,8 +16,7 @@ export const ALL_USERS_QUERY = gql`
   query ALL_USERS_QUERY {
     users {
       id
-      firstName
-      lastName
+      name
       username
       email
     }
@@ -29,8 +27,7 @@ export const SINGLE_USER_QUERY = gql`
   query SINGLE_USER_QUERY($id: ID!) {
     user(id: $id) {
       id
-      firstName
-      lastName
+      name
       username
       posts {
         id
@@ -89,22 +86,19 @@ export const SEARCH_USERS_QUERY = gql`
 
 export const SIGNUP_MUTATION = gql`
   mutation SIGNUP_MUTATION(
-    $firstName: String!,
-    $lastName: String!,
+    $name: String!,
     $username: String!,
     $email: String!,
     $password: String!,
     ) {
     signup(
-      firstName: $firstName
-      lastName: $lastName
+      name: $name
       username: $username
       email: $email
       password: $password
     ) {
       id
-      firstName
-      lastName
+      name
       username
       email
       permissions
@@ -116,9 +110,7 @@ export const SIGNIN_MUTATION = gql`
   mutation SIGNIN_MUTATION($username: String!, $password: String!) {
     signin(username: $username, password: $password) {
       id
-      firstName
-      lastName
-      username
+      name      username
       email
       permissions
     }

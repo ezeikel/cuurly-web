@@ -9,14 +9,14 @@ type Post {
   caption: String
   image: String
   video: String
+  author: User!
 }
 
 type User {
   id: ID!
   email: String!
   username: String!
-  firstName: String!
-  lastName: String!
+  name: String!
   permissions: [Permission!]!
   following: [User]!
   followers: [User]!
@@ -34,7 +34,7 @@ type Query {
 }
 
 type Mutation {
-  signup(firstName: String!, lastName: String!, username: String!, email: String!, password: String!): User!
+  signup(name: String!, username: String!, email: String!, password: String!): User!
   signin(username: String!, password: String!): User!
   signout: SuccessMessage
   follow(id: ID!): User!

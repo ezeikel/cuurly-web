@@ -9,11 +9,19 @@ var models = [
     embedded: false
   },
   {
+    name: "Gender",
+    embedded: false
+  },
+  {
     name: "User",
     embedded: false
   },
   {
     name: "Post",
+    embedded: false
+  },
+  {
+    name: "Location",
     embedded: false
   },
   {
