@@ -225,6 +225,8 @@ export type UserOrderByInput =
   | "name_DESC"
   | "username_ASC"
   | "username_DESC"
+  | "profilePicture_ASC"
+  | "profilePicture_DESC"
   | "website_ASC"
   | "website_DESC"
   | "bio_ASC"
@@ -315,6 +317,7 @@ export interface CommentWhereInput {
 export interface UserCreateWithoutFollowersInput {
   name?: String;
   username: String;
+  profilePicture?: String;
   website?: String;
   bio?: String;
   email: String;
@@ -331,6 +334,7 @@ export interface UserCreateWithoutFollowersInput {
 export interface UserUpdateDataInput {
   name?: String;
   username?: String;
+  profilePicture?: String;
   website?: String;
   bio?: String;
   email?: String;
@@ -451,6 +455,20 @@ export interface UserWhereInput {
   username_not_starts_with?: String;
   username_ends_with?: String;
   username_not_ends_with?: String;
+  profilePicture?: String;
+  profilePicture_not?: String;
+  profilePicture_in?: String[] | String;
+  profilePicture_not_in?: String[] | String;
+  profilePicture_lt?: String;
+  profilePicture_lte?: String;
+  profilePicture_gt?: String;
+  profilePicture_gte?: String;
+  profilePicture_contains?: String;
+  profilePicture_not_contains?: String;
+  profilePicture_starts_with?: String;
+  profilePicture_not_starts_with?: String;
+  profilePicture_ends_with?: String;
+  profilePicture_not_ends_with?: String;
   website?: String;
   website_not?: String;
   website_in?: String[] | String;
@@ -585,6 +603,7 @@ export interface UserCreateManyInput {
 export interface UserUpdateManyMutationInput {
   name?: String;
   username?: String;
+  profilePicture?: String;
   website?: String;
   bio?: String;
   email?: String;
@@ -732,6 +751,20 @@ export interface UserScalarWhereInput {
   username_not_starts_with?: String;
   username_ends_with?: String;
   username_not_ends_with?: String;
+  profilePicture?: String;
+  profilePicture_not?: String;
+  profilePicture_in?: String[] | String;
+  profilePicture_not_in?: String[] | String;
+  profilePicture_lt?: String;
+  profilePicture_lte?: String;
+  profilePicture_gt?: String;
+  profilePicture_gte?: String;
+  profilePicture_contains?: String;
+  profilePicture_not_contains?: String;
+  profilePicture_starts_with?: String;
+  profilePicture_not_starts_with?: String;
+  profilePicture_ends_with?: String;
+  profilePicture_not_ends_with?: String;
   website?: String;
   website_not?: String;
   website_in?: String[] | String;
@@ -912,6 +945,7 @@ export interface UserCreateOneWithoutPostsInput {
 export interface UserUpdateManyDataInput {
   name?: String;
   username?: String;
+  profilePicture?: String;
   website?: String;
   bio?: String;
   email?: String;
@@ -926,6 +960,7 @@ export interface UserUpdateManyDataInput {
 export interface UserCreateWithoutPostsInput {
   name?: String;
   username: String;
+  profilePicture?: String;
   website?: String;
   bio?: String;
   email: String;
@@ -957,6 +992,7 @@ export interface PostUpdateInput {
 export interface UserCreateInput {
   name?: String;
   username: String;
+  profilePicture?: String;
   website?: String;
   bio?: String;
   email: String;
@@ -978,6 +1014,7 @@ export interface UserUpdatepermissionsInput {
 export interface UserCreateWithoutFollowingInput {
   name?: String;
   username: String;
+  profilePicture?: String;
   website?: String;
   bio?: String;
   email: String;
@@ -994,6 +1031,7 @@ export interface UserCreateWithoutFollowingInput {
 export interface UserUpdateWithoutPostsDataInput {
   name?: String;
   username?: String;
+  profilePicture?: String;
   website?: String;
   bio?: String;
   email?: String;
@@ -1110,6 +1148,7 @@ export interface UserUpdateWithWhereUniqueWithoutFollowingInput {
 export interface UserUpdateInput {
   name?: String;
   username?: String;
+  profilePicture?: String;
   website?: String;
   bio?: String;
   email?: String;
@@ -1127,6 +1166,7 @@ export interface UserUpdateInput {
 export interface UserUpdateWithoutFollowingDataInput {
   name?: String;
   username?: String;
+  profilePicture?: String;
   website?: String;
   bio?: String;
   email?: String;
@@ -1182,6 +1222,7 @@ export type UserWhereUniqueInput = AtLeastOne<{
 export interface UserUpdateWithoutFollowersDataInput {
   name?: String;
   username?: String;
+  profilePicture?: String;
   website?: String;
   bio?: String;
   email?: String;
@@ -1335,6 +1376,7 @@ export interface UserPreviousValues {
   id: ID_Output;
   name?: String;
   username: String;
+  profilePicture: String;
   website?: String;
   bio?: String;
   email: String;
@@ -1354,6 +1396,7 @@ export interface UserPreviousValuesPromise
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
   username: () => Promise<String>;
+  profilePicture: () => Promise<String>;
   website: () => Promise<String>;
   bio: () => Promise<String>;
   email: () => Promise<String>;
@@ -1373,6 +1416,7 @@ export interface UserPreviousValuesSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
   username: () => Promise<AsyncIterator<String>>;
+  profilePicture: () => Promise<AsyncIterator<String>>;
   website: () => Promise<AsyncIterator<String>>;
   bio: () => Promise<AsyncIterator<String>>;
   email: () => Promise<AsyncIterator<String>>;
@@ -1809,6 +1853,7 @@ export interface User {
   id: ID_Output;
   name?: String;
   username: String;
+  profilePicture: String;
   website?: String;
   bio?: String;
   email: String;
@@ -1826,6 +1871,7 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
   username: () => Promise<String>;
+  profilePicture: () => Promise<String>;
   website: () => Promise<String>;
   bio: () => Promise<String>;
   email: () => Promise<String>;
@@ -1878,6 +1924,7 @@ export interface UserSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
   username: () => Promise<AsyncIterator<String>>;
+  profilePicture: () => Promise<AsyncIterator<String>>;
   website: () => Promise<AsyncIterator<String>>;
   bio: () => Promise<AsyncIterator<String>>;
   email: () => Promise<AsyncIterator<String>>;

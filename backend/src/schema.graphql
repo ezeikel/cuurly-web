@@ -14,13 +14,18 @@ type Post {
 
 type User {
   id: ID!
-  email: String!
-  username: String!
   name: String!
-  permissions: [Permission!]!
+  username: String!
+  profilePicture: String!
+  website: String
+  bio: String
+  email: String!
+  phoneNumber: Int
+  gender: Gender!
   following: [User]!
   followers: [User]!
   posts: [Post!]!
+  permissions: [Permission!]!
 }
 
 type Query {

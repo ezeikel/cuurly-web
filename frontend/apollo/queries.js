@@ -6,7 +6,7 @@ export const CURRENT_USER_QUERY = gql`
       id
       name
       username
-      email
+      profilePicture
       permissions
     }
   }
@@ -29,16 +29,21 @@ export const SINGLE_USER_QUERY = gql`
       id
       name
       username
-      posts {
-        id
-        image
-        caption
-      }
+      profilePicture
+      bio
+      website
+      email
+      phoneNumber
       followers {
         id
       }
       following {
         id
+      }
+      posts {
+        id
+        image
+        caption
       }
     }
   }
@@ -129,12 +134,10 @@ export const CREATE_POST_MUTATION = gql`
    mutation CREATE_POST_MUTATION (
      $caption: String!
      $image: String
-     $largeImage: String
    ) {
      createPost (
        caption: $caption
        image: $image
-       largeImage: $largeImage
      ) {
        id
      }

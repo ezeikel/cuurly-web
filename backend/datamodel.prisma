@@ -15,8 +15,9 @@ type User {
   id: ID! @id
   name: String
   username: String! @unique
+  profilePicture: String! @default(value: "https://instagram.fbho1-1.fna.fbcdn.net/vp/65547464af3e7b33703032d5b5fb5232/5D0566F1/t51.2885-19/44884218_345707102882519_2446069589734326272_n.jpg?_nc_ht=instagram.fbho1-1.fna.fbcdn.net")
   website: String
-  bio: String
+  bio: String @default(value: "This is the default bio for everyone 📝")
   email: String! @unique
   phoneNumber: Int
   gender: Gender! @default(value: NOTSPECIFIED)
