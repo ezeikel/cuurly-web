@@ -9,6 +9,8 @@ const StyledButton = styled(Button)`
   padding: var(--spacing-small) var(--spacing-medium);
 `;
 
+// TODO: Unlike mutation requires the Like ID to be passed. Either find a way to get it or to find the LIke via the post id and user id
+
 const LikeButton = ({ postId, postLikes }) => (
   <CurrentUser>
     {({ data: { currentUser } }) => (

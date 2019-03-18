@@ -44,6 +44,9 @@ export const SINGLE_USER_QUERY = gql`
         id
         image
         caption
+        likes {
+          id
+        }
       }
     }
   }
@@ -61,6 +64,9 @@ export const SINGLE_POST_QUERY = gql`
         }
         likes {
           id
+          user {
+            id
+          }
         }
     }
   }
@@ -89,6 +95,27 @@ export const SEARCH_USERS_QUERY = gql`
     ) {
       id
       username
+    }
+  }
+`;
+
+export const LIKED_POSTS_QUERY = gql`
+  query LIKED_POSTS_QUERY($id: ID!) {
+    user(id: $id) {
+      likes {
+        post {
+          id
+          image
+          caption
+          author {
+            id
+            username
+          }
+          likes {
+            id
+          }
+        }
+      }
     }
   }
 `;

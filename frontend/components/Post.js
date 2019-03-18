@@ -15,7 +15,7 @@ class Post extends Component {
             <div>
               <div key={post.id}>
                 <img src={post.image} />
-                <LikeButton postId={this.props.id} postLikes={post.likes.map(user => user.id)} />
+                <LikeButton postId={this.props.id} postLikes={post.likes.map(like => like.user.id)} />
                 <span>{post.likes.length} likes</span>
                 <p>{post.author.username}</p>
                 <p>{post.caption}</p>

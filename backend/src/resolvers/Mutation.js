@@ -130,11 +130,17 @@ const Mutations = {
   likePost: (_, { id }, ctx, info) => {
     isLoggedIn(ctx);
 
-    return ctx.prisma.updatePost({
-      where: { id },
-      data: {
-        likes: {
-          connect: { id: ctx.request.userId  }
+    // TODO: Add code to make sure a User cannot like a post more than once
+
+    return ctx.prisma.createLike({
+      user: {
+        connect: {
+          id: ctx.request.userId
+        }
+      },
+      post: {
+        connect: {
+          id
         }
       }
     });
@@ -142,14 +148,7 @@ const Mutations = {
   unlikePost: (_, { id }, ctx, info) => {
     isLoggedIn(ctx);
 
-    return ctx.prisma.updatePost({
-      where: { id },
-      data: {
-        likes: {
-          disconnect: { id: ctx.request.userId  }
-        }
-      }
-    });
+    return ctx.prisma.deleteLike({ id });
   }
 };
 

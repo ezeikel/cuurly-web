@@ -10,7 +10,7 @@ type Post {
   image: String
   video: String
   author: User!
-  likes: [User!]!
+  likes: [Like!]!
 }
 
 type User {
@@ -25,6 +25,7 @@ type User {
   gender: Gender!
   following: [User!]!
   followers: [User!]!
+  likes: [Like!]!
   posts: [Post!]!
   permissions: [Permission!]!
 }
@@ -47,6 +48,6 @@ type Mutation {
   follow(id: ID!): User!
   unfollow(id: ID!): User!
   createPost(image: String, largeImage: String, caption: String): Post!
-  likePost(id: ID!): Post!
-  unlikePost(id: ID!): Post!
+  likePost(id: ID!): Like!
+  unlikePost(id: ID!): Like!
 }

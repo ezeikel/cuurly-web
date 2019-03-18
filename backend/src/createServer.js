@@ -13,11 +13,16 @@ function createServer() {
       User: {
         posts: parent => prisma.user({ id: parent.id }).posts(),
         following: parent => prisma.user({ id: parent.id }).following(),
-        followers: parent => prisma.user({ id: parent.id }).followers()
+        followers: parent => prisma.user({ id: parent.id }).followers(),
+        likes: parent => prisma.user({ id: parent.id }).likes()
       },
       Post: {
         author: parent => prisma.post({ id: parent.id }).author(),
         likes: parent => prisma.post({ id: parent.id }).likes()
+      },
+      Like: {
+        user: parent => prisma.like({ id: parent.id }).user(),
+        post: parent => prisma.like({ id: parent.id }).post(),
       }
     },
     resolverValidationOptions: {

@@ -2,6 +2,10 @@ type AggregateComment {
   count: Int!
 }
 
+type AggregateLike {
+  count: Int!
+}
+
 type AggregateLocation {
   count: Int!
 }
@@ -163,6 +167,198 @@ enum Gender {
   NOTSPECIFIED
 }
 
+type Like {
+  id: ID!
+  user: User!
+  post: Post!
+  createdAt: DateTime!
+}
+
+type LikeConnection {
+  pageInfo: PageInfo!
+  edges: [LikeEdge]!
+  aggregate: AggregateLike!
+}
+
+input LikeCreateInput {
+  user: UserCreateOneWithoutLikesInput!
+  post: PostCreateOneWithoutLikesInput!
+}
+
+input LikeCreateManyWithoutPostInput {
+  create: [LikeCreateWithoutPostInput!]
+  connect: [LikeWhereUniqueInput!]
+}
+
+input LikeCreateManyWithoutUserInput {
+  create: [LikeCreateWithoutUserInput!]
+  connect: [LikeWhereUniqueInput!]
+}
+
+input LikeCreateWithoutPostInput {
+  user: UserCreateOneWithoutLikesInput!
+}
+
+input LikeCreateWithoutUserInput {
+  post: PostCreateOneWithoutLikesInput!
+}
+
+type LikeEdge {
+  node: Like!
+  cursor: String!
+}
+
+enum LikeOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type LikePreviousValues {
+  id: ID!
+  createdAt: DateTime!
+}
+
+input LikeScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  AND: [LikeScalarWhereInput!]
+  OR: [LikeScalarWhereInput!]
+  NOT: [LikeScalarWhereInput!]
+}
+
+type LikeSubscriptionPayload {
+  mutation: MutationType!
+  node: Like
+  updatedFields: [String!]
+  previousValues: LikePreviousValues
+}
+
+input LikeSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: LikeWhereInput
+  AND: [LikeSubscriptionWhereInput!]
+  OR: [LikeSubscriptionWhereInput!]
+  NOT: [LikeSubscriptionWhereInput!]
+}
+
+input LikeUpdateInput {
+  user: UserUpdateOneRequiredWithoutLikesInput
+  post: PostUpdateOneRequiredWithoutLikesInput
+}
+
+input LikeUpdateManyWithoutPostInput {
+  create: [LikeCreateWithoutPostInput!]
+  delete: [LikeWhereUniqueInput!]
+  connect: [LikeWhereUniqueInput!]
+  set: [LikeWhereUniqueInput!]
+  disconnect: [LikeWhereUniqueInput!]
+  update: [LikeUpdateWithWhereUniqueWithoutPostInput!]
+  upsert: [LikeUpsertWithWhereUniqueWithoutPostInput!]
+  deleteMany: [LikeScalarWhereInput!]
+}
+
+input LikeUpdateManyWithoutUserInput {
+  create: [LikeCreateWithoutUserInput!]
+  delete: [LikeWhereUniqueInput!]
+  connect: [LikeWhereUniqueInput!]
+  set: [LikeWhereUniqueInput!]
+  disconnect: [LikeWhereUniqueInput!]
+  update: [LikeUpdateWithWhereUniqueWithoutUserInput!]
+  upsert: [LikeUpsertWithWhereUniqueWithoutUserInput!]
+  deleteMany: [LikeScalarWhereInput!]
+}
+
+input LikeUpdateWithoutPostDataInput {
+  user: UserUpdateOneRequiredWithoutLikesInput
+}
+
+input LikeUpdateWithoutUserDataInput {
+  post: PostUpdateOneRequiredWithoutLikesInput
+}
+
+input LikeUpdateWithWhereUniqueWithoutPostInput {
+  where: LikeWhereUniqueInput!
+  data: LikeUpdateWithoutPostDataInput!
+}
+
+input LikeUpdateWithWhereUniqueWithoutUserInput {
+  where: LikeWhereUniqueInput!
+  data: LikeUpdateWithoutUserDataInput!
+}
+
+input LikeUpsertWithWhereUniqueWithoutPostInput {
+  where: LikeWhereUniqueInput!
+  update: LikeUpdateWithoutPostDataInput!
+  create: LikeCreateWithoutPostInput!
+}
+
+input LikeUpsertWithWhereUniqueWithoutUserInput {
+  where: LikeWhereUniqueInput!
+  update: LikeUpdateWithoutUserDataInput!
+  create: LikeCreateWithoutUserInput!
+}
+
+input LikeWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  user: UserWhereInput
+  post: PostWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  AND: [LikeWhereInput!]
+  OR: [LikeWhereInput!]
+  NOT: [LikeWhereInput!]
+}
+
+input LikeWhereUniqueInput {
+  id: ID
+}
+
 type Location {
   latitude: Float!
   longitude: Float!
@@ -275,6 +471,11 @@ type Mutation {
   createComment(data: CommentCreateInput!): Comment!
   updateManyComments(data: CommentUpdateManyMutationInput!, where: CommentWhereInput): BatchPayload!
   deleteManyComments(where: CommentWhereInput): BatchPayload!
+  createLike(data: LikeCreateInput!): Like!
+  updateLike(data: LikeUpdateInput!, where: LikeWhereUniqueInput!): Like
+  upsertLike(where: LikeWhereUniqueInput!, create: LikeCreateInput!, update: LikeUpdateInput!): Like!
+  deleteLike(where: LikeWhereUniqueInput!): Like
+  deleteManyLikes(where: LikeWhereInput): BatchPayload!
   createLocation(data: LocationCreateInput!): Location!
   updateManyLocations(data: LocationUpdateManyMutationInput!, where: LocationWhereInput): BatchPayload!
   deleteManyLocations(where: LocationWhereInput): BatchPayload!
@@ -322,7 +523,7 @@ type Post {
   caption: String
   location: Location
   published: Boolean
-  likes(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
+  likes(where: LikeWhereInput, orderBy: LikeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Like!]
   comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
   createdAt: DateTime!
 }
@@ -339,7 +540,7 @@ input PostCreateInput {
   caption: String
   location: LocationCreateOneInput
   published: Boolean
-  likes: UserCreateManyInput
+  likes: LikeCreateManyWithoutPostInput
   comments: CommentCreateManyInput
 }
 
@@ -348,12 +549,26 @@ input PostCreateManyWithoutAuthorInput {
   connect: [PostWhereUniqueInput!]
 }
 
+input PostCreateOneWithoutLikesInput {
+  create: PostCreateWithoutLikesInput
+  connect: PostWhereUniqueInput
+}
+
 input PostCreateWithoutAuthorInput {
   image: String
   caption: String
   location: LocationCreateOneInput
   published: Boolean
-  likes: UserCreateManyInput
+  likes: LikeCreateManyWithoutPostInput
+  comments: CommentCreateManyInput
+}
+
+input PostCreateWithoutLikesInput {
+  author: UserCreateOneWithoutPostsInput!
+  image: String
+  caption: String
+  location: LocationCreateOneInput
+  published: Boolean
   comments: CommentCreateManyInput
 }
 
@@ -467,7 +682,7 @@ input PostUpdateInput {
   caption: String
   location: LocationUpdateOneInput
   published: Boolean
-  likes: UserUpdateManyInput
+  likes: LikeUpdateManyWithoutPostInput
   comments: CommentUpdateManyInput
 }
 
@@ -500,18 +715,39 @@ input PostUpdateManyWithWhereNestedInput {
   data: PostUpdateManyDataInput!
 }
 
+input PostUpdateOneRequiredWithoutLikesInput {
+  create: PostCreateWithoutLikesInput
+  update: PostUpdateWithoutLikesDataInput
+  upsert: PostUpsertWithoutLikesInput
+  connect: PostWhereUniqueInput
+}
+
 input PostUpdateWithoutAuthorDataInput {
   image: String
   caption: String
   location: LocationUpdateOneInput
   published: Boolean
-  likes: UserUpdateManyInput
+  likes: LikeUpdateManyWithoutPostInput
+  comments: CommentUpdateManyInput
+}
+
+input PostUpdateWithoutLikesDataInput {
+  author: UserUpdateOneRequiredWithoutPostsInput
+  image: String
+  caption: String
+  location: LocationUpdateOneInput
+  published: Boolean
   comments: CommentUpdateManyInput
 }
 
 input PostUpdateWithWhereUniqueWithoutAuthorInput {
   where: PostWhereUniqueInput!
   data: PostUpdateWithoutAuthorDataInput!
+}
+
+input PostUpsertWithoutLikesInput {
+  update: PostUpdateWithoutLikesDataInput!
+  create: PostCreateWithoutLikesInput!
 }
 
 input PostUpsertWithWhereUniqueWithoutAuthorInput {
@@ -567,9 +803,9 @@ input PostWhereInput {
   location: LocationWhereInput
   published: Boolean
   published_not: Boolean
-  likes_every: UserWhereInput
-  likes_some: UserWhereInput
-  likes_none: UserWhereInput
+  likes_every: LikeWhereInput
+  likes_some: LikeWhereInput
+  likes_none: LikeWhereInput
   comments_every: CommentWhereInput
   comments_some: CommentWhereInput
   comments_none: CommentWhereInput
@@ -593,6 +829,9 @@ input PostWhereUniqueInput {
 type Query {
   comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment]!
   commentsConnection(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CommentConnection!
+  like(where: LikeWhereUniqueInput!): Like
+  likes(where: LikeWhereInput, orderBy: LikeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Like]!
+  likesConnection(where: LikeWhereInput, orderBy: LikeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): LikeConnection!
   locations(where: LocationWhereInput, orderBy: LocationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Location]!
   locationsConnection(where: LocationWhereInput, orderBy: LocationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): LocationConnection!
   post(where: PostWhereUniqueInput!): Post
@@ -606,6 +845,7 @@ type Query {
 
 type Subscription {
   comment(where: CommentSubscriptionWhereInput): CommentSubscriptionPayload
+  like(where: LikeSubscriptionWhereInput): LikeSubscriptionPayload
   location(where: LocationSubscriptionWhereInput): LocationSubscriptionPayload
   post(where: PostSubscriptionWhereInput): PostSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
@@ -623,6 +863,7 @@ type User {
   gender: Gender!
   following(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
   followers(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
+  likes(where: LikeWhereInput, orderBy: LikeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Like!]
   password: String!
   resetToken: String
   resetTokenExpiry: String
@@ -649,16 +890,12 @@ input UserCreateInput {
   gender: Gender
   following: UserCreateManyWithoutFollowingInput
   followers: UserCreateManyWithoutFollowersInput
+  likes: LikeCreateManyWithoutUserInput
   password: String!
   resetToken: String
   resetTokenExpiry: String
   posts: PostCreateManyWithoutAuthorInput
   permissions: UserCreatepermissionsInput
-}
-
-input UserCreateManyInput {
-  create: [UserCreateInput!]
-  connect: [UserWhereUniqueInput!]
 }
 
 input UserCreateManyWithoutFollowersInput {
@@ -673,6 +910,11 @@ input UserCreateManyWithoutFollowingInput {
 
 input UserCreateOneInput {
   create: UserCreateInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateOneWithoutLikesInput {
+  create: UserCreateWithoutLikesInput
   connect: UserWhereUniqueInput
 }
 
@@ -695,6 +937,7 @@ input UserCreateWithoutFollowersInput {
   phoneNumber: Int
   gender: Gender
   following: UserCreateManyWithoutFollowingInput
+  likes: LikeCreateManyWithoutUserInput
   password: String!
   resetToken: String
   resetTokenExpiry: String
@@ -711,6 +954,25 @@ input UserCreateWithoutFollowingInput {
   email: String!
   phoneNumber: Int
   gender: Gender
+  followers: UserCreateManyWithoutFollowersInput
+  likes: LikeCreateManyWithoutUserInput
+  password: String!
+  resetToken: String
+  resetTokenExpiry: String
+  posts: PostCreateManyWithoutAuthorInput
+  permissions: UserCreatepermissionsInput
+}
+
+input UserCreateWithoutLikesInput {
+  name: String
+  username: String!
+  profilePicture: String
+  website: String
+  bio: String
+  email: String!
+  phoneNumber: Int
+  gender: Gender
+  following: UserCreateManyWithoutFollowingInput
   followers: UserCreateManyWithoutFollowersInput
   password: String!
   resetToken: String
@@ -730,6 +992,7 @@ input UserCreateWithoutPostsInput {
   gender: Gender
   following: UserCreateManyWithoutFollowingInput
   followers: UserCreateManyWithoutFollowersInput
+  likes: LikeCreateManyWithoutUserInput
   password: String!
   resetToken: String
   resetTokenExpiry: String
@@ -982,24 +1245,6 @@ input UserSubscriptionWhereInput {
   NOT: [UserSubscriptionWhereInput!]
 }
 
-input UserUpdateDataInput {
-  name: String
-  username: String
-  profilePicture: String
-  website: String
-  bio: String
-  email: String
-  phoneNumber: Int
-  gender: Gender
-  following: UserUpdateManyWithoutFollowingInput
-  followers: UserUpdateManyWithoutFollowersInput
-  password: String
-  resetToken: String
-  resetTokenExpiry: String
-  posts: PostUpdateManyWithoutAuthorInput
-  permissions: UserUpdatepermissionsInput
-}
-
 input UserUpdateInput {
   name: String
   username: String
@@ -1011,6 +1256,7 @@ input UserUpdateInput {
   gender: Gender
   following: UserUpdateManyWithoutFollowingInput
   followers: UserUpdateManyWithoutFollowersInput
+  likes: LikeUpdateManyWithoutUserInput
   password: String
   resetToken: String
   resetTokenExpiry: String
@@ -1031,18 +1277,6 @@ input UserUpdateManyDataInput {
   resetToken: String
   resetTokenExpiry: String
   permissions: UserUpdatepermissionsInput
-}
-
-input UserUpdateManyInput {
-  create: [UserCreateInput!]
-  update: [UserUpdateWithWhereUniqueNestedInput!]
-  upsert: [UserUpsertWithWhereUniqueNestedInput!]
-  delete: [UserWhereUniqueInput!]
-  connect: [UserWhereUniqueInput!]
-  set: [UserWhereUniqueInput!]
-  disconnect: [UserWhereUniqueInput!]
-  deleteMany: [UserScalarWhereInput!]
-  updateMany: [UserUpdateManyWithWhereNestedInput!]
 }
 
 input UserUpdateManyMutationInput {
@@ -1089,6 +1323,13 @@ input UserUpdateManyWithWhereNestedInput {
   data: UserUpdateManyDataInput!
 }
 
+input UserUpdateOneRequiredWithoutLikesInput {
+  create: UserCreateWithoutLikesInput
+  update: UserUpdateWithoutLikesDataInput
+  upsert: UserUpsertWithoutLikesInput
+  connect: UserWhereUniqueInput
+}
+
 input UserUpdateOneRequiredWithoutPostsInput {
   create: UserCreateWithoutPostsInput
   update: UserUpdateWithoutPostsDataInput
@@ -1110,6 +1351,7 @@ input UserUpdateWithoutFollowersDataInput {
   phoneNumber: Int
   gender: Gender
   following: UserUpdateManyWithoutFollowingInput
+  likes: LikeUpdateManyWithoutUserInput
   password: String
   resetToken: String
   resetTokenExpiry: String
@@ -1126,6 +1368,25 @@ input UserUpdateWithoutFollowingDataInput {
   email: String
   phoneNumber: Int
   gender: Gender
+  followers: UserUpdateManyWithoutFollowersInput
+  likes: LikeUpdateManyWithoutUserInput
+  password: String
+  resetToken: String
+  resetTokenExpiry: String
+  posts: PostUpdateManyWithoutAuthorInput
+  permissions: UserUpdatepermissionsInput
+}
+
+input UserUpdateWithoutLikesDataInput {
+  name: String
+  username: String
+  profilePicture: String
+  website: String
+  bio: String
+  email: String
+  phoneNumber: Int
+  gender: Gender
+  following: UserUpdateManyWithoutFollowingInput
   followers: UserUpdateManyWithoutFollowersInput
   password: String
   resetToken: String
@@ -1145,15 +1406,11 @@ input UserUpdateWithoutPostsDataInput {
   gender: Gender
   following: UserUpdateManyWithoutFollowingInput
   followers: UserUpdateManyWithoutFollowersInput
+  likes: LikeUpdateManyWithoutUserInput
   password: String
   resetToken: String
   resetTokenExpiry: String
   permissions: UserUpdatepermissionsInput
-}
-
-input UserUpdateWithWhereUniqueNestedInput {
-  where: UserWhereUniqueInput!
-  data: UserUpdateDataInput!
 }
 
 input UserUpdateWithWhereUniqueWithoutFollowersInput {
@@ -1166,15 +1423,14 @@ input UserUpdateWithWhereUniqueWithoutFollowingInput {
   data: UserUpdateWithoutFollowingDataInput!
 }
 
+input UserUpsertWithoutLikesInput {
+  update: UserUpdateWithoutLikesDataInput!
+  create: UserCreateWithoutLikesInput!
+}
+
 input UserUpsertWithoutPostsInput {
   update: UserUpdateWithoutPostsDataInput!
   create: UserCreateWithoutPostsInput!
-}
-
-input UserUpsertWithWhereUniqueNestedInput {
-  where: UserWhereUniqueInput!
-  update: UserUpdateDataInput!
-  create: UserCreateInput!
 }
 
 input UserUpsertWithWhereUniqueWithoutFollowersInput {
@@ -1306,6 +1562,9 @@ input UserWhereInput {
   followers_every: UserWhereInput
   followers_some: UserWhereInput
   followers_none: UserWhereInput
+  likes_every: LikeWhereInput
+  likes_some: LikeWhereInput
+  likes_none: LikeWhereInput
   password: String
   password_not: String
   password_in: [String!]
