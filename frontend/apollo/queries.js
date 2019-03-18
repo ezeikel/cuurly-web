@@ -103,6 +103,7 @@ export const LIKED_POSTS_QUERY = gql`
   query LIKED_POSTS_QUERY($id: ID!) {
     user(id: $id) {
       likes {
+        id
         post {
           id
           image

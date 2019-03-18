@@ -59,6 +59,26 @@ const Mutations = {
       throw new Error(`You are already following ${id}`);
     }
 
+    // TODO: Should be able to do update followers/following in one query
+    // return await ctx.prisma.updateUser({
+    //   where: {
+    //     id: ctx.request.userId
+    //   },
+    //   data: {
+    //     following: {
+    //       connect: { id },
+    //       update: {
+    //         where: { id },
+    //         data: {
+    //           followers: {
+    //             connect: { id: ctx.request.userId }
+    //           }
+    //         }
+    //       }
+    //     }
+    //   }
+    // });
+
     await ctx.prisma.updateUser({
       where: {
         id

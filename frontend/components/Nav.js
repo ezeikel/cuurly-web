@@ -54,7 +54,7 @@ const Nav = ({ theme }) => (
           <Search />
           <NavActions>
             <li>Explore</li>
-            <li><Link href={`/liked?id=${currentUser.id}`}>Liked</Link></li>
+            <li><Link href={`/liked?id=${currentUser.id}`}><a>Liked</a></Link></li>
             <li><Link href={`/user?id=${currentUser.id}`}><a>Profile</a></Link></li>
             <li>
               <Link href='/upload'><button>Post</button></Link>
