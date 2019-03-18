@@ -22,7 +22,7 @@ function createServer() {
       },
       Like: {
         user: parent => prisma.like({ id: parent.id }).user(),
-        post: parent => prisma.like({ id: parent.id }).post(),
+        post: parent => prisma.like({ id: parent.id }).post()
       }
     },
     resolverValidationOptions: {

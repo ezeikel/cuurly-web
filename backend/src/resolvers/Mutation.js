@@ -12,7 +12,6 @@ const Mutations = {
     const user = await ctx.prisma.createUser({
       ...args,
       password,
-      permissions: { set: ['USER'] }
     }, info);
     // create JWT token for user
     const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);

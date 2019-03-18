@@ -35,7 +35,7 @@ type User {
   resetToken: String
   resetTokenExpiry: String
   posts: [Post!]! @relation(name: "Posts", link: INLINE)
-  permissions: [Permission!]!
+  permissions: [Permission!]! @default(value: USER)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
