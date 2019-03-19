@@ -11,6 +11,7 @@ type Post {
   video: String
   author: User!
   likes: [Like!]!
+  comments: [Comment!]!
 }
 
 type User {
@@ -50,4 +51,5 @@ type Mutation {
   createPost(image: String, largeImage: String, caption: String): Post!
   likePost(id: ID!): Like!
   unlikePost(id: ID!): Like!
+  addComment(id: ID!, text: String!): Post!
 }

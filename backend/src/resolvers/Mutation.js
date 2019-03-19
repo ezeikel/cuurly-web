@@ -59,26 +59,6 @@ const Mutations = {
       throw new Error(`You are already following ${id}`);
     }
 
-    // TODO: Should be able to do update followers/following in one query
-    // return await ctx.prisma.updateUser({
-    //   where: {
-    //     id: ctx.request.userId
-    //   },
-    //   data: {
-    //     following: {
-    //       connect: { id },
-    //       update: {
-    //         where: { id },
-    //         data: {
-    //           followers: {
-    //             connect: { id: ctx.request.userId }
-    //           }
-    //         }
-    //       }
-    //     }
-    //   }
-    // });
-
     await ctx.prisma.updateUser({
       where: {
         id
@@ -168,6 +148,27 @@ const Mutations = {
     isLoggedIn(ctx);
 
     return ctx.prisma.deleteLike({ id });
+  },
+  addComment: (_, { id, text }, ctx, info) => {
+    //isLoggedIn(ctx);
+    return ctx.prisma.updatePost({
+      where: {
+        id
+      },
+      data: {
+        comments: {
+          create: {
+            text,
+            writtenBy: {
+              connect: {
+                //id: ctx.request.userId
+                id: "5c8e5fb424aa9a000767c6c0"
+              }
+            }
+          }
+        }
+      }
+    }, info)
   }
 };
 

@@ -18,7 +18,8 @@ function createServer() {
       },
       Post: {
         author: parent => prisma.post({ id: parent.id }).author(),
-        likes: parent => prisma.post({ id: parent.id }).likes()
+        likes: parent => prisma.post({ id: parent.id }).likes(),
+        comments: parent => prisma.post({ id: parent.id }).comments()
       },
       Like: {
         user: parent => prisma.like({ id: parent.id }).user(),
