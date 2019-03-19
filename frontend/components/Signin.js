@@ -36,7 +36,7 @@ class Signin extends Component {
             validationSchema={SigninSchema}
             onSubmit={async values => {
               //await signup(values, actions);
-              await signin({ variables: values })
+              await signin({ variables: values });
             }}
           >
             {({

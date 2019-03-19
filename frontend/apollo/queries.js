@@ -55,19 +55,27 @@ export const SINGLE_USER_QUERY = gql`
 export const SINGLE_POST_QUERY = gql`
   query SINGLE_POST_QUERY($id: ID!) {
     post(id: $id) {
+      id
+      image
+      caption
+      author {
         id
-        image
-        caption
-        author {
+        username
+      }
+      likes {
+        id
+        user {
+          id
+        }
+      }
+      comments {
+        id
+        text
+        writtenBy {
           id
           username
         }
-        likes {
-          id
-          user {
-            id
-          }
-        }
+      }
     }
   }
 `;
@@ -203,6 +211,14 @@ export const LIKE_POST_MUTATION = gql`
 export const UNLIKE_POST_MUTATION = gql`
    mutation UNLIKE_POST_MUTATION ($id: ID!) {
      unlikePost (id: $id) {
+       id
+     }
+   }
+`;
+
+export const POST_COMMENT_MUTATION = gql`
+   mutation POST_COMMENT_MUTATION ($id: ID!, $text: String!) {
+     addComment (id: $id, text: $text) {
        id
      }
    }
