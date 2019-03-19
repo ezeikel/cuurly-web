@@ -24,6 +24,9 @@ function createServer() {
       Like: {
         user: parent => prisma.like({ id: parent.id }).user(),
         post: parent => prisma.like({ id: parent.id }).post()
+      },
+      Comment: {
+        writtenBy: parent => prisma.comment({ id: parent.id }).writtenBy()
       }
     },
     resolverValidationOptions: {
