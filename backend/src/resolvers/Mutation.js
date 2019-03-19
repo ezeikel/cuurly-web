@@ -150,26 +150,27 @@ const Mutations = {
     return ctx.prisma.deleteLike({ id });
   },
   addComment: (_, { id, text }, ctx, info) => {
-    //isLoggedIn(ctx);
-    return ctx.prisma.updatePost({
-      where: {
-        id
+    isLoggedIn(ctx);
+
+    return ctx.prisma.createComment({
+      post: {
+        connect: {
+          id
+        }
       },
-      data: {
-        comments: {
-          create: {
-            text,
-            writtenBy: {
-              connect: {
-                //id: ctx.request.userId
-                id: "5c8e5fb424aa9a000767c6c0"
-              }
-            }
-          }
+      text,
+      writtenBy: {
+        connect: {
+          id: ctx.request.userId
         }
       }
-    }, info)
-  }
+    })
+  },
+  deleteComment: (_, { id }, ctx, info) => {
+    isLoggedIn(ctx);
+
+    return ctx.prisma.deleteComment({ id });
+  },
 };
 
 module.exports = Mutations;

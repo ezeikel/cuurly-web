@@ -51,5 +51,6 @@ type Mutation {
   createPost(image: String, largeImage: String, caption: String): Post!
   likePost(id: ID!): Like!
   unlikePost(id: ID!): Like!
-  addComment(id: ID!, text: String!): Post!
+  addComment(id: ID!, text: String!): Comment!
+  deleteComment(id: ID!): Comment!
 }

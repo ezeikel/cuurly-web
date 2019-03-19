@@ -40,6 +40,7 @@ export interface Prisma {
    * Queries
    */
 
+  comment: (where: CommentWhereUniqueInput) => CommentPromise;
   comments: (
     args?: {
       where?: CommentWhereInput;
@@ -160,9 +161,20 @@ export interface Prisma {
    */
 
   createComment: (data: CommentCreateInput) => CommentPromise;
+  updateComment: (
+    args: { data: CommentUpdateInput; where: CommentWhereUniqueInput }
+  ) => CommentPromise;
   updateManyComments: (
     args: { data: CommentUpdateManyMutationInput; where?: CommentWhereInput }
   ) => BatchPayloadPromise;
+  upsertComment: (
+    args: {
+      where: CommentWhereUniqueInput;
+      create: CommentCreateInput;
+      update: CommentUpdateInput;
+    }
+  ) => CommentPromise;
+  deleteComment: (where: CommentWhereUniqueInput) => CommentPromise;
   deleteManyComments: (where?: CommentWhereInput) => BatchPayloadPromise;
   createLike: (data: LikeCreateInput) => LikePromise;
   updateLike: (
@@ -250,16 +262,6 @@ export interface ClientConstructor<T> {
 
 export type Gender = "MALE" | "FEMALE" | "NONBINARY" | "NOTSPECIFIED";
 
-export type CommentOrderByInput =
-  | "text_ASC"
-  | "text_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "id_ASC"
-  | "id_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
-
 export type UserOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -298,6 +300,16 @@ export type LikeOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
+export type CommentOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "text_ASC"
+  | "text_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
 export type PostOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -328,34 +340,9 @@ export type LocationOrderByInput =
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export interface CommentWhereInput {
-  text?: String;
-  text_not?: String;
-  text_in?: String[] | String;
-  text_not_in?: String[] | String;
-  text_lt?: String;
-  text_lte?: String;
-  text_gt?: String;
-  text_gte?: String;
-  text_contains?: String;
-  text_not_contains?: String;
-  text_starts_with?: String;
-  text_not_starts_with?: String;
-  text_ends_with?: String;
-  text_not_ends_with?: String;
-  writtenBy?: UserWhereInput;
-  createdAt?: DateTimeInput;
-  createdAt_not?: DateTimeInput;
-  createdAt_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_lt?: DateTimeInput;
-  createdAt_lte?: DateTimeInput;
-  createdAt_gt?: DateTimeInput;
-  createdAt_gte?: DateTimeInput;
-  AND?: CommentWhereInput[] | CommentWhereInput;
-  OR?: CommentWhereInput[] | CommentWhereInput;
-  NOT?: CommentWhereInput[] | CommentWhereInput;
-}
+export type CommentWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
 
 export interface UserWhereInput {
   id?: ID_Input;
@@ -477,6 +464,9 @@ export interface UserWhereInput {
   likes_every?: LikeWhereInput;
   likes_some?: LikeWhereInput;
   likes_none?: LikeWhereInput;
+  comments_every?: CommentWhereInput;
+  comments_some?: CommentWhereInput;
+  comments_none?: CommentWhereInput;
   password?: String;
   password_not?: String;
   password_in?: String[] | String;
@@ -661,6 +651,50 @@ export interface LocationWhereInput {
   NOT?: LocationWhereInput[] | LocationWhereInput;
 }
 
+export interface CommentWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  post?: PostWhereInput;
+  text?: String;
+  text_not?: String;
+  text_in?: String[] | String;
+  text_not_in?: String[] | String;
+  text_lt?: String;
+  text_lte?: String;
+  text_gt?: String;
+  text_gte?: String;
+  text_contains?: String;
+  text_not_contains?: String;
+  text_starts_with?: String;
+  text_not_starts_with?: String;
+  text_ends_with?: String;
+  text_not_ends_with?: String;
+  writtenBy?: UserWhereInput;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  AND?: CommentWhereInput[] | CommentWhereInput;
+  OR?: CommentWhereInput[] | CommentWhereInput;
+  NOT?: CommentWhereInput[] | CommentWhereInput;
+}
+
 export type LikeWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
@@ -676,16 +710,31 @@ export type UserWhereUniqueInput = AtLeastOne<{
 }>;
 
 export interface CommentCreateInput {
+  post: PostCreateOneWithoutCommentsInput;
   text: String;
-  writtenBy: UserCreateOneInput;
+  writtenBy: UserCreateOneWithoutCommentsInput;
 }
 
-export interface UserCreateOneInput {
-  create?: UserCreateInput;
+export interface PostCreateOneWithoutCommentsInput {
+  create?: PostCreateWithoutCommentsInput;
+  connect?: PostWhereUniqueInput;
+}
+
+export interface PostCreateWithoutCommentsInput {
+  author: UserCreateOneWithoutPostsInput;
+  image?: String;
+  caption?: String;
+  location?: LocationCreateOneInput;
+  published?: Boolean;
+  likes?: LikeCreateManyWithoutPostInput;
+}
+
+export interface UserCreateOneWithoutPostsInput {
+  create?: UserCreateWithoutPostsInput;
   connect?: UserWhereUniqueInput;
 }
 
-export interface UserCreateInput {
+export interface UserCreateWithoutPostsInput {
   name?: String;
   username: String;
   profilePicture?: String;
@@ -697,10 +746,10 @@ export interface UserCreateInput {
   following?: UserCreateManyWithoutFollowingInput;
   followers?: UserCreateManyWithoutFollowersInput;
   likes?: LikeCreateManyWithoutUserInput;
+  comments?: CommentCreateManyWithoutWrittenByInput;
   password: String;
   resetToken?: String;
   resetTokenExpiry?: String;
-  posts?: PostCreateManyWithoutAuthorInput;
   permissions?: UserCreatepermissionsInput;
 }
 
@@ -720,6 +769,7 @@ export interface UserCreateWithoutFollowingInput {
   gender?: Gender;
   followers?: UserCreateManyWithoutFollowersInput;
   likes?: LikeCreateManyWithoutUserInput;
+  comments?: CommentCreateManyWithoutWrittenByInput;
   password: String;
   resetToken?: String;
   resetTokenExpiry?: String;
@@ -743,6 +793,7 @@ export interface UserCreateWithoutFollowersInput {
   gender?: Gender;
   following?: UserCreateManyWithoutFollowingInput;
   likes?: LikeCreateManyWithoutUserInput;
+  comments?: CommentCreateManyWithoutWrittenByInput;
   password: String;
   resetToken?: String;
   resetTokenExpiry?: String;
@@ -770,15 +821,34 @@ export interface PostCreateWithoutLikesInput {
   caption?: String;
   location?: LocationCreateOneInput;
   published?: Boolean;
-  comments?: CommentCreateManyInput;
+  comments?: CommentCreateManyWithoutPostInput;
 }
 
-export interface UserCreateOneWithoutPostsInput {
-  create?: UserCreateWithoutPostsInput;
+export interface LocationCreateOneInput {
+  create?: LocationCreateInput;
+}
+
+export interface LocationCreateInput {
+  latitude: Float;
+  longitude: Float;
+}
+
+export interface CommentCreateManyWithoutPostInput {
+  create?: CommentCreateWithoutPostInput[] | CommentCreateWithoutPostInput;
+  connect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput;
+}
+
+export interface CommentCreateWithoutPostInput {
+  text: String;
+  writtenBy: UserCreateOneWithoutCommentsInput;
+}
+
+export interface UserCreateOneWithoutCommentsInput {
+  create?: UserCreateWithoutCommentsInput;
   connect?: UserWhereUniqueInput;
 }
 
-export interface UserCreateWithoutPostsInput {
+export interface UserCreateWithoutCommentsInput {
   name?: String;
   username: String;
   profilePicture?: String;
@@ -793,24 +863,8 @@ export interface UserCreateWithoutPostsInput {
   password: String;
   resetToken?: String;
   resetTokenExpiry?: String;
+  posts?: PostCreateManyWithoutAuthorInput;
   permissions?: UserCreatepermissionsInput;
-}
-
-export interface UserCreatepermissionsInput {
-  set?: Permission[] | Permission;
-}
-
-export interface LocationCreateOneInput {
-  create?: LocationCreateInput;
-}
-
-export interface LocationCreateInput {
-  latitude: Float;
-  longitude: Float;
-}
-
-export interface CommentCreateManyInput {
-  create?: CommentCreateInput[] | CommentCreateInput;
 }
 
 export interface PostCreateManyWithoutAuthorInput {
@@ -824,7 +878,7 @@ export interface PostCreateWithoutAuthorInput {
   location?: LocationCreateOneInput;
   published?: Boolean;
   likes?: LikeCreateManyWithoutPostInput;
-  comments?: CommentCreateManyInput;
+  comments?: CommentCreateManyWithoutPostInput;
 }
 
 export interface LikeCreateManyWithoutPostInput {
@@ -852,6 +906,7 @@ export interface UserCreateWithoutLikesInput {
   gender?: Gender;
   following?: UserCreateManyWithoutFollowingInput;
   followers?: UserCreateManyWithoutFollowersInput;
+  comments?: CommentCreateManyWithoutWrittenByInput;
   password: String;
   resetToken?: String;
   resetTokenExpiry?: String;
@@ -859,28 +914,52 @@ export interface UserCreateWithoutLikesInput {
   permissions?: UserCreatepermissionsInput;
 }
 
-export interface CommentUpdateManyMutationInput {
+export interface CommentCreateManyWithoutWrittenByInput {
+  create?:
+    | CommentCreateWithoutWrittenByInput[]
+    | CommentCreateWithoutWrittenByInput;
+  connect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput;
+}
+
+export interface CommentCreateWithoutWrittenByInput {
+  post: PostCreateOneWithoutCommentsInput;
+  text: String;
+}
+
+export interface UserCreatepermissionsInput {
+  set?: Permission[] | Permission;
+}
+
+export interface CommentUpdateInput {
+  post?: PostUpdateOneRequiredWithoutCommentsInput;
   text?: String;
+  writtenBy?: UserUpdateOneRequiredWithoutCommentsInput;
 }
 
-export interface LikeCreateInput {
-  user: UserCreateOneWithoutLikesInput;
-  post: PostCreateOneWithoutLikesInput;
+export interface PostUpdateOneRequiredWithoutCommentsInput {
+  create?: PostCreateWithoutCommentsInput;
+  update?: PostUpdateWithoutCommentsDataInput;
+  upsert?: PostUpsertWithoutCommentsInput;
+  connect?: PostWhereUniqueInput;
 }
 
-export interface LikeUpdateInput {
-  user?: UserUpdateOneRequiredWithoutLikesInput;
-  post?: PostUpdateOneRequiredWithoutLikesInput;
+export interface PostUpdateWithoutCommentsDataInput {
+  author?: UserUpdateOneRequiredWithoutPostsInput;
+  image?: String;
+  caption?: String;
+  location?: LocationUpdateOneInput;
+  published?: Boolean;
+  likes?: LikeUpdateManyWithoutPostInput;
 }
 
-export interface UserUpdateOneRequiredWithoutLikesInput {
-  create?: UserCreateWithoutLikesInput;
-  update?: UserUpdateWithoutLikesDataInput;
-  upsert?: UserUpsertWithoutLikesInput;
+export interface UserUpdateOneRequiredWithoutPostsInput {
+  create?: UserCreateWithoutPostsInput;
+  update?: UserUpdateWithoutPostsDataInput;
+  upsert?: UserUpsertWithoutPostsInput;
   connect?: UserWhereUniqueInput;
 }
 
-export interface UserUpdateWithoutLikesDataInput {
+export interface UserUpdateWithoutPostsDataInput {
   name?: String;
   username?: String;
   profilePicture?: String;
@@ -891,10 +970,11 @@ export interface UserUpdateWithoutLikesDataInput {
   gender?: Gender;
   following?: UserUpdateManyWithoutFollowingInput;
   followers?: UserUpdateManyWithoutFollowersInput;
+  likes?: LikeUpdateManyWithoutUserInput;
+  comments?: CommentUpdateManyWithoutWrittenByInput;
   password?: String;
   resetToken?: String;
   resetTokenExpiry?: String;
-  posts?: PostUpdateManyWithoutAuthorInput;
   permissions?: UserUpdatepermissionsInput;
 }
 
@@ -932,6 +1012,7 @@ export interface UserUpdateWithoutFollowingDataInput {
   gender?: Gender;
   followers?: UserUpdateManyWithoutFollowersInput;
   likes?: LikeUpdateManyWithoutUserInput;
+  comments?: CommentUpdateManyWithoutWrittenByInput;
   password?: String;
   resetToken?: String;
   resetTokenExpiry?: String;
@@ -973,6 +1054,7 @@ export interface UserUpdateWithoutFollowersDataInput {
   gender?: Gender;
   following?: UserUpdateManyWithoutFollowingInput;
   likes?: LikeUpdateManyWithoutUserInput;
+  comments?: CommentUpdateManyWithoutWrittenByInput;
   password?: String;
   resetToken?: String;
   resetTokenExpiry?: String;
@@ -1017,41 +1099,7 @@ export interface PostUpdateWithoutLikesDataInput {
   caption?: String;
   location?: LocationUpdateOneInput;
   published?: Boolean;
-  comments?: CommentUpdateManyInput;
-}
-
-export interface UserUpdateOneRequiredWithoutPostsInput {
-  create?: UserCreateWithoutPostsInput;
-  update?: UserUpdateWithoutPostsDataInput;
-  upsert?: UserUpsertWithoutPostsInput;
-  connect?: UserWhereUniqueInput;
-}
-
-export interface UserUpdateWithoutPostsDataInput {
-  name?: String;
-  username?: String;
-  profilePicture?: String;
-  website?: String;
-  bio?: String;
-  email?: String;
-  phoneNumber?: Int;
-  gender?: Gender;
-  following?: UserUpdateManyWithoutFollowingInput;
-  followers?: UserUpdateManyWithoutFollowersInput;
-  likes?: LikeUpdateManyWithoutUserInput;
-  password?: String;
-  resetToken?: String;
-  resetTokenExpiry?: String;
-  permissions?: UserUpdatepermissionsInput;
-}
-
-export interface UserUpdatepermissionsInput {
-  set?: Permission[] | Permission;
-}
-
-export interface UserUpsertWithoutPostsInput {
-  update: UserUpdateWithoutPostsDataInput;
-  create: UserCreateWithoutPostsInput;
+  comments?: CommentUpdateManyWithoutPostInput;
 }
 
 export interface LocationUpdateOneInput {
@@ -1072,15 +1120,193 @@ export interface LocationUpsertNestedInput {
   create: LocationCreateInput;
 }
 
-export interface CommentUpdateManyInput {
-  create?: CommentCreateInput[] | CommentCreateInput;
+export interface CommentUpdateManyWithoutPostInput {
+  create?: CommentCreateWithoutPostInput[] | CommentCreateWithoutPostInput;
+  delete?: CommentWhereUniqueInput[] | CommentWhereUniqueInput;
+  connect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput;
+  set?: CommentWhereUniqueInput[] | CommentWhereUniqueInput;
+  disconnect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput;
+  update?:
+    | CommentUpdateWithWhereUniqueWithoutPostInput[]
+    | CommentUpdateWithWhereUniqueWithoutPostInput;
+  upsert?:
+    | CommentUpsertWithWhereUniqueWithoutPostInput[]
+    | CommentUpsertWithWhereUniqueWithoutPostInput;
   deleteMany?: CommentScalarWhereInput[] | CommentScalarWhereInput;
   updateMany?:
     | CommentUpdateManyWithWhereNestedInput[]
     | CommentUpdateManyWithWhereNestedInput;
 }
 
+export interface CommentUpdateWithWhereUniqueWithoutPostInput {
+  where: CommentWhereUniqueInput;
+  data: CommentUpdateWithoutPostDataInput;
+}
+
+export interface CommentUpdateWithoutPostDataInput {
+  text?: String;
+  writtenBy?: UserUpdateOneRequiredWithoutCommentsInput;
+}
+
+export interface UserUpdateOneRequiredWithoutCommentsInput {
+  create?: UserCreateWithoutCommentsInput;
+  update?: UserUpdateWithoutCommentsDataInput;
+  upsert?: UserUpsertWithoutCommentsInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface UserUpdateWithoutCommentsDataInput {
+  name?: String;
+  username?: String;
+  profilePicture?: String;
+  website?: String;
+  bio?: String;
+  email?: String;
+  phoneNumber?: Int;
+  gender?: Gender;
+  following?: UserUpdateManyWithoutFollowingInput;
+  followers?: UserUpdateManyWithoutFollowersInput;
+  likes?: LikeUpdateManyWithoutUserInput;
+  password?: String;
+  resetToken?: String;
+  resetTokenExpiry?: String;
+  posts?: PostUpdateManyWithoutAuthorInput;
+  permissions?: UserUpdatepermissionsInput;
+}
+
+export interface PostUpdateManyWithoutAuthorInput {
+  create?: PostCreateWithoutAuthorInput[] | PostCreateWithoutAuthorInput;
+  delete?: PostWhereUniqueInput[] | PostWhereUniqueInput;
+  connect?: PostWhereUniqueInput[] | PostWhereUniqueInput;
+  set?: PostWhereUniqueInput[] | PostWhereUniqueInput;
+  disconnect?: PostWhereUniqueInput[] | PostWhereUniqueInput;
+  update?:
+    | PostUpdateWithWhereUniqueWithoutAuthorInput[]
+    | PostUpdateWithWhereUniqueWithoutAuthorInput;
+  upsert?:
+    | PostUpsertWithWhereUniqueWithoutAuthorInput[]
+    | PostUpsertWithWhereUniqueWithoutAuthorInput;
+  deleteMany?: PostScalarWhereInput[] | PostScalarWhereInput;
+  updateMany?:
+    | PostUpdateManyWithWhereNestedInput[]
+    | PostUpdateManyWithWhereNestedInput;
+}
+
+export interface PostUpdateWithWhereUniqueWithoutAuthorInput {
+  where: PostWhereUniqueInput;
+  data: PostUpdateWithoutAuthorDataInput;
+}
+
+export interface PostUpdateWithoutAuthorDataInput {
+  image?: String;
+  caption?: String;
+  location?: LocationUpdateOneInput;
+  published?: Boolean;
+  likes?: LikeUpdateManyWithoutPostInput;
+  comments?: CommentUpdateManyWithoutPostInput;
+}
+
+export interface LikeUpdateManyWithoutPostInput {
+  create?: LikeCreateWithoutPostInput[] | LikeCreateWithoutPostInput;
+  delete?: LikeWhereUniqueInput[] | LikeWhereUniqueInput;
+  connect?: LikeWhereUniqueInput[] | LikeWhereUniqueInput;
+  set?: LikeWhereUniqueInput[] | LikeWhereUniqueInput;
+  disconnect?: LikeWhereUniqueInput[] | LikeWhereUniqueInput;
+  update?:
+    | LikeUpdateWithWhereUniqueWithoutPostInput[]
+    | LikeUpdateWithWhereUniqueWithoutPostInput;
+  upsert?:
+    | LikeUpsertWithWhereUniqueWithoutPostInput[]
+    | LikeUpsertWithWhereUniqueWithoutPostInput;
+  deleteMany?: LikeScalarWhereInput[] | LikeScalarWhereInput;
+}
+
+export interface LikeUpdateWithWhereUniqueWithoutPostInput {
+  where: LikeWhereUniqueInput;
+  data: LikeUpdateWithoutPostDataInput;
+}
+
+export interface LikeUpdateWithoutPostDataInput {
+  user?: UserUpdateOneRequiredWithoutLikesInput;
+}
+
+export interface UserUpdateOneRequiredWithoutLikesInput {
+  create?: UserCreateWithoutLikesInput;
+  update?: UserUpdateWithoutLikesDataInput;
+  upsert?: UserUpsertWithoutLikesInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface UserUpdateWithoutLikesDataInput {
+  name?: String;
+  username?: String;
+  profilePicture?: String;
+  website?: String;
+  bio?: String;
+  email?: String;
+  phoneNumber?: Int;
+  gender?: Gender;
+  following?: UserUpdateManyWithoutFollowingInput;
+  followers?: UserUpdateManyWithoutFollowersInput;
+  comments?: CommentUpdateManyWithoutWrittenByInput;
+  password?: String;
+  resetToken?: String;
+  resetTokenExpiry?: String;
+  posts?: PostUpdateManyWithoutAuthorInput;
+  permissions?: UserUpdatepermissionsInput;
+}
+
+export interface CommentUpdateManyWithoutWrittenByInput {
+  create?:
+    | CommentCreateWithoutWrittenByInput[]
+    | CommentCreateWithoutWrittenByInput;
+  delete?: CommentWhereUniqueInput[] | CommentWhereUniqueInput;
+  connect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput;
+  set?: CommentWhereUniqueInput[] | CommentWhereUniqueInput;
+  disconnect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput;
+  update?:
+    | CommentUpdateWithWhereUniqueWithoutWrittenByInput[]
+    | CommentUpdateWithWhereUniqueWithoutWrittenByInput;
+  upsert?:
+    | CommentUpsertWithWhereUniqueWithoutWrittenByInput[]
+    | CommentUpsertWithWhereUniqueWithoutWrittenByInput;
+  deleteMany?: CommentScalarWhereInput[] | CommentScalarWhereInput;
+  updateMany?:
+    | CommentUpdateManyWithWhereNestedInput[]
+    | CommentUpdateManyWithWhereNestedInput;
+}
+
+export interface CommentUpdateWithWhereUniqueWithoutWrittenByInput {
+  where: CommentWhereUniqueInput;
+  data: CommentUpdateWithoutWrittenByDataInput;
+}
+
+export interface CommentUpdateWithoutWrittenByDataInput {
+  post?: PostUpdateOneRequiredWithoutCommentsInput;
+  text?: String;
+}
+
+export interface CommentUpsertWithWhereUniqueWithoutWrittenByInput {
+  where: CommentWhereUniqueInput;
+  update: CommentUpdateWithoutWrittenByDataInput;
+  create: CommentCreateWithoutWrittenByInput;
+}
+
 export interface CommentScalarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
   text?: String;
   text_not?: String;
   text_in?: String[] | String;
@@ -1117,15 +1343,19 @@ export interface CommentUpdateManyDataInput {
   text?: String;
 }
 
-export interface PostUpsertWithoutLikesInput {
-  update: PostUpdateWithoutLikesDataInput;
-  create: PostCreateWithoutLikesInput;
+export interface UserUpdatepermissionsInput {
+  set?: Permission[] | Permission;
 }
 
-export interface LikeUpsertWithWhereUniqueWithoutUserInput {
+export interface UserUpsertWithoutLikesInput {
+  update: UserUpdateWithoutLikesDataInput;
+  create: UserCreateWithoutLikesInput;
+}
+
+export interface LikeUpsertWithWhereUniqueWithoutPostInput {
   where: LikeWhereUniqueInput;
-  update: LikeUpdateWithoutUserDataInput;
-  create: LikeCreateWithoutUserInput;
+  update: LikeUpdateWithoutPostDataInput;
+  create: LikeCreateWithoutPostInput;
 }
 
 export interface LikeScalarWhereInput {
@@ -1154,68 +1384,6 @@ export interface LikeScalarWhereInput {
   AND?: LikeScalarWhereInput[] | LikeScalarWhereInput;
   OR?: LikeScalarWhereInput[] | LikeScalarWhereInput;
   NOT?: LikeScalarWhereInput[] | LikeScalarWhereInput;
-}
-
-export interface PostUpdateManyWithoutAuthorInput {
-  create?: PostCreateWithoutAuthorInput[] | PostCreateWithoutAuthorInput;
-  delete?: PostWhereUniqueInput[] | PostWhereUniqueInput;
-  connect?: PostWhereUniqueInput[] | PostWhereUniqueInput;
-  set?: PostWhereUniqueInput[] | PostWhereUniqueInput;
-  disconnect?: PostWhereUniqueInput[] | PostWhereUniqueInput;
-  update?:
-    | PostUpdateWithWhereUniqueWithoutAuthorInput[]
-    | PostUpdateWithWhereUniqueWithoutAuthorInput;
-  upsert?:
-    | PostUpsertWithWhereUniqueWithoutAuthorInput[]
-    | PostUpsertWithWhereUniqueWithoutAuthorInput;
-  deleteMany?: PostScalarWhereInput[] | PostScalarWhereInput;
-  updateMany?:
-    | PostUpdateManyWithWhereNestedInput[]
-    | PostUpdateManyWithWhereNestedInput;
-}
-
-export interface PostUpdateWithWhereUniqueWithoutAuthorInput {
-  where: PostWhereUniqueInput;
-  data: PostUpdateWithoutAuthorDataInput;
-}
-
-export interface PostUpdateWithoutAuthorDataInput {
-  image?: String;
-  caption?: String;
-  location?: LocationUpdateOneInput;
-  published?: Boolean;
-  likes?: LikeUpdateManyWithoutPostInput;
-  comments?: CommentUpdateManyInput;
-}
-
-export interface LikeUpdateManyWithoutPostInput {
-  create?: LikeCreateWithoutPostInput[] | LikeCreateWithoutPostInput;
-  delete?: LikeWhereUniqueInput[] | LikeWhereUniqueInput;
-  connect?: LikeWhereUniqueInput[] | LikeWhereUniqueInput;
-  set?: LikeWhereUniqueInput[] | LikeWhereUniqueInput;
-  disconnect?: LikeWhereUniqueInput[] | LikeWhereUniqueInput;
-  update?:
-    | LikeUpdateWithWhereUniqueWithoutPostInput[]
-    | LikeUpdateWithWhereUniqueWithoutPostInput;
-  upsert?:
-    | LikeUpsertWithWhereUniqueWithoutPostInput[]
-    | LikeUpsertWithWhereUniqueWithoutPostInput;
-  deleteMany?: LikeScalarWhereInput[] | LikeScalarWhereInput;
-}
-
-export interface LikeUpdateWithWhereUniqueWithoutPostInput {
-  where: LikeWhereUniqueInput;
-  data: LikeUpdateWithoutPostDataInput;
-}
-
-export interface LikeUpdateWithoutPostDataInput {
-  user?: UserUpdateOneRequiredWithoutLikesInput;
-}
-
-export interface LikeUpsertWithWhereUniqueWithoutPostInput {
-  where: LikeWhereUniqueInput;
-  update: LikeUpdateWithoutPostDataInput;
-  create: LikeCreateWithoutPostInput;
 }
 
 export interface PostUpsertWithWhereUniqueWithoutAuthorInput {
@@ -1291,6 +1459,28 @@ export interface PostUpdateManyDataInput {
   image?: String;
   caption?: String;
   published?: Boolean;
+}
+
+export interface UserUpsertWithoutCommentsInput {
+  update: UserUpdateWithoutCommentsDataInput;
+  create: UserCreateWithoutCommentsInput;
+}
+
+export interface CommentUpsertWithWhereUniqueWithoutPostInput {
+  where: CommentWhereUniqueInput;
+  update: CommentUpdateWithoutPostDataInput;
+  create: CommentCreateWithoutPostInput;
+}
+
+export interface PostUpsertWithoutLikesInput {
+  update: PostUpdateWithoutLikesDataInput;
+  create: PostCreateWithoutLikesInput;
+}
+
+export interface LikeUpsertWithWhereUniqueWithoutUserInput {
+  where: LikeWhereUniqueInput;
+  update: LikeUpdateWithoutUserDataInput;
+  create: LikeCreateWithoutUserInput;
 }
 
 export interface UserUpsertWithWhereUniqueWithoutFollowersInput {
@@ -1499,9 +1689,28 @@ export interface UserUpsertWithWhereUniqueWithoutFollowingInput {
   create: UserCreateWithoutFollowingInput;
 }
 
-export interface UserUpsertWithoutLikesInput {
-  update: UserUpdateWithoutLikesDataInput;
-  create: UserCreateWithoutLikesInput;
+export interface UserUpsertWithoutPostsInput {
+  update: UserUpdateWithoutPostsDataInput;
+  create: UserCreateWithoutPostsInput;
+}
+
+export interface PostUpsertWithoutCommentsInput {
+  update: PostUpdateWithoutCommentsDataInput;
+  create: PostCreateWithoutCommentsInput;
+}
+
+export interface CommentUpdateManyMutationInput {
+  text?: String;
+}
+
+export interface LikeCreateInput {
+  user: UserCreateOneWithoutLikesInput;
+  post: PostCreateOneWithoutLikesInput;
+}
+
+export interface LikeUpdateInput {
+  user?: UserUpdateOneRequiredWithoutLikesInput;
+  post?: PostUpdateOneRequiredWithoutLikesInput;
 }
 
 export interface LocationUpdateManyMutationInput {
@@ -1516,7 +1725,7 @@ export interface PostCreateInput {
   location?: LocationCreateOneInput;
   published?: Boolean;
   likes?: LikeCreateManyWithoutPostInput;
-  comments?: CommentCreateManyInput;
+  comments?: CommentCreateManyWithoutPostInput;
 }
 
 export interface PostUpdateInput {
@@ -1526,13 +1735,33 @@ export interface PostUpdateInput {
   location?: LocationUpdateOneInput;
   published?: Boolean;
   likes?: LikeUpdateManyWithoutPostInput;
-  comments?: CommentUpdateManyInput;
+  comments?: CommentUpdateManyWithoutPostInput;
 }
 
 export interface PostUpdateManyMutationInput {
   image?: String;
   caption?: String;
   published?: Boolean;
+}
+
+export interface UserCreateInput {
+  name?: String;
+  username: String;
+  profilePicture?: String;
+  website?: String;
+  bio?: String;
+  email: String;
+  phoneNumber?: Int;
+  gender?: Gender;
+  following?: UserCreateManyWithoutFollowingInput;
+  followers?: UserCreateManyWithoutFollowersInput;
+  likes?: LikeCreateManyWithoutUserInput;
+  comments?: CommentCreateManyWithoutWrittenByInput;
+  password: String;
+  resetToken?: String;
+  resetTokenExpiry?: String;
+  posts?: PostCreateManyWithoutAuthorInput;
+  permissions?: UserCreatepermissionsInput;
 }
 
 export interface UserUpdateInput {
@@ -1547,6 +1776,7 @@ export interface UserUpdateInput {
   following?: UserUpdateManyWithoutFollowingInput;
   followers?: UserUpdateManyWithoutFollowersInput;
   likes?: LikeUpdateManyWithoutUserInput;
+  comments?: CommentUpdateManyWithoutWrittenByInput;
   password?: String;
   resetToken?: String;
   resetTokenExpiry?: String;
@@ -1629,11 +1859,14 @@ export interface NodeNode {
 }
 
 export interface Comment {
+  id: ID_Output;
   text: String;
   createdAt: DateTimeOutput;
 }
 
 export interface CommentPromise extends Promise<Comment>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  post: <T = PostPromise>() => T;
   text: () => Promise<String>;
   writtenBy: <T = UserPromise>() => T;
   createdAt: () => Promise<DateTimeOutput>;
@@ -1642,173 +1875,10 @@ export interface CommentPromise extends Promise<Comment>, Fragmentable {
 export interface CommentSubscription
   extends Promise<AsyncIterator<Comment>>,
     Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  post: <T = PostSubscription>() => T;
   text: () => Promise<AsyncIterator<String>>;
   writtenBy: <T = UserSubscription>() => T;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface User {
-  id: ID_Output;
-  name?: String;
-  username: String;
-  profilePicture: String;
-  website?: String;
-  bio?: String;
-  email: String;
-  phoneNumber?: Int;
-  gender: Gender;
-  password: String;
-  resetToken?: String;
-  resetTokenExpiry?: String;
-  permissions: Permission[];
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-}
-
-export interface UserPromise extends Promise<User>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  username: () => Promise<String>;
-  profilePicture: () => Promise<String>;
-  website: () => Promise<String>;
-  bio: () => Promise<String>;
-  email: () => Promise<String>;
-  phoneNumber: () => Promise<Int>;
-  gender: () => Promise<Gender>;
-  following: <T = FragmentableArray<User>>(
-    args?: {
-      where?: UserWhereInput;
-      orderBy?: UserOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-  followers: <T = FragmentableArray<User>>(
-    args?: {
-      where?: UserWhereInput;
-      orderBy?: UserOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-  likes: <T = FragmentableArray<Like>>(
-    args?: {
-      where?: LikeWhereInput;
-      orderBy?: LikeOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-  password: () => Promise<String>;
-  resetToken: () => Promise<String>;
-  resetTokenExpiry: () => Promise<String>;
-  posts: <T = FragmentableArray<Post>>(
-    args?: {
-      where?: PostWhereInput;
-      orderBy?: PostOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-  permissions: () => Promise<Permission[]>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-}
-
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  username: () => Promise<AsyncIterator<String>>;
-  profilePicture: () => Promise<AsyncIterator<String>>;
-  website: () => Promise<AsyncIterator<String>>;
-  bio: () => Promise<AsyncIterator<String>>;
-  email: () => Promise<AsyncIterator<String>>;
-  phoneNumber: () => Promise<AsyncIterator<Int>>;
-  gender: () => Promise<AsyncIterator<Gender>>;
-  following: <T = Promise<AsyncIterator<UserSubscription>>>(
-    args?: {
-      where?: UserWhereInput;
-      orderBy?: UserOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-  followers: <T = Promise<AsyncIterator<UserSubscription>>>(
-    args?: {
-      where?: UserWhereInput;
-      orderBy?: UserOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-  likes: <T = Promise<AsyncIterator<LikeSubscription>>>(
-    args?: {
-      where?: LikeWhereInput;
-      orderBy?: LikeOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-  password: () => Promise<AsyncIterator<String>>;
-  resetToken: () => Promise<AsyncIterator<String>>;
-  resetTokenExpiry: () => Promise<AsyncIterator<String>>;
-  posts: <T = Promise<AsyncIterator<PostSubscription>>>(
-    args?: {
-      where?: PostWhereInput;
-      orderBy?: PostOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-  permissions: () => Promise<AsyncIterator<Permission[]>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface Like {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-}
-
-export interface LikePromise extends Promise<Like>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  user: <T = UserPromise>() => T;
-  post: <T = PostPromise>() => T;
-  createdAt: () => Promise<DateTimeOutput>;
-}
-
-export interface LikeSubscription
-  extends Promise<AsyncIterator<Like>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  user: <T = UserSubscription>() => T;
-  post: <T = PostSubscription>() => T;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
@@ -1883,6 +1953,193 @@ export interface PostSubscription
       last?: Int;
     }
   ) => T;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface User {
+  id: ID_Output;
+  name?: String;
+  username: String;
+  profilePicture: String;
+  website?: String;
+  bio?: String;
+  email: String;
+  phoneNumber?: Int;
+  gender: Gender;
+  password: String;
+  resetToken?: String;
+  resetTokenExpiry?: String;
+  permissions: Permission[];
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  username: () => Promise<String>;
+  profilePicture: () => Promise<String>;
+  website: () => Promise<String>;
+  bio: () => Promise<String>;
+  email: () => Promise<String>;
+  phoneNumber: () => Promise<Int>;
+  gender: () => Promise<Gender>;
+  following: <T = FragmentableArray<User>>(
+    args?: {
+      where?: UserWhereInput;
+      orderBy?: UserOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  followers: <T = FragmentableArray<User>>(
+    args?: {
+      where?: UserWhereInput;
+      orderBy?: UserOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  likes: <T = FragmentableArray<Like>>(
+    args?: {
+      where?: LikeWhereInput;
+      orderBy?: LikeOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  comments: <T = FragmentableArray<Comment>>(
+    args?: {
+      where?: CommentWhereInput;
+      orderBy?: CommentOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  password: () => Promise<String>;
+  resetToken: () => Promise<String>;
+  resetTokenExpiry: () => Promise<String>;
+  posts: <T = FragmentableArray<Post>>(
+    args?: {
+      where?: PostWhereInput;
+      orderBy?: PostOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  permissions: () => Promise<Permission[]>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  username: () => Promise<AsyncIterator<String>>;
+  profilePicture: () => Promise<AsyncIterator<String>>;
+  website: () => Promise<AsyncIterator<String>>;
+  bio: () => Promise<AsyncIterator<String>>;
+  email: () => Promise<AsyncIterator<String>>;
+  phoneNumber: () => Promise<AsyncIterator<Int>>;
+  gender: () => Promise<AsyncIterator<Gender>>;
+  following: <T = Promise<AsyncIterator<UserSubscription>>>(
+    args?: {
+      where?: UserWhereInput;
+      orderBy?: UserOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  followers: <T = Promise<AsyncIterator<UserSubscription>>>(
+    args?: {
+      where?: UserWhereInput;
+      orderBy?: UserOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  likes: <T = Promise<AsyncIterator<LikeSubscription>>>(
+    args?: {
+      where?: LikeWhereInput;
+      orderBy?: LikeOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  comments: <T = Promise<AsyncIterator<CommentSubscription>>>(
+    args?: {
+      where?: CommentWhereInput;
+      orderBy?: CommentOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  password: () => Promise<AsyncIterator<String>>;
+  resetToken: () => Promise<AsyncIterator<String>>;
+  resetTokenExpiry: () => Promise<AsyncIterator<String>>;
+  posts: <T = Promise<AsyncIterator<PostSubscription>>>(
+    args?: {
+      where?: PostWhereInput;
+      orderBy?: PostOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  permissions: () => Promise<AsyncIterator<Permission[]>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface Like {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+}
+
+export interface LikePromise extends Promise<Like>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  user: <T = UserPromise>() => T;
+  post: <T = PostPromise>() => T;
+  createdAt: () => Promise<DateTimeOutput>;
+}
+
+export interface LikeSubscription
+  extends Promise<AsyncIterator<Like>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  user: <T = UserSubscription>() => T;
+  post: <T = PostSubscription>() => T;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
@@ -2240,6 +2497,7 @@ export interface CommentSubscriptionPayloadSubscription
 }
 
 export interface CommentPreviousValues {
+  id: ID_Output;
   text: String;
   createdAt: DateTimeOutput;
 }
@@ -2247,6 +2505,7 @@ export interface CommentPreviousValues {
 export interface CommentPreviousValuesPromise
   extends Promise<CommentPreviousValues>,
     Fragmentable {
+  id: () => Promise<ID_Output>;
   text: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
 }
@@ -2254,6 +2513,7 @@ export interface CommentPreviousValuesPromise
 export interface CommentPreviousValuesSubscription
   extends Promise<AsyncIterator<CommentPreviousValues>>,
     Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
   text: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
@@ -2483,15 +2743,15 @@ export interface UserPreviousValuesSubscription
 }
 
 /*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
-*/
-export type String = string;
-
-/*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
 */
 export type ID_Input = string | number;
 export type ID_Output = string;
+
+/*
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+*/
+export type String = string;
 
 /*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
@@ -2534,10 +2794,6 @@ export const models: Model[] = [
     embedded: false
   },
   {
-    name: "Like",
-    embedded: false
-  },
-  {
     name: "User",
     embedded: false
   },
@@ -2547,6 +2803,10 @@ export const models: Model[] = [
   },
   {
     name: "Location",
+    embedded: false
+  },
+  {
+    name: "Like",
     embedded: false
   },
   {

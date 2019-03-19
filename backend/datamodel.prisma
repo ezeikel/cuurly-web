@@ -11,13 +11,6 @@ enum Gender {
   NOTSPECIFIED
 }
 
-type Like {
-  id: ID! @id
-  user: User! @relation(name: "UserLikes", link: INLINE)
-  post: Post! @relation(name: "PostLikes", link: INLINE)
-  createdAt: DateTime! @createdAt
-}
-
 type User {
   id: ID! @id
   name: String
@@ -31,6 +24,7 @@ type User {
   following: [User!]! @relation(name: "Following", link: INLINE)
   followers: [User!]! @relation(name: "Followers", link: INLINE)
   likes: [Like!]! @relation(name: "UserLikes")
+  comments: [Comment!]! @relation(name: "UserComments")
   password: String!
   resetToken: String
   resetTokenExpiry: String
@@ -48,7 +42,7 @@ type Post {
   location: Location
   published: Boolean @default(value: false)
   likes: [Like!]! @relation(name: "PostLikes")
-  comments: [Comment!]!
+  comments: [Comment!]! @relation(name: "PostComments")
   createdAt: DateTime! @createdAt
 }
 
@@ -57,8 +51,17 @@ type Location @embedded {
   longitude: Float!
 }
 
-type Comment @embedded {
+type Like {
+  id: ID! @id
+  user: User! @relation(name: "UserLikes", link: INLINE)
+  post: Post! @relation(name: "PostLikes", link: INLINE)
+  createdAt: DateTime! @createdAt
+}
+
+type Comment {
+  id: ID! @id
+  post: Post! @relation(name: "PostComments", link: INLINE)
   text: String!
-  writtenBy: User!
+  writtenBy: User! @relation(name: "UserComments", link: INLINE)
   createdAt: DateTime! @createdAt
  }
