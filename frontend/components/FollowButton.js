@@ -16,7 +16,7 @@ const FollowButton = ({ userId, usersFollowers }) => (
         <Mutation
           mutation={usersFollowers.includes(currentUser.id) ? UNFOLLOW_MUTATION : FOLLOW_MUTATION}
           variables={{ id: userId }}
-          refetchQueries={[{ query: SINGLE_USER_QUERY, variables: { id: userId } }]}
+          refetchQueries={[{ query: SINGLE_USER_QUERY, variables: { id: userId } }, { query: SINGLE_USER_QUERY, variables: { id: currentUser.id } }]}
         >
           { follow => <StyledButton mode={usersFollowers.includes(currentUser.id) ? 'unfollow' : 'follow'} onClick={follow}>{ usersFollowers.includes(currentUser.id) ? 'Unfollow' : 'Follow' }</StyledButton> }
         </Mutation>
