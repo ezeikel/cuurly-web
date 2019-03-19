@@ -1,9 +1,8 @@
 import { Mutation } from 'react-apollo';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup'
-import styled from 'styled-components';
 import CurrentUser from "./CurrentUser";
-import { SINGLE_POST_QUERY, POST_COMMENT_MUTATION } from '../apollo/queries';
+import { SINGLE_POST_QUERY, ADD_COMMENT_MUTATION } from '../apollo/queries';
 import Button from './styles/Button';
 
 const CommentSchema = Yup.object().shape({
@@ -16,7 +15,7 @@ const PostComment = ({ postId }) => (
     {({ data: { currentUser } }) => (
       currentUser && currentUser ?
         <Mutation
-          mutation={POST_COMMENT_MUTATION}
+          mutation={ADD_COMMENT_MUTATION}
           refetchQueries={[{ query: SINGLE_POST_QUERY, variables: { id: postId } }]}
         >
           { (addComment, {error, loading }) => (

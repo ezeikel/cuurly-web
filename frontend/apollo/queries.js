@@ -216,9 +216,17 @@ export const UNLIKE_POST_MUTATION = gql`
    }
 `;
 
-export const POST_COMMENT_MUTATION = gql`
-   mutation POST_COMMENT_MUTATION ($id: ID!, $text: String!) {
+export const ADD_COMMENT_MUTATION = gql`
+   mutation ADD_COMMENT_MUTATION ($id: ID!, $text: String!) {
      addComment (id: $id, text: $text) {
+       id
+     }
+   }
+`
+;
+export const DELETE_COMMENT_MUTATION = gql`
+   mutation DELETE_COMMENT_MUTATION ($id: ID!) {
+     deleteComment (id: $id) {
        id
      }
    }

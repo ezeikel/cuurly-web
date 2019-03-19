@@ -3,6 +3,8 @@ import { Query } from 'react-apollo';
 import { SINGLE_POST_QUERY } from '../apollo/queries';
 import LikeButton from './LikeButton';
 import PostComment from './PostComment';
+import CommentList from './styles/CommentList';
+import Comment from './Comment';
 
 class Post extends Component {
   render() {
@@ -21,13 +23,11 @@ class Post extends Component {
                 <p>{post.author.username}</p>
                 <p>{post.caption}</p>
                 <PostComment postId={post.id} />
-                <ul>
+                <CommentList>
                   {post.comments.map(comment => (
-                    <li key={comment.id}>
-                      <span>{comment.writtenBy.username}</span> <span>{comment.text}</span>
-                    </li>
+                    <Comment key={comment.id} comment={comment} post={post} />
                   ))}
-                </ul>
+                </CommentList>
               </div>
             </div>
           );
