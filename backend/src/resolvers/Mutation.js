@@ -9,13 +9,13 @@ cloudinary.config({
   api_secret: 'xHtsSFHgmkRH1-4jT4Mjt1uosfg'
 });
 
-const processUpload = async ({ upload, folder, tags }) => {
+const processUpload = async ({ file, folder, tags }) => {
   const {
     stream,
     filename,
     mimetype,
     encoding
-  } = await upload;
+  } = await file;
 
   let resultUrl = '', resultSecureUrl = '';
   const cloudinaryUpload = async ({ stream }) => {
@@ -25,7 +25,7 @@ const processUpload = async ({ upload, folder, tags }) => {
           if (result) {
             resultUrl = result.url;
             resultSecureUrl = result.secure_url;
-            resolve(resultSecureUrl)
+            resolve(resultSecureUrl);
           } else {
             reject(error);
           }
@@ -159,7 +159,7 @@ const Mutations = {
 
     const tags = ['user_post'];
     const folder = `uploads/users/${ctx.request.userId}`;
-    const uploadUrl = await processUpload({file, tags, folder});
+    const uploadUrl = await processUpload({ file, tags, folder });
 
     // TODO: make sure that a ref to cloudinary asset is stored for deletion via the Admin API
     // https://cloudinary.com/documentation/admin_api
