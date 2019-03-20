@@ -1,5 +1,6 @@
 # import * from './generated/prisma.graphql'
 
+# this is needed for upload to work
 scalar Upload
 
 type SuccessMessage {
@@ -52,6 +53,8 @@ type Mutation {
   follow(id: ID!): User!
   unfollow(id: ID!): User!
   createPost(file: Upload!, caption: String): File!
+  # singleUpload (file: Upload!): File!
+  # multipleUpload (files: [Upload!]!): [File!]!
   likePost(id: ID!): Like!
   unlikePost(id: ID!): Like!
   addComment(id: ID!, text: String!): Comment!

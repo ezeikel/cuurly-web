@@ -120,6 +120,7 @@ const Mutations = {
     const { stream, filename, mimetype, encoding } = await args.file;
 
     console.log({ filename });
+    // TODO: File is being uploaded correctly. Now do the cloudinary stuff
 
     // 1. Validate file metadata.
 

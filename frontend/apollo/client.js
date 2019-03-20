@@ -35,13 +35,18 @@ const httpLink = new HttpLink({
   credentials: 'include'
 });
 
+const uploadLink = createUploadLink({
+  uri: process.env.NODE_ENV === 'production' ? prodEndpoint : endpoint,
+  credentials: 'include'
+});
+
 const createClient = () => {
   const client = new ApolloClient({
     link: ApolloLink.from([
       errorLink,
       stateLink,
-      httpLink,
-      createUploadLink
+      // httpLink,
+      uploadLink
     ]),
     cache
   });

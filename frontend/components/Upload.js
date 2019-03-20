@@ -29,22 +29,6 @@ class Upload extends Component {
           <Formik
             initialValues={{ caption: '' }}
             onSubmit={async (values, actions) => {
-              // const data = new FormData();
-
-              // data.append('file', this.state.file);
-              // data.append('upload_preset', 'crownd');
-
-              // const res = await fetch('https://api.cloudinary.com/v1_1/crowndapp/image/upload', {
-              //   method: 'POST',
-              //   body: data
-              // });
-
-              // const file = await res.json();
-
-              // values.image = file.secure_url;
-              // TODO: Removing largeImage for now
-              // values.largeImage = file.eager[0].secure_url;
-
               await createPost({ variables: { ...values, file: this.state.file } });
             }}
           >
