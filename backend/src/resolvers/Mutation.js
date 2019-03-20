@@ -1,6 +1,46 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const cloudinary = require('cloudinary');
 const { isLoggedIn } = require('../utils');
+
+cloudinary.config({
+  cloud_name: 'crownd',
+  api_key: '587685821236624',
+  api_secret: 'xHtsSFHgmkRH1-4jT4Mjt1uosfg'
+});
+
+const processUpload = async ({ upload, folder, tags }) => {
+  const {
+    stream,
+    filename,
+    mimetype,
+    encoding
+  } = await upload;
+
+  let resultUrl = '', resultSecureUrl = '';
+  const cloudinaryUpload = async ({ stream }) => {
+    try {
+      await new Promise((resolve, reject) => {
+        const streamLoad = cloudinary.v2.uploader.upload_stream({folder, tags, overwrite: true}, function (error, result) {
+          if (result) {
+            resultUrl = result.url;
+            resultSecureUrl = result.secure_url;
+            resolve(resultSecureUrl)
+          } else {
+            reject(error);
+          }
+        });
+
+        stream.pipe(streamLoad);
+      });
+    } catch (err) {
+      throw new Error(`Failed to upload profile picture ! Err:${err.message}`);
+    }
+  };
+
+  await cloudinaryUpload({ stream });
+  return(resultUrl);
+}
 
 const Mutations = {
   signup: async (_, args, ctx, info) => {
@@ -114,22 +154,15 @@ const Mutations = {
     });
 
   },
-  createPost: async (_, args, ctx, info) => {
+  createPost: async (_, { file, caption }, ctx, info) => {
     isLoggedIn(ctx);
 
-    const { stream, filename, mimetype, encoding } = await args.file;
+    const tags = ['user_post'];
+    const folder = `uploads/users/${ctx.request.userId}`;
+    const uploadUrl = await processUpload({file, tags, folder});
 
-    console.log({ filename });
-    // TODO: File is being uploaded correctly. Now do the cloudinary stuff
-
-    // 1. Validate file metadata.
-
-    // 2. Stream file contents into cloud storage:
-    // https://nodejs.org/api/stream.html
-
-    // 3. Record the file upload in your DB.
-    // const id = await recordFile( … )
-
+    // TODO: make sure that a ref to cloudinary asset is stored for deletion via the Admin API
+    // https://cloudinary.com/documentation/admin_api
 
     return ctx.prisma.createPost({
       author: {
@@ -137,7 +170,8 @@ const Mutations = {
           id: ctx.request.userId
         }
       },
-      ...args
+      image: uploadUrl,
+      caption
     }, info);
   },
   likePost: (_, { id }, ctx, info) => {
