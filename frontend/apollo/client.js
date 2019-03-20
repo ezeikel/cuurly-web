@@ -1,5 +1,6 @@
 import ApolloClient from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
+import { createUploadLink } from 'apollo-upload-client';
 import { withClientState } from 'apollo-link-state';
 import { HttpLink } from 'apollo-link-http';
 import { onError } from 'apollo-link-error';
@@ -39,7 +40,8 @@ const createClient = () => {
     link: ApolloLink.from([
       errorLink,
       stateLink,
-      httpLink
+      httpLink,
+      createUploadLink
     ]),
     cache
   });
