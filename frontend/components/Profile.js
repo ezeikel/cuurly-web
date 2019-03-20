@@ -6,6 +6,8 @@ import FollowButton from './FollowButton';
 
 class Profile extends Component {
   render() {
+    console.log(this.props.id);
+    debugger;
     return (
       <Query query={SINGLE_USER_QUERY} variables={{ id: this.props.id}}>
         {({ data: { user: { id, profilePicture, name, bio, posts, followers, following }}, error, loading }) => {

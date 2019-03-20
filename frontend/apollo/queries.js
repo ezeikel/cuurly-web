@@ -172,12 +172,12 @@ export const SIGNOUT_MUTATION = gql`
 
 export const CREATE_POST_MUTATION = gql`
    mutation CREATE_POST_MUTATION (
+     $file: Upload!
      $caption: String!
-     $image: String
    ) {
      createPost (
+       file: $file
        caption: $caption
-       image: $image
      ) {
        id
      }

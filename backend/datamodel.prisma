@@ -65,3 +65,10 @@ type Comment {
   writtenBy: User! @relation(name: "UserComments", link: INLINE)
   createdAt: DateTime! @createdAt
  }
+
+ type File {
+   id: ID! @id
+   filename: String!
+   mimetype: String!
+   encoding: String!
+ }

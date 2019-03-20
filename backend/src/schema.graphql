@@ -1,5 +1,7 @@
 # import * from './generated/prisma.graphql'
 
+scalar Upload
+
 type SuccessMessage {
   message: String
 }
@@ -40,6 +42,7 @@ type Query {
   post(id: ID!): Post
   feed(id: ID!): [Post!]!
   likedPosts(id: ID!): [Post!]!
+  uploads: [File]
 }
 
 type Mutation {
@@ -48,7 +51,7 @@ type Mutation {
   signout: SuccessMessage
   follow(id: ID!): User!
   unfollow(id: ID!): User!
-  createPost(image: String, largeImage: String, caption: String): Post!
+  createPost(file: Upload!, caption: String): File!
   likePost(id: ID!): Like!
   unlikePost(id: ID!): Like!
   addComment(id: ID!, text: String!): Comment!

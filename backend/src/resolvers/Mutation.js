@@ -114,8 +114,21 @@ const Mutations = {
     });
 
   },
-  createPost: (_, args, ctx, info) => {
+  createPost: async (_, args, ctx, info) => {
     isLoggedIn(ctx);
+
+    const { stream, filename, mimetype, encoding } = await args.file;
+
+    console.log({ filename });
+
+    // 1. Validate file metadata.
+
+    // 2. Stream file contents into cloud storage:
+    // https://nodejs.org/api/stream.html
+
+    // 3. Record the file upload in your DB.
+    // const id = await recordFile( … )
+
 
     return ctx.prisma.createPost({
       author: {

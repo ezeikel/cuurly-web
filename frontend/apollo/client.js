@@ -7,6 +7,8 @@ import { ApolloLink } from 'apollo-link';
 import { defaults, resolvers } from "./store";
 import { endpoint, prodEndpoint } from '../config';
 
+import withApollo from 'next-with-apollo';
+
 const cache = new InMemoryCache();
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
@@ -32,7 +34,7 @@ const httpLink = new HttpLink({
   credentials: 'include'
 });
 
-export default async () => {
+const createClient = () => {
   const client = new ApolloClient({
     link: ApolloLink.from([
       errorLink,
@@ -46,3 +48,5 @@ export default async () => {
 
   return client;
 };
+
+export default withApollo(createClient);
