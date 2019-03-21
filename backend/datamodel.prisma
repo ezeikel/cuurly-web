@@ -11,6 +11,11 @@ enum Gender {
   NOTSPECIFIED
 }
 
+enum ContentType {
+  IMAGE
+  VIDEO
+}
+
 type User {
   id: ID! @id
   name: String
@@ -37,18 +42,24 @@ type User {
 type Post {
   id: ID! @id
   author: User! @relation(name: "Posts")
-  image: String
+  content: Content!
   caption: String
   location: Location
   published: Boolean @default(value: false)
-  likes: [Like!]! @relation(name: "PostLikes")
-  comments: [Comment!]! @relation(name: "PostComments")
+  likes: [Like!]! @relation(name: "PostLikes", onDelete: CASCADE)
+  comments: [Comment!]! @relation(name: "PostComments", onDelete: CASCADE)
   createdAt: DateTime! @createdAt
 }
 
 type Location @embedded {
   latitude: Float!
   longitude: Float!
+}
+
+type Content @embedded {
+  type: ContentType! @default(value: IMAGE)
+  url: String
+  publicId: String
 }
 
 type Like {

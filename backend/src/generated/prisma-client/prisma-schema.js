@@ -7,6 +7,10 @@ module.exports = {
   count: Int!
 }
 
+type AggregateContent {
+  count: Int!
+}
+
 type AggregateFile {
   count: Int!
 }
@@ -274,6 +278,138 @@ input CommentWhereInput {
 
 input CommentWhereUniqueInput {
   id: ID
+}
+
+type Content {
+  type: ContentType!
+  url: String
+  publicId: String
+}
+
+type ContentConnection {
+  pageInfo: PageInfo!
+  edges: [ContentEdge]!
+  aggregate: AggregateContent!
+}
+
+input ContentCreateInput {
+  type: ContentType
+  url: String
+  publicId: String
+}
+
+input ContentCreateOneInput {
+  create: ContentCreateInput
+}
+
+type ContentEdge {
+  node: Content!
+  cursor: String!
+}
+
+enum ContentOrderByInput {
+  type_ASC
+  type_DESC
+  url_ASC
+  url_DESC
+  publicId_ASC
+  publicId_DESC
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type ContentPreviousValues {
+  type: ContentType!
+  url: String
+  publicId: String
+}
+
+type ContentSubscriptionPayload {
+  mutation: MutationType!
+  node: Content
+  updatedFields: [String!]
+  previousValues: ContentPreviousValues
+}
+
+input ContentSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ContentWhereInput
+  AND: [ContentSubscriptionWhereInput!]
+  OR: [ContentSubscriptionWhereInput!]
+  NOT: [ContentSubscriptionWhereInput!]
+}
+
+enum ContentType {
+  IMAGE
+  VIDEO
+}
+
+input ContentUpdateDataInput {
+  type: ContentType
+  url: String
+  publicId: String
+}
+
+input ContentUpdateManyMutationInput {
+  type: ContentType
+  url: String
+  publicId: String
+}
+
+input ContentUpdateOneRequiredInput {
+  create: ContentCreateInput
+  update: ContentUpdateDataInput
+  upsert: ContentUpsertNestedInput
+}
+
+input ContentUpsertNestedInput {
+  update: ContentUpdateDataInput!
+  create: ContentCreateInput!
+}
+
+input ContentWhereInput {
+  type: ContentType
+  type_not: ContentType
+  type_in: [ContentType!]
+  type_not_in: [ContentType!]
+  url: String
+  url_not: String
+  url_in: [String!]
+  url_not_in: [String!]
+  url_lt: String
+  url_lte: String
+  url_gt: String
+  url_gte: String
+  url_contains: String
+  url_not_contains: String
+  url_starts_with: String
+  url_not_starts_with: String
+  url_ends_with: String
+  url_not_ends_with: String
+  publicId: String
+  publicId_not: String
+  publicId_in: [String!]
+  publicId_not_in: [String!]
+  publicId_lt: String
+  publicId_lte: String
+  publicId_gt: String
+  publicId_gte: String
+  publicId_contains: String
+  publicId_not_contains: String
+  publicId_starts_with: String
+  publicId_not_starts_with: String
+  publicId_ends_with: String
+  publicId_not_ends_with: String
+  AND: [ContentWhereInput!]
+  OR: [ContentWhereInput!]
+  NOT: [ContentWhereInput!]
 }
 
 scalar DateTime
@@ -734,6 +870,9 @@ type Mutation {
   upsertComment(where: CommentWhereUniqueInput!, create: CommentCreateInput!, update: CommentUpdateInput!): Comment!
   deleteComment(where: CommentWhereUniqueInput!): Comment
   deleteManyComments(where: CommentWhereInput): BatchPayload!
+  createContent(data: ContentCreateInput!): Content!
+  updateManyContents(data: ContentUpdateManyMutationInput!, where: ContentWhereInput): BatchPayload!
+  deleteManyContents(where: ContentWhereInput): BatchPayload!
   createFile(data: FileCreateInput!): File!
   updateFile(data: FileUpdateInput!, where: FileWhereUniqueInput!): File
   updateManyFiles(data: FileUpdateManyMutationInput!, where: FileWhereInput): BatchPayload!
@@ -788,7 +927,7 @@ enum Permission {
 type Post {
   id: ID!
   author: User!
-  image: String
+  content: Content!
   caption: String
   location: Location
   published: Boolean
@@ -805,7 +944,7 @@ type PostConnection {
 
 input PostCreateInput {
   author: UserCreateOneWithoutPostsInput!
-  image: String
+  content: ContentCreateOneInput!
   caption: String
   location: LocationCreateOneInput
   published: Boolean
@@ -829,7 +968,7 @@ input PostCreateOneWithoutLikesInput {
 }
 
 input PostCreateWithoutAuthorInput {
-  image: String
+  content: ContentCreateOneInput!
   caption: String
   location: LocationCreateOneInput
   published: Boolean
@@ -839,7 +978,7 @@ input PostCreateWithoutAuthorInput {
 
 input PostCreateWithoutCommentsInput {
   author: UserCreateOneWithoutPostsInput!
-  image: String
+  content: ContentCreateOneInput!
   caption: String
   location: LocationCreateOneInput
   published: Boolean
@@ -848,7 +987,7 @@ input PostCreateWithoutCommentsInput {
 
 input PostCreateWithoutLikesInput {
   author: UserCreateOneWithoutPostsInput!
-  image: String
+  content: ContentCreateOneInput!
   caption: String
   location: LocationCreateOneInput
   published: Boolean
@@ -863,8 +1002,6 @@ type PostEdge {
 enum PostOrderByInput {
   id_ASC
   id_DESC
-  image_ASC
-  image_DESC
   caption_ASC
   caption_DESC
   published_ASC
@@ -877,7 +1014,6 @@ enum PostOrderByInput {
 
 type PostPreviousValues {
   id: ID!
-  image: String
   caption: String
   published: Boolean
   createdAt: DateTime!
@@ -898,20 +1034,6 @@ input PostScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  image: String
-  image_not: String
-  image_in: [String!]
-  image_not_in: [String!]
-  image_lt: String
-  image_lte: String
-  image_gt: String
-  image_gte: String
-  image_contains: String
-  image_not_contains: String
-  image_starts_with: String
-  image_not_starts_with: String
-  image_ends_with: String
-  image_not_ends_with: String
   caption: String
   caption_not: String
   caption_in: [String!]
@@ -961,7 +1083,7 @@ input PostSubscriptionWhereInput {
 
 input PostUpdateInput {
   author: UserUpdateOneRequiredWithoutPostsInput
-  image: String
+  content: ContentUpdateOneRequiredInput
   caption: String
   location: LocationUpdateOneInput
   published: Boolean
@@ -970,13 +1092,11 @@ input PostUpdateInput {
 }
 
 input PostUpdateManyDataInput {
-  image: String
   caption: String
   published: Boolean
 }
 
 input PostUpdateManyMutationInput {
-  image: String
   caption: String
   published: Boolean
 }
@@ -1013,7 +1133,7 @@ input PostUpdateOneRequiredWithoutLikesInput {
 }
 
 input PostUpdateWithoutAuthorDataInput {
-  image: String
+  content: ContentUpdateOneRequiredInput
   caption: String
   location: LocationUpdateOneInput
   published: Boolean
@@ -1023,7 +1143,7 @@ input PostUpdateWithoutAuthorDataInput {
 
 input PostUpdateWithoutCommentsDataInput {
   author: UserUpdateOneRequiredWithoutPostsInput
-  image: String
+  content: ContentUpdateOneRequiredInput
   caption: String
   location: LocationUpdateOneInput
   published: Boolean
@@ -1032,7 +1152,7 @@ input PostUpdateWithoutCommentsDataInput {
 
 input PostUpdateWithoutLikesDataInput {
   author: UserUpdateOneRequiredWithoutPostsInput
-  image: String
+  content: ContentUpdateOneRequiredInput
   caption: String
   location: LocationUpdateOneInput
   published: Boolean
@@ -1076,20 +1196,7 @@ input PostWhereInput {
   id_ends_with: ID
   id_not_ends_with: ID
   author: UserWhereInput
-  image: String
-  image_not: String
-  image_in: [String!]
-  image_not_in: [String!]
-  image_lt: String
-  image_lte: String
-  image_gt: String
-  image_gte: String
-  image_contains: String
-  image_not_contains: String
-  image_starts_with: String
-  image_not_starts_with: String
-  image_ends_with: String
-  image_not_ends_with: String
+  content: ContentWhereInput
   caption: String
   caption_not: String
   caption_in: [String!]
@@ -1134,6 +1241,8 @@ type Query {
   comment(where: CommentWhereUniqueInput!): Comment
   comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment]!
   commentsConnection(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CommentConnection!
+  contents(where: ContentWhereInput, orderBy: ContentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Content]!
+  contentsConnection(where: ContentWhereInput, orderBy: ContentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ContentConnection!
   file(where: FileWhereUniqueInput!): File
   files(where: FileWhereInput, orderBy: FileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [File]!
   filesConnection(where: FileWhereInput, orderBy: FileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FileConnection!
@@ -1153,6 +1262,7 @@ type Query {
 
 type Subscription {
   comment(where: CommentSubscriptionWhereInput): CommentSubscriptionPayload
+  content(where: ContentSubscriptionWhereInput): ContentSubscriptionPayload
   file(where: FileSubscriptionWhereInput): FileSubscriptionPayload
   like(where: LikeSubscriptionWhereInput): LikeSubscriptionPayload
   location(where: LocationSubscriptionWhereInput): LocationSubscriptionPayload

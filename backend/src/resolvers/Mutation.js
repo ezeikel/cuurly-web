@@ -17,15 +17,16 @@ const processUpload = async ({ file, folder, tags }) => {
     encoding
   } = await file;
 
-  let resultUrl = '', resultSecureUrl = '';
+  let resultUrl = '', resultSecureUrl = '', publicId = '';
   const cloudinaryUpload = async ({ stream }) => {
     try {
       await new Promise((resolve, reject) => {
-        const streamLoad = cloudinary.v2.uploader.upload_stream({folder, tags, overwrite: true}, function (error, result) {
+        const streamLoad = cloudinary.v2.uploader.upload_stream({folder, tags, overwrite: true}, function(error, result) {
           if (result) {
             resultUrl = result.url;
             resultSecureUrl = result.secure_url;
-            resolve(resultSecureUrl);
+            publicId = result.public_id;
+            resolve({ resultSecureUrl, publicId });
           } else {
             reject(error);
           }
@@ -39,7 +40,7 @@ const processUpload = async ({ file, folder, tags }) => {
   };
 
   await cloudinaryUpload({ stream });
-  return(resultUrl);
+  return({ resultUrl, resultSecureUrl, publicId });
 }
 
 const Mutations = {
@@ -159,10 +160,7 @@ const Mutations = {
 
     const tags = ['user_post'];
     const folder = `uploads/users/${ctx.request.userId}`;
-    const uploadUrl = await processUpload({ file, tags, folder });
-
-    // TODO: make sure that a ref to cloudinary asset is stored for deletion via the Admin API
-    // https://cloudinary.com/documentation/admin_api
+    const { resultSecureUrl, publicId } = await processUpload({ file, tags, folder });
 
     return ctx.prisma.createPost({
       author: {
@@ -170,14 +168,27 @@ const Mutations = {
           id: ctx.request.userId
         }
       },
-      image: uploadUrl,
+      content: {
+        create: {
+          url: resultSecureUrl,
+          publicId
+        }
+      },
       caption
     }, info);
+  },
+  deletePost: async (_, { id }, ctx, info) => {
+    //isLoggedIn(ctx);
+
+    // TODO: Go off to cloudinary api and and delete all associated content of a Post based on publicId
+    // https://cloudinary.com/documentation/admin_api
+
+    return ctx.prisma.deletePost({ id }, info);
   },
   likePost: (_, { id }, ctx, info) => {
     isLoggedIn(ctx);
 
-    // TODO: Add code to make sure a User cannot like a post more than once
+    // TODO: Add check to make sure a User cannot like a post more than once
 
     return ctx.prisma.createLike({
       user: {

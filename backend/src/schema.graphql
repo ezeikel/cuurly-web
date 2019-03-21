@@ -10,8 +10,7 @@ type SuccessMessage {
 type Post {
   id: ID!
   caption: String
-  image: String
-  video: String
+  content: Content!
   author: User!
   likes: [Like!]!
   comments: [Comment!]!
@@ -52,9 +51,10 @@ type Mutation {
   signout: SuccessMessage
   follow(id: ID!): User!
   unfollow(id: ID!): User!
-  createPost(file: Upload!, caption: String): File!
+  createPost(file: Upload!, caption: String): Post!
   # singleUpload (file: Upload!): File!
   # multipleUpload (files: [Upload!]!): [File!]!
+  deletePost(id: ID!): Post!
   likePost(id: ID!): Like!
   unlikePost(id: ID!): Like!
   addComment(id: ID!, text: String!): Comment!

@@ -42,7 +42,9 @@ export const SINGLE_USER_QUERY = gql`
       }
       posts {
         id
-        image
+        content {
+          url
+        }
         caption
         likes {
           id
@@ -56,7 +58,9 @@ export const SINGLE_POST_QUERY = gql`
   query SINGLE_POST_QUERY($id: ID!) {
     post(id: $id) {
       id
-      image
+      content {
+        url
+      }
       caption
       author {
         id
@@ -84,7 +88,9 @@ export const FEED_QUERY = gql`
   query FEED_QUERY($id: ID!) {
     feed(id: $id) {
       id
-      image
+      content {
+        url
+      }
       caption
       author {
         id
@@ -114,7 +120,9 @@ export const LIKED_POSTS_QUERY = gql`
         id
         post {
           id
-          image
+          content {
+            url
+          }
           caption
           author {
             id

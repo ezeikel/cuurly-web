@@ -13,6 +13,10 @@ var models = [
     embedded: false
   },
   {
+    name: "ContentType",
+    embedded: false
+  },
+  {
     name: "User",
     embedded: false
   },
@@ -22,6 +26,10 @@ var models = [
   },
   {
     name: "Location",
+    embedded: false
+  },
+  {
+    name: "Content",
     embedded: false
   },
   {

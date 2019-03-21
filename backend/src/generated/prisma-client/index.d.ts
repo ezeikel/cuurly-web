@@ -15,6 +15,7 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 
 export interface Exists {
   comment: (where?: CommentWhereInput) => Promise<boolean>;
+  content: (where?: ContentWhereInput) => Promise<boolean>;
   file: (where?: FileWhereInput) => Promise<boolean>;
   like: (where?: LikeWhereInput) => Promise<boolean>;
   location: (where?: LocationWhereInput) => Promise<boolean>;
@@ -64,6 +65,28 @@ export interface Prisma {
       last?: Int;
     }
   ) => CommentConnectionPromise;
+  contents: (
+    args?: {
+      where?: ContentWhereInput;
+      orderBy?: ContentOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => FragmentableArray<Content>;
+  contentsConnection: (
+    args?: {
+      where?: ContentWhereInput;
+      orderBy?: ContentOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => ContentConnectionPromise;
   file: (where: FileWhereUniqueInput) => FilePromise;
   files: (
     args?: {
@@ -200,6 +223,11 @@ export interface Prisma {
   ) => CommentPromise;
   deleteComment: (where: CommentWhereUniqueInput) => CommentPromise;
   deleteManyComments: (where?: CommentWhereInput) => BatchPayloadPromise;
+  createContent: (data: ContentCreateInput) => ContentPromise;
+  updateManyContents: (
+    args: { data: ContentUpdateManyMutationInput; where?: ContentWhereInput }
+  ) => BatchPayloadPromise;
+  deleteManyContents: (where?: ContentWhereInput) => BatchPayloadPromise;
   createFile: (data: FileCreateInput) => FilePromise;
   updateFile: (
     args: { data: FileUpdateInput; where: FileWhereUniqueInput }
@@ -278,6 +306,9 @@ export interface Subscription {
   comment: (
     where?: CommentSubscriptionWhereInput
   ) => CommentSubscriptionPayloadSubscription;
+  content: (
+    where?: ContentSubscriptionWhereInput
+  ) => ContentSubscriptionPayloadSubscription;
   file: (
     where?: FileSubscriptionWhereInput
   ) => FileSubscriptionPayloadSubscription;
@@ -304,6 +335,8 @@ export interface ClientConstructor<T> {
  */
 
 export type Gender = "MALE" | "FEMALE" | "NONBINARY" | "NOTSPECIFIED";
+
+export type ContentType = "IMAGE" | "VIDEO";
 
 export type UserOrderByInput =
   | "id_ASC"
@@ -356,8 +389,6 @@ export type CommentOrderByInput =
 export type PostOrderByInput =
   | "id_ASC"
   | "id_DESC"
-  | "image_ASC"
-  | "image_DESC"
   | "caption_ASC"
   | "caption_DESC"
   | "published_ASC"
@@ -368,6 +399,20 @@ export type PostOrderByInput =
   | "updatedAt_DESC";
 
 export type Permission = "ADMIN" | "USER" | "PERMISSIONUPDATE";
+
+export type ContentOrderByInput =
+  | "type_ASC"
+  | "type_DESC"
+  | "url_ASC"
+  | "url_DESC"
+  | "publicId_ASC"
+  | "publicId_DESC"
+  | "id_ASC"
+  | "id_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
 
 export type FileOrderByInput =
   | "id_ASC"
@@ -636,20 +681,7 @@ export interface PostWhereInput {
   id_ends_with?: ID_Input;
   id_not_ends_with?: ID_Input;
   author?: UserWhereInput;
-  image?: String;
-  image_not?: String;
-  image_in?: String[] | String;
-  image_not_in?: String[] | String;
-  image_lt?: String;
-  image_lte?: String;
-  image_gt?: String;
-  image_gte?: String;
-  image_contains?: String;
-  image_not_contains?: String;
-  image_starts_with?: String;
-  image_not_starts_with?: String;
-  image_ends_with?: String;
-  image_not_ends_with?: String;
+  content?: ContentWhereInput;
   caption?: String;
   caption_not?: String;
   caption_in?: String[] | String;
@@ -684,6 +716,44 @@ export interface PostWhereInput {
   AND?: PostWhereInput[] | PostWhereInput;
   OR?: PostWhereInput[] | PostWhereInput;
   NOT?: PostWhereInput[] | PostWhereInput;
+}
+
+export interface ContentWhereInput {
+  type?: ContentType;
+  type_not?: ContentType;
+  type_in?: ContentType[] | ContentType;
+  type_not_in?: ContentType[] | ContentType;
+  url?: String;
+  url_not?: String;
+  url_in?: String[] | String;
+  url_not_in?: String[] | String;
+  url_lt?: String;
+  url_lte?: String;
+  url_gt?: String;
+  url_gte?: String;
+  url_contains?: String;
+  url_not_contains?: String;
+  url_starts_with?: String;
+  url_not_starts_with?: String;
+  url_ends_with?: String;
+  url_not_ends_with?: String;
+  publicId?: String;
+  publicId_not?: String;
+  publicId_in?: String[] | String;
+  publicId_not_in?: String[] | String;
+  publicId_lt?: String;
+  publicId_lte?: String;
+  publicId_gt?: String;
+  publicId_gte?: String;
+  publicId_contains?: String;
+  publicId_not_contains?: String;
+  publicId_starts_with?: String;
+  publicId_not_starts_with?: String;
+  publicId_ends_with?: String;
+  publicId_not_ends_with?: String;
+  AND?: ContentWhereInput[] | ContentWhereInput;
+  OR?: ContentWhereInput[] | ContentWhereInput;
+  NOT?: ContentWhereInput[] | ContentWhereInput;
 }
 
 export interface LocationWhereInput {
@@ -845,7 +915,7 @@ export interface PostCreateOneWithoutCommentsInput {
 
 export interface PostCreateWithoutCommentsInput {
   author: UserCreateOneWithoutPostsInput;
-  image?: String;
+  content: ContentCreateOneInput;
   caption?: String;
   location?: LocationCreateOneInput;
   published?: Boolean;
@@ -940,11 +1010,21 @@ export interface PostCreateOneWithoutLikesInput {
 
 export interface PostCreateWithoutLikesInput {
   author: UserCreateOneWithoutPostsInput;
-  image?: String;
+  content: ContentCreateOneInput;
   caption?: String;
   location?: LocationCreateOneInput;
   published?: Boolean;
   comments?: CommentCreateManyWithoutPostInput;
+}
+
+export interface ContentCreateOneInput {
+  create?: ContentCreateInput;
+}
+
+export interface ContentCreateInput {
+  type?: ContentType;
+  url?: String;
+  publicId?: String;
 }
 
 export interface LocationCreateOneInput {
@@ -996,7 +1076,7 @@ export interface PostCreateManyWithoutAuthorInput {
 }
 
 export interface PostCreateWithoutAuthorInput {
-  image?: String;
+  content: ContentCreateOneInput;
   caption?: String;
   location?: LocationCreateOneInput;
   published?: Boolean;
@@ -1068,7 +1148,7 @@ export interface PostUpdateOneRequiredWithoutCommentsInput {
 
 export interface PostUpdateWithoutCommentsDataInput {
   author?: UserUpdateOneRequiredWithoutPostsInput;
-  image?: String;
+  content?: ContentUpdateOneRequiredInput;
   caption?: String;
   location?: LocationUpdateOneInput;
   published?: Boolean;
@@ -1218,11 +1298,28 @@ export interface PostUpdateOneRequiredWithoutLikesInput {
 
 export interface PostUpdateWithoutLikesDataInput {
   author?: UserUpdateOneRequiredWithoutPostsInput;
-  image?: String;
+  content?: ContentUpdateOneRequiredInput;
   caption?: String;
   location?: LocationUpdateOneInput;
   published?: Boolean;
   comments?: CommentUpdateManyWithoutPostInput;
+}
+
+export interface ContentUpdateOneRequiredInput {
+  create?: ContentCreateInput;
+  update?: ContentUpdateDataInput;
+  upsert?: ContentUpsertNestedInput;
+}
+
+export interface ContentUpdateDataInput {
+  type?: ContentType;
+  url?: String;
+  publicId?: String;
+}
+
+export interface ContentUpsertNestedInput {
+  update: ContentUpdateDataInput;
+  create: ContentCreateInput;
 }
 
 export interface LocationUpdateOneInput {
@@ -1321,7 +1418,7 @@ export interface PostUpdateWithWhereUniqueWithoutAuthorInput {
 }
 
 export interface PostUpdateWithoutAuthorDataInput {
-  image?: String;
+  content?: ContentUpdateOneRequiredInput;
   caption?: String;
   location?: LocationUpdateOneInput;
   published?: Boolean;
@@ -1530,20 +1627,6 @@ export interface PostScalarWhereInput {
   id_not_starts_with?: ID_Input;
   id_ends_with?: ID_Input;
   id_not_ends_with?: ID_Input;
-  image?: String;
-  image_not?: String;
-  image_in?: String[] | String;
-  image_not_in?: String[] | String;
-  image_lt?: String;
-  image_lte?: String;
-  image_gt?: String;
-  image_gte?: String;
-  image_contains?: String;
-  image_not_contains?: String;
-  image_starts_with?: String;
-  image_not_starts_with?: String;
-  image_ends_with?: String;
-  image_not_ends_with?: String;
   caption?: String;
   caption_not?: String;
   caption_in?: String[] | String;
@@ -1579,7 +1662,6 @@ export interface PostUpdateManyWithWhereNestedInput {
 }
 
 export interface PostUpdateManyDataInput {
-  image?: String;
   caption?: String;
   published?: Boolean;
 }
@@ -1826,6 +1908,12 @@ export interface CommentUpdateManyMutationInput {
   text?: String;
 }
 
+export interface ContentUpdateManyMutationInput {
+  type?: ContentType;
+  url?: String;
+  publicId?: String;
+}
+
 export interface FileCreateInput {
   filename: String;
   mimetype: String;
@@ -1861,7 +1949,7 @@ export interface LocationUpdateManyMutationInput {
 
 export interface PostCreateInput {
   author: UserCreateOneWithoutPostsInput;
-  image?: String;
+  content: ContentCreateOneInput;
   caption?: String;
   location?: LocationCreateOneInput;
   published?: Boolean;
@@ -1871,7 +1959,7 @@ export interface PostCreateInput {
 
 export interface PostUpdateInput {
   author?: UserUpdateOneRequiredWithoutPostsInput;
-  image?: String;
+  content?: ContentUpdateOneRequiredInput;
   caption?: String;
   location?: LocationUpdateOneInput;
   published?: Boolean;
@@ -1880,7 +1968,6 @@ export interface PostUpdateInput {
 }
 
 export interface PostUpdateManyMutationInput {
-  image?: String;
   caption?: String;
   published?: Boolean;
 }
@@ -1949,6 +2036,17 @@ export interface CommentSubscriptionWhereInput {
   AND?: CommentSubscriptionWhereInput[] | CommentSubscriptionWhereInput;
   OR?: CommentSubscriptionWhereInput[] | CommentSubscriptionWhereInput;
   NOT?: CommentSubscriptionWhereInput[] | CommentSubscriptionWhereInput;
+}
+
+export interface ContentSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: ContentWhereInput;
+  AND?: ContentSubscriptionWhereInput[] | ContentSubscriptionWhereInput;
+  OR?: ContentSubscriptionWhereInput[] | ContentSubscriptionWhereInput;
+  NOT?: ContentSubscriptionWhereInput[] | ContentSubscriptionWhereInput;
 }
 
 export interface FileSubscriptionWhereInput {
@@ -2036,7 +2134,6 @@ export interface CommentSubscription
 
 export interface Post {
   id: ID_Output;
-  image?: String;
   caption?: String;
   published?: Boolean;
   createdAt: DateTimeOutput;
@@ -2045,7 +2142,7 @@ export interface Post {
 export interface PostPromise extends Promise<Post>, Fragmentable {
   id: () => Promise<ID_Output>;
   author: <T = UserPromise>() => T;
-  image: () => Promise<String>;
+  content: <T = ContentPromise>() => T;
   caption: () => Promise<String>;
   location: <T = LocationPromise>() => T;
   published: () => Promise<Boolean>;
@@ -2079,7 +2176,7 @@ export interface PostSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   author: <T = UserSubscription>() => T;
-  image: () => Promise<AsyncIterator<String>>;
+  content: <T = ContentSubscription>() => T;
   caption: () => Promise<AsyncIterator<String>>;
   location: <T = LocationSubscription>() => T;
   published: () => Promise<AsyncIterator<Boolean>>;
@@ -2295,6 +2392,26 @@ export interface LikeSubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
+export interface Content {
+  type: ContentType;
+  url?: String;
+  publicId?: String;
+}
+
+export interface ContentPromise extends Promise<Content>, Fragmentable {
+  type: () => Promise<ContentType>;
+  url: () => Promise<String>;
+  publicId: () => Promise<String>;
+}
+
+export interface ContentSubscription
+  extends Promise<AsyncIterator<Content>>,
+    Fragmentable {
+  type: () => Promise<AsyncIterator<ContentType>>;
+  url: () => Promise<AsyncIterator<String>>;
+  publicId: () => Promise<AsyncIterator<String>>;
+}
+
 export interface Location {
   latitude: Float;
   longitude: Float;
@@ -2385,6 +2502,60 @@ export interface AggregateCommentPromise
 
 export interface AggregateCommentSubscription
   extends Promise<AsyncIterator<AggregateComment>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface ContentConnection {
+  pageInfo: PageInfo;
+  edges: ContentEdge[];
+}
+
+export interface ContentConnectionPromise
+  extends Promise<ContentConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ContentEdge>>() => T;
+  aggregate: <T = AggregateContentPromise>() => T;
+}
+
+export interface ContentConnectionSubscription
+  extends Promise<AsyncIterator<ContentConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ContentEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateContentSubscription>() => T;
+}
+
+export interface ContentEdge {
+  node: Content;
+  cursor: String;
+}
+
+export interface ContentEdgePromise extends Promise<ContentEdge>, Fragmentable {
+  node: <T = ContentPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface ContentEdgeSubscription
+  extends Promise<AsyncIterator<ContentEdge>>,
+    Fragmentable {
+  node: <T = ContentSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateContent {
+  count: Int;
+}
+
+export interface AggregateContentPromise
+  extends Promise<AggregateContent>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateContentSubscription
+  extends Promise<AsyncIterator<AggregateContent>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
@@ -2747,6 +2918,53 @@ export interface CommentPreviousValuesSubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
+export interface ContentSubscriptionPayload {
+  mutation: MutationType;
+  node: Content;
+  updatedFields: String[];
+  previousValues: ContentPreviousValues;
+}
+
+export interface ContentSubscriptionPayloadPromise
+  extends Promise<ContentSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = ContentPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = ContentPreviousValuesPromise>() => T;
+}
+
+export interface ContentSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ContentSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = ContentSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = ContentPreviousValuesSubscription>() => T;
+}
+
+export interface ContentPreviousValues {
+  type: ContentType;
+  url?: String;
+  publicId?: String;
+}
+
+export interface ContentPreviousValuesPromise
+  extends Promise<ContentPreviousValues>,
+    Fragmentable {
+  type: () => Promise<ContentType>;
+  url: () => Promise<String>;
+  publicId: () => Promise<String>;
+}
+
+export interface ContentPreviousValuesSubscription
+  extends Promise<AsyncIterator<ContentPreviousValues>>,
+    Fragmentable {
+  type: () => Promise<AsyncIterator<ContentType>>;
+  url: () => Promise<AsyncIterator<String>>;
+  publicId: () => Promise<AsyncIterator<String>>;
+}
+
 export interface FileSubscriptionPayload {
   mutation: MutationType;
   node: File;
@@ -2912,7 +3130,6 @@ export interface PostSubscriptionPayloadSubscription
 
 export interface PostPreviousValues {
   id: ID_Output;
-  image?: String;
   caption?: String;
   published?: Boolean;
   createdAt: DateTimeOutput;
@@ -2922,7 +3139,6 @@ export interface PostPreviousValuesPromise
   extends Promise<PostPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  image: () => Promise<String>;
   caption: () => Promise<String>;
   published: () => Promise<Boolean>;
   createdAt: () => Promise<DateTimeOutput>;
@@ -2932,7 +3148,6 @@ export interface PostPreviousValuesSubscription
   extends Promise<AsyncIterator<PostPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  image: () => Promise<AsyncIterator<String>>;
   caption: () => Promise<AsyncIterator<String>>;
   published: () => Promise<AsyncIterator<Boolean>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
@@ -3073,6 +3288,10 @@ export const models: Model[] = [
     embedded: false
   },
   {
+    name: "ContentType",
+    embedded: false
+  },
+  {
     name: "User",
     embedded: false
   },
@@ -3082,6 +3301,10 @@ export const models: Model[] = [
   },
   {
     name: "Location",
+    embedded: false
+  },
+  {
+    name: "Content",
     embedded: false
   },
   {

@@ -17,7 +17,7 @@ class Post extends Component {
           return (
             <div>
               <div key={post.id}>
-                <img src={post.image} />
+                <img src={post.content.url} />
                 <LikeButton postId={this.props.id} postLikes={post.likes} />
                 <span>{post.likes.length} likes</span>
                 <p>{post.author.username}</p>
