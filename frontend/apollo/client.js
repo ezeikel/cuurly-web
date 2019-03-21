@@ -2,7 +2,6 @@ import ApolloClient from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { createUploadLink } from 'apollo-upload-client';
 import { withClientState } from 'apollo-link-state';
-import { HttpLink } from 'apollo-link-http';
 import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
 import { defaults, resolvers } from "./store";
@@ -30,22 +29,23 @@ const stateLink = withClientState({
   cache
 });
 
-const httpLink = new HttpLink({
-  uri: process.env.NODE_ENV === 'production' ? prodEndpoint : endpoint,
-  credentials: 'include'
-});
-
 const uploadLink = createUploadLink({
   uri: process.env.NODE_ENV === 'production' ? prodEndpoint : endpoint,
   credentials: 'include'
 });
 
-const createClient = () => {
+const createClient = ({ headers }) => {
   const client = new ApolloClient({
     link: ApolloLink.from([
+      new ApolloLink((operation, forward) => {
+        operation.setContext({
+          headers
+        });
+
+        return forward(operation);
+      }),
       errorLink,
       stateLink,
-      // httpLink,
       uploadLink
     ]),
     cache
