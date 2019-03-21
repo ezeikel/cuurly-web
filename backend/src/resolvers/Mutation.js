@@ -177,11 +177,13 @@ const Mutations = {
       caption
     }, info);
   },
-  deletePost: async (_, { id }, ctx, info) => {
+  deletePost: async (_, { id, publicId }, ctx, info) => {
     //isLoggedIn(ctx);
 
-    // TODO: Go off to cloudinary api and and delete all associated content of a Post based on publicId
-    // https://cloudinary.com/documentation/admin_api
+    // TODO: promisify this
+    cloudinary.v2.api.delete_resources([publicId], (error, result) => {
+      console.log(result);
+    });
 
     return ctx.prisma.deletePost({ id }, info);
   },

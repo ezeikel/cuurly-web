@@ -54,7 +54,7 @@ type Mutation {
   createPost(file: Upload!, caption: String): Post!
   # singleUpload (file: Upload!): File!
   # multipleUpload (files: [Upload!]!): [File!]!
-  deletePost(id: ID!): Post!
+  deletePost(id: ID!, publicId: String!): Post!
   likePost(id: ID!): Like!
   unlikePost(id: ID!): Like!
   addComment(id: ID!, text: String!): Comment!
