@@ -180,11 +180,45 @@ const Mutations = {
   deletePost: async (_, { id, publicId }, ctx, info) => {
     //isLoggedIn(ctx);
 
-    console.log({ id });
-    console.log({ publicId });
+
+    // workaround for https://github.com/prisma/prisma/issues/3796
+
+    const likes = await ctx.prisma.likes({
+      where: {
+        AND: [{
+          user: {
+            id: ctx.request.userId
+          }
+        },
+        {
+          post: {
+            id
+          }
+        }]
+      }
+    });
+
+    const likeIds = [...likes.map(like => ({ id: like.id }))];
+    const ids = [...likes.map(like => like.id )];
+
+    await ctx.prisma.deleteManyLikes({
+      id_in: ids
+    })
+
+    await ctx.prisma.updatePost({
+      where: {
+        id
+      },
+      data: {
+        likes: {
+          disconnect: likeIds
+        }
+      }
+    });
 
     // TODO: promisify this
     cloudinary.v2.api.delete_resources([publicId], (error, result) => {
+      if (error) console.log({ error });
       console.log(result);
     });
 
