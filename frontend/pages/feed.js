@@ -1,4 +1,3 @@
-import Link from "next/link";
 import styled from 'styled-components';
 import { Query } from "react-apollo";
 import { FEED_QUERY } from "../apollo/queries";
@@ -20,13 +19,7 @@ const FeedPage = ({ query }) => (
         <h1>Feed.</h1>
         {
           feed.map(post => (
-            <div key={post.id}>
-              <Link href={`/user?id=${post.author.id}`}>
-                <a>{post.author.username}</a>
-              </Link>
-              <img src={post.image} />
-              <span>{post.caption}</span>
-            </div>
+            <Post id={post.id}/>
           ))
         }
       </Wrapper>

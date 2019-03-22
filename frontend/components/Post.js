@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Component } from 'react';
 import { Query } from 'react-apollo';
 import { SINGLE_POST_QUERY } from '../apollo/queries';
@@ -5,6 +6,7 @@ import LikeButton from './LikeButton';
 import PostComment from './PostComment';
 import CommentList from './styles/CommentList';
 import Comment from './Comment';
+import DeletePost from './DeletePost';
 
 class Post extends Component {
   render() {
@@ -19,10 +21,13 @@ class Post extends Component {
               <div key={post.id}>
                 <img src={post.content.url} />
                 <LikeButton postId={this.props.id} postLikes={post.likes} />
-                <span>{post.likes.length} likes</span>
-                <p>{post.author.username}</p>
+                <p>{post.likes.length} likes</p>
+                <Link href={`/user?id=${post.author.id}`}>
+                  <a>{post.author.username}</a>
+                </Link>
                 <p>{post.caption}</p>
                 <PostComment postId={post.id} />
+                <DeletePost postId={post.id} />
                 <CommentList>
                   {post.comments.map(comment => (
                     <Comment key={comment.id} comment={comment} post={post} />

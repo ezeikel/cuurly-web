@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Query } from 'react-apollo';
 import { SINGLE_USER_QUERY } from '../apollo/queries';
 import FollowButton from './FollowButton';
+import PostPreview from './PostPreview';
 
 class Profile extends Component {
   render() {
@@ -25,14 +26,7 @@ class Profile extends Component {
                 <h3>Posts</h3>
                 <ul>
                   {posts.map(post => (
-                    <div key={post.id}>
-                      <Link href={`/post?id=${post.id}`}>
-                        <a>
-                          <img src={post.image} />
-                          <span>{post.caption}</span>
-                        </a>
-                      </Link>
-                    </div>
+                    <PostPreview key={post.id} id={post.id} />
                   ))}
                 </ul>
               </section>

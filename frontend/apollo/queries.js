@@ -42,13 +42,6 @@ export const SINGLE_USER_QUERY = gql`
       }
       posts {
         id
-        content {
-          url
-        }
-        caption
-        likes {
-          id
-        }
       }
     }
   }
@@ -88,14 +81,6 @@ export const FEED_QUERY = gql`
   query FEED_QUERY($id: ID!) {
     feed(id: $id) {
       id
-      content {
-        url
-      }
-      caption
-      author {
-        id
-        username
-      }
     }
   }
 `;
@@ -186,6 +171,20 @@ export const CREATE_POST_MUTATION = gql`
      createPost (
        file: $file
        caption: $caption
+     ) {
+       id
+     }
+   }
+`;
+
+export const DELETE_POST_MUTATION = gql`
+   mutation CREATE_POST_MUTATION (
+     $id: ID!
+     $publicId: String!
+   ) {
+     deletePost (
+       id: $id
+       publicId: $publicId
      ) {
        id
      }
