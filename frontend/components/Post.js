@@ -27,7 +27,7 @@ class Post extends Component {
                 </Link>
                 <p>{post.caption}</p>
                 <PostComment postId={post.id} />
-                <DeletePost postId={post.id} />
+                <DeletePost post={post} />
                 <CommentList>
                   {post.comments.map(comment => (
                     <Comment key={comment.id} comment={comment} post={post} />

@@ -53,6 +53,7 @@ export const SINGLE_POST_QUERY = gql`
       id
       content {
         url
+        publicId
       }
       caption
       author {
@@ -178,7 +179,7 @@ export const CREATE_POST_MUTATION = gql`
 `;
 
 export const DELETE_POST_MUTATION = gql`
-   mutation CREATE_POST_MUTATION (
+   mutation DELETE_POST_MUTATION (
      $id: ID!
      $publicId: String!
    ) {

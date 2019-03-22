@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { Query } from "react-apollo";
 import { FEED_QUERY } from "../apollo/queries";
+import Post from '../components/Post';
 
 const Wrapper = styled.div`
   display: grid;
@@ -19,7 +20,7 @@ const FeedPage = ({ query }) => (
         <h1>Feed.</h1>
         {
           feed.map(post => (
-            <Post id={post.id}/>
+            <Post key={post.id} id={post.id}/>
           ))
         }
       </Wrapper>

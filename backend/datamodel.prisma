@@ -14,6 +14,7 @@ enum Gender {
 enum ContentType {
   IMAGE
   VIDEO
+  DOCUMENT
 }
 
 type User {

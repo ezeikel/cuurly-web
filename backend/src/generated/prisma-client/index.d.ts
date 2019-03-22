@@ -336,7 +336,7 @@ export interface ClientConstructor<T> {
 
 export type Gender = "MALE" | "FEMALE" | "NONBINARY" | "NOTSPECIFIED";
 
-export type ContentType = "IMAGE" | "VIDEO";
+export type ContentType = "IMAGE" | "VIDEO" | "DOCUMENT";
 
 export type UserOrderByInput =
   | "id_ASC"

@@ -180,6 +180,9 @@ const Mutations = {
   deletePost: async (_, { id, publicId }, ctx, info) => {
     //isLoggedIn(ctx);
 
+    console.log({ id });
+    console.log({ publicId });
+
     // TODO: promisify this
     cloudinary.v2.api.delete_resources([publicId], (error, result) => {
       console.log(result);

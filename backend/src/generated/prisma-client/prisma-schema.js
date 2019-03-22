@@ -349,6 +349,7 @@ input ContentSubscriptionWhereInput {
 enum ContentType {
   IMAGE
   VIDEO
+  DOCUMENT
 }
 
 input ContentUpdateDataInput {
