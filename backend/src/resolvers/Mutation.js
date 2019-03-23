@@ -180,8 +180,12 @@ const Mutations = {
   deletePost: async (_, { id, publicId }, ctx, info) => {
     //isLoggedIn(ctx);
 
-
     // workaround for https://github.com/prisma/prisma/issues/3796
+
+    // TODO: Running TWICE in the playground seems to work
+    // Remove one Mutation and see if it still works. Why only working when called twice?!
+    // The fact that it works at all means its possible!!!
+    // remove new cascad property in datamodel?
 
     const likes = await ctx.prisma.likes({
       where: {
