@@ -28,12 +28,12 @@ type User {
   gender: Gender! @default(value: NOTSPECIFIED)
   following: [User!]! @relation(name: "Following", link: INLINE)
   followers: [User!]! @relation(name: "Followers", link: INLINE)
-  likes: [Like!]! @relation(name: "UserLikes", onDelete: CASCADE)
+  likes: [Like!]! @relation(name: "UserLikes")
   comments: [Comment!]! @relation(name: "UserComments")
   password: String!
   resetToken: String
   resetTokenExpiry: String
-  posts: [Post!]! @relation(name: "Posts", link: INLINE)
+  posts: [Post!]! @relation(name: "Posts")
   permissions: [Permission!]! @default(value: USER)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
@@ -41,13 +41,13 @@ type User {
 
 type Post {
   id: ID! @id
-  author: User! @relation(name: "Posts")
+  author: User @relation(name: "Posts", link: INLINE) # Removed require for now due to https://github.com/prisma/prisma/issues/3796
   content: Content!
   caption: String
   location: Location
   published: Boolean @default(value: false)
-  likes: [Like!]! @relation(name: "PostLikes", onDelete: CASCADE)
-  comments: [Comment!]! @relation(name: "PostComments", onDelete: CASCADE)
+  likes: [Like!]! @relation(name: "PostLikes")
+  comments: [Comment!]! @relation(name: "PostComments")
   createdAt: DateTime! @createdAt
 }
 
@@ -64,18 +64,18 @@ type Content @embedded {
 
 type Like {
   id: ID! @id
-  user: User! @relation(name: "UserLikes", link: INLINE, onDelete: CASCADE)
-  post: Post! @relation(name: "PostLikes", link: INLINE, onDelete: CASCADE)
+  user: User @relation(name: "UserLikes", link: INLINE) # Removed require for now due to https://github.com/prisma/prisma/issues/3796
+  post: Post @relation(name: "PostLikes", link: INLINE) # Removed require for now due to https://github.com/prisma/prisma/issues/3796
   createdAt: DateTime! @createdAt
 }
 
 type Comment {
   id: ID! @id
-  post: Post! @relation(name: "PostComments", link: INLINE)
+  post: Post @relation(name: "PostComments", link: INLINE) # Removed require for now due to https://github.com/prisma/prisma/issues/3796
   text: String!
   writtenBy: User! @relation(name: "UserComments", link: INLINE)
   createdAt: DateTime! @createdAt
- }
+}
 
  type File {
    id: ID! @id

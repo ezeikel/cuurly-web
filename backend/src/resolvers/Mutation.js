@@ -178,52 +178,24 @@ const Mutations = {
     }, info);
   },
   deletePost: async (_, { id, publicId }, ctx, info) => {
-    //isLoggedIn(ctx);
+    isLoggedIn(ctx);
 
-    // workaround for https://github.com/prisma/prisma/issues/3796
-
-    // TODO: Running TWICE in the playground seems to work
-    // Remove one Mutation and see if it still works. Why only working when called twice?!
-    // The fact that it works at all means its possible!!!
-    // remove new cascad property in datamodel?
-
-    const likes = await ctx.prisma.likes({
-      where: {
-        AND: [{
-          user: {
-            id: ctx.request.userId
-          }
-        },
-        {
-          post: {
-            id
-          }
-        }]
+    // deleting each related document due to https://github.com/prisma/prisma/issues/3796
+    await ctx.prisma.deleteManyComments({
+      post: {
+        id
       }
     });
 
-    const likeIds = [...likes.map(like => ({ id: like.id }))];
-    const ids = [...likes.map(like => like.id )];
-
     await ctx.prisma.deleteManyLikes({
-      id_in: ids
-    })
-
-    await ctx.prisma.updatePost({
-      where: {
+      post: {
         id
-      },
-      data: {
-        likes: {
-          disconnect: likeIds
-        }
       }
     });
 
     // TODO: promisify this
     cloudinary.v2.api.delete_resources([publicId], (error, result) => {
       if (error) console.log({ error });
-      console.log(result);
     });
 
     return ctx.prisma.deletePost({ id }, info);
@@ -244,12 +216,12 @@ const Mutations = {
           id
         }
       }
-    });
+    }, info);
   },
   unlikePost: (_, { id }, ctx, info) => {
     isLoggedIn(ctx);
 
-    return ctx.prisma.deleteLike({ id });
+    return ctx.prisma.deleteLike({ id }, info);
   },
   addComment: (_, { id, text }, ctx, info) => {
     isLoggedIn(ctx);

@@ -102,6 +102,7 @@ export const SEARCH_USERS_QUERY = gql`
 export const LIKED_POSTS_QUERY = gql`
   query LIKED_POSTS_QUERY($id: ID!) {
     user(id: $id) {
+      id
       likes {
         id
         post {
@@ -149,7 +150,8 @@ export const SIGNIN_MUTATION = gql`
   mutation SIGNIN_MUTATION($username: String!, $password: String!) {
     signin(username: $username, password: $password) {
       id
-      name      username
+      name
+      username
       email
       permissions
     }

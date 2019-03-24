@@ -565,8 +565,8 @@ enum Gender {
 
 type Like {
   id: ID!
-  user: User!
-  post: Post!
+  user: User
+  post: Post
   createdAt: DateTime!
 }
 
@@ -577,8 +577,8 @@ type LikeConnection {
 }
 
 input LikeCreateInput {
-  user: UserCreateOneWithoutLikesInput!
-  post: PostCreateOneWithoutLikesInput!
+  user: UserCreateOneWithoutLikesInput
+  post: PostCreateOneWithoutLikesInput
 }
 
 input LikeCreateManyWithoutPostInput {
@@ -592,11 +592,11 @@ input LikeCreateManyWithoutUserInput {
 }
 
 input LikeCreateWithoutPostInput {
-  user: UserCreateOneWithoutLikesInput!
+  user: UserCreateOneWithoutLikesInput
 }
 
 input LikeCreateWithoutUserInput {
-  post: PostCreateOneWithoutLikesInput!
+  post: PostCreateOneWithoutLikesInput
 }
 
 type LikeEdge {
@@ -665,8 +665,8 @@ input LikeSubscriptionWhereInput {
 }
 
 input LikeUpdateInput {
-  user: UserUpdateOneRequiredWithoutLikesInput
-  post: PostUpdateOneRequiredWithoutLikesInput
+  user: UserUpdateOneWithoutLikesInput
+  post: PostUpdateOneWithoutLikesInput
 }
 
 input LikeUpdateManyWithoutPostInput {
@@ -692,11 +692,11 @@ input LikeUpdateManyWithoutUserInput {
 }
 
 input LikeUpdateWithoutPostDataInput {
-  user: UserUpdateOneRequiredWithoutLikesInput
+  user: UserUpdateOneWithoutLikesInput
 }
 
 input LikeUpdateWithoutUserDataInput {
-  post: PostUpdateOneRequiredWithoutLikesInput
+  post: PostUpdateOneWithoutLikesInput
 }
 
 input LikeUpdateWithWhereUniqueWithoutPostInput {
@@ -926,7 +926,7 @@ enum Permission {
 
 type Post {
   id: ID!
-  author: User!
+  author: User
   content: Content!
   caption: String
   location: Location
@@ -943,7 +943,7 @@ type PostConnection {
 }
 
 input PostCreateInput {
-  author: UserCreateOneWithoutPostsInput!
+  author: UserCreateOneWithoutPostsInput
   content: ContentCreateOneInput!
   caption: String
   location: LocationCreateOneInput
@@ -977,7 +977,7 @@ input PostCreateWithoutAuthorInput {
 }
 
 input PostCreateWithoutCommentsInput {
-  author: UserCreateOneWithoutPostsInput!
+  author: UserCreateOneWithoutPostsInput
   content: ContentCreateOneInput!
   caption: String
   location: LocationCreateOneInput
@@ -986,7 +986,7 @@ input PostCreateWithoutCommentsInput {
 }
 
 input PostCreateWithoutLikesInput {
-  author: UserCreateOneWithoutPostsInput!
+  author: UserCreateOneWithoutPostsInput
   content: ContentCreateOneInput!
   caption: String
   location: LocationCreateOneInput
@@ -1082,7 +1082,7 @@ input PostSubscriptionWhereInput {
 }
 
 input PostUpdateInput {
-  author: UserUpdateOneRequiredWithoutPostsInput
+  author: UserUpdateOneWithoutPostsInput
   content: ContentUpdateOneRequiredInput
   caption: String
   location: LocationUpdateOneInput
@@ -1125,10 +1125,12 @@ input PostUpdateOneRequiredWithoutCommentsInput {
   connect: PostWhereUniqueInput
 }
 
-input PostUpdateOneRequiredWithoutLikesInput {
+input PostUpdateOneWithoutLikesInput {
   create: PostCreateWithoutLikesInput
   update: PostUpdateWithoutLikesDataInput
   upsert: PostUpsertWithoutLikesInput
+  delete: Boolean
+  disconnect: Boolean
   connect: PostWhereUniqueInput
 }
 
@@ -1142,7 +1144,7 @@ input PostUpdateWithoutAuthorDataInput {
 }
 
 input PostUpdateWithoutCommentsDataInput {
-  author: UserUpdateOneRequiredWithoutPostsInput
+  author: UserUpdateOneWithoutPostsInput
   content: ContentUpdateOneRequiredInput
   caption: String
   location: LocationUpdateOneInput
@@ -1151,7 +1153,7 @@ input PostUpdateWithoutCommentsDataInput {
 }
 
 input PostUpdateWithoutLikesDataInput {
-  author: UserUpdateOneRequiredWithoutPostsInput
+  author: UserUpdateOneWithoutPostsInput
   content: ContentUpdateOneRequiredInput
   caption: String
   location: LocationUpdateOneInput
@@ -1775,17 +1777,21 @@ input UserUpdateOneRequiredWithoutCommentsInput {
   connect: UserWhereUniqueInput
 }
 
-input UserUpdateOneRequiredWithoutLikesInput {
+input UserUpdateOneWithoutLikesInput {
   create: UserCreateWithoutLikesInput
   update: UserUpdateWithoutLikesDataInput
   upsert: UserUpsertWithoutLikesInput
+  delete: Boolean
+  disconnect: Boolean
   connect: UserWhereUniqueInput
 }
 
-input UserUpdateOneRequiredWithoutPostsInput {
+input UserUpdateOneWithoutPostsInput {
   create: UserCreateWithoutPostsInput
   update: UserUpdateWithoutPostsDataInput
   upsert: UserUpsertWithoutPostsInput
+  delete: Boolean
+  disconnect: Boolean
   connect: UserWhereUniqueInput
 }
 

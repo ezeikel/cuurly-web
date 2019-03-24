@@ -28,8 +28,9 @@ type User {
   gender: Gender!
   following: [User!]!
   followers: [User!]!
-  likes: [Like!]!
   posts: [Post!]!
+  likes: [Like!]!
+  comments: [Comment!]!
   permissions: [Permission!]!
 }
 

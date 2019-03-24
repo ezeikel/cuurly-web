@@ -914,7 +914,7 @@ export interface PostCreateOneWithoutCommentsInput {
 }
 
 export interface PostCreateWithoutCommentsInput {
-  author: UserCreateOneWithoutPostsInput;
+  author?: UserCreateOneWithoutPostsInput;
   content: ContentCreateOneInput;
   caption?: String;
   location?: LocationCreateOneInput;
@@ -1000,7 +1000,7 @@ export interface LikeCreateManyWithoutUserInput {
 }
 
 export interface LikeCreateWithoutUserInput {
-  post: PostCreateOneWithoutLikesInput;
+  post?: PostCreateOneWithoutLikesInput;
 }
 
 export interface PostCreateOneWithoutLikesInput {
@@ -1009,7 +1009,7 @@ export interface PostCreateOneWithoutLikesInput {
 }
 
 export interface PostCreateWithoutLikesInput {
-  author: UserCreateOneWithoutPostsInput;
+  author?: UserCreateOneWithoutPostsInput;
   content: ContentCreateOneInput;
   caption?: String;
   location?: LocationCreateOneInput;
@@ -1090,7 +1090,7 @@ export interface LikeCreateManyWithoutPostInput {
 }
 
 export interface LikeCreateWithoutPostInput {
-  user: UserCreateOneWithoutLikesInput;
+  user?: UserCreateOneWithoutLikesInput;
 }
 
 export interface UserCreateOneWithoutLikesInput {
@@ -1147,7 +1147,7 @@ export interface PostUpdateOneRequiredWithoutCommentsInput {
 }
 
 export interface PostUpdateWithoutCommentsDataInput {
-  author?: UserUpdateOneRequiredWithoutPostsInput;
+  author?: UserUpdateOneWithoutPostsInput;
   content?: ContentUpdateOneRequiredInput;
   caption?: String;
   location?: LocationUpdateOneInput;
@@ -1155,10 +1155,12 @@ export interface PostUpdateWithoutCommentsDataInput {
   likes?: LikeUpdateManyWithoutPostInput;
 }
 
-export interface UserUpdateOneRequiredWithoutPostsInput {
+export interface UserUpdateOneWithoutPostsInput {
   create?: UserCreateWithoutPostsInput;
   update?: UserUpdateWithoutPostsDataInput;
   upsert?: UserUpsertWithoutPostsInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
   connect?: UserWhereUniqueInput;
 }
 
@@ -1286,18 +1288,20 @@ export interface LikeUpdateWithWhereUniqueWithoutUserInput {
 }
 
 export interface LikeUpdateWithoutUserDataInput {
-  post?: PostUpdateOneRequiredWithoutLikesInput;
+  post?: PostUpdateOneWithoutLikesInput;
 }
 
-export interface PostUpdateOneRequiredWithoutLikesInput {
+export interface PostUpdateOneWithoutLikesInput {
   create?: PostCreateWithoutLikesInput;
   update?: PostUpdateWithoutLikesDataInput;
   upsert?: PostUpsertWithoutLikesInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
   connect?: PostWhereUniqueInput;
 }
 
 export interface PostUpdateWithoutLikesDataInput {
-  author?: UserUpdateOneRequiredWithoutPostsInput;
+  author?: UserUpdateOneWithoutPostsInput;
   content?: ContentUpdateOneRequiredInput;
   caption?: String;
   location?: LocationUpdateOneInput;
@@ -1447,13 +1451,15 @@ export interface LikeUpdateWithWhereUniqueWithoutPostInput {
 }
 
 export interface LikeUpdateWithoutPostDataInput {
-  user?: UserUpdateOneRequiredWithoutLikesInput;
+  user?: UserUpdateOneWithoutLikesInput;
 }
 
-export interface UserUpdateOneRequiredWithoutLikesInput {
+export interface UserUpdateOneWithoutLikesInput {
   create?: UserCreateWithoutLikesInput;
   update?: UserUpdateWithoutLikesDataInput;
   upsert?: UserUpsertWithoutLikesInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
   connect?: UserWhereUniqueInput;
 }
 
@@ -1933,13 +1939,13 @@ export interface FileUpdateManyMutationInput {
 }
 
 export interface LikeCreateInput {
-  user: UserCreateOneWithoutLikesInput;
-  post: PostCreateOneWithoutLikesInput;
+  user?: UserCreateOneWithoutLikesInput;
+  post?: PostCreateOneWithoutLikesInput;
 }
 
 export interface LikeUpdateInput {
-  user?: UserUpdateOneRequiredWithoutLikesInput;
-  post?: PostUpdateOneRequiredWithoutLikesInput;
+  user?: UserUpdateOneWithoutLikesInput;
+  post?: PostUpdateOneWithoutLikesInput;
 }
 
 export interface LocationUpdateManyMutationInput {
@@ -1948,7 +1954,7 @@ export interface LocationUpdateManyMutationInput {
 }
 
 export interface PostCreateInput {
-  author: UserCreateOneWithoutPostsInput;
+  author?: UserCreateOneWithoutPostsInput;
   content: ContentCreateOneInput;
   caption?: String;
   location?: LocationCreateOneInput;
@@ -1958,7 +1964,7 @@ export interface PostCreateInput {
 }
 
 export interface PostUpdateInput {
-  author?: UserUpdateOneRequiredWithoutPostsInput;
+  author?: UserUpdateOneWithoutPostsInput;
   content?: ContentUpdateOneRequiredInput;
   caption?: String;
   location?: LocationUpdateOneInput;
