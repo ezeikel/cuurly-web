@@ -5,6 +5,7 @@ import CurrentUser from "./CurrentUser";
 import { SINGLE_POST_QUERY, ADD_COMMENT_MUTATION } from '../apollo/queries';
 import Button from './styles/Button';
 import Spinner from './Spinner';
+import { Fragment } from 'react';
 
 const CommentSchema = Yup.object().shape({
   text: Yup.string()
@@ -20,32 +21,33 @@ const PostComment = ({ postId }) => (
           mutation={ADD_COMMENT_MUTATION}
           refetchQueries={[{ query: SINGLE_POST_QUERY, variables: { id: postId } }]}
         >
-          { (addComment, { error, loading }) => (
-            <Formik
-              initialValues={{ text: '' }}
-              validationSchem={CommentSchema}
-              onSubmit={async (values, { resetForm }) => {
-                // TODO: Fix issue were user is able to submit empty string as a comment
-                try {
-                  await addComment({ variables: { ...values, id: postId }});
-                  resetForm();
-                } catch(e) {
-                  console.error(`Formik Error: ${e}`);
-                }
-              }}
-            >
-              {({
-                isSubmitting,
-                errors,
-                touched
-              }) => (
-                <Form>
-                  <Field type="text" name="text" placeholder="Add a comment" />
-                  <ErrorMessage name="text" />
-                  <Button type="submit" disabled={isSubmitting}>Post {isSubmitting ? <Spinner /> : null }</Button>
-                </Form>
-              )}
-            </Formik>
+          {(addComment, { error, loading }) => (
+            <Fragment>
+              <Formik
+                initialValues={{ text: '' }}
+                validationSchem={CommentSchema}
+                onSubmit={async (values, { resetForm }) => {
+                  try {
+                    await addComment({ variables: { ...values, id: postId }});
+                    resetForm();
+                  } catch(e) {
+                    console.error(`Formik Error: ${e}`);
+                  }
+                }}
+              >
+                {({
+                  isSubmitting
+                }) => (
+                  <Form>
+                    <Field type="text" name="text" placeholder="Add a comment" />
+                    <ErrorMessage name="text" />
+                    <Button type="submit" disabled={isSubmitting}>Post {isSubmitting ? <Spinner /> : null }</Button>
+                  </Form>
+                )}
+              </Formik>
+              {loading && <p>Loading...</p>}
+              {error && <p>Error :( Please try again</p>}
+            </Fragment>
           )}
         </Mutation>
       : null

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Mutation } from 'react-apollo';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup'
@@ -22,37 +22,37 @@ class Signin extends Component {
       <Mutation
         mutation={SIGNIN_MUTATION}
         refetchQueries={[{ query: CURRENT_USER_QUERY }]}
-        onCompleted={({ signin: { id } }) => {
-          // TODO: Get access to Formik methods here
-          //resetForm();
-
-          // redirect to user feed
-          router.push(`/feed?id=${id}`);
-        }}
+        onCompleted={({ signin: { id } }) => router.push(`/feed?id=${id}`)}
       >
         {(signin, { error, loading }) => (
-          <Formik
-            initialValues={{ username: '', password: '' }}
-            validationSchema={SigninSchema}
-            onSubmit={async values => {
-              //await signup(values, actions);
-              await signin({ variables: values });
-            }}
-          >
-            {({
-              isSubmitting,
-              errors,
-              touched
-            }) => (
-              <Form>
-                <Field type="text" name="username" />
-                <ErrorMessage name="username" component="div" />
-                <Field type="password" name="password" />
-                <ErrorMessage name="password" component="div" />
-                <Button type="submit" disabled={isSubmitting}>Submit</Button>
-              </Form>
-            )}
-          </Formik>
+          <Fragment>
+            <Formik
+              initialValues={{ username: '', password: '' }}
+              validationSchema={SigninSchema}
+              onSubmit={async (values, { resetForm }) => {
+                try {
+                  await signin({ variables: values });
+                  resetForm();
+                } catch(e) {
+                  console.error(`Formik Error: ${e}`);
+                }
+              }}
+            >
+              {({
+                isSubmitting
+              }) => (
+                <Form>
+                  <Field type="text" name="username" />
+                  <ErrorMessage name="username" component="div" />
+                  <Field type="password" name="password" />
+                  <ErrorMessage name="password" component="div" />
+                  <Button type="submit" disabled={isSubmitting}>Submit {isSubmitting ? <Spinner /> : null }</Button>
+                </Form>
+              )}
+            </Formik>
+            {loading && <p>Loading...</p>}
+            {error && <p>Error :( Please try again</p>}
+          </Fragment>
         )}
       </Mutation>
     );

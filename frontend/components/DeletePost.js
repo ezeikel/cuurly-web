@@ -3,6 +3,7 @@ import { withRouter } from 'next/router';
 import CurrentUser from "./CurrentUser";
 import { DELETE_POST_MUTATION, SINGLE_USER_QUERY, LIKED_POSTS_QUERY } from '../apollo/queries';
 import Button from "./styles/Button";
+import { Fragment } from "react";
 
 const DeletePost = ({ post, router }) => {
   return (
@@ -25,15 +26,15 @@ const DeletePost = ({ post, router }) => {
                 }
               }]
             }
-            onCompleted={() => {
-              // TODO: Get access to Formik methods here
-              //resetForm();
-
-              // redirect to user feed
-              router.push(`/user?id=${currentUser.id}`);
-            }}
+            onCompleted={() => router.push(`/user?id=${currentUser.id}`)}
           >
-            { deletePost => <Button onClick={deletePost}>Delete</Button> }
+            {(deletePost, { error, loading }) => (
+              <Fragment>
+                <Button onClick={deletePost}>Delete</Button>
+                {loading && <p>Loading...</p>}
+                {error && <p>Error :( Please try again</p>}
+              </Fragment>
+            )}
           </Mutation>
           : null
       )}
