@@ -29,9 +29,10 @@ const Query = {
     return ctx.prisma.posts(
       {
         where: {
-          author: { id_in: [...followingIds, ctx.request.userId] }
+          //author: { id_in: [...followingIds, ctx.request.userId] }
+          author: { id_in: [...followingIds, "5c8e5fb424aa9a000767c6c0"] }
         },
-        orderBy: "createdAt_DESC", // TODO: orderBy doesn't seem to be having any effect
+        orderBy: 'createdAt_DESC', // TODO: orderBy doesn't seem to be having any effect
       },
       info
     );
@@ -42,7 +43,7 @@ const Query = {
         where: {
           likes_every: { id: id }
         },
-        orderBy: "createdAt_DESC", // TODO: orderBy doesn't seem to be having any effect
+        orderBy: 'createdAt_DESC', // TODO: orderBy doesn't seem to be having any effect
       },
       info
     );

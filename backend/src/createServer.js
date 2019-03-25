@@ -2,6 +2,8 @@ const { GraphQLServer } = require('graphql-yoga');
 const Mutation = require('./resolvers/Mutation');
 const Query = require('./resolvers/Query');
 const { prisma } = require('./generated/prisma-client');
+const { GraphQLScalarType } = require('graphql');
+const { Kind } = require('graphql/language');
 
 // Create the GraphQL Yoga Server
 function createServer() {
@@ -10,6 +12,22 @@ function createServer() {
     resolvers: {
       Mutation,
       Query,
+      Date: new GraphQLScalarType({ // https://www.apollographql.com/docs/apollo-server/features/scalars-enums.html#custom-scalars
+        name: 'Date',
+        description: 'Date custom scalar type',
+        parseValue(value) {
+          return new Date(value); // value from the client
+        },
+        serialize(value) {
+          return new Date(value).getTime(); // value sent to the client
+        },
+        parseLiteral(ast) {
+          if (ast.kind === Kind.INT) {
+            return parseInt(ast.value, 10); // ast value is always in string format
+          }
+          return null;
+        },
+      }),
       User: {
         posts: parent => prisma.user({ id: parent.id }).posts(),
         following: parent => prisma.user({ id: parent.id }).following(),

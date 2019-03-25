@@ -34,7 +34,7 @@ class Post extends Component {
                     <Comment key={comment.id} comment={comment} post={post} />
                   ))}
                 </CommentList>
-                <span>{formatDistance(Date.parse(post.createdAt), new Date(), { includeSeconds: true })}</span>
+                <span>{formatDistance(post.createdAt, new Date(), { includeSeconds: true })}</span>
               </div>
             </div>
           );
