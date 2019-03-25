@@ -7,6 +7,7 @@ const Liked = ({ query }) => (
     {({ data, error, loading }) => {
       if (loading) return "Loading...";
       if (error) return `Error! ${error.message}`;
+
       return (
         <div>
           <h1>Likes</h1>

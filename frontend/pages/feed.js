@@ -15,6 +15,9 @@ const Wrapper = styled.div`
 const FeedPage = ({ query }) => (
   <Query query={ FEED_QUERY } variables={{ id: query.id }}>
     {({ data: { feed }, error, loading }) => {
+      if (loading) return <p>Loading...</p>;
+      if (error) return <p>Error: {error.message}</p>;
+
       return (
       <Wrapper>
         <h1>Feed.</h1>
