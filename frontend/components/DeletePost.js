@@ -1,7 +1,7 @@
 import { Mutation } from "react-apollo";
 import { withRouter } from 'next/router';
 import CurrentUser from "./CurrentUser";
-import { DELETE_POST_MUTATION, SINGLE_POST_QUERY, LIKED_POSTS_QUERY } from '../apollo/queries';
+import { DELETE_POST_MUTATION, SINGLE_USER_QUERY, LIKED_POSTS_QUERY } from '../apollo/queries';
 import Button from "./styles/Button";
 
 const DeletePost = ({ post, router }) => {
@@ -12,7 +12,19 @@ const DeletePost = ({ post, router }) => {
           <Mutation
             mutation={DELETE_POST_MUTATION}
             variables={{ id: post.id, publicId: post.content.publicId }}
-            refetchQueries={[{ query: SINGLE_POST_QUERY, variables: { id: post.id } }, { query: LIKED_POSTS_QUERY, variables: { id: currentUser.id } }]}
+            refetchQueries = {
+              [{
+                query: LIKED_POSTS_QUERY,
+                variables: {
+                  id: currentUser.id
+                }
+              }, {
+                query: SINGLE_USER_QUERY,
+                variables: {
+                  id: currentUser.id
+                }
+              }]
+            }
             onCompleted={() => {
               // TODO: Get access to Formik methods here
               //resetForm();
