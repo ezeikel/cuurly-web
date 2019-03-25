@@ -29,7 +29,7 @@ const Query = {
     return ctx.prisma.posts(
       {
         where: {
-          author: { id_in: followingIds }
+          author: { id_in: [...followingIds, ctx.request.userId] }
         },
         orderBy: "createdAt_DESC", // TODO: orderBy doesn't seem to be having any effect
       },
