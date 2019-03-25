@@ -7,6 +7,7 @@ import PostComment from './PostComment';
 import CommentList from './styles/CommentList';
 import Comment from './Comment';
 import DeletePost from './DeletePost';
+import formatDistance from 'date-fns/formatDistance';
 
 class Post extends Component {
   render() {
@@ -33,6 +34,7 @@ class Post extends Component {
                     <Comment key={comment.id} comment={comment} post={post} />
                   ))}
                 </CommentList>
+                <span>{formatDistance(Date.parse(post.createdAt), new Date(), { includeSeconds: true })}</span>
               </div>
             </div>
           );

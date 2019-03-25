@@ -74,6 +74,7 @@ export const SINGLE_POST_QUERY = gql`
           username
         }
       }
+      createdAt
     }
   }
 `;

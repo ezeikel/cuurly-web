@@ -2,6 +2,7 @@
 
 # this is needed for upload to work
 scalar Upload
+scalar Date
 
 type SuccessMessage {
   message: String
@@ -14,6 +15,7 @@ type Post {
   author: User!
   likes: [Like!]!
   comments: [Comment!]!
+  createdAt: Date!
 }
 
 type User {
