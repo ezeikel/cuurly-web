@@ -26,7 +26,7 @@ const LikeButton = ({ postId, postLikes }) => (
           mutation={postLikes.map(like => like.user.id).includes(currentUser.id) ? UNLIKE_POST_MUTATION : LIKE_POST_MUTATION}
           variables={postLikes.map(like => like.user.id).includes(currentUser.id) ? { id: postLikes.filter(like  => like.user.id === currentUser.id)[0].id } : { id: postId }}
           optimisticResponse={{ // https://www.apollographql.com/docs/react/features/optimistic-ui
-            __typeName: 'Mutation',
+            __typeName: 'Mutation', // TODO: Not sure if doing this right ~ no increase in speed it seems
               [mutate]: {
                 __typename: 'Like',
                 id
