@@ -87,6 +87,14 @@ export const FEED_QUERY = gql`
   }
 `;
 
+export const EXPLORE_QUERY = gql`
+  query EXPLORE_QUERY($id: ID!) {
+    explore(id: $id) {
+      id
+    }
+  }
+`;
+
 export const SEARCH_USERS_QUERY = gql`
   query SEARCH_USERS_QUERY($searchTerm: String!) {
     users(
