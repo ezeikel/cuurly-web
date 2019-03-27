@@ -30,7 +30,6 @@ const Query = {
       {
         where: {
           author: { id_in: [...followingIds, ctx.request.userId] }
-          // author: { id_in: [...followingIds, "5c8e5fb424aa9a000767c6c0"] }
         },
         orderBy: 'createdAt_DESC', // TODO: orderBy doesnt seem to work when combined with where - https://github.com/prisma/issues/?
       }, // seems to be in most recent order anyway
