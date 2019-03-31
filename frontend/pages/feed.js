@@ -20,7 +20,6 @@ const FeedPage = ({ query }) => (
 
       return (
       <Wrapper>
-        <h1>Feed.</h1>
         {
           feed.map(post => (
             <Post key={post.id} id={post.id}/>

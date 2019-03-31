@@ -59,6 +59,7 @@ export const SINGLE_POST_QUERY = gql`
       author {
         id
         username
+        profilePicture
       }
       likes {
         id
