@@ -55,7 +55,13 @@ const LikeButton = ({ postId, postLikes }) => (
         >
           {(mutate, { loading, error }) => (
             <FontAwesomeIcon
-              icon={["fal", "heart"]}
+              icon={
+                postLikes
+                  .map(like => like.user.id)
+                  .includes(currentUser.id)
+                  ? ["fas", "heart"]
+                  : ["fal", "heart"]
+              }
               color={
                 postLikes
                   .map(like => like.user.id)
