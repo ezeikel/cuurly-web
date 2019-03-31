@@ -3,6 +3,19 @@ import { ApolloProvider } from 'react-apollo';
 import withApolloClient from '../apollo/client';
 import Page from '../components/Page';
 import GlobalStyle from "../GlobalStyle";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fab } from "@fortawesome/free-brands-svg-icons";
+import { far } from "@fortawesome/pro-regular-svg-icons";
+import { fal } from "@fortawesome/pro-light-svg-icons";
+import {
+  faSearch,
+  faCompass,
+  faHeart,
+  faUser,
+  faPlus
+} from "@fortawesome/pro-regular-svg-icons";
+
+library.add(fab, fal, far, faSearch, faCompass, faHeart, faUser, faPlus);
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {

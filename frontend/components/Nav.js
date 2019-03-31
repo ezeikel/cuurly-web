@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import styled from 'styled-components';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CurrentUser from './CurrentUser';
 import Signout from './Signout';
 import Search from './Search';
@@ -23,6 +24,7 @@ const NavActions = styled.ul`
   grid-template-columns: repeat(4, 1fr);
   align-items: center;
   justify-items: center;
+  font-size: 1.8rem;
 `;
 
 const LogoWrapper = styled.div`
@@ -41,9 +43,8 @@ const LogoWrapper = styled.div`
 
 const Nav = ({ theme }) => (
   <CurrentUser>
-    {({ data: { currentUser } }) => (
-      currentUser
-      ?
+    {({ data: { currentUser } }) =>
+      currentUser ? (
         <Wrapper theme={theme}>
           <LogoWrapper>
             <Link href={`/feed?id=${currentUser.id}`}>
@@ -59,16 +60,52 @@ const Nav = ({ theme }) => (
           </LogoWrapper>
           <Search />
           <NavActions>
-            <li><Link href={`/explore?id=${currentUser.id}`}><a>Explore</a></Link></li>
-            <li><Link href={`/liked?id=${currentUser.id}`}><a>Liked</a></Link></li>
-            <li><Link href={`/user?id=${currentUser.id}`}><a>Profile</a></Link></li>
             <li>
-              <Link href='/upload'><button>Post</button></Link>
+              <Link href={`/explore?id=${currentUser.id}`}>
+                <a>
+                  <FontAwesomeIcon
+                    icon={["fal", "compass"]}
+                    color="var(--color-black)"
+                    size="lg"
+                  />
+                </a>
+              </Link>
+            </li>
+            <li>
+              <Link href={`/liked?id=${currentUser.id}`}>
+                <a>
+                  <FontAwesomeIcon
+                    icon={["fal", "heart"]}
+                    color="var(--color-black)"
+                    size="lg"
+                  />
+                </a>
+              </Link>
+            </li>
+            <li>
+              <Link href={`/user?id=${currentUser.id}`}>
+                <a>
+                  <FontAwesomeIcon
+                    icon={["fal", "user"]}
+                    color="var(--color-black)"
+                    size="lg"
+                  />
+                </a>
+              </Link>
+            </li>
+            <li>
+              <Link href="/upload">
+                <FontAwesomeIcon
+                  icon={["fal", "plus"]}
+                  color="var(--color-black)"
+                  size="lg"
+                />
+              </Link>
             </li>
           </NavActions>
         </Wrapper>
-      : null
-    )}
+      ) : null
+    }
   </CurrentUser>
 );
 
