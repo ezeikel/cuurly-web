@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
-import Nav from './Nav';
+import Header from './Header';
 import Meta from './Meta';
 
 const theme = {
@@ -21,16 +21,21 @@ const theme = {
 
 const StyledPage = styled.div`
   display: grid;
-  grid-template-rows: 100px 1fr;
+  grid-template-rows: 80px 1fr;
   min-height: 100vh;
   background-color: ${({ theme }) => theme.default.white};
   color: ${({ theme }) => theme.default.textColor};
+`;
+
+const Wrapper = styled.div`
+  background-color: #fafafa;
 `;
 
 const Inner = styled.div`
   max-width: ${({ theme }) => theme.default.maxWidth};
   margin: 0 auto;
   padding: 2rem;
+  width: 100%;
 `;
 
 class Page extends Component {
@@ -39,10 +44,12 @@ class Page extends Component {
       <ThemeProvider theme={theme}>
         <StyledPage>
           <Meta />
-          <Nav/>
-          <Inner>
-            {this.props.children}
-          </Inner>
+          <Header/>
+          <Wrapper>
+            <Inner>
+              {this.props.children}
+            </Inner>
+          </Wrapper>
         </StyledPage>
       </ThemeProvider>
     );

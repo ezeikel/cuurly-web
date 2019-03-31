@@ -17,15 +17,26 @@ const glow = keyframes `
 
 const SearchStyles = styled.div`
   position: relative;
+  display: flex;
+  justify-content: center;
+  width: 215px;
   input {
+    display: flex;
+    justify-items: center;
     width: 100%;
-    padding: 10px;
-    border: 0;
-    font-size: 2rem;
+    padding: 6px;
+    border: solid 1px #dbdbdb;
+    outline: 0;
+    font-size: 1.6rem;
+    background-color: #fafafa;
     &.loading {
       animation: ${glow} 0.5s ease-in-out infinite alternate;
     }
   }
+`;
+
+const ComboBox = styled.div`
+  width: 215px;
 `;
 
 const DropDown = styled.div`
@@ -33,9 +44,10 @@ const DropDown = styled.div`
   width: 100%;
   z-index: 2;
   border: 1px solid ${props => props.theme.lightgrey};
+  width: 215px;
 `;
 
-const DropDownItem = styled.div `
+const DropDownItem = styled.div`
   border-bottom: 1px solid ${props => props.theme.lightgrey};
   background: ${props => (props.highlighted ? '#f7f7f7' : 'white')};
   padding: 1rem;
@@ -47,6 +59,7 @@ const DropDownItem = styled.div `
   img {
     margin-right: 10px;
   }
+  width: 100%;
 `;
 
 function routeToUser(user) {
@@ -97,14 +110,14 @@ class AutoComplete extends Component {
           onChange={routeToUser}
           itemToString={user => (user === null ? '' : user.username)}
         >
-          {({ getInputProps, getItemProps, isOpen, inputValue, highlightedIndex }) => (
-            <div>
+          {({ getInputProps, getItemProps, isOpen, inputValue, highlightedIndex, getRootProps }) => (
+            <ComboBox {...getRootProps()}>
               <ApolloConsumer>
                 {client => (
                   <input
                     {...getInputProps({
                       type: 'search',
-                      placeholder: 'Search for User',
+                      placeholder: 'Search',
                       id: 'search',
                       className: this.state.loading ? 'loading' : '',
                       onChange: e => {
@@ -134,7 +147,7 @@ class AutoComplete extends Component {
                   }
                 </DropDown>
               )}
-            </div>
+            </ComboBox>
           )}
         </Downshift>
       </SearchStyles>

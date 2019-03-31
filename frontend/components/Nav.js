@@ -1,40 +1,42 @@
-import { Fragment } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 import CurrentUser from './CurrentUser';
 import Signout from './Signout';
 import Search from './Search';
+import LogoImage from './LogoImage';
+import LogoText from './LogoText';
 
 const Wrapper = styled.nav`
+  width: 100%;
+  max-width: ${({ theme }) => theme.default.maxWidth};
   font-family: var(--default-font-family);
   font-style: normal;
   color: ${({ theme }) => theme.default.textColor};
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   align-content: center;
-  padding: var(--spacing-medium) var(--spacing-huge);
-  background-color: var(--color-white);
-  box-shadow: 0 1px 1px rgba(0,0,0,.1);
+  padding: var(--spacing-medium);
 `;
 
 const NavActions = styled.ul`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   align-items: center;
-  justify-items: end;
+  justify-items: center;
 `;
 
 const LogoWrapper = styled.div`
   display: grid;
-  grid-template-columns: auto 1fr;
-  grid-column-gap: var(--spacing-large);
+  grid-template-columns: 32px 120px;
+  grid-column-gap: var(--spacing-small);
   align-items: center;
-`;
-
-const Logo = styled.span`
-  font-size: 3.2rem;
-  text-transform: uppercase;
-  font-weight: bold;
+  a {
+    height: 32px;
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
 `;
 
 const Nav = ({ theme }) => (
@@ -46,10 +48,14 @@ const Nav = ({ theme }) => (
           <LogoWrapper>
             <Link href={`/feed?id=${currentUser.id}`}>
               <a>
-                <Logo>Crownd</Logo>
+                <LogoImage fillColor="var(--color-black)" />
               </a>
             </Link>
-            <Signout />
+            <Link href={`/feed?id=${currentUser.id}`}>
+              <a>
+                <LogoText fillColor="var(--color-black)" />
+              </a>
+            </Link>
           </LogoWrapper>
           <Search />
           <NavActions>
