@@ -32,7 +32,7 @@ type BatchPayload {
 
 type Comment {
   id: ID!
-  post: Post!
+  post: Post
   text: String!
   writtenBy: User!
   createdAt: DateTime!
@@ -45,7 +45,7 @@ type CommentConnection {
 }
 
 input CommentCreateInput {
-  post: PostCreateOneWithoutCommentsInput!
+  post: PostCreateOneWithoutCommentsInput
   text: String!
   writtenBy: UserCreateOneWithoutCommentsInput!
 }
@@ -66,7 +66,7 @@ input CommentCreateWithoutPostInput {
 }
 
 input CommentCreateWithoutWrittenByInput {
-  post: PostCreateOneWithoutCommentsInput!
+  post: PostCreateOneWithoutCommentsInput
   text: String!
 }
 
@@ -153,7 +153,7 @@ input CommentSubscriptionWhereInput {
 }
 
 input CommentUpdateInput {
-  post: PostUpdateOneRequiredWithoutCommentsInput
+  post: PostUpdateOneWithoutCommentsInput
   text: String
   writtenBy: UserUpdateOneRequiredWithoutCommentsInput
 }
@@ -201,7 +201,7 @@ input CommentUpdateWithoutPostDataInput {
 }
 
 input CommentUpdateWithoutWrittenByDataInput {
-  post: PostUpdateOneRequiredWithoutCommentsInput
+  post: PostUpdateOneWithoutCommentsInput
   text: String
 }
 
@@ -1113,10 +1113,12 @@ input PostUpdateManyWithWhereNestedInput {
   data: PostUpdateManyDataInput!
 }
 
-input PostUpdateOneRequiredWithoutCommentsInput {
+input PostUpdateOneWithoutCommentsInput {
   create: PostCreateWithoutCommentsInput
   update: PostUpdateWithoutCommentsDataInput
   upsert: PostUpsertWithoutCommentsInput
+  delete: Boolean
+  disconnect: Boolean
   connect: PostWhereUniqueInput
 }
 

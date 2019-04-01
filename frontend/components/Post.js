@@ -117,7 +117,7 @@ class Post extends Component {
                 <Buttons>
                   <LikeButton postId={this.props.id} postLikes={post.likes} />
                 </Buttons>
-                <Likes>{post.likes.length} likes</Likes>
+                {post.likes.length ? <Likes>{post.likes.length} like{post.likes.length > 1 ? 's' : null}</Likes> : null }
                 <Caption>
                   <Link href={`/user?id=${post.author.id}`}>
                     <a>{post.author.username}</a>

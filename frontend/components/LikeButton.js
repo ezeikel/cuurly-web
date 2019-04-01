@@ -10,6 +10,10 @@ import {
   SINGLE_USER_QUERY
 } from '../apollo/queries';
 
+const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
+  cursor: pointer;
+`;
+
 const LikeButton = ({ postId, postLikes }) => (
   <CurrentUser>
     {({ data: { currentUser } }) => {
@@ -54,7 +58,7 @@ const LikeButton = ({ postId, postLikes }) => (
           ]}
         >
           {(mutate, { loading, error }) => (
-            <FontAwesomeIcon
+            <StyledFontAwesomeIcon
               icon={
                 postLikes
                   .map(like => like.user.id)
