@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Mutation } from 'react-apollo';
 import styled from 'styled-components';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CurrentUser from './CurrentUser';
 import { SINGLE_POST_QUERY, DELETE_COMMENT_MUTATION } from '../apollo/queries';
 
@@ -8,18 +9,26 @@ const Wrapper = styled.li`
   display: grid;
   grid-template-columns: ${props => props.canDelete ? 'auto 1fr auto' : 'auto 1fr'};
   align-items: center;
-  grid-column-gap: var(--spacing-medium);
+  grid-column-gap: var(--spacing-small);
+  font-size: 1.4rem;
+  line-height: 1.8rem;
+`;
+
+const StyledAnchor = styled.a`
+  font-weight: bold;
+`;
+
+const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
+  cursor: pointer;
 `;
 
 const Comment = ({ comment, post }) => (
   <CurrentUser>
     {({ data: { currentUser } }) => (
       <Wrapper canDelete={currentUser && currentUser.id && currentUser.id === comment.writtenBy.id || currentUser.id === post.author.id}>
-        <h3>
-          <Link href={`/user?id=${comment.writtenBy.id}`}>
-            <a>{comment.writtenBy.username}</a>
-          </Link>
-        </h3>
+        <Link href={`/user?id=${comment.writtenBy.id}`}>
+          <StyledAnchor>{comment.writtenBy.username}</StyledAnchor>
+        </Link>
         <span>
           {comment.text}
         </span>
@@ -31,7 +40,7 @@ const Comment = ({ comment, post }) => (
               refetchQueries={[{ query: SINGLE_POST_QUERY, variables: { id: post.id } }]}
             >
               {(deleteComment, { error, loading }) => (
-                <span onClick={deleteComment}>X</span>
+                <StyledFontAwesomeIcon onClick={deleteComment} icon={["fal", "times"]} color="#c7c7c7" size="lg" />
               )}
             </Mutation>
           : null

@@ -45,7 +45,7 @@ const Username = styled.span`
 `;
 
 const Location = styled.span`
-  font-size: 12px;
+  font-size: 1.2rem;
 `;
 
 const PostContent = styled.div`
@@ -61,6 +61,7 @@ const PostContent = styled.div`
 const PostInteraction = styled.div`
   display: grid;
   grid-template-rows: repeat(5, auto);
+  grid-row-gap: var(--spacing-small);
   padding: 0 var(--spacing-medium);
 `;
 
@@ -70,12 +71,16 @@ const Buttons = styled.section`
 
 const Likes = styled.div`
   display: grid;
+  font-size: 1.4rem;
+  line-height: 1.8rem;
 `;
 
 const Caption = styled.div`
   display: grid;
   grid-template-columns: auto 1fr;
-  grid-column-gap: var(--spacing-tiny);
+  grid-column-gap: var(--spacing-small);
+  font-size: 1.4rem;
+  line-height: 1.8rem;
   a {
     font-weight: bold;
   }
@@ -92,6 +97,8 @@ const PostTime = styled.div`
 
 const AddComment = styled.section`
   display: grid;
+  border-top: 1px solid #efefef;
+  min-height: 56px;
 `;
 
 class Post extends Component {
@@ -127,16 +134,16 @@ class Post extends Component {
                   </Link>
                   {post.caption}
                 </Caption>
+                <CommentList>
+                  {post.comments.map(comment => (
+                    <Comment key={comment.id} comment={comment} post={post} />
+                  ))}
+                </CommentList>
                 <PostTime>
                   {formatDistance(post.createdAt, new Date(), {
                     includeSeconds: true
                   })} ago
                 </PostTime>
-                {/* <CommentList>
-                  {post.comments.map(comment => (
-                    <Comment key={comment.id} comment={comment} post={post} />
-                  ))}
-                </CommentList> */}
                 <AddComment>
                   <PostComment postId={post.id} />
                 </AddComment>

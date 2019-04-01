@@ -95,11 +95,13 @@ const Nav = ({ theme }) => (
             </li>
             <li>
               <Link href="/upload">
-                <FontAwesomeIcon
-                  icon={["fal", "plus"]}
-                  color="var(--color-black)"
-                  size="lg"
-                />
+                <a>
+                  <FontAwesomeIcon
+                    icon={["fal", "plus"]}
+                    color="var(--color-black)"
+                    size="lg"
+                  />
+                </a>
               </Link>
             </li>
           </NavActions>

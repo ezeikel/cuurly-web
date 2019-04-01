@@ -6,12 +6,27 @@ import { SINGLE_POST_QUERY, ADD_COMMENT_MUTATION } from '../apollo/queries';
 import Button from './styles/Button';
 import Spinner from './Spinner';
 import { Fragment } from 'react';
+import styled from "styled-components";
 
 const CommentSchema = Yup.object().shape({
   text: Yup.string()
     .required('Comment can not be blank.')
     //.min(1, 'Comment can not be blank.')
 });
+
+const StyledField = styled(Field)`
+  border: 0;
+  outline: 0;
+  font-size: 1.4rem;
+  line-height: 1.8rem;
+  ::placeholder {
+    color: #999999;
+  }
+`;
+
+const StyledForm = styled(Form)`
+  display: grid;
+`;
 
 const PostComment = ({ postId }) => (
   <CurrentUser>
@@ -38,11 +53,10 @@ const PostComment = ({ postId }) => (
                 {({
                   isSubmitting
                 }) => (
-                  <Form>
-                    <Field type="text" name="text" placeholder="Add a comment" />
+                  <StyledForm>
+                    <StyledField type="text" name="text" placeholder="Add a comment..." />
                     <ErrorMessage name="text" />
-                    <Button type="submit" disabled={isSubmitting}>Post {isSubmitting ? <Spinner /> : null }</Button>
-                  </Form>
+                  </StyledForm>
                 )}
               </Formik>
               {loading && <p>Loading...</p>}
