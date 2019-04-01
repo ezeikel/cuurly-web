@@ -106,6 +106,17 @@ const Name = styled.span`
   font-weight: bold;
 `;
 
+const PostsWrapper = styled.div`
+  display: grid;
+`;
+
+const Posts = styled.ul`
+  display: grid;
+  grid-template-columns: repeat(3, minmax(300px, 1fr));
+  grid-auto-rows: 300px;
+  grid-gap: var(--spacing-large);
+`;
+
 class Profile extends Component {
   render() {
     return (
@@ -139,13 +150,13 @@ class Profile extends Component {
                 </UserInfo>
               </Header>
               <FollowButton userId={id} usersFollowers={followers.map(follower => follower.id)} />
-              <section>
-                <ul>
+              <PostsWrapper>
+                <Posts>
                   {posts.map(post => (
                     <PostPreview key={post.id} id={post.id} />
                   ))}
-                </ul>
-              </section>
+                </Posts>
+              </PostsWrapper>
             </Wrapper>
           );
         }}

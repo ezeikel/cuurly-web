@@ -1292,6 +1292,7 @@ type User {
   resetToken: String
   resetTokenExpiry: String
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
+  verified: Boolean
   permissions: [Permission!]!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -1320,6 +1321,7 @@ input UserCreateInput {
   resetToken: String
   resetTokenExpiry: String
   posts: PostCreateManyWithoutAuthorInput
+  verified: Boolean
   permissions: UserCreatepermissionsInput
 }
 
@@ -1368,6 +1370,7 @@ input UserCreateWithoutCommentsInput {
   resetToken: String
   resetTokenExpiry: String
   posts: PostCreateManyWithoutAuthorInput
+  verified: Boolean
   permissions: UserCreatepermissionsInput
 }
 
@@ -1387,6 +1390,7 @@ input UserCreateWithoutFollowersInput {
   resetToken: String
   resetTokenExpiry: String
   posts: PostCreateManyWithoutAuthorInput
+  verified: Boolean
   permissions: UserCreatepermissionsInput
 }
 
@@ -1406,6 +1410,7 @@ input UserCreateWithoutFollowingInput {
   resetToken: String
   resetTokenExpiry: String
   posts: PostCreateManyWithoutAuthorInput
+  verified: Boolean
   permissions: UserCreatepermissionsInput
 }
 
@@ -1425,6 +1430,7 @@ input UserCreateWithoutLikesInput {
   resetToken: String
   resetTokenExpiry: String
   posts: PostCreateManyWithoutAuthorInput
+  verified: Boolean
   permissions: UserCreatepermissionsInput
 }
 
@@ -1444,6 +1450,7 @@ input UserCreateWithoutPostsInput {
   password: String!
   resetToken: String
   resetTokenExpiry: String
+  verified: Boolean
   permissions: UserCreatepermissionsInput
 }
 
@@ -1477,6 +1484,8 @@ enum UserOrderByInput {
   resetToken_DESC
   resetTokenExpiry_ASC
   resetTokenExpiry_DESC
+  verified_ASC
+  verified_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -1496,6 +1505,7 @@ type UserPreviousValues {
   password: String!
   resetToken: String
   resetTokenExpiry: String
+  verified: Boolean
   permissions: [Permission!]!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -1654,6 +1664,8 @@ input UserScalarWhereInput {
   resetTokenExpiry_not_starts_with: String
   resetTokenExpiry_ends_with: String
   resetTokenExpiry_not_ends_with: String
+  verified: Boolean
+  verified_not: Boolean
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -1710,6 +1722,7 @@ input UserUpdateInput {
   resetToken: String
   resetTokenExpiry: String
   posts: PostUpdateManyWithoutAuthorInput
+  verified: Boolean
   permissions: UserUpdatepermissionsInput
 }
 
@@ -1725,6 +1738,7 @@ input UserUpdateManyDataInput {
   password: String
   resetToken: String
   resetTokenExpiry: String
+  verified: Boolean
   permissions: UserUpdatepermissionsInput
 }
 
@@ -1740,6 +1754,7 @@ input UserUpdateManyMutationInput {
   password: String
   resetToken: String
   resetTokenExpiry: String
+  verified: Boolean
   permissions: UserUpdatepermissionsInput
 }
 
@@ -1817,6 +1832,7 @@ input UserUpdateWithoutCommentsDataInput {
   resetToken: String
   resetTokenExpiry: String
   posts: PostUpdateManyWithoutAuthorInput
+  verified: Boolean
   permissions: UserUpdatepermissionsInput
 }
 
@@ -1836,6 +1852,7 @@ input UserUpdateWithoutFollowersDataInput {
   resetToken: String
   resetTokenExpiry: String
   posts: PostUpdateManyWithoutAuthorInput
+  verified: Boolean
   permissions: UserUpdatepermissionsInput
 }
 
@@ -1855,6 +1872,7 @@ input UserUpdateWithoutFollowingDataInput {
   resetToken: String
   resetTokenExpiry: String
   posts: PostUpdateManyWithoutAuthorInput
+  verified: Boolean
   permissions: UserUpdatepermissionsInput
 }
 
@@ -1874,6 +1892,7 @@ input UserUpdateWithoutLikesDataInput {
   resetToken: String
   resetTokenExpiry: String
   posts: PostUpdateManyWithoutAuthorInput
+  verified: Boolean
   permissions: UserUpdatepermissionsInput
 }
 
@@ -1893,6 +1912,7 @@ input UserUpdateWithoutPostsDataInput {
   password: String
   resetToken: String
   resetTokenExpiry: String
+  verified: Boolean
   permissions: UserUpdatepermissionsInput
 }
 
@@ -2101,6 +2121,8 @@ input UserWhereInput {
   posts_every: PostWhereInput
   posts_some: PostWhereInput
   posts_none: PostWhereInput
+  verified: Boolean
+  verified_not: Boolean
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]

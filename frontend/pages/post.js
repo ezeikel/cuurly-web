@@ -13,7 +13,6 @@ const Wrapper = styled.div`
 
 const PostPage = ({ query }) => (
   <Wrapper>
-    <h1>Post</h1>
     <Post id={query.id} />
   </Wrapper>
 );

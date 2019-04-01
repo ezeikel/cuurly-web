@@ -13,6 +13,7 @@ import formatDistance from 'date-fns/formatDistance';
 const Wrapper = styled.article`
   display: grid;
   grid-template-rows: 60px auto;
+  grid-row-gap: var(--spacing-medium);
   border-radius: 3px;
   border: 1px solid #e6e6e6;
   background-color: #fff;

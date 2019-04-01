@@ -363,6 +363,8 @@ export type UserOrderByInput =
   | "resetToken_DESC"
   | "resetTokenExpiry_ASC"
   | "resetTokenExpiry_DESC"
+  | "verified_ASC"
+  | "verified_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -526,6 +528,7 @@ export interface UserCreateWithoutCommentsInput {
   resetToken?: String;
   resetTokenExpiry?: String;
   posts?: PostCreateManyWithoutAuthorInput;
+  verified?: Boolean;
   permissions?: UserCreatepermissionsInput;
 }
 
@@ -760,6 +763,8 @@ export interface UserWhereInput {
   posts_every?: PostWhereInput;
   posts_some?: PostWhereInput;
   posts_none?: PostWhereInput;
+  verified?: Boolean;
+  verified_not?: Boolean;
   createdAt?: DateTimeInput;
   createdAt_not?: DateTimeInput;
   createdAt_in?: DateTimeInput[] | DateTimeInput;
@@ -829,6 +834,7 @@ export interface UserUpdateManyMutationInput {
   password?: String;
   resetToken?: String;
   resetTokenExpiry?: String;
+  verified?: Boolean;
   permissions?: UserUpdatepermissionsInput;
 }
 
@@ -848,6 +854,7 @@ export interface UserCreateWithoutLikesInput {
   resetToken?: String;
   resetTokenExpiry?: String;
   posts?: PostCreateManyWithoutAuthorInput;
+  verified?: Boolean;
   permissions?: UserCreatepermissionsInput;
 }
 
@@ -868,6 +875,7 @@ export interface UserCreateInput {
   resetToken?: String;
   resetTokenExpiry?: String;
   posts?: PostCreateManyWithoutAuthorInput;
+  verified?: Boolean;
   permissions?: UserCreatepermissionsInput;
 }
 
@@ -1033,6 +1041,7 @@ export interface UserUpdateWithoutPostsDataInput {
   password?: String;
   resetToken?: String;
   resetTokenExpiry?: String;
+  verified?: Boolean;
   permissions?: UserUpdatepermissionsInput;
 }
 
@@ -1058,6 +1067,7 @@ export interface UserUpdateManyDataInput {
   password?: String;
   resetToken?: String;
   resetTokenExpiry?: String;
+  verified?: Boolean;
   permissions?: UserUpdatepermissionsInput;
 }
 
@@ -1087,6 +1097,7 @@ export interface UserUpdateWithoutFollowingDataInput {
   resetToken?: String;
   resetTokenExpiry?: String;
   posts?: PostUpdateManyWithoutAuthorInput;
+  verified?: Boolean;
   permissions?: UserUpdatepermissionsInput;
 }
 
@@ -1147,6 +1158,7 @@ export interface UserUpdateWithoutFollowersDataInput {
   resetToken?: String;
   resetTokenExpiry?: String;
   posts?: PostUpdateManyWithoutAuthorInput;
+  verified?: Boolean;
   permissions?: UserUpdatepermissionsInput;
 }
 
@@ -1201,6 +1213,7 @@ export interface UserCreateWithoutPostsInput {
   password: String;
   resetToken?: String;
   resetTokenExpiry?: String;
+  verified?: Boolean;
   permissions?: UserCreatepermissionsInput;
 }
 
@@ -1264,6 +1277,7 @@ export interface UserCreateWithoutFollowingInput {
   resetToken?: String;
   resetTokenExpiry?: String;
   posts?: PostCreateManyWithoutAuthorInput;
+  verified?: Boolean;
   permissions?: UserCreatepermissionsInput;
 }
 
@@ -1292,6 +1306,7 @@ export interface UserCreateWithoutFollowersInput {
   resetToken?: String;
   resetTokenExpiry?: String;
   posts?: PostCreateManyWithoutAuthorInput;
+  verified?: Boolean;
   permissions?: UserCreatepermissionsInput;
 }
 
@@ -1450,6 +1465,7 @@ export interface UserUpdateInput {
   resetToken?: String;
   resetTokenExpiry?: String;
   posts?: PostUpdateManyWithoutAuthorInput;
+  verified?: Boolean;
   permissions?: UserUpdatepermissionsInput;
 }
 
@@ -1505,6 +1521,7 @@ export interface UserUpdateWithoutCommentsDataInput {
   resetToken?: String;
   resetTokenExpiry?: String;
   posts?: PostUpdateManyWithoutAuthorInput;
+  verified?: Boolean;
   permissions?: UserUpdatepermissionsInput;
 }
 
@@ -1676,6 +1693,7 @@ export interface UserUpdateWithoutLikesDataInput {
   resetToken?: String;
   resetTokenExpiry?: String;
   posts?: PostUpdateManyWithoutAuthorInput;
+  verified?: Boolean;
   permissions?: UserUpdatepermissionsInput;
 }
 
@@ -1884,6 +1902,8 @@ export interface UserScalarWhereInput {
   resetTokenExpiry_not_starts_with?: String;
   resetTokenExpiry_ends_with?: String;
   resetTokenExpiry_not_ends_with?: String;
+  verified?: Boolean;
+  verified_not?: Boolean;
   createdAt?: DateTimeInput;
   createdAt_not?: DateTimeInput;
   createdAt_in?: DateTimeInput[] | DateTimeInput;
@@ -2129,6 +2149,7 @@ export interface UserPreviousValues {
   password: String;
   resetToken?: String;
   resetTokenExpiry?: String;
+  verified?: Boolean;
   permissions: Permission[];
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
@@ -2149,6 +2170,7 @@ export interface UserPreviousValuesPromise
   password: () => Promise<String>;
   resetToken: () => Promise<String>;
   resetTokenExpiry: () => Promise<String>;
+  verified: () => Promise<Boolean>;
   permissions: () => Promise<Permission[]>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
@@ -2169,6 +2191,7 @@ export interface UserPreviousValuesSubscription
   password: () => Promise<AsyncIterator<String>>;
   resetToken: () => Promise<AsyncIterator<String>>;
   resetTokenExpiry: () => Promise<AsyncIterator<String>>;
+  verified: () => Promise<AsyncIterator<Boolean>>;
   permissions: () => Promise<AsyncIterator<Permission[]>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
@@ -3038,6 +3061,7 @@ export interface User {
   password: String;
   resetToken?: String;
   resetTokenExpiry?: String;
+  verified?: Boolean;
   permissions: Permission[];
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
@@ -3111,6 +3135,7 @@ export interface UserPromise extends Promise<User>, Fragmentable {
       last?: Int;
     }
   ) => T;
+  verified: () => Promise<Boolean>;
   permissions: () => Promise<Permission[]>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
@@ -3186,6 +3211,7 @@ export interface UserSubscription
       last?: Int;
     }
   ) => T;
+  verified: () => Promise<AsyncIterator<Boolean>>;
   permissions: () => Promise<AsyncIterator<Permission[]>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
