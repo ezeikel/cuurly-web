@@ -6,6 +6,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { SINGLE_USER_QUERY } from '../apollo/queries';
 import FollowButton from './FollowButton';
 import PostPreview from './PostPreview';
+import CurrentUser from './CurrentUser';
+import Button from './styles/Button';
 
 const Wrapper = styled.div`
   display: grid;
@@ -22,26 +24,6 @@ const Header = styled.header`
 const Username = styled.span`
   font-size: 28px;
   line-height: 32px;
-`;
-
-const Edit = styled.button`
-  background-color: transparent;
-  border: 1px solid #dbdbdb;
-  color: var(--color-black);
-  border-radius: 4px;
-  position: relative;
-  box-sizing: border-box;
-  cursor: pointer;
-  display: block;
-  font-weight: 600;
-  padding: 5px 9px;
-  text-align: center;
-  text-transform: inherit;
-  text-overflow: ellipsis;
-  user-select: none;
-  white-space: nowrap;
-  font-size: 14px;
-  line-height: 18px;
 `;
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
@@ -120,47 +102,53 @@ const Posts = styled.ul`
 class Profile extends Component {
   render() {
     return (
-      <Query query={SINGLE_USER_QUERY} variables={{ id: this.props.id}}>
-        {({ data: { user: { id, profilePicture, username, name, bio, website, posts, followers, following }}, error, loading }) => {
-          if (loading) return <p>Loading...</p>;
-          if (error) return <p>Error: {error.message}</p>;
+      <CurrentUser>
+        {({ data: { currentUser } }) => (
+          <Query query={SINGLE_USER_QUERY} variables={{ id: this.props.id}}>
+            {({ data: { user: { id, profilePicture, username, name, bio, website, posts, followers, following }}, error, loading }) => {
+              if (loading) return <p>Loading...</p>;
+              if (error) return <p>Error: {error.message}</p>;
 
-          return (
-            <Wrapper>
-              <Header>
-                <UserPhoto>
-                  <img src={profilePicture} />
-                </UserPhoto>
-                <UserInfo>
-                  <FirstRow>
-                    <Username>{username}</Username>
-                    <Edit>Edit profile</Edit>
-                    <StyledFontAwesomeIcon icon={["fal", "cog"]} color="var(--color-black)" size="2x" />
-                  </FirstRow>
-                  <SecondRow>
-                    <Stat><Number>{posts.length}</Number> posts</Stat>
-                    <Stat><Number>{followers.length}</Number> followers</Stat>
-                    <Stat><Number>{following.length}</Number> following</Stat>
-                  </SecondRow>
-                  <ThirdRow>
-                    <Name>{name}</Name>
-                    <span>{bio}</span>
-                    <span>{website}</span>
-                  </ThirdRow>
-                </UserInfo>
-              </Header>
-              <FollowButton userId={id} usersFollowers={followers.map(follower => follower.id)} />
-              <PostsWrapper>
-                <Posts>
-                  {posts.map(post => (
-                    <PostPreview key={post.id} id={post.id} />
-                  ))}
-                </Posts>
-              </PostsWrapper>
-            </Wrapper>
-          );
-        }}
-      </Query>
+              return (
+                <Wrapper>
+                  <Header>
+                    <UserPhoto>
+                      <img src={profilePicture} />
+                    </UserPhoto>
+                    <UserInfo>
+                      <FirstRow>
+                        <Username>{username}</Username>
+                        {currentUser && currentUser.id === id ?
+                          <Button>Edit profile</Button> :
+                          <FollowButton userId={id} usersFollowers={followers.map(follower => follower.id)} />
+                        }
+                        <StyledFontAwesomeIcon icon={["fal", "cog"]} color="var(--color-black)" size="2x" />
+                      </FirstRow>
+                      <SecondRow>
+                        <Stat><Number>{posts.length}</Number> posts</Stat>
+                        <Stat><Number>{followers.length}</Number> followers</Stat>
+                        <Stat><Number>{following.length}</Number> following</Stat>
+                      </SecondRow>
+                      <ThirdRow>
+                        <Name>{name}</Name>
+                        <span>{bio}</span>
+                        <span>{website}</span>
+                      </ThirdRow>
+                    </UserInfo>
+                  </Header>
+                  <PostsWrapper>
+                    <Posts>
+                      {posts.map(post => (
+                        <PostPreview key={post.id} id={post.id} />
+                      ))}
+                    </Posts>
+                  </PostsWrapper>
+                </Wrapper>
+              );
+            }}
+          </Query>
+        )}
+      </CurrentUser>
     );
   }
 }

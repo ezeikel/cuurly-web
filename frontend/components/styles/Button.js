@@ -1,26 +1,24 @@
 import styled from 'styled-components';
 
 const Button = styled.button`
-  display: grid;
-  place-items: center;
-  background-color: var(--color-primary);
-  color: var(--color-white);
-  border: none;
-  outline: none;
+  background-color: transparent;
+  border: 1px solid #dbdbdb;
+  color: var(--color-black);
+  border-radius: 4px;
+  outline: 0;
+  position: relative;
+  box-sizing: border-box;
   cursor: pointer;
-  transition: background-color 0.3s ease-in-out;
-  font-family: var(--default-font-family);
-  font-size: 1.6rem;
-  &[type="submit"] {
-    &[disabled] {
-      opacity: 0.7;
-      text-decoration: line-through;
-    }
-  }
-  a {
-    color: var(--color-white);
-    padding: var(--spacing-medium) var(--spacing-large);
-  }
+  display: block;
+  font-weight: 600;
+  padding: 5px 9px;
+  text-align: center;
+  text-transform: inherit;
+  text-overflow: ellipsis;
+  user-select: none;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 18px;
 `;
 
 export default Button;

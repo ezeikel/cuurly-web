@@ -1,5 +1,12 @@
+import styled from 'styled-components';
+
+const StyledSvg = styled.svg`
+  max-height: 100%;
+  max-width: 100%;
+`;
+
 const Spinner = () => (
-  <svg width="40px" height="40px" viewBox="0 0 40 40">
+  <StyledSvg width="40px" height="40px" viewBox="0 0 40 40">
     <path
       opacity="0.2"
       fill="#333"
@@ -10,7 +17,7 @@ const Spinner = () => (
     <path fill="#333" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0C22.32,8.481,24.301,9.057,26.013,10.047z" transform="rotate(120 20 20)">
       <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 20 20" to="360 20 20" dur="0.5s" repeatCount="indefinite" />
     </path>
-  </svg>
+  </StyledSvg>
 );
 
 export default Spinner;

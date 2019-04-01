@@ -3,10 +3,18 @@ import styled from 'styled-components';
 import CurrentUser from "./CurrentUser";
 import { SINGLE_USER_QUERY, FOLLOW_MUTATION, UNFOLLOW_MUTATION } from '../apollo/queries';
 import Button from './styles/Button';
+import Spinner from './Spinner';
 
 const StyledButton = styled(Button)`
-  background-color: ${props => props.mode === 'follow' ? 'var(--color-green)' : 'var(--color-red)'};
-  padding: var(--spacing-small) var(--spacing-medium);
+  padding: 0 24px;
+  height: 100%;
+  ${({ mode }) => mode === 'follow' ?
+    `
+      background-color: #3897f0;
+      border-color: #3897f0;
+      color: #fff;
+    ` :
+    null}
 `;
 
 const FollowButton = ({ userId, usersFollowers }) => (
@@ -18,7 +26,14 @@ const FollowButton = ({ userId, usersFollowers }) => (
           variables={{ id: userId }}
           refetchQueries={[{ query: SINGLE_USER_QUERY, variables: { id: userId } }, { query: SINGLE_USER_QUERY, variables: { id: currentUser.id } }]}
         >
-          { follow => <StyledButton mode={usersFollowers.includes(currentUser.id) ? 'unfollow' : 'follow'} onClick={follow}>{ usersFollowers.includes(currentUser.id) ? 'Unfollow' : 'Follow' }</StyledButton> }
+          { (follow, { error, loading }) => (
+            <StyledButton
+              mode={usersFollowers.includes(currentUser.id) ? 'unfollow' : 'follow'}
+              onClick={follow}
+            >
+              { loading ? <Spinner /> : usersFollowers.includes(currentUser.id) ? 'Unfollow' : 'Follow' }
+            </StyledButton>
+          )}
         </Mutation>
       : null
     )}
