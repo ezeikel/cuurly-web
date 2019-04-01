@@ -14,10 +14,11 @@ import {
   faHeart,
   faUser,
   faPlus,
-  faTimes
+  faTimes,
+  faCog
 } from "@fortawesome/pro-regular-svg-icons";
 
-library.add(fab, fas, far, fal, faSearch, faCompass, faHeart, faUser, faPlus, faTimes);
+library.add(fab, fas, far, fal, faSearch, faCompass, faHeart, faUser, faPlus, faTimes, faCog);
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {

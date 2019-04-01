@@ -1,36 +1,152 @@
 import { Component } from 'react';
 import Link from "next/link";
 import { Query } from 'react-apollo';
+import styled from 'styled-components';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { SINGLE_USER_QUERY } from '../apollo/queries';
 import FollowButton from './FollowButton';
 import PostPreview from './PostPreview';
+
+const Wrapper = styled.div`
+  display: grid;
+  padding-top: 60px;
+  grid-row-gap: var(--spacing-huge);
+`;
+
+const Header = styled.header`
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-column-gap: var(--spacing-huge);
+`;
+
+const Username = styled.span`
+  font-size: 28px;
+  line-height: 32px;
+`;
+
+const Edit = styled.button`
+  background-color: transparent;
+  border: 1px solid #dbdbdb;
+  color: var(--color-black);
+  border-radius: 4px;
+  position: relative;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: block;
+  font-weight: 600;
+  padding: 5px 9px;
+  text-align: center;
+  text-transform: inherit;
+  text-overflow: ellipsis;
+  user-select: none;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 18px;
+`;
+
+const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
+  cursor: pointer;
+`;
+
+const UserPhoto = styled.div`
+  display: grid;
+  width: 150px;
+  height: 150px;
+  img {
+    border-radius: 50%;
+  }
+`;
+
+const UserInfo = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  grid-template-rows: repeat(2, auto) 1fr;
+  grid-row-gap: var(--spacing-large);
+`;
+
+const FirstRow = styled.div`
+  grid-column: 1 / -1;
+  grid-row: 1 / span 1;
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  justify-content: start;
+  grid-column-gap: var(--spacing-large);
+  align-items: center;
+`;
+
+const SecondRow = styled.div`
+  grid-column: 1 / -1;
+  grid-row: 2 / span 1;
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  justify-content: start;
+  grid-column-gap: var(--spacing-large);
+  align-items: center;
+`;
+
+const Stat = styled.div`
+  font-size: 1.6rem;
+  line-height: 1.8rem;
+`;
+
+const Number = styled.span`
+  font-weight: bold;
+`;
+
+const ThirdRow = styled.div`
+  grid-column: 1 / -1;
+  grid-row: 3 / span 1;
+  display: grid;
+  grid-template-rows: repeat(3, auto);
+  font-size: 1.6rem;
+  line-height: 2.4rem;
+`;
+
+const Name = styled.span`
+  font-weight: bold;
+`;
 
 class Profile extends Component {
   render() {
     return (
       <Query query={SINGLE_USER_QUERY} variables={{ id: this.props.id}}>
-        {({ data: { user: { id, profilePicture, name, bio, posts, followers, following }}, error, loading }) => {
+        {({ data: { user: { id, profilePicture, username, name, bio, website, posts, followers, following }}, error, loading }) => {
           if (loading) return <p>Loading...</p>;
           if (error) return <p>Error: {error.message}</p>;
 
           return (
-            <div>
-              <img src={profilePicture} />
-              <h1>{name}</h1>
-              <p>{bio}</p>
+            <Wrapper>
+              <Header>
+                <UserPhoto>
+                  <img src={profilePicture} />
+                </UserPhoto>
+                <UserInfo>
+                  <FirstRow>
+                    <Username>{username}</Username>
+                    <Edit>Edit profile</Edit>
+                    <StyledFontAwesomeIcon icon={["fal", "cog"]} color="var(--color-black)" size="2x" />
+                  </FirstRow>
+                  <SecondRow>
+                    <Stat><Number>{posts.length}</Number> posts</Stat>
+                    <Stat><Number>{followers.length}</Number> followers</Stat>
+                    <Stat><Number>{following.length}</Number> following</Stat>
+                  </SecondRow>
+                  <ThirdRow>
+                    <Name>{name}</Name>
+                    <span>{bio}</span>
+                    <span>{website}</span>
+                  </ThirdRow>
+                </UserInfo>
+              </Header>
               <FollowButton userId={id} usersFollowers={followers.map(follower => follower.id)} />
-              <p>{posts.length} posts</p>
-              <p>{followers.length} followers</p>
-              <p>{following.length} following</p>
               <section>
-                <h3>Posts</h3>
                 <ul>
                   {posts.map(post => (
                     <PostPreview key={post.id} id={post.id} />
                   ))}
                 </ul>
               </section>
-            </div>
+            </Wrapper>
           );
         }}
       </Query>
