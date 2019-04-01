@@ -1292,7 +1292,7 @@ type User {
   resetToken: String
   resetTokenExpiry: String
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
-  verified: Boolean
+  verified: Boolean!
   permissions: [Permission!]!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -1505,7 +1505,7 @@ type UserPreviousValues {
   password: String!
   resetToken: String
   resetTokenExpiry: String
-  verified: Boolean
+  verified: Boolean!
   permissions: [Permission!]!
   createdAt: DateTime!
   updatedAt: DateTime!

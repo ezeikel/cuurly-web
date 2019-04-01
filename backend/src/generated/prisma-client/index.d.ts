@@ -2149,7 +2149,7 @@ export interface UserPreviousValues {
   password: String;
   resetToken?: String;
   resetTokenExpiry?: String;
-  verified?: Boolean;
+  verified: Boolean;
   permissions: Permission[];
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
@@ -3061,7 +3061,7 @@ export interface User {
   password: String;
   resetToken?: String;
   resetTokenExpiry?: String;
-  verified?: Boolean;
+  verified: Boolean;
   permissions: Permission[];
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;

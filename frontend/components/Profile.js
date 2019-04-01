@@ -24,6 +24,13 @@ const Header = styled.header`
 const Username = styled.span`
   font-size: 28px;
   line-height: 32px;
+  ${({ verified }) => verified ?
+  `
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-column-gap: var(--spacing-small);
+    place-items: center;
+  ` : null }
 `;
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
@@ -105,7 +112,7 @@ class Profile extends Component {
       <CurrentUser>
         {({ data: { currentUser } }) => (
           <Query query={SINGLE_USER_QUERY} variables={{ id: this.props.id}}>
-            {({ data: { user: { id, profilePicture, username, name, bio, website, posts, followers, following }}, error, loading }) => {
+            {({ data: { user: { id, profilePicture, username, name, bio, website, posts, followers, following, verified }}, error, loading }) => {
               if (loading) return <p>Loading...</p>;
               if (error) return <p>Error: {error.message}</p>;
 
@@ -117,7 +124,10 @@ class Profile extends Component {
                     </UserPhoto>
                     <UserInfo>
                       <FirstRow>
-                        <Username>{username}</Username>
+                        <Username verified={verified}>
+                          {username}
+                          { verified ? <StyledFontAwesomeIcon icon={["fas", "badge-check"]} color="#3E9AED" size="xs" /> : null }
+                        </Username>
                         {currentUser && currentUser.id === id ?
                           <Button>Edit profile</Button> :
                           <FollowButton userId={id} usersFollowers={followers.map(follower => follower.id)} />

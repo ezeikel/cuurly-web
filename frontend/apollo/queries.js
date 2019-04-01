@@ -43,6 +43,7 @@ export const SINGLE_USER_QUERY = gql`
       posts {
         id
       }
+      verified
     }
   }
 `;

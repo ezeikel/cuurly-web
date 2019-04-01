@@ -30,6 +30,7 @@ type User {
   gender: Gender!
   following: [User!]!
   followers: [User!]!
+  verified: Boolean
   posts: [Post!]!
   likes: [Like!]!
   comments: [Comment!]!
