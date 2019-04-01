@@ -76,6 +76,9 @@ const Caption = styled.div`
   display: grid;
   grid-template-columns: auto 1fr;
   grid-column-gap: var(--spacing-tiny);
+  a {
+    font-weight: bold;
+  }
 `;
 
 const PostTime = styled.div`
