@@ -101,22 +101,22 @@ class Signup extends Component {
                   <Name>
                     <label>Name</label>
                     <Field type="text" name="name" />
-                    <ErrorMessage name="name" component="div" />
+                    {/* <ErrorMessage name="name" component="div" /> */}
                   </Name>
                   <Email>
                     <label>Email</label>
                     <Field type="email" name="email" />
-                    <ErrorMessage name="emaile" component="div" />
+                    {/* <ErrorMessage name="emaile" component="div" /> */}
                   </Email>
                   <Username>
                     <label>Username</label>
                     <Field type="text" name="username" />
-                    <ErrorMessage name="username" component="div" />
+                    {/* <ErrorMessage name="username" component="div" /> */}
                   </Username>
                   <Password>
                     <label>Password</label>
                     <Field type="password" name="password" />
-                    <ErrorMessage name="password" component="div" />
+                    {/* <ErrorMessage name="password" component="div" /> */}
                   </Password>
                   <StyledButton type="submit" disabled={isSubmitting}>Submit {isSubmitting ? <Spinner /> : null }</StyledButton>
                 </StyledForm>

@@ -1,5 +1,23 @@
 import styled from "styled-components";
+import Router from 'next/router';
+import NProgress from 'nprogress';
 import Nav from './Nav';
+
+NProgress.configure({
+  showSpinner: false
+});
+
+Router.onRouteChangeStart = () => {
+  NProgress.start();
+};
+
+Router.onRouteChangeComplete = () => {
+  NProgress.done();
+};
+
+Router.onRouteChangeError = () => {
+  NProgress.done();
+};
 
 const Wrapper = styled.header`
   display: grid;
