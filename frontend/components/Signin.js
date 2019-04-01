@@ -6,6 +6,7 @@ import Spinner from './Spinner';
 import Button from './styles/Button';
 import { CURRENT_USER_QUERY, SIGNIN_MUTATION } from '../apollo/queries';
 import { withRouter } from 'next/router';
+import styled from 'styled-components';
 
 const SigninSchema = Yup.object().shape({
   username: Yup.string()
@@ -13,6 +14,38 @@ const SigninSchema = Yup.object().shape({
   password: Yup.string()
     .required('Required')
 });
+
+const StyledForm = styled(Form)`
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: 1fr auto;
+  grid-row-gap: var(--spacing-small);
+`;
+
+const Username = styled.div`
+  grid-row: 1 / span 1;
+  grid-column: 1 / -1;
+  display: grid;
+  grid-row-gap: var(--spacing-small);
+`;
+
+const Password = styled.div`
+  grid-row: 2 / span 1;
+  grid-column: 1 / -1;
+  display: grid;
+  grid-row-gap: var(--spacing-small);
+`;
+
+const StyledButton = styled(Button)`
+  grid-row: 3 / -1;
+  grid-column: 1 / -1;
+  display: grid;
+  background-color: #3897f0;
+  border: 1px solid #3897f0;
+  border-radius: 4px;
+  color: #fff;
+  position: relative;
+`;
 
 class Signin extends Component {
   render() {
@@ -41,13 +74,19 @@ class Signin extends Component {
               {({
                 isSubmitting
               }) => (
-                <Form>
-                  <Field type="text" name="username" />
-                  <ErrorMessage name="username" component="div" />
-                  <Field type="password" name="password" />
-                  <ErrorMessage name="password" component="div" />
-                  <Button type="submit" disabled={isSubmitting}>Submit {isSubmitting ? <Spinner /> : null }</Button>
-                </Form>
+                <StyledForm>
+                  <Username>
+                    <label>Username</label>
+                    <Field type="text" name="username" />
+                    {/* <ErrorMessage name="username" component="div" /> */}
+                  </Username>
+                  <Password>
+                    <label>Password</label>
+                    <Field type="password" name="password" />
+                    {/* <ErrorMessage name="password" component="div" /> */}
+                  </Password>
+                  <StyledButton type="submit" disabled={isSubmitting}>Sign In {isSubmitting ? <Spinner /> : null }</StyledButton>
+                </StyledForm>
               )}
             </Formik>
             {loading && <p>Loading...</p>}
