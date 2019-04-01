@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import Link from "next/link";
 import { Query } from 'react-apollo';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -126,7 +125,7 @@ class Profile extends Component {
                       <FirstRow>
                         <Username verified={verified}>
                           {username}
-                          { verified ? <StyledFontAwesomeIcon icon={["fas", "badge-check"]} color="#3E9AED" size="xs" /> : null }
+                          { verified ? <FontAwesomeIcon icon={["fas", "badge-check"]} color="#3E9AED" size="xs" /> : null }
                         </Username>
                         {currentUser && currentUser.id === id ?
                           <Button>Edit profile</Button> :

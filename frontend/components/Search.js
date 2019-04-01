@@ -5,6 +5,7 @@ import styled, { keyframes } from 'styled-components';
 import debounce from 'lodash.debounce';
 import Downshift, { resetIdCounter } from 'downshift';
 import { SEARCH_USERS_QUERY } from '../apollo/queries';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const glow = keyframes `
   from {
@@ -48,18 +49,48 @@ const DropDown = styled.div`
 `;
 
 const DropDownItem = styled.div`
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-column-gap: var(--spacing-small);
+  align-items: center;
   border-bottom: 1px solid ${props => props.theme.lightgrey};
   background: ${props => (props.highlighted ? '#f7f7f7' : 'white')};
-  padding: 1rem;
+  padding: 8px 14px;
   transition: all 0.2s;
-  ${props => (props.highlighted ? 'padding-left: 2rem;' : null)};
-  display: flex;
-  align-items: center;
-  border-left: 10px solid ${props => (props.highlighted ? props.theme.lightgrey : 'white')};
+  font-size: 1.4rem;
+  line-height: 2.2rem;
+  width: 100%;
+  cursor: pointer;
   img {
     margin-right: 10px;
   }
-  width: 100%;
+`;
+
+const UserPhoto = styled.div`
+  display: grid;
+  width: 32px;
+  height: 32px;
+  img {
+    border-radius: 50%;
+  }
+`;
+
+const UserInfo = styled.div`
+  display: grid;
+  grid-template-rows: auto auto;
+`;
+
+const Username = styled.span`
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: start;
+  align-items: center;
+  grid-column-gap: var(--spacing-tiny);
+`;
+
+const Name = styled.span`
+  display: grid;
+  color: #999999;
 `;
 
 function routeToUser(user) {
@@ -137,7 +168,22 @@ class AutoComplete extends Component {
                       key={user.id}
                       highlighted={index === highlightedIndex}
                     >
-                    {user.username}
+                    <UserPhoto>
+                      <img src={user.profilePicture} />
+                    </UserPhoto>
+                    <UserInfo>
+                      <Username>
+                        {user.username}
+                        {user.verified ?
+                          <FontAwesomeIcon icon={["fas", "badge-check"]} color="#3E9AED" size="sm" />
+                          : null
+                        }
+                      </Username>
+                      <Name>
+                        {user.name}
+                      </Name>
+
+                    </UserInfo>
                     </DropDownItem>
                   ))}
                   {!this.state.users.length && !this.state.loading &&

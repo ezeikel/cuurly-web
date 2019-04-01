@@ -106,6 +106,9 @@ export const SEARCH_USERS_QUERY = gql`
     ) {
       id
       username
+      name
+      profilePicture
+      verified
     }
   }
 `;
