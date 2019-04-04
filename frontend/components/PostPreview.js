@@ -64,7 +64,7 @@ class PostPreview extends Component {
               <Link href={`/post?id=${this.props.id}`}>
                 <a>
                   <Preview key={post.id}>
-                    <img src={post.content.url} />
+                    <img src={post.content.url.replace('/upload', '/upload/ar_200:1,c_fill')} />
                   </Preview>
                   <Overlay>
                     <Stats>

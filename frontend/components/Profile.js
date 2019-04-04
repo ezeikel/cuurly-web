@@ -100,8 +100,8 @@ const PostsWrapper = styled.div`
 
 const Posts = styled.ul`
   display: grid;
-  grid-template-columns: repeat(3, minmax(300px, 1fr));
-  grid-auto-rows: 300px;
+  grid-template-columns: repeat(3, 350px);
+  grid-auto-rows: 350px;
   grid-gap: var(--spacing-large);
 `;
 
