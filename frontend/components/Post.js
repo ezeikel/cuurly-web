@@ -50,13 +50,7 @@ const Location = styled.span`
 `;
 
 const PostContent = styled.div`
-  overflow: hidden;
-  /*padding-bottom: 125%;*/
-  img {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-  }
+  display: grid;
 `;
 
 const PostInteraction = styled.div`
@@ -122,7 +116,7 @@ class Post extends Component {
                 </Details>
               </PostHeader>
               <PostContent>
-                <img src={post.content.url} />
+                <img src={post.content.url.replace('/upload', '/upload/w_614,ar_4:5,c_mpad')} />
               </PostContent>
               <PostInteraction>
                 <Buttons>
