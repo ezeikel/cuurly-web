@@ -21,7 +21,18 @@ const processUpload = async ({ file, folder, tags }) => {
   const cloudinaryUpload = async ({ stream }) => {
     try {
       await new Promise((resolve, reject) => {
-        const streamLoad = cloudinary.v2.uploader.upload_stream({folder, tags, overwrite: true}, function(error, result) {
+        const streamLoad = cloudinary.v2.uploader.upload_stream({
+              folder,
+              tags,
+              overwrite: true,
+              // transformation: {
+              //   width: 1080,
+              //   height: 1080,
+              //   crop: 'lfill',
+              //   aspect_ratio: '4:5',
+              //   format: 'jpg'
+              // }
+            }, function (error, result) {
           if (result) {
             resultUrl = result.url;
             resultSecureUrl = result.secure_url;

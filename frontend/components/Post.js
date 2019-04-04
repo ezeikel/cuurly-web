@@ -116,7 +116,7 @@ class Post extends Component {
                 </Details>
               </PostHeader>
               <PostContent>
-                <img src={post.content.url.replace('/upload', '/upload/w_614,ar_4:5,c_mpad')} />
+                <img src={post.content.url.replace('/upload', '/upload/w_614,ar_4:5,c_mpad,dpr_2.0')} />
               </PostContent>
               <PostInteraction>
                 <Buttons>
