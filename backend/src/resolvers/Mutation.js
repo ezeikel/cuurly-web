@@ -25,13 +25,12 @@ const processUpload = async ({ file, folder, tags }) => {
               folder,
               tags,
               overwrite: true,
-              // transformation: {
-              //   width: 1080,
-              //   height: 1080,
-              //   crop: 'lfill',
-              //   aspect_ratio: '4:5',
-              //   format: 'jpg'
-              // }
+              transformation: {
+                width: 1080,
+                crop: 'limit',
+                //aspect_ratio: '4:5',
+                format: 'jpg'
+              }
             }, function (error, result) {
           if (result) {
             resultUrl = result.url;

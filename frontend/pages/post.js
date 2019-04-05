@@ -4,6 +4,8 @@ import Post from '../components/Post';
 
 const Wrapper = styled.div`
   display: grid;
+  grid-template-columns: 614px;
+  justify-content: center;
   grid-row-gap: var(--spacing-medium);
   h1 {
     margin: 0;

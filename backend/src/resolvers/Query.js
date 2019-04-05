@@ -31,7 +31,7 @@ const Query = {
         where: {
           author: { id_in: [...followingIds, ctx.request.userId] }
         },
-        orderBy: 'createdAt_DESC', // TODO: orderBy doesnt seem to work when combined with where - https://github.com/prisma/issues/?
+        orderBy: 'createdAt_ASC', // TODO: orderBy doesnt seem to work when combined with where - https://github.com/prisma/issues/?
       }, // seems to be in most recent order anyway
       info
     );
