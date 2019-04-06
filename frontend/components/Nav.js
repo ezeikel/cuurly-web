@@ -41,6 +41,21 @@ const LogoWrapper = styled.div`
   }
 `;
 
+const UploadAnchor = styled.a`
+  background-color: var(--color-primary);
+  padding: var(--spacing-tiny);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  &:hover {
+    background-color: var(--color-primary-lighter);
+  }
+`;
+
+const UploadIcon = styled(FontAwesomeIcon)`
+  width: 24px !important; /* override font awesome styles */
+`;
+
 const Nav = ({ theme }) => (
   <CurrentUser>
     {({ data: { currentUser } }) =>
@@ -95,13 +110,13 @@ const Nav = ({ theme }) => (
             </li>
             <li>
               <Link href="/upload">
-                <a>
-                  <FontAwesomeIcon
+                <UploadAnchor>
+                  <UploadIcon
                     icon={["fal", "plus"]}
-                    color="var(--color-black)"
+                    color="var(--color-white)"
                     size="lg"
                   />
-                </a>
+                </UploadAnchor>
               </Link>
             </li>
           </NavActions>
