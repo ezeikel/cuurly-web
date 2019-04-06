@@ -1,7 +1,8 @@
-import { Component } from 'react';
+import { Component, useState, useRef } from 'react';
 import { Query } from 'react-apollo';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Modal from 'react-modal';
 import { SINGLE_USER_QUERY } from '../apollo/queries';
 import FollowButton from './FollowButton';
 import PostPreview from './PostPreview';
@@ -105,61 +106,84 @@ const Posts = styled.ul`
   grid-gap: var(--spacing-large);
 `;
 
-class Profile extends Component {
-  render() {
-    return (
-      <CurrentUser>
-        {({ data: { currentUser } }) => (
-          <Query query={SINGLE_USER_QUERY} variables={{ id: this.props.id}}>
-            {({ data: { user: { id, profilePicture, username, name, bio, website, posts, followers, following, verified }}, error, loading }) => {
-              if (loading) return <p>Loading...</p>;
-              if (error) return <p>Error: {error.message}</p>;
+const StyledModal = styled(Modal)`
+  display: grid;
+`;
 
-              return (
-                <Wrapper>
-                  <Header>
-                    <UserPhoto>
-                      <img src={profilePicture} />
-                    </UserPhoto>
-                    <UserInfo>
-                      <FirstRow>
-                        <Username verified={verified}>
-                          {username}
-                          { verified ? <FontAwesomeIcon icon={["fas", "badge-check"]} color="#3E9AED" size="xs" /> : null }
-                        </Username>
-                        {currentUser && currentUser.id === id ?
-                          <Button>Edit profile</Button> :
-                          <FollowButton userId={id} usersFollowers={followers.map(follower => follower.id)} />
-                        }
-                        <StyledFontAwesomeIcon icon={["fal", "cog"]} color="var(--color-black)" size="2x" />
-                      </FirstRow>
-                      <SecondRow>
-                        <Stat><Number>{posts.length}</Number> posts</Stat>
-                        <Stat><Number>{followers.length}</Number> followers</Stat>
-                        <Stat><Number>{following.length}</Number> following</Stat>
-                      </SecondRow>
-                      <ThirdRow>
-                        <Name>{name}</Name>
-                        <span>{bio}</span>
-                        <span>{website}</span>
-                      </ThirdRow>
-                    </UserInfo>
-                  </Header>
-                  <PostsWrapper>
-                    <Posts>
-                      {posts.map(post => (
-                        <PostPreview key={post.id} id={post.id} />
-                      ))}
-                    </Posts>
-                  </PostsWrapper>
-                </Wrapper>
-              );
-            }}
-          </Query>
-        )}
-      </CurrentUser>
-    );
-  }
+if (typeof (window) !== 'undefined') {
+  Modal.setAppElement('body');
+}
+
+const Profile = ({ id }) => {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const subtitleEl = useRef(null);
+
+  const openModal = () => setModalIsOpen(true);
+  const afterOpenModal = () => subtitleEl.current.style.color = '#f00';
+  const closeModal = () => setModalIsOpen(false);
+
+  return (
+    <CurrentUser>
+      {({ data: { currentUser } }) => (
+        <Query query={SINGLE_USER_QUERY} variables={{ id }}>
+          {({ data: { user: { id, profilePicture, username, name, bio, website, posts, followers, following, verified }}, error, loading }) => {
+            if (loading) return <p>Loading...</p>;
+            if (error) return <p>Error: {error.message}</p>;
+
+            return (
+              <Wrapper>
+                <Header>
+                  <UserPhoto>
+                    <img src={profilePicture} />
+                  </UserPhoto>
+                  <UserInfo>
+                    <FirstRow>
+                      <Username verified={verified}>
+                        {username}
+                        { verified ? <FontAwesomeIcon icon={["fas", "badge-check"]} color="#3E9AED" size="xs" /> : null }
+                      </Username>
+                      {currentUser && currentUser.id === id ?
+                        <Button>Edit profile</Button> :
+                        <FollowButton userId={id} usersFollowers={followers.map(follower => follower.id)} />
+                      }
+                      <StyledFontAwesomeIcon icon={["fal", "cog"]} color="var(--color-black)" size="2x" />
+                    </FirstRow>
+                    <SecondRow>
+                      <Stat><Number>{posts.length}</Number> posts</Stat>
+                      <Stat onClick={openModal}><Number>{followers.length}</Number> followers</Stat>
+                      <StyledModal
+                        isOpen={modalIsOpen}
+                        onAfterOpen={afterOpenModal}
+                        onRequestClose={closeModal}
+                        contentLabel="Example Modal"
+                      >
+                        <h2 ref={subtitleEl}>Hello</h2>
+                        <button onClick={closeModal}>close</button>
+                        <div>I am a modal</div>
+                      </StyledModal>
+                      <Stat><Number>{following.length}</Number> following</Stat>
+                    </SecondRow>
+                    <ThirdRow>
+                      <Name>{name}</Name>
+                      <span>{bio}</span>
+                      <span>{website}</span>
+                    </ThirdRow>
+                  </UserInfo>
+                </Header>
+                <PostsWrapper>
+                  <Posts>
+                    {posts.map(post => (
+                      <PostPreview key={post.id} id={post.id} />
+                    ))}
+                  </Posts>
+                </PostsWrapper>
+              </Wrapper>
+            );
+          }}
+        </Query>
+      )}
+    </CurrentUser>
+  );
 }
 
 export default Profile;
