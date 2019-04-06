@@ -136,7 +136,7 @@ const Upload = ({ router }) => {
                               <span>Drop it like it's hot</span>
                               <span>Add your files by dropping them in this window</span>
                             </DropzoneText> :
-                            null
+                            <span>Click here or drag some files over.</span>
                         }
                       </Dropzone>
                       <ErrorMessage name="image" component="div" />
