@@ -3,7 +3,7 @@ import { Query } from 'react-apollo';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Modal from 'react-modal';
-import { SINGLE_USER_QUERY } from '../apollo/queries';
+import { SINGLE_USER_QUERY, USER_FOLLOWERS_QUERY } from '../apollo/queries';
 import FollowButton from './FollowButton';
 import PostPreview from './PostPreview';
 import CurrentUser from './CurrentUser';
@@ -106,13 +106,77 @@ const Posts = styled.ul`
   grid-gap: var(--spacing-large);
 `;
 
-const StyledModal = styled(Modal)`
-  display: grid;
+const ReactModalAdapter = ({ className, modalClassName, ...props }) => (
+  <Modal
+    className={modalClassName}
+    portalClassName={className}
+    {...props}
+  />
+);
+
+const StyledModal = styled(ReactModalAdapter).attrs({ //https://github.com/styled-components/styled-components/issues/1494
+  overlayClassName: 'overlay',
+  modalClassName: 'modal'
+})`
+  /* Portal styles here (though usually you will have none) */
+
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0, 0.5);
+    display: grid;
+    place-items: center;
+  }
+  .modal {
+    display: grid;
+    background-color: var(--color-white);
+    min-height: 200px;
+    max-height: 400px;
+    width: 400px;
+    outline: 0;
+  }
 `;
 
 if (typeof (window) !== 'undefined') {
   Modal.setAppElement('body');
 }
+
+const FollowerList = styled.ul`
+  display: grid;
+`;
+
+const FollowerWrapper = styled.li`
+  display: grid;
+`;
+
+const Follower = styled.div`
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  padding-bottom: 8px;
+  padding-top: 8px;
+`;
+
+const FollowerPhoto = styled.div`
+  display: grid;
+  width: 40px;
+  height: 40px;
+  img {
+    border-radius: 50%;
+  }
+`;
+
+const FollowerName = styled.div`
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+`;
+
+const FollowerAction = styled.div`
+  display: grid;
+`;
 
 const Profile = ({ id }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -157,9 +221,43 @@ const Profile = ({ id }) => {
                         onRequestClose={closeModal}
                         contentLabel="Example Modal"
                       >
-                        <h2 ref={subtitleEl}>Hello</h2>
-                        <button onClick={closeModal}>close</button>
-                        <div>I am a modal</div>
+                        <header>
+                          <h1 ref={subtitleEl}>Followers</h1>
+                          <FontAwesomeIcon icon={["fal", "cog"]} color="var(--color-black)" size="2x" onClick={closeModal} />
+                        </header>
+                        <div>
+                          <Query query={USER_FOLLOWERS_QUERY} variables={{ id: currentUser.id }}>
+                            {({ data: { followers }, error, loading }) => {
+                              if (loading) return <p>Loading...</p>;
+                              if (error) return <p>Error: {error.message}</p>;
+
+                              return (
+                                <FollowerList>
+                                  {
+                                    followers.map(
+                                      follower => (
+                                      <FollowerWrapper key={follower.id}>
+                                        <Follower>
+                                          <FollowerPhoto>
+                                            <img src={follower.profilePicture} alt="profile-pic"/>
+                                          </FollowerPhoto>
+                                          <FollowerName>
+                                            <span>{follower.username}</span>
+                                            <span>{follower.name}</span>
+                                          </FollowerName>
+                                          <FollowerAction>
+                                            <Button>Follow</Button>
+                                          </FollowerAction>
+                                        </Follower>
+                                      </FollowerWrapper>
+                                      )
+                                    )
+                                  }
+                                </FollowerList>
+                              );
+                            }}
+                          </Query>
+                        </div>
                       </StyledModal>
                       <Stat><Number>{following.length}</Number> following</Stat>
                     </SecondRow>
