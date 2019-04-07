@@ -157,7 +157,7 @@ const Upload = ({ router }) => {
             )}
           </Formik>
           {loading && <p>Loading...</p>}
-          {error && <p>Error :( Please try again</p>}
+          {error && <p>{`Error: ${error}`}. Please try again</p>}
         </Wrapper>
       )}
     </Mutation>
