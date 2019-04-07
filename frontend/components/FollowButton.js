@@ -6,7 +6,6 @@ import Button from './styles/Button';
 import Spinner from './Spinner';
 
 const StyledButton = styled(Button)`
-  padding: 0 24px;
   height: 100%;
   ${({ mode }) => mode === 'follow' ?
     `

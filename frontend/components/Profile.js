@@ -109,6 +109,10 @@ const Posts = styled.ul`
   grid-gap: var(--spacing-large);
 `;
 
+const StyledFollowButton = styled(FollowButton)`
+  padding: 0 24px;
+`;
+
 const ReactModalAdapter = ({ className, modalClassName, ...props }) => (
   <Modal
     className={modalClassName}
@@ -250,7 +254,7 @@ const Profile = ({ id }) => {
                       </Username>
                       {currentUser && currentUser.id === id ?
                         <Button>Edit profile</Button> :
-                        <FollowButton userId={id} usersFollowers={followers.map(follower => follower.id)} />
+                        <StyledFollowButton userId={id} usersFollowers={followers.map(follower => follower.id)} />
                       }
                       <StyledFontAwesomeIcon icon={["fal", "cog"]} color="var(--color-black)" size="2x" />
                     </FirstRow>
