@@ -66,6 +66,24 @@ export const USER_FOLLOWERS_QUERY = gql`
   }
 `;
 
+export const USER_FOLLOWING_QUERY = gql`
+  query USER_FOLLOWING_QUERY ($id: ID!) {
+    following(id: $id) {
+      id
+      name
+      username
+      profilePicture
+      verified
+      followers {
+        id
+      }
+      following {
+        id
+      }
+    }
+  }
+`;
+
 export const SINGLE_POST_QUERY = gql`
   query SINGLE_POST_QUERY($id: ID!) {
     post(id: $id) {

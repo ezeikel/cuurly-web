@@ -42,6 +42,7 @@ type Query {
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, first: Int ): [User!]!
   userz: [User!]! # Just for testing
   user(id: ID!): User
+  following(id: ID!): [User!]!
   followers(id: ID!): [User!]!
   posts: [Post!]!
   post(id: ID!): Post

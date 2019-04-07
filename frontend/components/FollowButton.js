@@ -1,7 +1,7 @@
 import { Mutation } from 'react-apollo';
 import styled from 'styled-components';
 import CurrentUser from "./CurrentUser";
-import { SINGLE_USER_QUERY, FOLLOW_MUTATION, UNFOLLOW_MUTATION } from '../apollo/queries';
+import { SINGLE_USER_QUERY, FOLLOW_MUTATION, UNFOLLOW_MUTATION, USER_FOLLOWING_QUERY, USER_FOLLOWERS_QUERY } from '../apollo/queries';
 import Button from './styles/Button';
 import Spinner from './Spinner';
 
@@ -24,7 +24,7 @@ const FollowButton = ({ userId, usersFollowers }) => (
         <Mutation
           mutation={usersFollowers.includes(currentUser.id) ? UNFOLLOW_MUTATION : FOLLOW_MUTATION}
           variables={{ id: userId }}
-          refetchQueries={[{ query: SINGLE_USER_QUERY, variables: { id: userId } }, { query: SINGLE_USER_QUERY, variables: { id: currentUser.id } }]}
+          refetchQueries={[{ query: SINGLE_USER_QUERY, variables: { id: userId } }, { query: SINGLE_USER_QUERY, variables: { id: currentUser.id } }, { query: USER_FOLLOWERS_QUERY, variables: { id: currentUser.id } }, { query: USER_FOLLOWING_QUERY, variables: { id: currentUser.id } } ]}
         >
           { (follow, { error, loading }) => (
             <StyledButton
