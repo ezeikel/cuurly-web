@@ -237,9 +237,6 @@ const Profile = ({ id }) => {
             if (loading) return <p>Loading...</p>;
             if (error) return <p>Error: {error.message}</p>;
 
-            const profileFollowers = followers;
-            const profileFollowing = following;
-
             return (
               <Wrapper>
                 <Header>
