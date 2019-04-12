@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, Fragment } from 'react';
 import Link from "next/link";
 import { Component } from 'react';
 import { Query } from 'react-apollo';
@@ -12,6 +12,7 @@ import DeletePost from './DeletePost';
 import formatDistance from 'date-fns/formatDistance';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Modal from 'react-modal';
+import CurrentUser from './CurrentUser';
 
 const Wrapper = styled.article`
   display: grid;
@@ -132,6 +133,7 @@ const StyledModal = styled(ReactModalAdapter).attrs({ //https://github.com/style
     width: 400px;
     border-radius: 4px;
     outline: 0;
+    overflow-y: scroll;
   }
 `;
 
@@ -143,11 +145,11 @@ const ModalBody = styled.div`
   overflow-y: scroll;
 `;
 
-const PostActions = styled.ul `
+const PostActions = styled.ul`
   display: grid;
 `;
 
-const PostAction = styled.li `
+const PostAction = styled.li`
   display: grid;
   align-items: center;
   justify-content: space-around;
@@ -159,6 +161,10 @@ const PostAction = styled.li `
   }
   span  {
     cursor: pointer;
+  ${({ actionType }) => actionType === 'negative' ?
+  `
+    color: var(--color-red);
+  ` : null }
   }
 `;
 
@@ -173,93 +179,117 @@ const Post = ({ id }) => {
   const closeModal = () => setModalIsOpen(false);
 
   return (
-    <Query query={SINGLE_POST_QUERY} variables={{ id }}>
-      {({ data: { post }, error, loading }) => {
-        if (loading) return <p>Loading...</p>;
-        if (error) return <p>Error: {error.message}</p>;
+    <CurrentUser>
+      {({ data: { currentUser } }) => (
+        <Query query={SINGLE_POST_QUERY} variables={{ id }}>
+          {({ data: { post }, error, loading }) => {
+            if (loading) return <p>Loading...</p>;
+            if (error) return <p>Error: {error.message}</p>;
 
-        return (
-          <Wrapper>
-            <PostHeader>
-              <Photo>
-                <img src={post.author.profilePicture} />
-              </Photo>
-              <Details>
-                <Username>{post.author.username}</Username>
-                <Location>Random post location</Location>
-              </Details>
-              <StyledFontAwesomeIcon onClick={openModal} icon={["far", "ellipsis-h"]} color="var(--color-black)" size="lg" />
-              <StyledModal
-                isOpen={modalIsOpen}
-                onRequestClose={closeModal}
-                conentLabel="Post Actions"
-              >
-              <ModalBody>
-                <PostActions>
-                  <PostAction>
-                    <span>Go to Post</span>
-                  </PostAction>
-                  <PostAction>
-                    <span>Archive</span>
-                  </PostAction>
-                  <PostAction>
-                    <span>Edit</span>
-                  </PostAction>
-                  <PostAction>
-                    <span>Copy Link</span>
-                  </PostAction>
-                  <PostAction>
-                    <span>Share</span>
-                  </PostAction>
-                  <PostAction>
-                    <span>Report</span>
-                  </PostAction>
-                  <PostAction>
-                    <span>Mute</span>
-                  </PostAction>
-                  <PostAction>
-                    <span>Delete || Unfollow</span>
-                  </PostAction>
-                  <PostAction>
-                    <span>Cancel</span>
-                  </PostAction>
-                </PostActions>
-              </ModalBody>
-              </StyledModal>
-            </PostHeader>
-            <PostContent>
-              <img src={post.content.url.replace('/upload', '/upload/w_614,ar_4:5,c_limit,dpr_2.0')} />
-            </PostContent>
-            <PostInteraction>
-              <Buttons>
-                <LikeButton postId={id} postLikes={post.likes} />
-              </Buttons>
-              {post.likes.length ? <Likes>{post.likes.length} like{post.likes.length > 1 ? 's' : null}</Likes> : null }
-              <Caption>
-                <Link href={`/user?id=${post.author.id}`}>
-                  <a>{post.author.username}</a>
-                </Link>
-                {post.caption}
-              </Caption>
-              <CommentList>
-                {post.comments.map(comment => (
-                  <Comment key={comment.id} comment={comment} post={post} />
-                ))}
-              </CommentList>
-              <PostTime>
-                {formatDistance(post.createdAt, new Date(), {
-                  includeSeconds: true
-                })} ago
-              </PostTime>
-              <AddComment>
-                <PostComment postId={post.id} />
-              </AddComment>
-              {/* <DeletePost post={post} /> */}
-            </PostInteraction>
-          </Wrapper>
-        );
-      }}
-    </Query>
+            const isCurrentUsersPost = currentUser.id === post.author.id;
+
+            return (
+              <Wrapper>
+                <PostHeader>
+                  <Photo>
+                    <img src={post.author.profilePicture} />
+                  </Photo>
+                  <Details>
+                    <Username>{post.author.username}</Username>
+                    <Location>Random post location</Location>
+                  </Details>
+                  <StyledFontAwesomeIcon onClick={openModal} icon={["far", "ellipsis-h"]} color="var(--color-black)" size="lg" />
+                  <StyledModal
+                    isOpen={modalIsOpen}
+                    onRequestClose={closeModal}
+                    conentLabel="Post Actions"
+                  >
+                  <ModalBody>
+                    <PostActions>
+                      <PostAction>
+                        <span>Go to Post</span>
+                      </PostAction>
+                      {
+                        isCurrentUsersPost ? (
+                        <Fragment>
+                          <PostAction>
+                            <span>Archive</span>
+                          </PostAction>
+                          <PostAction>
+                            <span>Edit</span>
+                          </PostAction>
+                        </Fragment>
+                        ) : null
+                      }
+                      <PostAction>
+                        <span>Copy Link</span>
+                      </PostAction>
+                      <PostAction>
+                        <span>Share</span>
+                      </PostAction>
+                      {
+                        isCurrentUsersPost ?
+                        <PostAction actionType="negative">
+                          <span>Delete</span>
+                        </PostAction> : null
+                      }
+                      {
+                        !isCurrentUsersPost ? (
+                          <Fragment>
+                            <PostAction>
+                              <span>Mute</span>
+                            </PostAction>
+                            < PostAction actionType = "negative">
+                              <span>Report</span>
+                            </PostAction>
+                            <PostAction actionType="negative">
+                              <span>Unfollow</span>
+                            </PostAction>
+                          </Fragment>
+                        ) : null
+                      }
+                      <PostAction>
+                        <span onClick={closeModal}>Cancel</span>
+                      </PostAction>
+                    </PostActions>
+                  </ModalBody>
+                  </StyledModal>
+                </PostHeader>
+                <PostContent>
+                  <img src={post.content.url.replace('/upload', '/upload/w_614,ar_4:5,c_limit,dpr_2.0')} />
+                </PostContent>
+                <PostInteraction>
+                  <Buttons>
+                    <LikeButton postId={id} postLikes={post.likes} />
+                  </Buttons>
+                  {post.likes.length ? <Likes>{post.likes.length} like{post.likes.length > 1 ? 's' : null}</Likes> : null }
+                  <Caption>
+                    <Link href={`/user?id=${post.author.id}`}>
+                      <a>{post.author.username}</a>
+                    </Link>
+                    {post.caption}
+                  </Caption>
+                  <CommentList>
+                    {post.comments.map(comment => (
+                      <Comment key={comment.id} comment={comment} post={post} />
+                    ))}
+                  </CommentList>
+                  <PostTime>
+                    {formatDistance(post.createdAt, new Date(), {
+                      includeSeconds: true
+                    })} ago
+                  </PostTime>
+                  <AddComment>
+                    <PostComment postId={post.id} />
+                  </AddComment>
+                  {/* <DeletePost post={post} /> */}
+                </PostInteraction>
+              </Wrapper>
+            );
+          }}
+        </Query>
+      )}
+    </CurrentUser>
   );
 }
 
