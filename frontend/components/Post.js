@@ -149,12 +149,16 @@ const PostActions = styled.ul `
 
 const PostAction = styled.li `
   display: grid;
-  place-items: center;
+  align-items: center;
+  justify-content: space-around;
   min-height: 48px;
   padding: 4px 8px;
   line-height: 1.5;
   & + li {
     border-top: 1px solid #efefef;
+  }
+  span  {
+    cursor: pointer;
   }
 `;
 
@@ -192,12 +196,33 @@ const Post = ({ id }) => {
               >
               <ModalBody>
                 <PostActions>
-                  <PostAction>Unfollow</PostAction>
-                  <PostAction>Go to Post</PostAction>
-                  <PostAction>Copy Post</PostAction>
-                  <PostAction>Share</PostAction>
-                  <PostAction>Delete</PostAction>
-                  <PostAction>Cancel</PostAction>
+                  <PostAction>
+                    <span>Go to Post</span>
+                  </PostAction>
+                  <PostAction>
+                    <span>Archive</span>
+                  </PostAction>
+                  <PostAction>
+                    <span>Edit</span>
+                  </PostAction>
+                  <PostAction>
+                    <span>Copy Link</span>
+                  </PostAction>
+                  <PostAction>
+                    <span>Share</span>
+                  </PostAction>
+                  <PostAction>
+                    <span>Report</span>
+                  </PostAction>
+                  <PostAction>
+                    <span>Mute</span>
+                  </PostAction>
+                  <PostAction>
+                    <span>Delete || Unfollow</span>
+                  </PostAction>
+                  <PostAction>
+                    <span>Cancel</span>
+                  </PostAction>
                 </PostActions>
               </ModalBody>
               </StyledModal>
