@@ -165,6 +165,11 @@ const PostAction = styled.li`
   `
     color: var(--color-red);
   ` : null }
+  ${({ disabled }) => disabled ?
+  `
+    cursor: not-allowed;
+    opacity: 0.3;
+  ` : null }
   }
 `;
 
@@ -212,34 +217,34 @@ const Post = ({ id }) => {
                       {
                         isCurrentUsersPost ? (
                         <Fragment>
-                          <PostAction>
+                          <PostAction disabled={true}>
                             <span>Archive</span>
                           </PostAction>
-                          <PostAction>
+                          <PostAction disabled={true}>
                             <span>Edit</span>
                           </PostAction>
                         </Fragment>
                         ) : null
                       }
-                      <PostAction>
+                      <PostAction disabled={true}>
                         <span>Copy Link</span>
                       </PostAction>
-                      <PostAction>
+                      <PostAction disabled={true}>
                         <span>Share</span>
                       </PostAction>
                       {
                         isCurrentUsersPost ?
                         <PostAction actionType="negative">
-                          <span>Delete</span>
+                          <DeletePost post={post} />
                         </PostAction> : null
                       }
                       {
                         !isCurrentUsersPost ? (
                           <Fragment>
-                            <PostAction>
+                            <PostAction disabled={true}>
                               <span>Mute</span>
                             </PostAction>
-                            < PostAction actionType = "negative">
+                              < PostAction disabled={true} actionType = "negative">
                               <span>Report</span>
                             </PostAction>
                             <PostAction actionType="negative">
