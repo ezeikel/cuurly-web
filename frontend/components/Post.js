@@ -114,7 +114,6 @@ const StyledModal = styled(ReactModalAdapter).attrs({ //https://github.com/style
   modalClassName: 'modal'
 })`
   /* Portal styles here (though usually you will have none) */
-
   .overlay {
     position: fixed;
     top: 0;
@@ -287,7 +286,6 @@ const Post = ({ id }) => {
                   <AddComment>
                     <PostComment postId={post.id} />
                   </AddComment>
-                  {/* <DeletePost post={post} /> */}
                 </PostInteraction>
               </Wrapper>
             );

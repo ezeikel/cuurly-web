@@ -10,6 +10,7 @@ import FollowButton from './FollowButton';
 import PostPreview from './PostPreview';
 import CurrentUser from './CurrentUser';
 import Button from './styles/Button';
+import Signout from './Signout';
 
 const Wrapper = styled.div`
   display: grid;
@@ -121,12 +122,11 @@ const ReactModalAdapter = ({ className, modalClassName, ...props }) => (
   />
 );
 
-const StyledModal = styled(ReactModalAdapter).attrs({ //https://github.com/styled-components/styled-components/issues/1494
+const StyledStatsModal = styled(ReactModalAdapter).attrs({ //https://github.com/styled-components/styled-components/issues/1494
   overlayClassName: 'overlay',
   modalClassName: 'modal'
 })`
   /* Portal styles here (though usually you will have none) */
-
   .overlay {
     position: fixed;
     top: 0;
@@ -149,10 +149,6 @@ const StyledModal = styled(ReactModalAdapter).attrs({ //https://github.com/style
   }
 `;
 
-if (typeof (window) !== 'undefined') {
-  Modal.setAppElement('body');
-}
-
 const ModalHeader = styled.header`
   display: grid;
   grid-template-columns: 1fr 42px;
@@ -174,6 +170,38 @@ const ModalHeader = styled.header`
 const ModalBody = styled.div`
   overflow-y: scroll;
 `;
+
+const StyledSettingsModal = styled(ReactModalAdapter).attrs({
+  //https://github.com/styled-components/styled-components/issues/1494
+  overlayClassName: "overlay",
+  modalClassName: "modal"
+})`
+  /* Portal styles here (though usually you will have none) */
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: grid;
+    place-items: center;
+  }
+  .modal {
+    display: grid;
+    background-color: var(--color-white);
+    min-height: 200px;
+    max-height: 400px;
+    width: 400px;
+    border-radius: 4px;
+    outline: 0;
+    overflow-y: scroll;
+  }
+`;
+
+if (typeof (window) !== 'undefined') {
+  Modal.setAppElement('body');
+}
 
 const FollowerList = styled.ul`
   display: grid;
@@ -211,18 +239,48 @@ const FollowerAction = styled.div`
   display: grid;
 `;
 
+const SettingsActions = styled.ul`
+  display: grid;
+`;
+
+const SettingsAction = styled.li`
+  display: grid;
+  align-items: center;
+  justify-content: space-around;
+  min-height: 48px;
+  padding: 4px 8px;
+  line-height: 1.5;
+  & + li {
+    border-top: 1px solid #efefef;
+  }
+  span  {
+    cursor: pointer;
+  ${({ actionType }) => actionType === 'negative' ?
+    `
+    color: var(--color-red);
+  ` : null}
+  ${({ disabled }) => disabled ?
+    `
+    cursor: not-allowed;
+    opacity: 0.3;
+  ` : null}
+  }
+`;
+
 const Profile = ({ id }) => {
   const [followersModalIsOpen, setFollowersModalIsOpen] = useState(false);
   const [followingModalIsOpen, setFollowingModalIsOpen] = useState(false);
+  const [settingsModalIsOpen, setSettingsModalIsOpen] = useState(false);
   const subtitleEl = useRef(null);
 
   const openFollowersModal = () => setFollowersModalIsOpen(true);
-  const afrerOpenFollowersModal = () => subtitleEl.current.style.color = '#000';
   const closeFollowersModal = () => setFollowersModalIsOpen(false);
 
   const openFollowingModal = () => setFollowingModalIsOpen(true);
-  const afterOpenFollowingModal = () => subtitleEl.current.style.color = '#000';
   const closeFollowingModal = () => setFollowingModalIsOpen(false);
+
+  const openSettingsModal = () => setSettingsModalIsOpen(true);
+  const closeSettingsModal = () => setSettingsModalIsOpen(false);
 
   Router.onRouteChangeStart = () => {
     closeFollowersModal();
@@ -247,118 +305,232 @@ const Profile = ({ id }) => {
                     <FirstRow>
                       <Username verified={verified}>
                         {username}
-                        { verified ? <FontAwesomeIcon icon={["fas", "badge-check"]} color="#3E9AED" size="xs" /> : null }
+                        {verified ? (
+                          <FontAwesomeIcon
+                            icon={["fas", "badge-check"]}
+                            color="#3E9AED"
+                            size="xs"
+                          />
+                        ) : null}
                       </Username>
-                      {currentUser && currentUser.id === id ?
-                        <Button>Edit profile</Button> :
-                        <StyledFollowButton userId={id} usersFollowers={followers.map(follower => follower.id)} />
-                      }
-                      <StyledFontAwesomeIcon icon={["fal", "cog"]} color="var(--color-black)" size="2x" />
+                      {currentUser && currentUser.id === id ? (
+                        <Button>Edit profile</Button>
+                      ) : (
+                        <StyledFollowButton
+                          userId={id}
+                          usersFollowers={followers.map(
+                            follower => follower.id
+                          )}
+                        />
+                      )}
+                      <StyledFontAwesomeIcon
+                        onClick={openSettingsModal}
+                        icon={["fal", "cog"]}
+                        color="var(--color-black)"
+                        size="2x"
+                      />
+                      <StyledSettingsModal
+                        isOpen={settingsModalIsOpen}
+                        onRequestClose={closeSettingsModal}
+                        contentLabel="Settings Modal"
+                      >
+                        <ModalBody>
+                          <SettingsActions>
+                            <SettingsAction>
+                              <span>Change Password</span>
+                            </SettingsAction>
+                            <SettingsAction disabled={true}>
+                              <span>Nametag</span>
+                            </SettingsAction>
+                            <SettingsAction disabled={true}>
+                              <span>Authorized Apps</span>
+                            </SettingsAction>
+                            <SettingsAction disabled={true}>
+                              <span>Notifications</span>
+                            </SettingsAction>
+                            <SettingsAction disabled={true}>
+                              <span>Privacy and Security</span>
+                            </SettingsAction>
+                            <SettingsAction>
+                              <Signout />
+                            </SettingsAction>
+                            <SettingsAction>
+                              <span onClick={closeSettingsModal}>Cancel</span>
+                            </SettingsAction>
+                          </SettingsActions>
+                        </ModalBody>
+                      </StyledSettingsModal>
                     </FirstRow>
                     <SecondRow>
-                      <Stat style={{ cursor: 'auto' }}><Number>{posts.length}</Number> posts</Stat>
-                      <Stat onClick={openFollowersModal}><Number>{followers.length}</Number> followers</Stat>
-                      <StyledModal
+                      <Stat style={{ cursor: "auto" }}>
+                        <Number>{posts.length}</Number> posts
+                      </Stat>
+                      <Stat onClick={openFollowersModal}>
+                        <Number>{followers.length}</Number>{" "}
+                        followers
+                      </Stat>
+                      <StyledStatsModal
                         isOpen={followersModalIsOpen}
-                        onAfterOpen={afterOpenFollowingModal}
                         onRequestClose={closeFollowersModal}
                         contentLabel="Followers Modal"
                       >
                         <ModalHeader>
                           <h1 ref={subtitleEl}>Followers</h1>
-                          <FontAwesomeIcon icon={["fal", "times"]} color="var(--color-black)" size="lg" onClick={closeFollowersModal} />
+                          <FontAwesomeIcon
+                            icon={["fal", "times"]}
+                            color="var(--color-black)"
+                            size="lg"
+                            onClick={closeFollowersModal}
+                          />
                         </ModalHeader>
                         <ModalBody>
-                          <Query query={USER_FOLLOWERS_QUERY} variables={{ id }}>
-                            {({ data: { followers }, error, loading }) => {
+                          <Query
+                            query={USER_FOLLOWERS_QUERY}
+                            variables={{ id }}
+                          >
+                            {({
+                              data: { followers },
+                              error,
+                              loading
+                            }) => {
                               if (loading) return <p>Loading...</p>;
-                              if (error) return <p>Error: {error.message}</p>;
+                              if (error)
+                                return (
+                                  <p>Error: {error.message}</p>
+                                );
 
                               return (
                                 <FollowerList>
-                                  {
-                                    followers.map(
-                                      follower => (
-                                      <FollowerWrapper key={follower.id}>
-                                        <Follower>
-                                          <FollowerPhoto>
-                                            <img src={follower.profilePicture} alt="profile-pic"/>
-                                          </FollowerPhoto>
-                                          <FollowerName>
-                                            <span>
-                                              <Link href={`/user?id=${follower.id}`}>
-                                                <a>
-                                                  {follower.username}
-                                                </a>
-                                              </Link>
-                                            </span>
-                                            <span>{follower.name}</span>
-                                          </FollowerName>
-                                          <FollowerAction>
-                                            <FollowButton userId={follower.id} usersFollowers={follower.followers.map(follower => follower.id)} />
-                                          </FollowerAction>
-                                        </Follower>
-                                      </FollowerWrapper>
-                                      )
-                                    )
-                                  }
+                                  {followers.map(follower => (
+                                    <FollowerWrapper
+                                      key={follower.id}
+                                    >
+                                      <Follower>
+                                        <FollowerPhoto>
+                                          <img
+                                            src={
+                                              follower.profilePicture
+                                            }
+                                            alt="profile-pic"
+                                          />
+                                        </FollowerPhoto>
+                                        <FollowerName>
+                                          <span>
+                                            <Link
+                                              href={`/user?id=${
+                                                follower.id
+                                              }`}
+                                            >
+                                              <a>
+                                                {follower.username}
+                                              </a>
+                                            </Link>
+                                          </span>
+                                          <span>
+                                            {follower.name}
+                                          </span>
+                                        </FollowerName>
+                                        <FollowerAction>
+                                          <FollowButton
+                                            userId={follower.id}
+                                            usersFollowers={follower.followers.map(
+                                              follower =>
+                                                follower.id
+                                            )}
+                                          />
+                                        </FollowerAction>
+                                      </Follower>
+                                    </FollowerWrapper>
+                                  ))}
                                 </FollowerList>
                               );
                             }}
                           </Query>
                         </ModalBody>
-                      </StyledModal>
-                      <Stat onClick={openFollowingModal}><Number>{following.length}</Number> following</Stat>
-                      <StyledModal
+                      </StyledStatsModal>
+                      <Stat onClick={openFollowingModal}>
+                        <Number>{following.length}</Number>{" "}
+                        following
+                      </Stat>
+                      <StyledStatsModal
                         isOpen={followingModalIsOpen}
-                        onAfterOpen={afterOpenFollowingModal}
                         onRequestClose={closeFollowingModal}
                         contentLabel="Following Modal"
                       >
                         <ModalHeader>
                           <h1 ref={subtitleEl}>Following</h1>
-                          <FontAwesomeIcon icon={["fal", "times"]} color="var(--color-black)" size="lg" onClick={closeFollowingModal} />
+                          <FontAwesomeIcon
+                            icon={["fal", "times"]}
+                            color="var(--color-black)"
+                            size="lg"
+                            onClick={closeFollowingModal}
+                          />
                         </ModalHeader>
                         <ModalBody>
-                          <Query query={USER_FOLLOWING_QUERY} variables={{ id }}>
-                            {({ data: { following }, error, loading }) => {
+                          <Query
+                            query={USER_FOLLOWING_QUERY}
+                            variables={{ id }}
+                          >
+                            {({
+                              data: { following },
+                              error,
+                              loading
+                            }) => {
                               if (loading) return <p>Loading...</p>;
-                              if (error) return <p>Error: {error.message}</p>;
+                              if (error)
+                                return (
+                                  <p>Error: {error.message}</p>
+                                );
 
                               return (
                                 <FollowerList>
-                                  {
-                                    following.map(
-                                      following => (
-                                      <FollowerWrapper key={following.id}>
-                                        <Follower>
-                                          <FollowerPhoto>
-                                            <img src={following.profilePicture} alt="profile-pic"/>
-                                          </FollowerPhoto>
-                                          <FollowerName>
-                                            <span>
-                                              <Link href={`/user?id=${following.id}`}>
-                                                <a>
-                                                  {following.username}
-                                                </a>
-                                              </Link>
-                                            </span>
-                                            <span>{following.name}</span>
-                                          </FollowerName>
-                                          <FollowerAction>
-                                            <FollowButton userId={following.id} usersFollowers={following.followers.map(follower => follower.id)} />
-                                          </FollowerAction>
-                                        </Follower>
-                                      </FollowerWrapper>
-                                      )
-                                    )
-                                  }
+                                  {following.map(following => (
+                                    <FollowerWrapper
+                                      key={following.id}
+                                    >
+                                      <Follower>
+                                        <FollowerPhoto>
+                                          <img
+                                            src={
+                                              following.profilePicture
+                                            }
+                                            alt="profile-pic"
+                                          />
+                                        </FollowerPhoto>
+                                        <FollowerName>
+                                          <span>
+                                            <Link
+                                              href={`/user?id=${
+                                                following.id
+                                              }`}
+                                            >
+                                              <a>
+                                                {following.username}
+                                              </a>
+                                            </Link>
+                                          </span>
+                                          <span>
+                                            {following.name}
+                                          </span>
+                                        </FollowerName>
+                                        <FollowerAction>
+                                          <FollowButton
+                                            userId={following.id}
+                                            usersFollowers={following.followers.map(
+                                              follower =>
+                                                follower.id
+                                            )}
+                                          />
+                                        </FollowerAction>
+                                      </Follower>
+                                    </FollowerWrapper>
+                                  ))}
                                 </FollowerList>
                               );
                             }}
                           </Query>
                         </ModalBody>
-                      </StyledModal>
+                      </StyledStatsModal>
                     </SecondRow>
                     <ThirdRow>
                       <Name>{name}</Name>

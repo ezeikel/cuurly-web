@@ -4,7 +4,6 @@ import { SIGNOUT_MUTATION, CURRENT_USER_QUERY } from '../apollo/queries';
 import styled from 'styled-components';
 
 const Wrapper = styled.span`
-  text-decoration: underline;
   cursor: pointer;
 `;
 
