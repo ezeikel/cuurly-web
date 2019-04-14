@@ -34,7 +34,7 @@ const Wrapper = styled.div`
 const Inner = styled.main`
   max-width: ${({ theme }) => theme.default.maxWidth};
   margin: 0 auto;
-  padding: var(--spacing-medium);
+  padding: 60px var(--spacing-medium) var(--spacing-medium) var(--spacing-medium);
   width: 100%;
 `;
 
