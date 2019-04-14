@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import CurrentUser from "../components/CurrentUser";
 import Account from '../components/Account';
 
 const Wrapper = styled.article`
@@ -7,9 +8,13 @@ const Wrapper = styled.article`
 
 const AccountPage = ({ query }) => {
   return (
-    <Wrapper>
-      <Account query={Object.keys(query)} />
-    </Wrapper>
+    <CurrentUser>
+      {({ data: { currentUser } }) => (
+        <Wrapper>
+          <Account query={Object.keys(query)} id={currentUser.id} />
+        </Wrapper>
+      )}
+    </CurrentUser>
   );
 };
 

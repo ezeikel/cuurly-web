@@ -34,6 +34,7 @@ export const SINGLE_USER_QUERY = gql`
       website
       email
       phoneNumber
+      gender
       followers {
         id
       }

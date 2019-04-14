@@ -341,7 +341,11 @@ const Profile = ({ id }) => {
                         <ModalBody>
                           <SettingsActions>
                             <SettingsAction>
-                              <span>Change Password</span>
+                              <span>
+                                <Link href="/account?password-change">
+                                  <a>Change Password</a>
+                                </Link>
+                              </span>
                             </SettingsAction>
                             <SettingsAction disabled={true}>
                               <span>Nametag</span>

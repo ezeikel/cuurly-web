@@ -1,7 +1,41 @@
-import Link from "next/link";
-import styled from "styled-components";
 import { Fragment } from "react";
+import Link from "next/link";
+import { Query, Mutation } from "react-apollo";
+import styled from "styled-components";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import Spinner from "./Spinner";
 import Button from "./styles/Button";
+import { SINGLE_USER_QUERY } from "../apollo/queries";
+
+const EditProfileSchema = Yup.object().shape({
+  name: Yup.string()
+    .required("Required"),
+  username: Yup.string()
+    .required("Required"),
+  website: Yup.string()
+    .required("Required"),
+  bio: Yup.string()
+    .required("Required"),
+  email: Yup.string()
+    .email("Invalid email")
+    .required("Required"),
+  phoneNumber: Yup.string()
+    .email("Invalid email")
+    .required("Required"),
+  gender: Yup.string()
+    .email("Invalid email")
+    .required("Required")
+});
+
+const ChangePasswordSchema = Yup.object().shape({
+  oldPassword: Yup.string()
+    .required("Required"),
+  password: Yup.string()
+    .required("Required"),
+  oldPassword: Yup.string()
+    .required("Required"),
+});
 
 const Wrapper = styled.div`
   display: grid;
@@ -101,7 +135,7 @@ const Username = styled.div`
   line-height: 2.2rem;
 `;
 
-const Form = styled.form`
+const StyledForm = styled.form`
   display: grid;
   grid-row-gap: var(--spacing-medium);
   label {
@@ -122,7 +156,7 @@ const FormRow = styled.div`
   }
 `;
 
-const FormInput = styled.input`
+const FormInput = styled(Field)`
   background: #fafafa;
   border-radius: 6px;
   border: 1px solid #efefef;
@@ -151,141 +185,226 @@ const ForgotPasswordLink = styled.a`
   line-height: 1.8rem;
 `;
 
-const Account = ({ query }) => {
+const Account = ({ query, id }) => {
   const [content] = query;
 
   return (
-    <Wrapper>
-      <ActionList>
-        <Action active={content === "edit"}>
-          <Link href="/account?edit">
-            <a>Edit Profile</a>
-          </Link>
-        </Action>
-        <Action active={content === "password-change"}>
-          <Link href="/account?password-change">
-            <a>Change Password</a>
-          </Link>
-        </Action>
-        <Action disabled={true} active={content === "manage-access"}>
-          <Link href="/account?manage-access">
-            <a>Authorized Applications</a>
-          </Link>
-        </Action>
-        <Action disabled={true} active={content === "email-settingss"}>
-          <Link href="/account?email-settings">
-            <a>Email and SMS</a>
-          </Link>
-        </Action>
-        <Action disabled={true} active={content === "contact-history"}>
-          <Link href="/account?contact-history">
-            <a>Manage Contacts</a>
-          </Link>
-        </Action>
-        <Action disabled={true} active={content === "privacy-and-security"}>
-          <Link href="/account?privacy-and-security">
-            <a>Privacy and Security</a>
-          </Link>
-        </Action>
-      </ActionList>
-      <Content>
-        {content === "edit" ? (
-          <Fragment>
-            <Edit>
-              <EditHeader>
-                <ProfilePicture>
-                  <img src="https://instagram.fbho1-1.fna.fbcdn.net/vp/65547464af3e7b33703032d5b5fb5232/5D0566F1/t51.2885-19/44884218_345707102882519_2446069589734326272_n.jpg?_nc_ht=instagram.fbho1-1.fna.fbcdn.net" />
-                  {/* <form>
-                      <input type="file" accept="image/jpeg,image/png" />
-                    </form> */}
-                </ProfilePicture>
-                <ChangeProfilePicture>
-                  <span>username</span>
-                  <span>Change Profile Photo</span>
-                </ChangeProfilePicture>
-              </EditHeader>
-              <div>
-                <Form>
-                  <FormRow>
-                    <FormLabel>Name</FormLabel>
-                    <FormInput type="text" />
-                  </FormRow>
-                  <FormRow>
-                    <FormLabel>Username</FormLabel>
-                    <FormInput type="text" />
-                  </FormRow>
-                  <FormRow>
-                    <FormLabel>Website</FormLabel>
-                    <FormInput type="text" />
-                  </FormRow>
-                  <FormRow>
-                    <FormLabel>Bio</FormLabel>
-                    <FormInput type="text" />
-                  </FormRow>
-                  <FormRow>
-                    <FormLabel>Email</FormLabel>
-                    <FormInput type="email" />
-                  </FormRow>
-                  <FormRow>
-                    <FormLabel>Phone Number</FormLabel>
-                    <FormInput type="tel" />
-                  </FormRow>
-                  <FormRow>
-                    <FormLabel>Gender</FormLabel>
-                    <FormInput type="text" />
-                  </FormRow>
-                  <FormRow>
-                    <Button type="submit">Submit</Button>
-                  </FormRow>
-                  <FormRow>
-                    <Link href="/account?disable">
-                      <ForgotPasswordLink>Temporarily disable my account</ForgotPasswordLink>
-                    </Link>
-                  </FormRow>
-                </Form>
-              </div>
-            </Edit>
-          </Fragment>
-        ) : null}
-        {content === "password-change" ? (
-          <PasswordChange>
-            <EditHeader>
-              <ProfilePicture>
-                <img src="https://instagram.fbho1-1.fna.fbcdn.net/vp/65547464af3e7b33703032d5b5fb5232/5D0566F1/t51.2885-19/44884218_345707102882519_2446069589734326272_n.jpg?_nc_ht=instagram.fbho1-1.fna.fbcdn.net" />
-                {/* <form>
-                      <input type="file" accept="image/jpeg,image/png" />
-                    </form> */}
-              </ProfilePicture>
-              <Username>
-                <span>username</span>
-              </Username>
-            </EditHeader>
-            <Form>
-              <FormRow>
-                <FormLabel>Old Password</FormLabel>
-                <FormInput type="password" />
-              </FormRow>
-              <FormRow>
-                <FormLabel>New Password</FormLabel>
-                <FormInput type="password" />
-              </FormRow>
-              <FormRow>
-                <FormLabel>Confirm New Password</FormLabel>
-                <FormInput type="password" />
-              </FormRow>
-              <FormRow>
-                <Button type="sbmit">Change Password</Button>
-              </FormRow>
-              <FormRow>
-                <Link href="reset-password">
-                  <ForgotPasswordLink>Forgot password?</ForgotPasswordLink>
+    <Query query={SINGLE_USER_QUERY} variables={{ id }}>
+      {({ data: { user: { profilePicture, username, name, bio, email, phoneNumber, gender, website, posts, followers, following, verified } }, error, loading }) => {
+        if (loading) return <p>Loading...</p>;
+        if (error) return <p>Error: {error.message}</p>;
+
+        return (
+          <Wrapper>
+            <ActionList>
+              <Action active={content === "edit"}>
+                <Link href="/account?edit">
+                  <a>Edit Profile</a>
                 </Link>
-              </FormRow>
-            </Form>
-          </PasswordChange>
-        ) : null}
-      </Content>
-    </Wrapper>
+              </Action>
+              <Action active={content === "password-change"}>
+                <Link href="/account?password-change">
+                  <a>Change Password</a>
+                </Link>
+              </Action>
+              <Action
+                disabled={true}
+                active={content === "manage-access"}
+              >
+                <Link href="/account?manage-access">
+                  <a>Authorized Applications</a>
+                </Link>
+              </Action>
+              <Action
+                disabled={true}
+                active={content === "email-settingss"}
+              >
+                <Link href="/account?email-settings">
+                  <a>Email and SMS</a>
+                </Link>
+              </Action>
+              <Action
+                disabled={true}
+                active={content === "contact-history"}
+              >
+                <Link href="/account?contact-history">
+                  <a>Manage Contacts</a>
+                </Link>
+              </Action>
+              <Action
+                disabled={true}
+                active={content === "privacy-and-security"}
+              >
+                <Link href="/account?privacy-and-security">
+                  <a>Privacy and Security</a>
+                </Link>
+              </Action>
+            </ActionList>
+            <Content>
+              {content === "edit" ? (
+                <Fragment>
+                  <Edit>
+                    <EditHeader>
+                      <ProfilePicture>
+                        <img src={profilePicture} />
+                        {/* <form>
+                            <input type="file" accept="image/jpeg,image/png" />
+                          </form> */}
+                      </ProfilePicture>
+                      <ChangeProfilePicture>
+                        <span>{username}</span>
+                        <span>Change Profile Photo</span>
+                      </ChangeProfilePicture>
+                    </EditHeader>
+                    <div>
+                      <Formik
+                        initialValues={{
+                          name: name || "",
+                          username: username || "",
+                          website: website || "",
+                          bio: bio || "",
+                          email: email || "",
+                          phoneNumber: phoneNumber || "",
+                          gender: gender || ""
+                        }}
+                        validationSchema={EditProfileSchema}
+                        onSubmit={async (values, { resetForm }) => {
+                          try {
+                            // TODO: Edit user details Mutation
+                            resetForm();
+                          } catch (e) {
+                            console.error(`Formik Error: ${e}`);
+                          }
+                        }}
+                      >
+                        {({ isSubmitting }) => (
+                          <StyledForm>
+                            <FormRow>
+                              <FormLabel>Name</FormLabel>
+                              <FormInput type="text" name="name" />
+                            </FormRow>
+                            <FormRow>
+                              <FormLabel>Username</FormLabel>
+                              <FormInput type="text" name="username" />
+                            </FormRow>
+                            <FormRow>
+                              <FormLabel>Website</FormLabel>
+                              <FormInput type="text" name="website" />
+                            </FormRow>
+                            <FormRow>
+                              <FormLabel>Bio</FormLabel>
+                              <FormInput type="text" name="bio" />
+                            </FormRow>
+                            <FormRow>
+                              <FormLabel>Email</FormLabel>
+                              <FormInput type="email" name="email" />
+                            </FormRow>
+                            <FormRow>
+                              <FormLabel>Phone Number</FormLabel>
+                              <FormInput
+                                type="tel"
+                                name="phoneNumber"
+                              />
+                            </FormRow>
+                            <FormRow>
+                              <FormLabel>Gender</FormLabel>
+                              <FormInput type="text" name="gender" />
+                            </FormRow>
+                            <FormRow>
+                              <Button
+                                type="submit"
+                                disabled={isSubmitting}
+                              >
+                                {`Submit${isSubmitting ? 'ting' : ''}`}
+                                {isSubmitting ? <Spinner /> : null}
+                              </Button>
+                            </FormRow>
+                            <FormRow>
+                              <Link href="/account?disable">
+                                <ForgotPasswordLink>
+                                  Temporarily disable my account
+                                </ForgotPasswordLink>
+                              </Link>
+                            </FormRow>
+                          </StyledForm>
+                        )}
+                      </Formik>
+                    </div>
+                  </Edit>
+                </Fragment>
+              ) : null}
+              {content === "password-change" ? (
+                <PasswordChange>
+                  <EditHeader>
+                    <ProfilePicture>
+                      <img src={profilePicture} />
+                      {/* <form>
+                            <input type="file" accept="image/jpeg,image/png" />
+                          </form> */}
+                    </ProfilePicture>
+                    <Username>
+                      <span>{username}</span>
+                    </Username>
+                  </EditHeader>
+                  <Formik
+                    initialValues={{
+                      oldPassword: "",
+                      password: "",
+                      passwordConfirm: ""
+                    }}
+                    validationSchema={ChangePasswordSchema}
+                    onSubmit={async (values, { resetForm }) => {
+                      try {
+                        // TODO: Update password Mutation
+                        resetForm();
+                      } catch (e) {
+                        console.error(`Formik Error: ${e}`);
+                      }
+                    }}
+                  >
+                    {({ isSubmitting }) => (
+                      <StyledForm>
+                        <FormRow>
+                          <FormLabel>Old Password</FormLabel>
+                          <FormInput
+                            type="password"
+                            name="oldPassword"
+                          />
+                        </FormRow>
+                        <FormRow>
+                          <FormLabel>New Password</FormLabel>
+                          <FormInput type="password" name="password" />
+                        </FormRow>
+                        <FormRow>
+                          <FormLabel>Confirm New Password</FormLabel>
+                          <FormInput
+                            type="password"
+                            name="confirmPassword"
+                          />
+                        </FormRow>
+                        <FormRow>
+                          <Button type="submit" disabled={isSubmitting}>
+                            Change Password
+                            {isSubmitting ? <Spinner /> : null}
+                          </Button>
+                        </FormRow>
+                        <FormRow>
+                          <Link href="reset-password">
+                            <ForgotPasswordLink>
+                              Forgot password?
+                            </ForgotPasswordLink>
+                          </Link>
+                        </FormRow>
+                      </StyledForm>
+                    )}
+                  </Formik>
+                </PasswordChange>
+              ) : null}
+            </Content>
+          </Wrapper>
+        );
+      }}
+    </Query>
   );
 };
 
