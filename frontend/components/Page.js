@@ -31,7 +31,7 @@ const Wrapper = styled.div`
   background-color: #fafafa;
 `;
 
-const Inner = styled.div`
+const Inner = styled.main`
   max-width: ${({ theme }) => theme.default.maxWidth};
   margin: 0 auto;
   padding: var(--spacing-medium);

@@ -1,6 +1,5 @@
 import { useState, Fragment } from 'react';
 import Link from "next/link";
-import { Component } from 'react';
 import { Query } from 'react-apollo';
 import styled from "styled-components";
 import { SINGLE_POST_QUERY } from '../apollo/queries';

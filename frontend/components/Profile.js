@@ -261,8 +261,8 @@ const SettingsAction = styled.li`
   ` : null}
   ${({ disabled }) => disabled ?
     `
-    cursor: not-allowed;
     opacity: 0.3;
+    pointer-events: none;
   ` : null}
   }
 `;
@@ -314,7 +314,11 @@ const Profile = ({ id }) => {
                         ) : null}
                       </Username>
                       {currentUser && currentUser.id === id ? (
-                        <Button>Edit profile</Button>
+                        <Button>
+                          <Link href="/account?edit">
+                            <a>Edit profile</a>
+                          </Link>
+                        </Button>
                       ) : (
                         <StyledFollowButton
                           userId={id}
@@ -355,7 +359,9 @@ const Profile = ({ id }) => {
                               <Signout />
                             </SettingsAction>
                             <SettingsAction>
-                              <span onClick={closeSettingsModal}>Cancel</span>
+                              <span onClick={closeSettingsModal}>
+                                Cancel
+                              </span>
                             </SettingsAction>
                           </SettingsActions>
                         </ModalBody>
