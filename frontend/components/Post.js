@@ -165,7 +165,7 @@ const PostAction = styled.li`
   ` : null }
   ${({ disabled }) => disabled ?
   `
-    cursor: not-allowed;
+    pointer-events: none;
     opacity: 0.3;
   ` : null }
   }

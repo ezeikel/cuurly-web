@@ -121,7 +121,7 @@ const Mutations = {
       }
     });
 
-    return await ctx.prisma.updateUser({
+    return ctx.prisma.updateUser({
       where: {
         id: ctx.request.userId
       },
@@ -153,7 +153,7 @@ const Mutations = {
       }
     });
 
-    return await ctx.prisma.updateUser({
+    return ctx.prisma.updateUser({
       where: {
         id: ctx.request.userId
       },
@@ -254,6 +254,18 @@ const Mutations = {
     isLoggedIn(ctx);
 
     return ctx.prisma.deleteComment({ id });
+  },
+  updateUser: (_, args, ctx, info) => {
+    isLoggedIn(ctx);
+
+    return ctx.prisma.updateUser({
+      where: {
+        id: ctx.request.userId
+      },
+      data: {
+        ...args
+      }
+    }, info);
   },
 };
 

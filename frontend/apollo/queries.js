@@ -267,8 +267,8 @@ export const LIKE_POST_MUTATION = gql`
        id
      }
    }
-`
-;
+`;
+
 export const UNLIKE_POST_MUTATION = gql`
    mutation UNLIKE_POST_MUTATION ($id: ID!) {
      unlikePost (id: $id) {
@@ -283,11 +283,19 @@ export const ADD_COMMENT_MUTATION = gql`
        id
      }
    }
-`
-;
+`;
+
 export const DELETE_COMMENT_MUTATION = gql`
    mutation DELETE_COMMENT_MUTATION ($id: ID!) {
      deleteComment (id: $id) {
+       id
+     }
+   }
+`;
+
+export const UPDATE_USER_MUTATION = gql`
+   mutation UPDATE_USER_MUTATION ($name: String, $username: String, $website: String, $bio: String, $email: String, $phoneNumber: Int, $gender: String) {
+     updateUser (name: $name, username: $username, website: $website, bio: $bio, email: $email, phoneNumber: $phoneNumber, gender: $gender) {
        id
      }
    }

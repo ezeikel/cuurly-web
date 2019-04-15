@@ -6,7 +6,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Spinner from "./Spinner";
 import Button from "./styles/Button";
-import { SINGLE_USER_QUERY } from "../apollo/queries";
+import { CURRENT_USER_QUERY, SINGLE_USER_QUERY, UPDATE_USER_MUTATION } from "../apollo/queries";
 
 const EditProfileSchema = Yup.object().shape({
   name: Yup.string()
@@ -135,7 +135,7 @@ const Username = styled.div`
   line-height: 2.2rem;
 `;
 
-const StyledForm = styled.form`
+const StyledForm = styled(Form)`
   display: grid;
   grid-row-gap: var(--spacing-medium);
   label {
@@ -242,163 +242,190 @@ const Account = ({ query, id }) => {
             </ActionList>
             <Content>
               {content === "edit" ? (
-                <Fragment>
-                  <Edit>
-                    <EditHeader>
-                      <ProfilePicture>
-                        <img src={profilePicture} />
-                        {/* <form>
-                            <input type="file" accept="image/jpeg,image/png" />
-                          </form> */}
-                      </ProfilePicture>
-                      <ChangeProfilePicture>
-                        <span>{username}</span>
-                        <span>Change Profile Photo</span>
-                      </ChangeProfilePicture>
-                    </EditHeader>
-                    <div>
-                      <Formik
-                        initialValues={{
-                          name: name || "",
-                          username: username || "",
-                          website: website || "",
-                          bio: bio || "",
-                          email: email || "",
-                          phoneNumber: phoneNumber || "",
-                          gender: gender || ""
-                        }}
-                        validationSchema={EditProfileSchema}
-                        onSubmit={async (values, { resetForm }) => {
-                          try {
-                            // TODO: Edit user details Mutation
-                            resetForm();
-                          } catch (e) {
-                            console.error(`Formik Error: ${e}`);
-                          }
-                        }}
-                      >
-                        {({ isSubmitting }) => (
-                          <StyledForm>
-                            <FormRow>
-                              <FormLabel>Name</FormLabel>
-                              <FormInput type="text" name="name" />
-                            </FormRow>
-                            <FormRow>
-                              <FormLabel>Username</FormLabel>
-                              <FormInput type="text" name="username" />
-                            </FormRow>
-                            <FormRow>
-                              <FormLabel>Website</FormLabel>
-                              <FormInput type="text" name="website" />
-                            </FormRow>
-                            <FormRow>
-                              <FormLabel>Bio</FormLabel>
-                              <FormInput type="text" name="bio" />
-                            </FormRow>
-                            <FormRow>
-                              <FormLabel>Email</FormLabel>
-                              <FormInput type="email" name="email" />
-                            </FormRow>
-                            <FormRow>
-                              <FormLabel>Phone Number</FormLabel>
-                              <FormInput
-                                type="tel"
-                                name="phoneNumber"
-                              />
-                            </FormRow>
-                            <FormRow>
-                              <FormLabel>Gender</FormLabel>
-                              <FormInput type="text" name="gender" />
-                            </FormRow>
-                            <FormRow>
-                              <Button
-                                type="submit"
-                                disabled={isSubmitting}
-                              >
-                                {`Submit${isSubmitting ? 'ting' : ''}`}
-                                {isSubmitting ? <Spinner /> : null}
-                              </Button>
-                            </FormRow>
-                            <FormRow>
-                              <Link href="/account?disable">
-                                <ForgotPasswordLink>
-                                  Temporarily disable my account
-                                </ForgotPasswordLink>
-                              </Link>
-                            </FormRow>
-                          </StyledForm>
-                        )}
-                      </Formik>
-                    </div>
-                  </Edit>
-                </Fragment>
+                <Mutation
+                  mutation={UPDATE_USER_MUTATION}
+                  refetchQueries={[{ query: CURRENT_USER_QUERY }, { query: SINGLE_USER_QUERY }]}
+                >
+                  {(updateUser, { error, loading }) => (
+                    <Fragment>
+                      <Edit>
+                        <EditHeader>
+                          <ProfilePicture>
+                            <img src={profilePicture} />
+                            {/* <form>
+                                <input type="file" accept="image/jpeg,image/png" />
+                              </form> */}
+                          </ProfilePicture>
+                          <ChangeProfilePicture>
+                            <span>{username}</span>
+                            <span>Change Profile Photo</span>
+                          </ChangeProfilePicture>
+                        </EditHeader>
+                        <div>
+                          <Formik
+                            initialValues={{
+                              name: name || "",
+                              username: username || "",
+                              website: website || "",
+                              bio: bio || "",
+                              email: email || "",
+                              phoneNumber: phoneNumber || "",
+                              gender: gender || ""
+                            }}
+                            // validationSchema={EditProfileSchema}
+                            onSubmit={async (values, { resetForm, initialValues }) => {
+                              try {
+                                // TODO: Update password Mutation
+                                for(const field in values) {
+                                  debugger;
+                                  if (initialValues[field] === values[field]) {
+                                    delete values[field];
+                                  }
+                                }
+
+                                debugger;
+
+                                await updateUser({ variables: values });
+                                resetForm();
+                              } catch (e) {
+                                console.error(`Formik Error: ${e}`);
+                              }
+                            }}
+                          >
+                            {({ isSubmitting }) => (
+                              <StyledForm>
+                                <FormRow>
+                                  <FormLabel>Name</FormLabel>
+                                  <FormInput type="text" name="name" />
+                                </FormRow>
+                                <FormRow>
+                                  <FormLabel>Username</FormLabel>
+                                  <FormInput type="text" name="username" />
+                                </FormRow>
+                                <FormRow>
+                                  <FormLabel>Website</FormLabel>
+                                  <FormInput type="text" name="website" />
+                                </FormRow>
+                                <FormRow>
+                                  <FormLabel>Bio</FormLabel>
+                                  <FormInput type="text" name="bio" />
+                                </FormRow>
+                                <FormRow>
+                                  <FormLabel>Email</FormLabel>
+                                  <FormInput type="email" name="email" />
+                                </FormRow>
+                                <FormRow>
+                                  <FormLabel>Phone Number</FormLabel>
+                                  <FormInput
+                                    type="tel"
+                                    name="phoneNumber"
+                                  />
+                                </FormRow>
+                                <FormRow>
+                                  <FormLabel>Gender</FormLabel>
+                                  <FormInput type="text" name="gender" />
+                                </FormRow>
+                                <FormRow>
+                                  <Button
+                                    type="submit"
+                                    disabled={isSubmitting}
+                                  >
+                                    {`Submit${isSubmitting ? 'ting' : ''}`}
+                                    {isSubmitting ? <Spinner /> : null}
+                                  </Button>
+                                </FormRow>
+                                <FormRow>
+                                  <Link href="/account?disable">
+                                    <ForgotPasswordLink>
+                                      Temporarily disable my account
+                                    </ForgotPasswordLink>
+                                  </Link>
+                                </FormRow>
+                              </StyledForm>
+                            )}
+                          </Formik>
+                        </div>
+                      </Edit>
+                    </Fragment>
+                  )}
+                </Mutation>
               ) : null}
               {content === "password-change" ? (
-                <PasswordChange>
-                  <EditHeader>
-                    <ProfilePicture>
-                      <img src={profilePicture} />
-                      {/* <form>
-                            <input type="file" accept="image/jpeg,image/png" />
-                          </form> */}
-                    </ProfilePicture>
-                    <Username>
-                      <span>{username}</span>
-                    </Username>
-                  </EditHeader>
-                  <Formik
-                    initialValues={{
-                      oldPassword: "",
-                      password: "",
-                      passwordConfirm: ""
-                    }}
-                    validationSchema={ChangePasswordSchema}
-                    onSubmit={async (values, { resetForm }) => {
-                      try {
-                        // TODO: Update password Mutation
-                        resetForm();
-                      } catch (e) {
-                        console.error(`Formik Error: ${e}`);
-                      }
-                    }}
-                  >
-                    {({ isSubmitting }) => (
-                      <StyledForm>
-                        <FormRow>
-                          <FormLabel>Old Password</FormLabel>
-                          <FormInput
-                            type="password"
-                            name="oldPassword"
-                          />
-                        </FormRow>
-                        <FormRow>
-                          <FormLabel>New Password</FormLabel>
-                          <FormInput type="password" name="password" />
-                        </FormRow>
-                        <FormRow>
-                          <FormLabel>Confirm New Password</FormLabel>
-                          <FormInput
-                            type="password"
-                            name="confirmPassword"
-                          />
-                        </FormRow>
-                        <FormRow>
-                          <Button type="submit" disabled={isSubmitting}>
-                            Change Password
-                            {isSubmitting ? <Spinner /> : null}
-                          </Button>
-                        </FormRow>
-                        <FormRow>
-                          <Link href="reset-password">
-                            <ForgotPasswordLink>
-                              Forgot password?
-                            </ForgotPasswordLink>
-                          </Link>
-                        </FormRow>
-                      </StyledForm>
-                    )}
-                  </Formik>
-                </PasswordChange>
+                <Mutation
+                mutation={UPDATE_USER_MUTATION}
+                refetchQueries={[{ query: CURRENT_USER_QUERY }, { query: SINGLE_USER_QUERY }]}
+                >
+                  {(updateUser, { error, loading }) => (
+                    <Fragment>
+                      <PasswordChange>
+                        <EditHeader>
+                          <ProfilePicture>
+                            <img src={profilePicture} />
+                          </ProfilePicture>
+                          <Username>
+                            <span>{username}</span>
+                          </Username>
+                        </EditHeader>
+                        <Formik
+                          initialValues={{
+                            oldPassword: "",
+                            password: "",
+                            passwordConfirm: ""
+                          }}
+                          validationSchema={ChangePasswordSchema}
+                          onSubmit={async (values, { resetForm }) => {
+                            try {
+                              debugger;
+                              // TODO: Update password Mutation
+                              await updateUser({ variables: values });
+                              resetForm();
+                            } catch (e) {
+                              console.error(`Formik Error: ${e}`);
+                            }
+                          }}
+                        >
+                          {({ isSubmitting }) => (
+                            <StyledForm>
+                              <FormRow>
+                                <FormLabel>Old Password</FormLabel>
+                                <FormInput
+                                  type="password"
+                                  name="oldPassword"
+                                />
+                              </FormRow>
+                              <FormRow>
+                                <FormLabel>New Password</FormLabel>
+                                <FormInput type="password" name="password" />
+                              </FormRow>
+                              <FormRow>
+                                <FormLabel>Confirm New Password</FormLabel>
+                                <FormInput
+                                  type="password"
+                                  name="confirmPassword"
+                                />
+                              </FormRow>
+                              <FormRow>
+                                <Button type="submit" disabled={isSubmitting}>
+                                  Change Password
+                                  {isSubmitting ? <Spinner /> : null}
+                                </Button>
+                              </FormRow>
+                              <FormRow>
+                                <Link href="reset-password">
+                                  <ForgotPasswordLink>
+                                    Forgot password?
+                                  </ForgotPasswordLink>
+                                </Link>
+                              </FormRow>
+                            </StyledForm>
+                          )}
+                        </Formik>
+                      </PasswordChange>
+                      {loading && <p>Loading...</p>}
+                      {error && <p>Error :( Please try again</p>}
+                    </Fragment>
+                  )}
+                </Mutation>
               ) : null}
             </Content>
           </Wrapper>
