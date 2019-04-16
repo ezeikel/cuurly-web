@@ -198,7 +198,11 @@ const Account = ({ query, id }) => {
   });
 
   return (
-    <Query query={SINGLE_USER_QUERY} variables={{ id }}>
+    <Query
+      query={SINGLE_USER_QUERY}
+      variables={{ id }}
+      fetchPolicy="cache-and-network" // TODO: Fix for not getting the updated information on page reload after Mutation and refetchQueries
+    >
       {({ data: { user: { profilePicture, username, name, bio, email, phoneNumber, gender, website, posts, followers, following, verified } }, error, loading }) => {
         if (loading) return <p>Loading...</p>;
         if (error) return <p>Error: {error.message}</p>;
@@ -253,7 +257,7 @@ const Account = ({ query, id }) => {
               {content === "edit" ? (
                 <Mutation
                   mutation={UPDATE_USER_MUTATION}
-                  refetchQueries={[{ query: CURRENT_USER_QUERY },  { query: SINGLE_USER_QUERY, variables: { id } }]}
+                  refetchQueries={[{ query: SINGLE_USER_QUERY, variables: { id } }]}
                 >
                   {(updateUser, { error, loading }) => (
                     <Fragment>
@@ -282,23 +286,25 @@ const Account = ({ query, id }) => {
                               gender: gender || ""
                             }}
                             // validationSchema={EditProfileSchema}
-                            onSubmit={async (values, { resetForm }) => {
+                            onSubmit={async (values, { setSubmitting, setErrors }) => {
+                              const submittedValues = {...values};
                               try {
                                 // TODO: Update password Mutation
                                 for(const field in values) {
-                                  if (initialEditDetailsValues[field] === values[field]) {
-                                    delete values[field];
+                                  if (initialEditDetailsValues[field] === submittedValues[field]) {
+                                    delete submittedValues[field];
                                   }
                                 }
 
-                                if (values.phoneNumber) {
-                                  values.phoneNumber = parseInt(values.phoneNumber, 10);
+                                if (submittedValues.phoneNumber) {
+                                  submittedValues.phoneNumber = parseInt(submittedValues.phoneNumber, 10);
                                 }
 
-                                await updateUser({ variables: values });
-                                //resetForm();
+                                await updateUser({ variables: submittedValues });
+
+                                setSubmitting(false);
                               } catch (e) {
-                                console.error(`Formik Error: ${e}`);
+                                setErrors(e);
                               }
                             }}
                           >
@@ -380,7 +386,7 @@ const Account = ({ query, id }) => {
               {content === "password-change" ? (
                 <Mutation
                 mutation={UPDATE_USER_MUTATION}
-                refetchQueries={[{ query: CURRENT_USER_QUERY }, { query: SINGLE_USER_QUERY }]}
+                refetchQueries={[{ query: CURRENT_USER_QUERY },  { query: SINGLE_USER_QUERY, variables: { id } }]}
                 >
                   {(updateUser, { error, loading }) => (
                     <Fragment>
@@ -406,9 +412,6 @@ const Account = ({ query, id }) => {
                               // TODO: Update password Mutation
                               await updateUser({ variables: values });
 
-                              // TODO: We never reach back here for some reason
-                              debugger;
-                              console.log('reserForm()');
                               resetForm();
                             } catch (e) {
                               console.error(`Formik Error: ${e}`);
