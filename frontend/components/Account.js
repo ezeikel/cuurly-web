@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import Link from "next/link";
 import { Query, Mutation } from "react-apollo";
 import styled from "styled-components";
@@ -187,6 +187,15 @@ const ForgotPasswordLink = styled.a`
 
 const Account = ({ query, id }) => {
   const [content] = query;
+  const [initialEditDetailsValues, setInitialEditDetailsValues] = useState({
+    name: "",
+    username: "",
+    website: "",
+    bio: "",
+    email: "",
+    phoneNumber: "",
+    gender: ""
+  });
 
   return (
     <Query query={SINGLE_USER_QUERY} variables={{ id }}>
@@ -244,7 +253,7 @@ const Account = ({ query, id }) => {
               {content === "edit" ? (
                 <Mutation
                   mutation={UPDATE_USER_MUTATION}
-                  refetchQueries={[{ query: CURRENT_USER_QUERY }, { query: SINGLE_USER_QUERY }]}
+                  refetchQueries={[{ query: CURRENT_USER_QUERY },  { query: SINGLE_USER_QUERY, variables: { id } }]}
                 >
                   {(updateUser, { error, loading }) => (
                     <Fragment>
@@ -273,76 +282,94 @@ const Account = ({ query, id }) => {
                               gender: gender || ""
                             }}
                             // validationSchema={EditProfileSchema}
-                            onSubmit={async (values, { resetForm, initialValues }) => {
+                            onSubmit={async (values, { resetForm }) => {
                               try {
                                 // TODO: Update password Mutation
                                 for(const field in values) {
-                                  debugger;
-                                  if (initialValues[field] === values[field]) {
+                                  if (initialEditDetailsValues[field] === values[field]) {
                                     delete values[field];
                                   }
                                 }
 
-                                debugger;
+                                if (values.phoneNumber) {
+                                  values.phoneNumber = parseInt(values.phoneNumber, 10);
+                                }
 
                                 await updateUser({ variables: values });
-                                resetForm();
+                                //resetForm();
                               } catch (e) {
                                 console.error(`Formik Error: ${e}`);
                               }
                             }}
                           >
-                            {({ isSubmitting }) => (
-                              <StyledForm>
-                                <FormRow>
-                                  <FormLabel>Name</FormLabel>
-                                  <FormInput type="text" name="name" />
-                                </FormRow>
-                                <FormRow>
-                                  <FormLabel>Username</FormLabel>
-                                  <FormInput type="text" name="username" />
-                                </FormRow>
-                                <FormRow>
-                                  <FormLabel>Website</FormLabel>
-                                  <FormInput type="text" name="website" />
-                                </FormRow>
-                                <FormRow>
-                                  <FormLabel>Bio</FormLabel>
-                                  <FormInput type="text" name="bio" />
-                                </FormRow>
-                                <FormRow>
-                                  <FormLabel>Email</FormLabel>
-                                  <FormInput type="email" name="email" />
-                                </FormRow>
-                                <FormRow>
-                                  <FormLabel>Phone Number</FormLabel>
-                                  <FormInput
-                                    type="tel"
-                                    name="phoneNumber"
-                                  />
-                                </FormRow>
-                                <FormRow>
-                                  <FormLabel>Gender</FormLabel>
-                                  <FormInput type="text" name="gender" />
-                                </FormRow>
-                                <FormRow>
-                                  <Button
-                                    type="submit"
-                                    disabled={isSubmitting}
-                                  >
-                                    {`Submit${isSubmitting ? 'ting' : ''}`}
-                                    {isSubmitting ? <Spinner /> : null}
-                                  </Button>
-                                </FormRow>
-                                <FormRow>
-                                  <Link href="/account?disable">
-                                    <ForgotPasswordLink>
-                                      Temporarily disable my account
-                                    </ForgotPasswordLink>
-                                  </Link>
-                                </FormRow>
-                              </StyledForm>
-                            )}
+                            {({ isSubmitting, initialValues }) => {
+                              let emptyValues = true;
+
+                              for (const key in initialEditDetailsValues) {
+                                if (initialEditDetailsValues[key] === null || initialEditDetailsValues[key] === "") {
+                                  emptyValues = true;
+                                } else {
+                                  emptyValues = false;
+                                  break;
+                                }
+                              }
+
+                              if (emptyValues) {
+                                setInitialEditDetailsValues({...initialValues});
+                              }
+
+                              return (
+                                <StyledForm>
+                                  <FormRow>
+                                    <FormLabel>Name</FormLabel>
+                                    <FormInput type="text" name="name" />
+                                  </FormRow>
+                                  <FormRow>
+                                    <FormLabel>Username</FormLabel>
+                                    <FormInput type="text" name="username" />
+                                  </FormRow>
+                                  <FormRow>
+                                    <FormLabel>Website</FormLabel>
+                                    <FormInput type="text" name="website" />
+                                  </FormRow>
+                                  <FormRow>
+                                    <FormLabel>Bio</FormLabel>
+                                    <FormInput type="text" name="bio" />
+                                  </FormRow>
+                                  <FormRow>
+                                    <FormLabel>Email</FormLabel>
+                                    <FormInput type="email" name="email" />
+                                  </FormRow>
+                                  <FormRow>
+                                    <FormLabel>Phone Number</FormLabel>
+                                    <FormInput
+                                      type="tel"
+                                      name="phoneNumber"
+                                    />
+                                  </FormRow>
+                                  <FormRow>
+                                    <FormLabel>Gender</FormLabel>
+                                    <FormInput type="text" name="gender" />
+                                  </FormRow>
+                                  <FormRow>
+                                    <Button
+                                      type="submit"
+                                      disabled={isSubmitting}
+                                    >
+                                      {`Submit${isSubmitting ? 'ting' : ''}`}
+                                      {isSubmitting ? <Spinner /> : null}
+                                    </Button>
+                                  </FormRow>
+                                  <FormRow>
+                                    <Link href="/account?disable">
+                                      <ForgotPasswordLink>
+                                        Temporarily disable my account
+                                      </ForgotPasswordLink>
+                                    </Link>
+                                  </FormRow>
+                                </StyledForm>
+                              )
+                            }}
                           </Formik>
                         </div>
                       </Edit>
@@ -378,6 +405,10 @@ const Account = ({ query, id }) => {
                               debugger;
                               // TODO: Update password Mutation
                               await updateUser({ variables: values });
+
+                              // TODO: We never reach back here for some reason
+                              debugger;
+                              console.log('reserForm()');
                               resetForm();
                             } catch (e) {
                               console.error(`Formik Error: ${e}`);
