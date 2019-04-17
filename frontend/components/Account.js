@@ -8,6 +8,46 @@ import Spinner from "./Spinner";
 import Button from "./styles/Button";
 import { CURRENT_USER_QUERY, SINGLE_USER_QUERY, UPDATE_USER_MUTATION } from "../apollo/queries";
 
+var isEqual = function (value, other) {
+
+  // Get the value type
+  var type = Object.prototype.toString.call(value);
+
+  // If the two objects are not the same type, return false
+  if (type !== Object.prototype.toString.call(other)) return false;
+
+  // If items are not an object or array, return false
+  if (['[object Array]', '[object Object]'].indexOf(type) < 0) return false;
+
+  // Compare the length of the length of the two items
+  var valueLen = type === '[object Array]' ? value.length : Object.keys(value).length;
+  var otherLen = type === '[object Array]' ? other.length : Object.keys(other).length;
+  if (valueLen !== otherLen) return false;
+
+  // Compare two items
+  var compare = function (item1, item2) {
+    // Code will go here...
+  };
+
+  // Compare properties
+  var match;
+  if (type === '[object Array]') {
+    for (var i = 0; i < valueLen; i++) {
+      compare(value[i], other[i]);
+    }
+  } else {
+    for (var key in value) {
+      if (value.hasOwnProperty(key)) {
+        compare(value[key], other[key]);
+      }
+    }
+  }
+
+  // If nothing failed, return true
+  return true;
+
+};
+
 const EditProfileSchema = Yup.object().shape({
   name: Yup.string()
     .required("Required"),
@@ -289,7 +329,6 @@ const Account = ({ query, id }) => {
                             onSubmit={async (values, { setSubmitting, setErrors }) => {
                               const submittedValues = {...values};
                               try {
-                                // TODO: Update password Mutation
                                 for(const field in values) {
                                   if (initialEditDetailsValues[field] === submittedValues[field]) {
                                     delete submittedValues[field];
@@ -308,7 +347,7 @@ const Account = ({ query, id }) => {
                               }
                             }}
                           >
-                            {({ isSubmitting, initialValues }) => {
+                            {({ isSubmitting, initialValues, touched, dirty, values }) => {
                               let emptyValues = true;
 
                               for (const key in initialEditDetailsValues) {
@@ -358,10 +397,7 @@ const Account = ({ query, id }) => {
                                     <FormInput type="text" name="gender" />
                                   </FormRow>
                                   <FormRow>
-                                    <Button
-                                      type="submit"
-                                      disabled={isSubmitting}
-                                    >
+                                    <Button type="submit" disabled={ isSubmitting || isEqual(values, initialValues)} >
                                       {`Submit${isSubmitting ? 'ting' : ''}`}
                                       {isSubmitting ? <Spinner /> : null}
                                     </Button>

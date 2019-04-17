@@ -19,6 +19,10 @@ const Button = styled.button`
   white-space: nowrap;
   font-size: 14px;
   line-height: 18px;
+  ${({ disabled }) => disabled  ?
+  `
+    opacity: 0.5;
+  ` : null }
 `;
 
 export default Button;
