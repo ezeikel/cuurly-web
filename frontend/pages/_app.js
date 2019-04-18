@@ -21,8 +21,12 @@ import {
   faInboxOut,
   faEllipsisH
 } from "@fortawesome/pro-regular-svg-icons";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 library.add(fab, fas, far, fal, faSearch, faCompass, faHeart, faUser, faPlus, faTimes, faCog, faComment, faBadgeCheck, faInboxOut, faEllipsisH);
+
+toast.configure();
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {

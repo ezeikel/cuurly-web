@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Query, Mutation } from "react-apollo";
 import styled from "styled-components";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import { toast } from 'react-toastify';
 import * as Yup from "yup";
 import Spinner from "./Spinner";
 import Button from "./styles/Button";
@@ -215,6 +216,10 @@ const ForgotPasswordLink = styled.a`
   line-height: 1.8rem;
 `;
 
+const notify = () => toast('Profile Saved.', {
+  position: toast.POSITION.BOTTOM_CENTER
+});
+
 const Account = ({ query, id }) => {
   const [content] = query;
   const [initialEditDetailsValues, setInitialEditDetailsValues] = useState({
@@ -288,6 +293,9 @@ const Account = ({ query, id }) => {
                 <Mutation
                   mutation={UPDATE_USER_MUTATION}
                   refetchQueries={[{ query: SINGLE_USER_QUERY, variables: { id } }]}
+                  onCompleted={() => {
+                    notify();
+                  }}
                 >
                   {(updateUser, { error, loading }) => (
                     <Fragment>

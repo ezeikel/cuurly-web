@@ -255,14 +255,10 @@ const Mutations = {
 
     return ctx.prisma.deleteComment({ id });
   },
-  updateUser: async (_, args, ctx, info) => {
+  updateUser: (_, args, ctx, info) => {
     isLoggedIn(ctx);
 
-    console.log('Here');
-    console.log(ctx.request.userId);
-    console.log({ args });
-
-    const user = await ctx.prisma.updateUser({
+    return ctx.prisma.updateUser({
       where: {
         id: ctx.request.userId
       },
@@ -270,10 +266,6 @@ const Mutations = {
         ...args
       }
     }, info);
-
-    console.log({ user });
-
-    return user;
   }
 };
 
