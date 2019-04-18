@@ -1,8 +1,6 @@
 import App, { Container } from 'next/app';
 import { ApolloProvider } from 'react-apollo';
-import withApolloClient from '../apollo/client';
-import Page from '../components/Page';
-import GlobalStyle from "../GlobalStyle";
+import styled from 'styled-components';
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { fas } from "@fortawesome/pro-solid-svg-icons";
@@ -21,12 +19,41 @@ import {
   faInboxOut,
   faEllipsisH
 } from "@fortawesome/pro-regular-svg-icons";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
+import withApolloClient from '../apollo/client';
+import Page from '../components/Page';
+import GlobalStyle from "../GlobalStyle";
 import 'react-toastify/dist/ReactToastify.min.css';
 
 library.add(fab, fas, far, fal, faSearch, faCompass, faHeart, faUser, faPlus, faTimes, faCog, faComment, faBadgeCheck, faInboxOut, faEllipsisH);
 
-toast.configure();
+// const ReactToastAdapter = ({ className, bodyClassName, progressClassName, ...props }) => {
+//   return  (
+//     <ToastContainer
+//       className={bodyClassName}
+//       bodyClassName={bodyClassName}
+//       progressClassName={progressClassName}
+//       {...props}
+//     />
+//   )
+// };
+
+const StyledToastContainer = styled(ToastContainer).attrs({
+  bodyClassName: 'body',
+  progressClassName: 'progress'
+})`
+  background-color: 'brown';
+  .toast {
+    background-color: var(--color-black);
+  }
+  .body {
+    background-color: var(--color-black);
+    color: var(--color-white);
+  }
+  .progress {
+    background-color: pink;
+  }
+`;
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -49,6 +76,7 @@ class MyApp extends App {
           <Page>
             <Component {...pageProps}/>
           </Page>
+          <StyledToastContainer />
         </ApolloProvider>
       </Container>
     )
