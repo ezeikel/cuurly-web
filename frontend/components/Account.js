@@ -9,8 +9,6 @@ import Button from "./styles/Button";
 import { CURRENT_USER_QUERY, SINGLE_USER_QUERY, UPDATE_USER_MUTATION } from "../apollo/queries";
 
 function isEqual(a, b) {
-  console.log(a);
-  console.log(b);
   // Create arrays of property names
   var aProps = Object.getOwnPropertyNames(a);
   var bProps = Object.getOwnPropertyNames(b);
@@ -199,6 +197,10 @@ const FormInput = styled(Field)`
   overflow: visible;
   padding: 4px 12px;
   outline: 0;
+  transition: border 0.2s ease-in-out;
+  &:focus {
+    border: 1px solid #b2b2b2;
+  }
 `;
 
 const FormLabel = styled.label`
@@ -385,7 +387,14 @@ const Account = ({ query, id }) => {
                                     <FormInput type="text" name="gender" />
                                   </FormRow>
                                   <FormRow>
-                                    <Button type="submit" disabled={ isSubmitting || isEqual(values, initialValues)} >
+                                    <Button type="submit" disabled={ isSubmitting || isEqual((() => {
+                                      // convert phoneNumber from string to number for comparison in isEqual()
+                                      if (values.phoneNumber) {
+                                        values.phoneNumber = parseInt(values.phoneNumber, 10)
+                                      }
+
+                                      return values;
+                                    })(), initialValues)} >
                                       {`Submit${isSubmitting ? 'ting' : ''}`}
                                       {isSubmitting ? <Spinner /> : null}
                                     </Button>
@@ -432,7 +441,6 @@ const Account = ({ query, id }) => {
                           validationSchema={ChangePasswordSchema}
                           onSubmit={async (values, { resetForm }) => {
                             try {
-                              debugger;
                               // TODO: Update password Mutation
                               await updateUser({ variables: values });
 
