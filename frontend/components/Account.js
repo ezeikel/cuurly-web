@@ -216,9 +216,7 @@ const ForgotPasswordLink = styled.a`
   line-height: 1.8rem;
 `;
 
-const notify = () => toast('Profile Saved.', {
-  position: toast.POSITION.BOTTOM_CENTER
-});
+const notify = () => toast('Profile Saved.');
 
 const Account = ({ query, id }) => {
   const [content] = query;

@@ -27,31 +27,36 @@ import 'react-toastify/dist/ReactToastify.min.css';
 
 library.add(fab, fas, far, fal, faSearch, faCompass, faHeart, faUser, faPlus, faTimes, faCog, faComment, faBadgeCheck, faInboxOut, faEllipsisH);
 
-// const ReactToastAdapter = ({ className, bodyClassName, progressClassName, ...props }) => {
-//   return  (
-//     <ToastContainer
-//       className={bodyClassName}
-//       bodyClassName={bodyClassName}
-//       progressClassName={progressClassName}
-//       {...props}
-//     />
-//   )
-// };
-
 const StyledToastContainer = styled(ToastContainer).attrs({
+  className: 'toast-container',
+  toastClassName: 'toast',
   bodyClassName: 'body',
-  progressClassName: 'progress'
+  progressClassName: 'progress',
 })`
-  background-color: 'brown';
+  /* .toast-container */
+  bottom: 0;
+  left: 0;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  .toast {
+    background-color: var(--color-black);
+    margin: 0;
+    cursor: auto;
+  }
+  button[aria-label="close"] {
+    display: none;
+  }
   .toast {
     background-color: var(--color-black);
   }
   .body {
     background-color: var(--color-black);
     color: var(--color-white);
-  }
-  .progress {
-    background-color: pink;
+    font-family: var(--default-font-family);
+    margin: 0;
+    display: grid;
+    align-items: center;
   }
 `;
 
@@ -76,7 +81,15 @@ class MyApp extends App {
           <Page>
             <Component {...pageProps}/>
           </Page>
-          <StyledToastContainer />
+          <StyledToastContainer
+            position="bottom-center"
+            draggable
+            hideProgressBar
+            pauseOnHover
+            autoClose={30000000000}
+            draggable={false}
+            closeOnClick={false}
+          />
         </ApolloProvider>
       </Container>
     )
