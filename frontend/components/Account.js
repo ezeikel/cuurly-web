@@ -189,6 +189,9 @@ const FormRow = styled.div`
   select {
     height: 38px;
   }
+  textarea {
+    resize: none;
+  }
 `;
 
 const FormInput = styled(Field)`
@@ -384,7 +387,7 @@ const Account = ({ query, id }) => {
                                   </FormRow>
                                   <FormRow>
                                     <FormLabel>Bio</FormLabel>
-                                    <FormInput type="text" name="bio" />
+                                    <FormInput component="textarea" name="bio" />
                                   </FormRow>
                                   <FormRow>
                                     <FormLabel>Email</FormLabel>
