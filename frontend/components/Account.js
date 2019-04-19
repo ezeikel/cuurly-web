@@ -9,6 +9,13 @@ import Spinner from "./Spinner";
 import Button from "./styles/Button";
 import { CURRENT_USER_QUERY, SINGLE_USER_QUERY, UPDATE_USER_MUTATION } from "../apollo/queries";
 
+const GENDER_OPTIONS = [
+  'MALE',
+  'FEMALE',
+  'NON BINARY',
+  'NOT SPECIFIED'
+];
+
 function isEqual(a, b) {
   // Create arrays of property names
   var aProps = Object.getOwnPropertyNames(a);
@@ -181,6 +188,9 @@ const FormRow = styled.div`
     border: 1px solid #3897f0;
     color: #fff;
   }
+  select {
+    height: 38px;
+  }
 `;
 
 const FormInput = styled(Field)`
@@ -324,6 +334,7 @@ const Account = ({ query, id }) => {
                             // validationSchema={EditProfileSchema}
                             onSubmit={async (values, { setSubmitting, setErrors }) => {
                               const submittedValues = {...values};
+
                               try {
                                 for(const field in values) {
                                   if (initialEditDetailsValues[field] === submittedValues[field]) {
@@ -390,7 +401,16 @@ const Account = ({ query, id }) => {
                                   </FormRow>
                                   <FormRow>
                                     <FormLabel>Gender</FormLabel>
-                                    <FormInput type="text" name="gender" />
+                                    <FormInput component="select" name="gender" value={values.gender} >
+                                      {
+                                        GENDER_OPTIONS.map(option => (
+                                          <option key={option} value={option.replace(/\s/g, '')} >
+                                            {option.charAt(0) + option.slice(1).toLowerCase()}
+                                          </option>
+                                        ))
+                                      }
+
+                                    </FormInput>
                                   </FormRow>
                                   <FormRow>
                                     <Button type="submit" disabled={ isSubmitting || isEqual((() => {
