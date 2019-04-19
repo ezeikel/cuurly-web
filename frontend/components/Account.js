@@ -16,6 +16,8 @@ const GENDER_OPTIONS = [
   'NOT SPECIFIED'
 ];
 
+const PHONE_REGEX = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+
 function isEqual(a, b) {
   // Create arrays of property names
   var aProps = Object.getOwnPropertyNames(a);
@@ -42,33 +44,29 @@ function isEqual(a, b) {
   return true;
 }
 
+// TODO: Need to validate only on changed fields
 const EditProfileSchema = Yup.object().shape({
   name: Yup.string()
-    .required("Required"),
+    .required('Name is required.'),
   username: Yup.string()
-    .required("Required"),
-  website: Yup.string()
-    .required("Required"),
-  bio: Yup.string()
-    .required("Required"),
+    .required('Username is required.'),
+  website: Yup.string(),
+  bio: Yup.string(),
   email: Yup.string()
-    .email("Invalid email")
-    .required("Required"),
+    .email('Invalid email'),
   phoneNumber: Yup.string()
-    .email("Invalid email")
-    .required("Required"),
+    .matches(PHONE_REGEX, 'Phone number is not valid.'),
   gender: Yup.string()
-    .email("Invalid email")
-    .required("Required")
+    .required('Gender is required.')
 });
 
 const ChangePasswordSchema = Yup.object().shape({
   oldPassword: Yup.string()
-    .required("Required"),
+    .required('Old password is required.'),
   password: Yup.string()
-    .required("Required"),
-  oldPassword: Yup.string()
-    .required("Required"),
+    .required('Password is required.'),
+  passwordConfirm: Yup.string()
+    .required('Password confirm is required.'),
 });
 
 const Wrapper = styled.div`
@@ -331,7 +329,7 @@ const Account = ({ query, id }) => {
                               phoneNumber: phoneNumber || "",
                               gender: gender || ""
                             }}
-                            // validationSchema={EditProfileSchema}
+                            validationSchema={EditProfileSchema}
                             onSubmit={async (values, { setSubmitting, setErrors }) => {
                               const submittedValues = {...values};
 
