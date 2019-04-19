@@ -86,7 +86,7 @@ class MyApp extends App {
             draggable
             hideProgressBar
             pauseOnHover
-            autoClose={30000000000}
+            autoClose={3000}
             draggable={false}
             closeOnClick={false}
           />
