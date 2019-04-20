@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { toast } from 'react-toastify';
 import * as Yup from "yup";
+import Modal from 'react-modal';
 import Spinner from "./Spinner";
 import Button from "./styles/Button";
 import { CURRENT_USER_QUERY, SINGLE_USER_QUERY, UPDATE_USER_MUTATION } from "../apollo/queries";
@@ -227,6 +228,118 @@ const ForgotPasswordLink = styled.a`
   line-height: 1.8rem;
 `;
 
+const ChangeProfilePhotoForm = styled.form`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  height: 100%;
+  label {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+  }
+  input {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    width: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+`;
+
+const ReactModalAdapter = ({ className, modalClassName, ...props }) => (
+  <Modal
+    className={modalClassName}
+    portalClassName={className}
+    {...props}
+  />
+);
+
+const StyledChangeProfilePictureModal = styled(ReactModalAdapter).attrs({ //https://github.com/styled-components/styled-components/issues/1494
+  overlayClassName: 'overlay',
+  modalClassName: 'modal'
+})`
+  /* Portal styles here (though usually you will have none) */
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0, 0.5);
+    display: grid;
+    place-items: center;
+  }
+  .modal {
+    display: grid;
+    grid-template-rows: 43px 1fr;
+    background-color: var(--color-white);
+    min-height: 200px;
+    max-height: 400px;
+    width: 400px;
+    border-radius: 4px;
+    outline: 0;
+  }
+`;
+
+const ModalHeader = styled.header`
+  display: grid;
+  grid-template-columns: 1fr 42px;
+  align-items: center;
+  border-bottom: 1px solid #efefef;
+  h1 {
+    justify-self: center;
+    font-size: 1.6rem;
+    line-height: 2.4rem;
+    margin: 0;
+  }
+  svg {
+    align-self: center;
+    justify-self: center;
+    cursor: pointer;
+  }
+`;
+
+const ModalBody = styled.div`
+  overflow-y: scroll;
+`;
+
+const SettingsActions = styled.ul`
+  display: grid;
+`;
+
+const SettingsAction = styled.li`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 48px;
+  padding: 4px 8px;
+  line-height: 1.5;
+  & + li {
+    border-top: 1px solid #efefef;
+  }
+  span  {
+    cursor: pointer;
+  ${({ actionType }) => actionType === 'negative' ?
+    `
+    color: var(--color-red);
+  ` : null}
+  ${({ disabled }) => disabled ?
+    `
+    opacity: 0.3;
+    pointer-events: none;
+  ` : null}
+  }
+`;
+
+if (typeof (window) !== 'undefined') {
+  Modal.setAppElement('body');
+}
+
 const notify = () => toast('Profile Saved.');
 
 const Account = ({ query, id }) => {
@@ -240,6 +353,19 @@ const Account = ({ query, id }) => {
     phoneNumber: "",
     gender: ""
   });
+  const [changeProfilePictureModalIsOpen, setCangeProfilePictureModalIsOpen] = useState(false);
+  const [fileUrl, setFileUrl ] = useState(null);
+  const [file, setFile ] = useState(null);
+
+  const openChangeProfilePictureModal = () => setCangeProfilePictureModalIsOpen(true);
+  const closeChangeProfilePictureModal = () => setCangeProfilePictureModalIsOpen(false);
+
+  const handleChange = file => {
+    setFileUrl(URL.createObjectURL(file));
+    setFile(file);
+    closeChangeProfilePictureModal();
+  };
+
 
   return (
     <Query
@@ -311,15 +437,44 @@ const Account = ({ query, id }) => {
                       <Edit>
                         <EditHeader>
                           <ProfilePicture>
-                            <img src={profilePicture} />
+                            <img src={fileUrl || profilePicture} />
                             {/* <form>
                                 <input type="file" accept="image/jpeg,image/png" />
                               </form> */}
                           </ProfilePicture>
                           <ChangeProfilePicture>
                             <span>{username}</span>
-                            <span>Change Profile Photo</span>
+                            <span onClick={openChangeProfilePictureModal}>Change Profile Photo</span>
                           </ChangeProfilePicture>
+                          <StyledChangeProfilePictureModal
+                            isOpen={changeProfilePictureModalIsOpen}
+                            onRequestClose={closeChangeProfilePictureModal}
+                            contentLabel="Change Profile Picture Modal"
+                          >
+                            <ModalHeader>
+                              <h1>Change Profile Photo</h1>
+                            </ModalHeader>
+                            <ModalBody>
+                              <SettingsActions>
+                                <SettingsAction>
+                                  <ChangeProfilePhotoForm>
+                                    <label>
+                                      Upload Photo
+                                      <input accept="image/jpeg,image/png" type="file" onChange={e => handleChange(e.target.files[0]) } />
+                                    </label>
+                                  </ChangeProfilePhotoForm>
+                                </SettingsAction>
+                                <SettingsAction disabled={true}>
+                                  <span>Remove Current Photot</span>
+                                </SettingsAction>
+                                <SettingsAction>
+                                  <span onClick={closeChangeProfilePictureModal}>
+                                    Cancel
+                                  </span>
+                                </SettingsAction>
+                              </SettingsActions>
+                            </ModalBody>
+                          </StyledChangeProfilePictureModal>
                         </EditHeader>
                         <div>
                           <Formik
@@ -336,6 +491,10 @@ const Account = ({ query, id }) => {
                             onSubmit={async (values, { setSubmitting, setErrors }) => {
                               const submittedValues = {...values};
 
+                              if (fileUrl) {
+                                submittedValues.profilePicture = file;
+                              }
+
                               try {
                                 for(const field in values) {
                                   if (initialEditDetailsValues[field] === submittedValues[field]) {
@@ -346,6 +505,9 @@ const Account = ({ query, id }) => {
                                 if (submittedValues.phoneNumber) {
                                   submittedValues.phoneNumber = parseInt(submittedValues.phoneNumber, 10);
                                 }
+
+                                debugger;
+                                return
 
                                 await updateUser({ variables: submittedValues });
 
@@ -414,14 +576,14 @@ const Account = ({ query, id }) => {
                                     </FormInput>
                                   </FormRow>
                                   <FormRow>
-                                    <Button type="submit" disabled={ isSubmitting || isEqual((() => {
+                                    <Button type="submit" disabled={ isSubmitting || (!fileUrl && isEqual((() => {
                                       // convert phoneNumber from string to number for comparison in isEqual()
                                       if (values.phoneNumber) {
                                         values.phoneNumber = parseInt(values.phoneNumber, 10)
                                       }
 
                                       return values;
-                                    })(), initialValues)} >
+                                    })(), initialValues))} >
                                       {`Submit${isSubmitting ? 'ting' : ''}`}
                                       {isSubmitting ? <Spinner /> : null}
                                     </Button>
