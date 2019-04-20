@@ -30,7 +30,7 @@ type User {
   gender: Gender!
   following: [User!]!
   followers: [User!]!
-  verified: Boolean
+  verified: Boolean!
   posts: [Post!]!
   likes: [Like!]!
   comments: [Comment!]!
@@ -44,6 +44,7 @@ type Query {
   user(id: ID!): User
   following(id: ID!): [User!]!
   followers(id: ID!): [User!]!
+  profilePicture: Content
   posts: [Post!]!
   post(id: ID!): Post
   feed(id: ID!): [Post!]!

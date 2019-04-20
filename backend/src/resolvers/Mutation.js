@@ -260,9 +260,6 @@ const Mutations = {
     isLoggedIn(ctx);
 
     if (profilePicture) {
-      console.log({ profilePicture });
-      console.log('HERE!');
-      const tags = ['user_profile_picture'];
       const folder = `profilePictures/users/${ctx.request.userId}`;
 
       const { resultSecureUrl, publicId } = await processUpload({ file: profilePicture, tags, folder });

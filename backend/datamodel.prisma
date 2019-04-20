@@ -20,11 +20,11 @@ type User {
   id: ID! @id
   name: String
   username: String! @unique
-  profilePicture: Content!
+  profilePicture: Content
   website: String
-  bio: String @default(value: "This is the default bio for everyone 📝")
+  bio: String
   email: String! @unique
-  phoneNumber: Int
+  phoneNumber: Int # Change this to String to handle leading 0
   gender: Gender! @default(value: NOTSPECIFIED)
   following: [User!]! @relation(name: "Following", link: INLINE)
   followers: [User!]! @relation(name: "Followers", link: INLINE)

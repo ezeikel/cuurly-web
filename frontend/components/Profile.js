@@ -297,7 +297,7 @@ const Profile = ({ id }) => {
             if (loading) return <p>Loading...</p>;
             if (error) return <p>Error: {error.message}</p>;
 
-            debugger;
+            console.log({ profilePicture });
 
             return (
               <Wrapper>

@@ -21,6 +21,7 @@ const Query = {
   user: async (_, { id }, ctx, info) => {
     const user = await ctx.prisma.user(({ id }), info);
 
+    //console.log({ info });
     console.log({ user });
 
     return user;
