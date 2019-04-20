@@ -363,6 +363,14 @@ input ContentUpdateManyMutationInput {
   publicId: String
 }
 
+input ContentUpdateOneInput {
+  create: ContentCreateInput
+  update: ContentUpdateDataInput
+  upsert: ContentUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+}
+
 input ContentUpdateOneRequiredInput {
   create: ContentCreateInput
   update: ContentUpdateDataInput
@@ -1278,7 +1286,7 @@ type User {
   id: ID!
   name: String
   username: String!
-  profilePicture: String!
+  profilePicture: Content
   website: String
   bio: String
   email: String!
@@ -1307,7 +1315,7 @@ type UserConnection {
 input UserCreateInput {
   name: String
   username: String!
-  profilePicture: String
+  profilePicture: ContentCreateOneInput
   website: String
   bio: String
   email: String!
@@ -1357,7 +1365,7 @@ input UserCreatepermissionsInput {
 input UserCreateWithoutCommentsInput {
   name: String
   username: String!
-  profilePicture: String
+  profilePicture: ContentCreateOneInput
   website: String
   bio: String
   email: String!
@@ -1377,7 +1385,7 @@ input UserCreateWithoutCommentsInput {
 input UserCreateWithoutFollowersInput {
   name: String
   username: String!
-  profilePicture: String
+  profilePicture: ContentCreateOneInput
   website: String
   bio: String
   email: String!
@@ -1397,7 +1405,7 @@ input UserCreateWithoutFollowersInput {
 input UserCreateWithoutFollowingInput {
   name: String
   username: String!
-  profilePicture: String
+  profilePicture: ContentCreateOneInput
   website: String
   bio: String
   email: String!
@@ -1417,7 +1425,7 @@ input UserCreateWithoutFollowingInput {
 input UserCreateWithoutLikesInput {
   name: String
   username: String!
-  profilePicture: String
+  profilePicture: ContentCreateOneInput
   website: String
   bio: String
   email: String!
@@ -1437,7 +1445,7 @@ input UserCreateWithoutLikesInput {
 input UserCreateWithoutPostsInput {
   name: String
   username: String!
-  profilePicture: String
+  profilePicture: ContentCreateOneInput
   website: String
   bio: String
   email: String!
@@ -1466,8 +1474,6 @@ enum UserOrderByInput {
   name_DESC
   username_ASC
   username_DESC
-  profilePicture_ASC
-  profilePicture_DESC
   website_ASC
   website_DESC
   bio_ASC
@@ -1496,7 +1502,6 @@ type UserPreviousValues {
   id: ID!
   name: String
   username: String!
-  profilePicture: String!
   website: String
   bio: String
   email: String!
@@ -1554,20 +1559,6 @@ input UserScalarWhereInput {
   username_not_starts_with: String
   username_ends_with: String
   username_not_ends_with: String
-  profilePicture: String
-  profilePicture_not: String
-  profilePicture_in: [String!]
-  profilePicture_not_in: [String!]
-  profilePicture_lt: String
-  profilePicture_lte: String
-  profilePicture_gt: String
-  profilePicture_gte: String
-  profilePicture_contains: String
-  profilePicture_not_contains: String
-  profilePicture_starts_with: String
-  profilePicture_not_starts_with: String
-  profilePicture_ends_with: String
-  profilePicture_not_ends_with: String
   website: String
   website_not: String
   website_in: [String!]
@@ -1708,7 +1699,7 @@ input UserSubscriptionWhereInput {
 input UserUpdateInput {
   name: String
   username: String
-  profilePicture: String
+  profilePicture: ContentUpdateOneInput
   website: String
   bio: String
   email: String
@@ -1729,7 +1720,6 @@ input UserUpdateInput {
 input UserUpdateManyDataInput {
   name: String
   username: String
-  profilePicture: String
   website: String
   bio: String
   email: String
@@ -1745,7 +1735,6 @@ input UserUpdateManyDataInput {
 input UserUpdateManyMutationInput {
   name: String
   username: String
-  profilePicture: String
   website: String
   bio: String
   email: String
@@ -1819,7 +1808,7 @@ input UserUpdatepermissionsInput {
 input UserUpdateWithoutCommentsDataInput {
   name: String
   username: String
-  profilePicture: String
+  profilePicture: ContentUpdateOneInput
   website: String
   bio: String
   email: String
@@ -1839,7 +1828,7 @@ input UserUpdateWithoutCommentsDataInput {
 input UserUpdateWithoutFollowersDataInput {
   name: String
   username: String
-  profilePicture: String
+  profilePicture: ContentUpdateOneInput
   website: String
   bio: String
   email: String
@@ -1859,7 +1848,7 @@ input UserUpdateWithoutFollowersDataInput {
 input UserUpdateWithoutFollowingDataInput {
   name: String
   username: String
-  profilePicture: String
+  profilePicture: ContentUpdateOneInput
   website: String
   bio: String
   email: String
@@ -1879,7 +1868,7 @@ input UserUpdateWithoutFollowingDataInput {
 input UserUpdateWithoutLikesDataInput {
   name: String
   username: String
-  profilePicture: String
+  profilePicture: ContentUpdateOneInput
   website: String
   bio: String
   email: String
@@ -1899,7 +1888,7 @@ input UserUpdateWithoutLikesDataInput {
 input UserUpdateWithoutPostsDataInput {
   name: String
   username: String
-  profilePicture: String
+  profilePicture: ContentUpdateOneInput
   website: String
   bio: String
   email: String
@@ -1996,20 +1985,7 @@ input UserWhereInput {
   username_not_starts_with: String
   username_ends_with: String
   username_not_ends_with: String
-  profilePicture: String
-  profilePicture_not: String
-  profilePicture_in: [String!]
-  profilePicture_not_in: [String!]
-  profilePicture_lt: String
-  profilePicture_lte: String
-  profilePicture_gt: String
-  profilePicture_gte: String
-  profilePicture_contains: String
-  profilePicture_not_contains: String
-  profilePicture_starts_with: String
-  profilePicture_not_starts_with: String
-  profilePicture_ends_with: String
-  profilePicture_not_ends_with: String
+  profilePicture: ContentWhereInput
   website: String
   website_not: String
   website_in: [String!]

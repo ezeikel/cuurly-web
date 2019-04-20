@@ -12,6 +12,8 @@ import CurrentUser from './CurrentUser';
 import Button from './styles/Button';
 import Signout from './Signout';
 
+const BLANK_PROFILE_PICTURE = 'https://instagram.fbho1-1.fna.fbcdn.net/vp/65547464af3e7b33703032d5b5fb5232/5D0566F1/t51.2885-19/44884218_345707102882519_2446069589734326272_n.jpg?_nc_ht=instagram.fbho1-1.fna.fbcdn.net';
+
 const Wrapper = styled.div`
   display: grid;
   padding-top: 60px;
@@ -295,11 +297,13 @@ const Profile = ({ id }) => {
             if (loading) return <p>Loading...</p>;
             if (error) return <p>Error: {error.message}</p>;
 
+            debugger;
+
             return (
               <Wrapper>
                 <Header>
                   <UserPhoto>
-                    <img src={profilePicture} />
+                    <img src={profilePicture && profilePicture.url || BLANK_PROFILE_PICTURE } />
                   </UserPhoto>
                   <UserInfo>
                     <FirstRow>
@@ -419,7 +423,7 @@ const Profile = ({ id }) => {
                                         <FollowerPhoto>
                                           <img
                                             src={
-                                              follower.profilePicture
+                                              follower.profilePicture.url
                                             }
                                             alt="profile-pic"
                                           />
@@ -502,7 +506,7 @@ const Profile = ({ id }) => {
                                         <FollowerPhoto>
                                           <img
                                             src={
-                                              following.profilePicture
+                                              following.profilePicture.url
                                             }
                                             alt="profile-pic"
                                           />

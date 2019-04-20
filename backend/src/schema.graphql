@@ -22,7 +22,7 @@ type User {
   id: ID!
   name: String!
   username: String!
-  profilePicture: String!
+  profilePicture: Content
   website: String
   bio: String
   email: String!
@@ -66,5 +66,5 @@ type Mutation {
   unlikePost(id: ID!): Like!
   addComment(id: ID!, text: String!): Comment!
   deleteComment(id: ID!): Comment!
-  updateUser(name: String, username: String, website: String, bio: String, email: String, phoneNumber: Int, gender: String): User!
+  updateUser(name: String, username: String, profilePicture: Upload, website: String, bio: String, email: String, phoneNumber: Int, gender: String): User!
 }

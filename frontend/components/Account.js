@@ -10,6 +10,8 @@ import Spinner from "./Spinner";
 import Button from "./styles/Button";
 import { CURRENT_USER_QUERY, SINGLE_USER_QUERY, UPDATE_USER_MUTATION } from "../apollo/queries";
 
+const BLANK_PROFILE_PICTURE = 'https://instagram.fbho1-1.fna.fbcdn.net/vp/65547464af3e7b33703032d5b5fb5232/5D0566F1/t51.2885-19/44884218_345707102882519_2446069589734326272_n.jpg?_nc_ht=instagram.fbho1-1.fna.fbcdn.net';
+
 const GENDER_OPTIONS = [
   'MALE',
   'FEMALE',
@@ -437,7 +439,7 @@ const Account = ({ query, id }) => {
                       <Edit>
                         <EditHeader>
                           <ProfilePicture>
-                            <img src={fileUrl || profilePicture} />
+                            <img src={fileUrl || (profilePicture && profilePicture.url || BLANK_PROFILE_PICTURE) } />
                             {/* <form>
                                 <input type="file" accept="image/jpeg,image/png" />
                               </form> */}
@@ -491,24 +493,24 @@ const Account = ({ query, id }) => {
                             onSubmit={async (values, { setSubmitting, setErrors }) => {
                               const submittedValues = {...values};
 
+                              // add the updated profile picture to the data to be sent to the mutation
                               if (fileUrl) {
                                 submittedValues.profilePicture = file;
                               }
 
+                              // removed values that havent changed
+                              for(const field in values) {
+                                if (initialEditDetailsValues[field] === submittedValues[field]) {
+                                  delete submittedValues[field];
+                                }
+                              }
+
+                              // turn phoneNumber from a string to a number
+                              if (submittedValues.phoneNumber) {
+                                submittedValues.phoneNumber = parseInt(submittedValues.phoneNumber, 10);
+                              }
+
                               try {
-                                for(const field in values) {
-                                  if (initialEditDetailsValues[field] === submittedValues[field]) {
-                                    delete submittedValues[field];
-                                  }
-                                }
-
-                                if (submittedValues.phoneNumber) {
-                                  submittedValues.phoneNumber = parseInt(submittedValues.phoneNumber, 10);
-                                }
-
-                                debugger;
-                                return
-
                                 await updateUser({ variables: submittedValues });
 
                                 setSubmitting(false);
@@ -615,7 +617,7 @@ const Account = ({ query, id }) => {
                       <PasswordChange>
                         <EditHeader>
                           <ProfilePicture>
-                            <img src={profilePicture} />
+                            <img src={profilePicture && profilePicture.url || BLANK_PROFILE_PICTURE} />
                           </ProfilePicture>
                           <Username>
                             <span>{username}</span>

@@ -195,7 +195,7 @@ const Post = ({ id }) => {
               <Wrapper>
                 <PostHeader>
                   <Photo>
-                    <img src={post.author.profilePicture} />
+                    <img src={post.author.profilePicture.url} />
                   </Photo>
                   <Details>
                     <Username>{post.author.username}</Username>

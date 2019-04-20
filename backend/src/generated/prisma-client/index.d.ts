@@ -334,9 +334,9 @@ export interface ClientConstructor<T> {
  * Types
  */
 
-export type Gender = "MALE" | "FEMALE" | "NONBINARY" | "NOTSPECIFIED";
-
 export type ContentType = "IMAGE" | "VIDEO";
+
+export type Gender = "MALE" | "FEMALE" | "NONBINARY" | "NOTSPECIFIED";
 
 export type UserOrderByInput =
   | "id_ASC"
@@ -345,8 +345,6 @@ export type UserOrderByInput =
   | "name_DESC"
   | "username_ASC"
   | "username_DESC"
-  | "profilePicture_ASC"
-  | "profilePicture_DESC"
   | "website_ASC"
   | "website_DESC"
   | "bio_ASC"
@@ -491,20 +489,7 @@ export interface UserWhereInput {
   username_not_starts_with?: String;
   username_ends_with?: String;
   username_not_ends_with?: String;
-  profilePicture?: String;
-  profilePicture_not?: String;
-  profilePicture_in?: String[] | String;
-  profilePicture_not_in?: String[] | String;
-  profilePicture_lt?: String;
-  profilePicture_lte?: String;
-  profilePicture_gt?: String;
-  profilePicture_gte?: String;
-  profilePicture_contains?: String;
-  profilePicture_not_contains?: String;
-  profilePicture_starts_with?: String;
-  profilePicture_not_starts_with?: String;
-  profilePicture_ends_with?: String;
-  profilePicture_not_ends_with?: String;
+  profilePicture?: ContentWhereInput;
   website?: String;
   website_not?: String;
   website_in?: String[] | String;
@@ -639,6 +624,44 @@ export interface UserWhereInput {
   NOT?: UserWhereInput[] | UserWhereInput;
 }
 
+export interface ContentWhereInput {
+  type?: ContentType;
+  type_not?: ContentType;
+  type_in?: ContentType[] | ContentType;
+  type_not_in?: ContentType[] | ContentType;
+  url?: String;
+  url_not?: String;
+  url_in?: String[] | String;
+  url_not_in?: String[] | String;
+  url_lt?: String;
+  url_lte?: String;
+  url_gt?: String;
+  url_gte?: String;
+  url_contains?: String;
+  url_not_contains?: String;
+  url_starts_with?: String;
+  url_not_starts_with?: String;
+  url_ends_with?: String;
+  url_not_ends_with?: String;
+  publicId?: String;
+  publicId_not?: String;
+  publicId_in?: String[] | String;
+  publicId_not_in?: String[] | String;
+  publicId_lt?: String;
+  publicId_lte?: String;
+  publicId_gt?: String;
+  publicId_gte?: String;
+  publicId_contains?: String;
+  publicId_not_contains?: String;
+  publicId_starts_with?: String;
+  publicId_not_starts_with?: String;
+  publicId_ends_with?: String;
+  publicId_not_ends_with?: String;
+  AND?: ContentWhereInput[] | ContentWhereInput;
+  OR?: ContentWhereInput[] | ContentWhereInput;
+  NOT?: ContentWhereInput[] | ContentWhereInput;
+}
+
 export interface LikeWhereInput {
   id?: ID_Input;
   id_not?: ID_Input;
@@ -720,44 +743,6 @@ export interface PostWhereInput {
   AND?: PostWhereInput[] | PostWhereInput;
   OR?: PostWhereInput[] | PostWhereInput;
   NOT?: PostWhereInput[] | PostWhereInput;
-}
-
-export interface ContentWhereInput {
-  type?: ContentType;
-  type_not?: ContentType;
-  type_in?: ContentType[] | ContentType;
-  type_not_in?: ContentType[] | ContentType;
-  url?: String;
-  url_not?: String;
-  url_in?: String[] | String;
-  url_not_in?: String[] | String;
-  url_lt?: String;
-  url_lte?: String;
-  url_gt?: String;
-  url_gte?: String;
-  url_contains?: String;
-  url_not_contains?: String;
-  url_starts_with?: String;
-  url_not_starts_with?: String;
-  url_ends_with?: String;
-  url_not_ends_with?: String;
-  publicId?: String;
-  publicId_not?: String;
-  publicId_in?: String[] | String;
-  publicId_not_in?: String[] | String;
-  publicId_lt?: String;
-  publicId_lte?: String;
-  publicId_gt?: String;
-  publicId_gte?: String;
-  publicId_contains?: String;
-  publicId_not_contains?: String;
-  publicId_starts_with?: String;
-  publicId_not_starts_with?: String;
-  publicId_ends_with?: String;
-  publicId_not_ends_with?: String;
-  AND?: ContentWhereInput[] | ContentWhereInput;
-  OR?: ContentWhereInput[] | ContentWhereInput;
-  NOT?: ContentWhereInput[] | ContentWhereInput;
 }
 
 export interface LocationWhereInput {
@@ -934,7 +919,7 @@ export interface UserCreateOneWithoutPostsInput {
 export interface UserCreateWithoutPostsInput {
   name?: String;
   username: String;
-  profilePicture?: String;
+  profilePicture?: ContentCreateOneInput;
   website?: String;
   bio?: String;
   email: String;
@@ -951,6 +936,16 @@ export interface UserCreateWithoutPostsInput {
   permissions?: UserCreatepermissionsInput;
 }
 
+export interface ContentCreateOneInput {
+  create?: ContentCreateInput;
+}
+
+export interface ContentCreateInput {
+  type?: ContentType;
+  url?: String;
+  publicId?: String;
+}
+
 export interface UserCreateManyWithoutFollowingInput {
   create?: UserCreateWithoutFollowingInput[] | UserCreateWithoutFollowingInput;
   connect?: UserWhereUniqueInput[] | UserWhereUniqueInput;
@@ -959,7 +954,7 @@ export interface UserCreateManyWithoutFollowingInput {
 export interface UserCreateWithoutFollowingInput {
   name?: String;
   username: String;
-  profilePicture?: String;
+  profilePicture?: ContentCreateOneInput;
   website?: String;
   bio?: String;
   email: String;
@@ -984,7 +979,7 @@ export interface UserCreateManyWithoutFollowersInput {
 export interface UserCreateWithoutFollowersInput {
   name?: String;
   username: String;
-  profilePicture?: String;
+  profilePicture?: ContentCreateOneInput;
   website?: String;
   bio?: String;
   email: String;
@@ -1024,16 +1019,6 @@ export interface PostCreateWithoutLikesInput {
   comments?: CommentCreateManyWithoutPostInput;
 }
 
-export interface ContentCreateOneInput {
-  create?: ContentCreateInput;
-}
-
-export interface ContentCreateInput {
-  type?: ContentType;
-  url?: String;
-  publicId?: String;
-}
-
 export interface LocationCreateOneInput {
   create?: LocationCreateInput;
 }
@@ -1061,7 +1046,7 @@ export interface UserCreateOneWithoutCommentsInput {
 export interface UserCreateWithoutCommentsInput {
   name?: String;
   username: String;
-  profilePicture?: String;
+  profilePicture?: ContentCreateOneInput;
   website?: String;
   bio?: String;
   email: String;
@@ -1109,7 +1094,7 @@ export interface UserCreateOneWithoutLikesInput {
 export interface UserCreateWithoutLikesInput {
   name?: String;
   username: String;
-  profilePicture?: String;
+  profilePicture?: ContentCreateOneInput;
   website?: String;
   bio?: String;
   email: String;
@@ -1178,7 +1163,7 @@ export interface UserUpdateOneWithoutPostsInput {
 export interface UserUpdateWithoutPostsDataInput {
   name?: String;
   username?: String;
-  profilePicture?: String;
+  profilePicture?: ContentUpdateOneInput;
   website?: String;
   bio?: String;
   email?: String;
@@ -1193,6 +1178,25 @@ export interface UserUpdateWithoutPostsDataInput {
   resetTokenExpiry?: String;
   verified?: Boolean;
   permissions?: UserUpdatepermissionsInput;
+}
+
+export interface ContentUpdateOneInput {
+  create?: ContentCreateInput;
+  update?: ContentUpdateDataInput;
+  upsert?: ContentUpsertNestedInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
+}
+
+export interface ContentUpdateDataInput {
+  type?: ContentType;
+  url?: String;
+  publicId?: String;
+}
+
+export interface ContentUpsertNestedInput {
+  update: ContentUpdateDataInput;
+  create: ContentCreateInput;
 }
 
 export interface UserUpdateManyWithoutFollowingInput {
@@ -1221,7 +1225,7 @@ export interface UserUpdateWithWhereUniqueWithoutFollowingInput {
 export interface UserUpdateWithoutFollowingDataInput {
   name?: String;
   username?: String;
-  profilePicture?: String;
+  profilePicture?: ContentUpdateOneInput;
   website?: String;
   bio?: String;
   email?: String;
@@ -1264,7 +1268,7 @@ export interface UserUpdateWithWhereUniqueWithoutFollowersInput {
 export interface UserUpdateWithoutFollowersDataInput {
   name?: String;
   username?: String;
-  profilePicture?: String;
+  profilePicture?: ContentUpdateOneInput;
   website?: String;
   bio?: String;
   email?: String;
@@ -1329,17 +1333,6 @@ export interface ContentUpdateOneRequiredInput {
   upsert?: ContentUpsertNestedInput;
 }
 
-export interface ContentUpdateDataInput {
-  type?: ContentType;
-  url?: String;
-  publicId?: String;
-}
-
-export interface ContentUpsertNestedInput {
-  update: ContentUpdateDataInput;
-  create: ContentCreateInput;
-}
-
 export interface LocationUpdateOneInput {
   create?: LocationCreateInput;
   update?: LocationUpdateDataInput;
@@ -1396,7 +1389,7 @@ export interface UserUpdateOneRequiredWithoutCommentsInput {
 export interface UserUpdateWithoutCommentsDataInput {
   name?: String;
   username?: String;
-  profilePicture?: String;
+  profilePicture?: ContentUpdateOneInput;
   website?: String;
   bio?: String;
   email?: String;
@@ -1481,7 +1474,7 @@ export interface UserUpdateOneWithoutLikesInput {
 export interface UserUpdateWithoutLikesDataInput {
   name?: String;
   username?: String;
-  profilePicture?: String;
+  profilePicture?: ContentUpdateOneInput;
   website?: String;
   bio?: String;
   email?: String;
@@ -1759,20 +1752,6 @@ export interface UserScalarWhereInput {
   username_not_starts_with?: String;
   username_ends_with?: String;
   username_not_ends_with?: String;
-  profilePicture?: String;
-  profilePicture_not?: String;
-  profilePicture_in?: String[] | String;
-  profilePicture_not_in?: String[] | String;
-  profilePicture_lt?: String;
-  profilePicture_lte?: String;
-  profilePicture_gt?: String;
-  profilePicture_gte?: String;
-  profilePicture_contains?: String;
-  profilePicture_not_contains?: String;
-  profilePicture_starts_with?: String;
-  profilePicture_not_starts_with?: String;
-  profilePicture_ends_with?: String;
-  profilePicture_not_ends_with?: String;
   website?: String;
   website_not?: String;
   website_in?: String[] | String;
@@ -1900,7 +1879,6 @@ export interface UserUpdateManyWithWhereNestedInput {
 export interface UserUpdateManyDataInput {
   name?: String;
   username?: String;
-  profilePicture?: String;
   website?: String;
   bio?: String;
   email?: String;
@@ -2000,7 +1978,7 @@ export interface PostUpdateManyMutationInput {
 export interface UserCreateInput {
   name?: String;
   username: String;
-  profilePicture?: String;
+  profilePicture?: ContentCreateOneInput;
   website?: String;
   bio?: String;
   email: String;
@@ -2021,7 +1999,7 @@ export interface UserCreateInput {
 export interface UserUpdateInput {
   name?: String;
   username?: String;
-  profilePicture?: String;
+  profilePicture?: ContentUpdateOneInput;
   website?: String;
   bio?: String;
   email?: String;
@@ -2042,7 +2020,6 @@ export interface UserUpdateInput {
 export interface UserUpdateManyMutationInput {
   name?: String;
   username?: String;
-  profilePicture?: String;
   website?: String;
   bio?: String;
   email?: String;
@@ -2237,7 +2214,6 @@ export interface User {
   id: ID_Output;
   name?: String;
   username: String;
-  profilePicture: String;
   website?: String;
   bio?: String;
   email: String;
@@ -2256,7 +2232,7 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
   username: () => Promise<String>;
-  profilePicture: () => Promise<String>;
+  profilePicture: <T = ContentPromise>() => T;
   website: () => Promise<String>;
   bio: () => Promise<String>;
   email: () => Promise<String>;
@@ -2332,7 +2308,7 @@ export interface UserSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
   username: () => Promise<AsyncIterator<String>>;
-  profilePicture: () => Promise<AsyncIterator<String>>;
+  profilePicture: <T = ContentSubscription>() => T;
   website: () => Promise<AsyncIterator<String>>;
   bio: () => Promise<AsyncIterator<String>>;
   email: () => Promise<AsyncIterator<String>>;
@@ -2402,6 +2378,26 @@ export interface UserSubscription
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
+export interface Content {
+  type: ContentType;
+  url?: String;
+  publicId?: String;
+}
+
+export interface ContentPromise extends Promise<Content>, Fragmentable {
+  type: () => Promise<ContentType>;
+  url: () => Promise<String>;
+  publicId: () => Promise<String>;
+}
+
+export interface ContentSubscription
+  extends Promise<AsyncIterator<Content>>,
+    Fragmentable {
+  type: () => Promise<AsyncIterator<ContentType>>;
+  url: () => Promise<AsyncIterator<String>>;
+  publicId: () => Promise<AsyncIterator<String>>;
+}
+
 export interface Like {
   id: ID_Output;
   createdAt: DateTimeOutput;
@@ -2421,26 +2417,6 @@ export interface LikeSubscription
   user: <T = UserSubscription>() => T;
   post: <T = PostSubscription>() => T;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface Content {
-  type: ContentType;
-  url?: String;
-  publicId?: String;
-}
-
-export interface ContentPromise extends Promise<Content>, Fragmentable {
-  type: () => Promise<ContentType>;
-  url: () => Promise<String>;
-  publicId: () => Promise<String>;
-}
-
-export interface ContentSubscription
-  extends Promise<AsyncIterator<Content>>,
-    Fragmentable {
-  type: () => Promise<AsyncIterator<ContentType>>;
-  url: () => Promise<AsyncIterator<String>>;
-  publicId: () => Promise<AsyncIterator<String>>;
 }
 
 export interface Location {
@@ -3213,7 +3189,6 @@ export interface UserPreviousValues {
   id: ID_Output;
   name?: String;
   username: String;
-  profilePicture: String;
   website?: String;
   bio?: String;
   email: String;
@@ -3234,7 +3209,6 @@ export interface UserPreviousValuesPromise
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
   username: () => Promise<String>;
-  profilePicture: () => Promise<String>;
   website: () => Promise<String>;
   bio: () => Promise<String>;
   email: () => Promise<String>;
@@ -3255,7 +3229,6 @@ export interface UserPreviousValuesSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
   username: () => Promise<AsyncIterator<String>>;
-  profilePicture: () => Promise<AsyncIterator<String>>;
   website: () => Promise<AsyncIterator<String>>;
   bio: () => Promise<AsyncIterator<String>>;
   email: () => Promise<AsyncIterator<String>>;

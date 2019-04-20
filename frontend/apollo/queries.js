@@ -6,7 +6,9 @@ export const CURRENT_USER_QUERY = gql`
       id
       name
       username
-      profilePicture
+      profilePicture {
+        url
+      }
       permissions
     }
   }
@@ -29,7 +31,9 @@ export const SINGLE_USER_QUERY = gql`
       id
       name
       username
-      profilePicture
+      profilePicture {
+        url
+      }
       bio
       website
       email
@@ -55,7 +59,9 @@ export const USER_FOLLOWERS_QUERY = gql`
       id
       name
       username
-      profilePicture
+      profilePicture {
+        url
+      }
       verified
       followers {
         id
@@ -73,7 +79,9 @@ export const USER_FOLLOWING_QUERY = gql`
       id
       name
       username
-      profilePicture
+      profilePicture {
+        url
+      }
       verified
       followers {
         id
@@ -97,7 +105,9 @@ export const SINGLE_POST_QUERY = gql`
       author {
         id
         username
-        profilePicture
+        profilePicture {
+          url
+        }
       }
       likes {
         id
@@ -144,7 +154,9 @@ export const SEARCH_USERS_QUERY = gql`
       id
       username
       name
-      profilePicture
+      profilePicture {
+        url
+      }
       verified
     }
   }
@@ -294,8 +306,8 @@ export const DELETE_COMMENT_MUTATION = gql`
 `;
 
 export const UPDATE_USER_MUTATION = gql`
-   mutation UPDATE_USER_MUTATION ($name: String, $username: String, $website: String, $bio: String, $email: String, $phoneNumber: Int, $gender: String) {
-     updateUser (name: $name, username: $username, website: $website, bio: $bio, email: $email, phoneNumber: $phoneNumber, gender: $gender) {
+   mutation UPDATE_USER_MUTATION ($name: String, $username: String, $profilePicture: Upload, $website: String, $bio: String, $email: String, $phoneNumber: Int, $gender: String) {
+     updateUser (name: $name, username: $username, profilePicture: $profilePicture, website: $website, bio: $bio, email: $email, phoneNumber: $phoneNumber, gender: $gender) {
        id
      }
    }

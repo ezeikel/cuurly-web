@@ -33,6 +33,7 @@ const processUpload = async ({ file, folder, tags }) => {
               }
             }, function (error, result) {
           if (result) {
+            console.log({ result });
             resultUrl = result.url;
             resultSecureUrl = result.secure_url;
             publicId = result.public_id;
@@ -255,15 +256,38 @@ const Mutations = {
 
     return ctx.prisma.deleteComment({ id });
   },
-  updateUser: (_, args, ctx, info) => {
+  updateUser: async (_, { name, username, profilePicture, website, bio, email, phoneNumber, gender }, ctx, info) => {
     isLoggedIn(ctx);
+
+    if (profilePicture) {
+      console.log({ profilePicture });
+      console.log('HERE!');
+      const tags = ['user_profile_picture'];
+      const folder = `profilePictures/users/${ctx.request.userId}`;
+
+      const { resultSecureUrl, publicId } = await processUpload({ file: profilePicture, tags, folder });
+
+      profilePicture = {
+        url: resultSecureUrl,
+        publicId
+      }
+    }
 
     return ctx.prisma.updateUser({
       where: {
         id: ctx.request.userId
       },
       data: {
-        ...args
+        name,
+        username,
+        profilePicture: {
+          create: profilePicture
+        },
+        website,
+        bio,
+        email,
+        phoneNumber,
+        gender
       }
     }, info);
   }
