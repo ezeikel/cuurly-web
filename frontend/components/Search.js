@@ -169,7 +169,7 @@ class AutoComplete extends Component {
                       highlighted={index === highlightedIndex}
                     >
                     <UserPhoto>
-                      <img src={user.profilePicture.url} />
+                      <img src={user.profilePicture && user.profilePicture.url.replace('/upload', '/upload/w_150,h_150,c_lfill,g_face,dpr_2.0')} />
                     </UserPhoto>
                     <UserInfo>
                       <Username>

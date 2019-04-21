@@ -24,7 +24,7 @@ type User {
   website: String
   bio: String
   email: String! @unique
-  phoneNumber: Int # Change this to String to handle leading 0
+  phoneNumber: String
   gender: Gender! @default(value: NOTSPECIFIED)
   following: [User!]! @relation(name: "Following", link: INLINE)
   followers: [User!]! @relation(name: "Followers", link: INLINE)

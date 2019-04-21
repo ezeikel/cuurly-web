@@ -468,7 +468,7 @@ const Account = ({ query, id }) => {
                                   </ChangeProfilePhotoForm>
                                 </SettingsAction>
                                 <SettingsAction disabled={true}>
-                                  <span>Remove Current Photot</span>
+                                  <span>Remove Current Photo</span>
                                 </SettingsAction>
                                 <SettingsAction>
                                   <span onClick={closeChangeProfilePictureModal}>
@@ -504,11 +504,6 @@ const Account = ({ query, id }) => {
                                 if (initialEditDetailsValues[field] === submittedValues[field]) {
                                   delete submittedValues[field];
                                 }
-                              }
-
-                              // turn phoneNumber from a string to a number
-                              if (submittedValues.phoneNumber) {
-                                submittedValues.phoneNumber = parseInt(submittedValues.phoneNumber, 10);
                               }
 
                               try {
@@ -579,14 +574,7 @@ const Account = ({ query, id }) => {
                                     </FormInput>
                                   </FormRow>
                                   <FormRow>
-                                    <Button type="submit" disabled={ isSubmitting || (!fileUrl && isEqual((() => {
-                                      // convert phoneNumber from string to number for comparison in isEqual()
-                                      if (values.phoneNumber) {
-                                        values.phoneNumber = parseInt(values.phoneNumber, 10)
-                                      }
-
-                                      return values;
-                                    })(), initialValues))} >
+                                    <Button type="submit" disabled={ isSubmitting || (!fileUrl && isEqual(values, initialValues))} >
                                       {`Submit${isSubmitting ? 'ting' : ''}`}
                                       {isSubmitting ? <Spinner /> : null}
                                     </Button>

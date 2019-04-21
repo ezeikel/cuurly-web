@@ -1290,7 +1290,7 @@ type User {
   website: String
   bio: String
   email: String!
-  phoneNumber: Int
+  phoneNumber: String
   gender: Gender!
   following(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
   followers(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
@@ -1319,7 +1319,7 @@ input UserCreateInput {
   website: String
   bio: String
   email: String!
-  phoneNumber: Int
+  phoneNumber: String
   gender: Gender
   following: UserCreateManyWithoutFollowingInput
   followers: UserCreateManyWithoutFollowersInput
@@ -1369,7 +1369,7 @@ input UserCreateWithoutCommentsInput {
   website: String
   bio: String
   email: String!
-  phoneNumber: Int
+  phoneNumber: String
   gender: Gender
   following: UserCreateManyWithoutFollowingInput
   followers: UserCreateManyWithoutFollowersInput
@@ -1389,7 +1389,7 @@ input UserCreateWithoutFollowersInput {
   website: String
   bio: String
   email: String!
-  phoneNumber: Int
+  phoneNumber: String
   gender: Gender
   following: UserCreateManyWithoutFollowingInput
   likes: LikeCreateManyWithoutUserInput
@@ -1409,7 +1409,7 @@ input UserCreateWithoutFollowingInput {
   website: String
   bio: String
   email: String!
-  phoneNumber: Int
+  phoneNumber: String
   gender: Gender
   followers: UserCreateManyWithoutFollowersInput
   likes: LikeCreateManyWithoutUserInput
@@ -1429,7 +1429,7 @@ input UserCreateWithoutLikesInput {
   website: String
   bio: String
   email: String!
-  phoneNumber: Int
+  phoneNumber: String
   gender: Gender
   following: UserCreateManyWithoutFollowingInput
   followers: UserCreateManyWithoutFollowersInput
@@ -1449,7 +1449,7 @@ input UserCreateWithoutPostsInput {
   website: String
   bio: String
   email: String!
-  phoneNumber: Int
+  phoneNumber: String
   gender: Gender
   following: UserCreateManyWithoutFollowingInput
   followers: UserCreateManyWithoutFollowersInput
@@ -1505,7 +1505,7 @@ type UserPreviousValues {
   website: String
   bio: String
   email: String!
-  phoneNumber: Int
+  phoneNumber: String
   gender: Gender!
   password: String!
   resetToken: String
@@ -1601,14 +1601,20 @@ input UserScalarWhereInput {
   email_not_starts_with: String
   email_ends_with: String
   email_not_ends_with: String
-  phoneNumber: Int
-  phoneNumber_not: Int
-  phoneNumber_in: [Int!]
-  phoneNumber_not_in: [Int!]
-  phoneNumber_lt: Int
-  phoneNumber_lte: Int
-  phoneNumber_gt: Int
-  phoneNumber_gte: Int
+  phoneNumber: String
+  phoneNumber_not: String
+  phoneNumber_in: [String!]
+  phoneNumber_not_in: [String!]
+  phoneNumber_lt: String
+  phoneNumber_lte: String
+  phoneNumber_gt: String
+  phoneNumber_gte: String
+  phoneNumber_contains: String
+  phoneNumber_not_contains: String
+  phoneNumber_starts_with: String
+  phoneNumber_not_starts_with: String
+  phoneNumber_ends_with: String
+  phoneNumber_not_ends_with: String
   gender: Gender
   gender_not: Gender
   gender_in: [Gender!]
@@ -1703,7 +1709,7 @@ input UserUpdateInput {
   website: String
   bio: String
   email: String
-  phoneNumber: Int
+  phoneNumber: String
   gender: Gender
   following: UserUpdateManyWithoutFollowingInput
   followers: UserUpdateManyWithoutFollowersInput
@@ -1723,7 +1729,7 @@ input UserUpdateManyDataInput {
   website: String
   bio: String
   email: String
-  phoneNumber: Int
+  phoneNumber: String
   gender: Gender
   password: String
   resetToken: String
@@ -1738,7 +1744,7 @@ input UserUpdateManyMutationInput {
   website: String
   bio: String
   email: String
-  phoneNumber: Int
+  phoneNumber: String
   gender: Gender
   password: String
   resetToken: String
@@ -1812,7 +1818,7 @@ input UserUpdateWithoutCommentsDataInput {
   website: String
   bio: String
   email: String
-  phoneNumber: Int
+  phoneNumber: String
   gender: Gender
   following: UserUpdateManyWithoutFollowingInput
   followers: UserUpdateManyWithoutFollowersInput
@@ -1832,7 +1838,7 @@ input UserUpdateWithoutFollowersDataInput {
   website: String
   bio: String
   email: String
-  phoneNumber: Int
+  phoneNumber: String
   gender: Gender
   following: UserUpdateManyWithoutFollowingInput
   likes: LikeUpdateManyWithoutUserInput
@@ -1852,7 +1858,7 @@ input UserUpdateWithoutFollowingDataInput {
   website: String
   bio: String
   email: String
-  phoneNumber: Int
+  phoneNumber: String
   gender: Gender
   followers: UserUpdateManyWithoutFollowersInput
   likes: LikeUpdateManyWithoutUserInput
@@ -1872,7 +1878,7 @@ input UserUpdateWithoutLikesDataInput {
   website: String
   bio: String
   email: String
-  phoneNumber: Int
+  phoneNumber: String
   gender: Gender
   following: UserUpdateManyWithoutFollowingInput
   followers: UserUpdateManyWithoutFollowersInput
@@ -1892,7 +1898,7 @@ input UserUpdateWithoutPostsDataInput {
   website: String
   bio: String
   email: String
-  phoneNumber: Int
+  phoneNumber: String
   gender: Gender
   following: UserUpdateManyWithoutFollowingInput
   followers: UserUpdateManyWithoutFollowersInput
@@ -2028,14 +2034,20 @@ input UserWhereInput {
   email_not_starts_with: String
   email_ends_with: String
   email_not_ends_with: String
-  phoneNumber: Int
-  phoneNumber_not: Int
-  phoneNumber_in: [Int!]
-  phoneNumber_not_in: [Int!]
-  phoneNumber_lt: Int
-  phoneNumber_lte: Int
-  phoneNumber_gt: Int
-  phoneNumber_gte: Int
+  phoneNumber: String
+  phoneNumber_not: String
+  phoneNumber_in: [String!]
+  phoneNumber_not_in: [String!]
+  phoneNumber_lt: String
+  phoneNumber_lte: String
+  phoneNumber_gt: String
+  phoneNumber_gte: String
+  phoneNumber_contains: String
+  phoneNumber_not_contains: String
+  phoneNumber_starts_with: String
+  phoneNumber_not_starts_with: String
+  phoneNumber_ends_with: String
+  phoneNumber_not_ends_with: String
   gender: Gender
   gender_not: Gender
   gender_in: [Gender!]

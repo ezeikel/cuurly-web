@@ -384,8 +384,6 @@ export type CommentOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export type Gender = "MALE" | "FEMALE" | "NONBINARY" | "NOTSPECIFIED";
-
 export type PostOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -397,6 +395,8 @@ export type PostOrderByInput =
   | "createdAt_DESC"
   | "updatedAt_ASC"
   | "updatedAt_DESC";
+
+export type Gender = "MALE" | "FEMALE" | "NONBINARY" | "NOTSPECIFIED";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
@@ -457,6 +457,83 @@ export interface UserUpdateWithWhereUniqueWithoutFollowersInput {
   data: UserUpdateWithoutFollowersDataInput;
 }
 
+export interface LocationWhereInput {
+  latitude?: Float;
+  latitude_not?: Float;
+  latitude_in?: Float[] | Float;
+  latitude_not_in?: Float[] | Float;
+  latitude_lt?: Float;
+  latitude_lte?: Float;
+  latitude_gt?: Float;
+  latitude_gte?: Float;
+  longitude?: Float;
+  longitude_not?: Float;
+  longitude_in?: Float[] | Float;
+  longitude_not_in?: Float[] | Float;
+  longitude_lt?: Float;
+  longitude_lte?: Float;
+  longitude_gt?: Float;
+  longitude_gte?: Float;
+  AND?: LocationWhereInput[] | LocationWhereInput;
+  OR?: LocationWhereInput[] | LocationWhereInput;
+  NOT?: LocationWhereInput[] | LocationWhereInput;
+}
+
+export interface UserCreateOneWithoutCommentsInput {
+  create?: UserCreateWithoutCommentsInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface PostUpdateManyWithWhereNestedInput {
+  where: PostScalarWhereInput;
+  data: PostUpdateManyDataInput;
+}
+
+export interface UserCreateWithoutCommentsInput {
+  name?: String;
+  username: String;
+  profilePicture?: ContentCreateOneInput;
+  website?: String;
+  bio?: String;
+  email: String;
+  phoneNumber?: String;
+  gender?: Gender;
+  following?: UserCreateManyWithoutFollowingInput;
+  followers?: UserCreateManyWithoutFollowersInput;
+  likes?: LikeCreateManyWithoutUserInput;
+  password: String;
+  resetToken?: String;
+  resetTokenExpiry?: String;
+  posts?: PostCreateManyWithoutAuthorInput;
+  verified?: Boolean;
+  permissions?: UserCreatepermissionsInput;
+}
+
+export interface UserUpdateWithoutFollowersDataInput {
+  name?: String;
+  username?: String;
+  profilePicture?: ContentUpdateOneInput;
+  website?: String;
+  bio?: String;
+  email?: String;
+  phoneNumber?: String;
+  gender?: Gender;
+  following?: UserUpdateManyWithoutFollowingInput;
+  likes?: LikeUpdateManyWithoutUserInput;
+  comments?: CommentUpdateManyWithoutWrittenByInput;
+  password?: String;
+  resetToken?: String;
+  resetTokenExpiry?: String;
+  posts?: PostUpdateManyWithoutAuthorInput;
+  verified?: Boolean;
+  permissions?: UserUpdatepermissionsInput;
+}
+
+export interface PostCreateManyWithoutAuthorInput {
+  create?: PostCreateWithoutAuthorInput[] | PostCreateWithoutAuthorInput;
+  connect?: PostWhereUniqueInput[] | PostWhereUniqueInput;
+}
+
 export interface PostWhereInput {
   id?: ID_Input;
   id_not?: ID_Input;
@@ -510,72 +587,6 @@ export interface PostWhereInput {
   NOT?: PostWhereInput[] | PostWhereInput;
 }
 
-export interface UserCreateOneWithoutCommentsInput {
-  create?: UserCreateWithoutCommentsInput;
-  connect?: UserWhereUniqueInput;
-}
-
-export interface PostUpdateManyWithWhereNestedInput {
-  where: PostScalarWhereInput;
-  data: PostUpdateManyDataInput;
-}
-
-export interface UserCreateWithoutCommentsInput {
-  name?: String;
-  username: String;
-  profilePicture?: ContentCreateOneInput;
-  website?: String;
-  bio?: String;
-  email: String;
-  phoneNumber?: Int;
-  gender?: Gender;
-  following?: UserCreateManyWithoutFollowingInput;
-  followers?: UserCreateManyWithoutFollowersInput;
-  likes?: LikeCreateManyWithoutUserInput;
-  password: String;
-  resetToken?: String;
-  resetTokenExpiry?: String;
-  posts?: PostCreateManyWithoutAuthorInput;
-  verified?: Boolean;
-  permissions?: UserCreatepermissionsInput;
-}
-
-export interface UserUpdateWithoutFollowersDataInput {
-  name?: String;
-  username?: String;
-  profilePicture?: ContentUpdateOneInput;
-  website?: String;
-  bio?: String;
-  email?: String;
-  phoneNumber?: Int;
-  gender?: Gender;
-  following?: UserUpdateManyWithoutFollowingInput;
-  likes?: LikeUpdateManyWithoutUserInput;
-  comments?: CommentUpdateManyWithoutWrittenByInput;
-  password?: String;
-  resetToken?: String;
-  resetTokenExpiry?: String;
-  posts?: PostUpdateManyWithoutAuthorInput;
-  verified?: Boolean;
-  permissions?: UserUpdatepermissionsInput;
-}
-
-export interface PostCreateManyWithoutAuthorInput {
-  create?: PostCreateWithoutAuthorInput[] | PostCreateWithoutAuthorInput;
-  connect?: PostWhereUniqueInput[] | PostWhereUniqueInput;
-}
-
-export interface UserSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: UserWhereInput;
-  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-}
-
 export interface PostCreateWithoutAuthorInput {
   content: ContentCreateOneInput;
   caption?: String;
@@ -583,6 +594,41 @@ export interface PostCreateWithoutAuthorInput {
   published?: Boolean;
   likes?: LikeCreateManyWithoutPostInput;
   comments?: CommentCreateManyWithoutPostInput;
+}
+
+export interface LikeWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  user?: UserWhereInput;
+  post?: PostWhereInput;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  AND?: LikeWhereInput[] | LikeWhereInput;
+  OR?: LikeWhereInput[] | LikeWhereInput;
+  NOT?: LikeWhereInput[] | LikeWhereInput;
+}
+
+export interface LikeCreateManyWithoutPostInput {
+  create?: LikeCreateWithoutPostInput[] | LikeCreateWithoutPostInput;
+  connect?: LikeWhereUniqueInput[] | LikeWhereUniqueInput;
 }
 
 export interface ContentWhereInput {
@@ -623,189 +669,6 @@ export interface ContentWhereInput {
   NOT?: ContentWhereInput[] | ContentWhereInput;
 }
 
-export interface LikeCreateManyWithoutPostInput {
-  create?: LikeCreateWithoutPostInput[] | LikeCreateWithoutPostInput;
-  connect?: LikeWhereUniqueInput[] | LikeWhereUniqueInput;
-}
-
-export interface UserWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  name?: String;
-  name_not?: String;
-  name_in?: String[] | String;
-  name_not_in?: String[] | String;
-  name_lt?: String;
-  name_lte?: String;
-  name_gt?: String;
-  name_gte?: String;
-  name_contains?: String;
-  name_not_contains?: String;
-  name_starts_with?: String;
-  name_not_starts_with?: String;
-  name_ends_with?: String;
-  name_not_ends_with?: String;
-  username?: String;
-  username_not?: String;
-  username_in?: String[] | String;
-  username_not_in?: String[] | String;
-  username_lt?: String;
-  username_lte?: String;
-  username_gt?: String;
-  username_gte?: String;
-  username_contains?: String;
-  username_not_contains?: String;
-  username_starts_with?: String;
-  username_not_starts_with?: String;
-  username_ends_with?: String;
-  username_not_ends_with?: String;
-  profilePicture?: ContentWhereInput;
-  website?: String;
-  website_not?: String;
-  website_in?: String[] | String;
-  website_not_in?: String[] | String;
-  website_lt?: String;
-  website_lte?: String;
-  website_gt?: String;
-  website_gte?: String;
-  website_contains?: String;
-  website_not_contains?: String;
-  website_starts_with?: String;
-  website_not_starts_with?: String;
-  website_ends_with?: String;
-  website_not_ends_with?: String;
-  bio?: String;
-  bio_not?: String;
-  bio_in?: String[] | String;
-  bio_not_in?: String[] | String;
-  bio_lt?: String;
-  bio_lte?: String;
-  bio_gt?: String;
-  bio_gte?: String;
-  bio_contains?: String;
-  bio_not_contains?: String;
-  bio_starts_with?: String;
-  bio_not_starts_with?: String;
-  bio_ends_with?: String;
-  bio_not_ends_with?: String;
-  email?: String;
-  email_not?: String;
-  email_in?: String[] | String;
-  email_not_in?: String[] | String;
-  email_lt?: String;
-  email_lte?: String;
-  email_gt?: String;
-  email_gte?: String;
-  email_contains?: String;
-  email_not_contains?: String;
-  email_starts_with?: String;
-  email_not_starts_with?: String;
-  email_ends_with?: String;
-  email_not_ends_with?: String;
-  phoneNumber?: Int;
-  phoneNumber_not?: Int;
-  phoneNumber_in?: Int[] | Int;
-  phoneNumber_not_in?: Int[] | Int;
-  phoneNumber_lt?: Int;
-  phoneNumber_lte?: Int;
-  phoneNumber_gt?: Int;
-  phoneNumber_gte?: Int;
-  gender?: Gender;
-  gender_not?: Gender;
-  gender_in?: Gender[] | Gender;
-  gender_not_in?: Gender[] | Gender;
-  following_every?: UserWhereInput;
-  following_some?: UserWhereInput;
-  following_none?: UserWhereInput;
-  followers_every?: UserWhereInput;
-  followers_some?: UserWhereInput;
-  followers_none?: UserWhereInput;
-  likes_every?: LikeWhereInput;
-  likes_some?: LikeWhereInput;
-  likes_none?: LikeWhereInput;
-  comments_every?: CommentWhereInput;
-  comments_some?: CommentWhereInput;
-  comments_none?: CommentWhereInput;
-  password?: String;
-  password_not?: String;
-  password_in?: String[] | String;
-  password_not_in?: String[] | String;
-  password_lt?: String;
-  password_lte?: String;
-  password_gt?: String;
-  password_gte?: String;
-  password_contains?: String;
-  password_not_contains?: String;
-  password_starts_with?: String;
-  password_not_starts_with?: String;
-  password_ends_with?: String;
-  password_not_ends_with?: String;
-  resetToken?: String;
-  resetToken_not?: String;
-  resetToken_in?: String[] | String;
-  resetToken_not_in?: String[] | String;
-  resetToken_lt?: String;
-  resetToken_lte?: String;
-  resetToken_gt?: String;
-  resetToken_gte?: String;
-  resetToken_contains?: String;
-  resetToken_not_contains?: String;
-  resetToken_starts_with?: String;
-  resetToken_not_starts_with?: String;
-  resetToken_ends_with?: String;
-  resetToken_not_ends_with?: String;
-  resetTokenExpiry?: String;
-  resetTokenExpiry_not?: String;
-  resetTokenExpiry_in?: String[] | String;
-  resetTokenExpiry_not_in?: String[] | String;
-  resetTokenExpiry_lt?: String;
-  resetTokenExpiry_lte?: String;
-  resetTokenExpiry_gt?: String;
-  resetTokenExpiry_gte?: String;
-  resetTokenExpiry_contains?: String;
-  resetTokenExpiry_not_contains?: String;
-  resetTokenExpiry_starts_with?: String;
-  resetTokenExpiry_not_starts_with?: String;
-  resetTokenExpiry_ends_with?: String;
-  resetTokenExpiry_not_ends_with?: String;
-  posts_every?: PostWhereInput;
-  posts_some?: PostWhereInput;
-  posts_none?: PostWhereInput;
-  verified?: Boolean;
-  verified_not?: Boolean;
-  createdAt?: DateTimeInput;
-  createdAt_not?: DateTimeInput;
-  createdAt_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_lt?: DateTimeInput;
-  createdAt_lte?: DateTimeInput;
-  createdAt_gt?: DateTimeInput;
-  createdAt_gte?: DateTimeInput;
-  updatedAt?: DateTimeInput;
-  updatedAt_not?: DateTimeInput;
-  updatedAt_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_lt?: DateTimeInput;
-  updatedAt_lte?: DateTimeInput;
-  updatedAt_gt?: DateTimeInput;
-  updatedAt_gte?: DateTimeInput;
-  AND?: UserWhereInput[] | UserWhereInput;
-  OR?: UserWhereInput[] | UserWhereInput;
-  NOT?: UserWhereInput[] | UserWhereInput;
-}
-
 export interface LikeCreateWithoutPostInput {
   user?: UserCreateOneWithoutLikesInput;
 }
@@ -844,7 +707,7 @@ export interface UserCreateWithoutLikesInput {
   website?: String;
   bio?: String;
   email: String;
-  phoneNumber?: Int;
+  phoneNumber?: String;
   gender?: Gender;
   following?: UserCreateManyWithoutFollowingInput;
   followers?: UserCreateManyWithoutFollowersInput;
@@ -863,7 +726,7 @@ export interface UserUpdateManyMutationInput {
   website?: String;
   bio?: String;
   email?: String;
-  phoneNumber?: Int;
+  phoneNumber?: String;
   gender?: Gender;
   password?: String;
   resetToken?: String;
@@ -886,7 +749,7 @@ export interface UserCreateInput {
   website?: String;
   bio?: String;
   email: String;
-  phoneNumber?: Int;
+  phoneNumber?: String;
   gender?: Gender;
   following?: UserCreateManyWithoutFollowingInput;
   followers?: UserCreateManyWithoutFollowersInput;
@@ -1042,7 +905,7 @@ export interface UserUpdateWithoutPostsDataInput {
   website?: String;
   bio?: String;
   email?: String;
-  phoneNumber?: Int;
+  phoneNumber?: String;
   gender?: Gender;
   following?: UserUpdateManyWithoutFollowingInput;
   followers?: UserUpdateManyWithoutFollowersInput;
@@ -1083,7 +946,7 @@ export interface UserUpdateManyDataInput {
   website?: String;
   bio?: String;
   email?: String;
-  phoneNumber?: Int;
+  phoneNumber?: String;
   gender?: Gender;
   password?: String;
   resetToken?: String;
@@ -1144,7 +1007,7 @@ export interface UserUpdateWithoutFollowingDataInput {
   website?: String;
   bio?: String;
   email?: String;
-  phoneNumber?: Int;
+  phoneNumber?: String;
   gender?: Gender;
   followers?: UserUpdateManyWithoutFollowersInput;
   likes?: LikeUpdateManyWithoutUserInput;
@@ -1187,26 +1050,9 @@ export interface CommentCreateInput {
   writtenBy: UserCreateOneWithoutCommentsInput;
 }
 
-export interface LocationWhereInput {
-  latitude?: Float;
-  latitude_not?: Float;
-  latitude_in?: Float[] | Float;
-  latitude_not_in?: Float[] | Float;
-  latitude_lt?: Float;
-  latitude_lte?: Float;
-  latitude_gt?: Float;
-  latitude_gte?: Float;
-  longitude?: Float;
-  longitude_not?: Float;
-  longitude_in?: Float[] | Float;
-  longitude_not_in?: Float[] | Float;
-  longitude_lt?: Float;
-  longitude_lte?: Float;
-  longitude_gt?: Float;
-  longitude_gte?: Float;
-  AND?: LocationWhereInput[] | LocationWhereInput;
-  OR?: LocationWhereInput[] | LocationWhereInput;
-  NOT?: LocationWhereInput[] | LocationWhereInput;
+export interface PostUpdateManyDataInput {
+  caption?: String;
+  published?: Boolean;
 }
 
 export interface PostCreateWithoutCommentsInput {
@@ -1218,9 +1064,48 @@ export interface PostCreateWithoutCommentsInput {
   likes?: LikeCreateManyWithoutPostInput;
 }
 
-export interface PostUpdateManyDataInput {
-  caption?: String;
-  published?: Boolean;
+export interface CommentWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  post?: PostWhereInput;
+  text?: String;
+  text_not?: String;
+  text_in?: String[] | String;
+  text_not_in?: String[] | String;
+  text_lt?: String;
+  text_lte?: String;
+  text_gt?: String;
+  text_gte?: String;
+  text_contains?: String;
+  text_not_contains?: String;
+  text_starts_with?: String;
+  text_not_starts_with?: String;
+  text_ends_with?: String;
+  text_not_ends_with?: String;
+  writtenBy?: UserWhereInput;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  AND?: CommentWhereInput[] | CommentWhereInput;
+  OR?: CommentWhereInput[] | CommentWhereInput;
+  NOT?: CommentWhereInput[] | CommentWhereInput;
 }
 
 export interface UserCreateWithoutPostsInput {
@@ -1230,7 +1115,7 @@ export interface UserCreateWithoutPostsInput {
   website?: String;
   bio?: String;
   email: String;
-  phoneNumber?: Int;
+  phoneNumber?: String;
   gender?: Gender;
   following?: UserCreateManyWithoutFollowingInput;
   followers?: UserCreateManyWithoutFollowersInput;
@@ -1276,7 +1161,7 @@ export interface UserCreateWithoutFollowingInput {
   website?: String;
   bio?: String;
   email: String;
-  phoneNumber?: Int;
+  phoneNumber?: String;
   gender?: Gender;
   followers?: UserCreateManyWithoutFollowersInput;
   likes?: LikeCreateManyWithoutUserInput;
@@ -1300,7 +1185,7 @@ export interface UserCreateWithoutFollowersInput {
   website?: String;
   bio?: String;
   email: String;
-  phoneNumber?: Int;
+  phoneNumber?: String;
   gender?: Gender;
   following?: UserCreateManyWithoutFollowingInput;
   likes?: LikeCreateManyWithoutUserInput;
@@ -1373,7 +1258,23 @@ export interface LocationUpdateDataInput {
   longitude?: Float;
 }
 
-export interface LikeWhereInput {
+export interface PostSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: PostWhereInput;
+  AND?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput;
+  OR?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput;
+  NOT?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput;
+}
+
+export interface LocationUpsertNestedInput {
+  update: LocationUpdateDataInput;
+  create: LocationCreateInput;
+}
+
+export interface UserWhereInput {
   id?: ID_Input;
   id_not?: ID_Input;
   id_in?: ID_Input[] | ID_Input;
@@ -1388,8 +1289,154 @@ export interface LikeWhereInput {
   id_not_starts_with?: ID_Input;
   id_ends_with?: ID_Input;
   id_not_ends_with?: ID_Input;
-  user?: UserWhereInput;
-  post?: PostWhereInput;
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  username?: String;
+  username_not?: String;
+  username_in?: String[] | String;
+  username_not_in?: String[] | String;
+  username_lt?: String;
+  username_lte?: String;
+  username_gt?: String;
+  username_gte?: String;
+  username_contains?: String;
+  username_not_contains?: String;
+  username_starts_with?: String;
+  username_not_starts_with?: String;
+  username_ends_with?: String;
+  username_not_ends_with?: String;
+  profilePicture?: ContentWhereInput;
+  website?: String;
+  website_not?: String;
+  website_in?: String[] | String;
+  website_not_in?: String[] | String;
+  website_lt?: String;
+  website_lte?: String;
+  website_gt?: String;
+  website_gte?: String;
+  website_contains?: String;
+  website_not_contains?: String;
+  website_starts_with?: String;
+  website_not_starts_with?: String;
+  website_ends_with?: String;
+  website_not_ends_with?: String;
+  bio?: String;
+  bio_not?: String;
+  bio_in?: String[] | String;
+  bio_not_in?: String[] | String;
+  bio_lt?: String;
+  bio_lte?: String;
+  bio_gt?: String;
+  bio_gte?: String;
+  bio_contains?: String;
+  bio_not_contains?: String;
+  bio_starts_with?: String;
+  bio_not_starts_with?: String;
+  bio_ends_with?: String;
+  bio_not_ends_with?: String;
+  email?: String;
+  email_not?: String;
+  email_in?: String[] | String;
+  email_not_in?: String[] | String;
+  email_lt?: String;
+  email_lte?: String;
+  email_gt?: String;
+  email_gte?: String;
+  email_contains?: String;
+  email_not_contains?: String;
+  email_starts_with?: String;
+  email_not_starts_with?: String;
+  email_ends_with?: String;
+  email_not_ends_with?: String;
+  phoneNumber?: String;
+  phoneNumber_not?: String;
+  phoneNumber_in?: String[] | String;
+  phoneNumber_not_in?: String[] | String;
+  phoneNumber_lt?: String;
+  phoneNumber_lte?: String;
+  phoneNumber_gt?: String;
+  phoneNumber_gte?: String;
+  phoneNumber_contains?: String;
+  phoneNumber_not_contains?: String;
+  phoneNumber_starts_with?: String;
+  phoneNumber_not_starts_with?: String;
+  phoneNumber_ends_with?: String;
+  phoneNumber_not_ends_with?: String;
+  gender?: Gender;
+  gender_not?: Gender;
+  gender_in?: Gender[] | Gender;
+  gender_not_in?: Gender[] | Gender;
+  following_every?: UserWhereInput;
+  following_some?: UserWhereInput;
+  following_none?: UserWhereInput;
+  followers_every?: UserWhereInput;
+  followers_some?: UserWhereInput;
+  followers_none?: UserWhereInput;
+  likes_every?: LikeWhereInput;
+  likes_some?: LikeWhereInput;
+  likes_none?: LikeWhereInput;
+  comments_every?: CommentWhereInput;
+  comments_some?: CommentWhereInput;
+  comments_none?: CommentWhereInput;
+  password?: String;
+  password_not?: String;
+  password_in?: String[] | String;
+  password_not_in?: String[] | String;
+  password_lt?: String;
+  password_lte?: String;
+  password_gt?: String;
+  password_gte?: String;
+  password_contains?: String;
+  password_not_contains?: String;
+  password_starts_with?: String;
+  password_not_starts_with?: String;
+  password_ends_with?: String;
+  password_not_ends_with?: String;
+  resetToken?: String;
+  resetToken_not?: String;
+  resetToken_in?: String[] | String;
+  resetToken_not_in?: String[] | String;
+  resetToken_lt?: String;
+  resetToken_lte?: String;
+  resetToken_gt?: String;
+  resetToken_gte?: String;
+  resetToken_contains?: String;
+  resetToken_not_contains?: String;
+  resetToken_starts_with?: String;
+  resetToken_not_starts_with?: String;
+  resetToken_ends_with?: String;
+  resetToken_not_ends_with?: String;
+  resetTokenExpiry?: String;
+  resetTokenExpiry_not?: String;
+  resetTokenExpiry_in?: String[] | String;
+  resetTokenExpiry_not_in?: String[] | String;
+  resetTokenExpiry_lt?: String;
+  resetTokenExpiry_lte?: String;
+  resetTokenExpiry_gt?: String;
+  resetTokenExpiry_gte?: String;
+  resetTokenExpiry_contains?: String;
+  resetTokenExpiry_not_contains?: String;
+  resetTokenExpiry_starts_with?: String;
+  resetTokenExpiry_not_starts_with?: String;
+  resetTokenExpiry_ends_with?: String;
+  resetTokenExpiry_not_ends_with?: String;
+  posts_every?: PostWhereInput;
+  posts_some?: PostWhereInput;
+  posts_none?: PostWhereInput;
+  verified?: Boolean;
+  verified_not?: Boolean;
   createdAt?: DateTimeInput;
   createdAt_not?: DateTimeInput;
   createdAt_in?: DateTimeInput[] | DateTimeInput;
@@ -1398,25 +1445,17 @@ export interface LikeWhereInput {
   createdAt_lte?: DateTimeInput;
   createdAt_gt?: DateTimeInput;
   createdAt_gte?: DateTimeInput;
-  AND?: LikeWhereInput[] | LikeWhereInput;
-  OR?: LikeWhereInput[] | LikeWhereInput;
-  NOT?: LikeWhereInput[] | LikeWhereInput;
-}
-
-export interface LocationUpsertNestedInput {
-  update: LocationUpdateDataInput;
-  create: LocationCreateInput;
-}
-
-export interface LocationSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: LocationWhereInput;
-  AND?: LocationSubscriptionWhereInput[] | LocationSubscriptionWhereInput;
-  OR?: LocationSubscriptionWhereInput[] | LocationSubscriptionWhereInput;
-  NOT?: LocationSubscriptionWhereInput[] | LocationSubscriptionWhereInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
+  AND?: UserWhereInput[] | UserWhereInput;
+  OR?: UserWhereInput[] | UserWhereInput;
+  NOT?: UserWhereInput[] | UserWhereInput;
 }
 
 export interface CommentUpdateManyWithoutPostInput {
@@ -1488,7 +1527,7 @@ export interface UserUpdateWithoutCommentsDataInput {
   website?: String;
   bio?: String;
   email?: String;
-  phoneNumber?: Int;
+  phoneNumber?: String;
   gender?: Gender;
   following?: UserUpdateManyWithoutFollowingInput;
   followers?: UserUpdateManyWithoutFollowersInput;
@@ -1621,14 +1660,20 @@ export interface UserScalarWhereInput {
   email_not_starts_with?: String;
   email_ends_with?: String;
   email_not_ends_with?: String;
-  phoneNumber?: Int;
-  phoneNumber_not?: Int;
-  phoneNumber_in?: Int[] | Int;
-  phoneNumber_not_in?: Int[] | Int;
-  phoneNumber_lt?: Int;
-  phoneNumber_lte?: Int;
-  phoneNumber_gt?: Int;
-  phoneNumber_gte?: Int;
+  phoneNumber?: String;
+  phoneNumber_not?: String;
+  phoneNumber_in?: String[] | String;
+  phoneNumber_not_in?: String[] | String;
+  phoneNumber_lt?: String;
+  phoneNumber_lte?: String;
+  phoneNumber_gt?: String;
+  phoneNumber_gte?: String;
+  phoneNumber_contains?: String;
+  phoneNumber_not_contains?: String;
+  phoneNumber_starts_with?: String;
+  phoneNumber_not_starts_with?: String;
+  phoneNumber_ends_with?: String;
+  phoneNumber_not_ends_with?: String;
   gender?: Gender;
   gender_not?: Gender;
   gender_in?: Gender[] | Gender;
@@ -1771,7 +1816,7 @@ export interface UserUpdateWithoutLikesDataInput {
   website?: String;
   bio?: String;
   email?: String;
-  phoneNumber?: Int;
+  phoneNumber?: String;
   gender?: Gender;
   following?: UserUpdateManyWithoutFollowingInput;
   followers?: UserUpdateManyWithoutFollowersInput;
@@ -1809,15 +1854,15 @@ export interface CommentUpdateManyWithoutWrittenByInput {
     | CommentUpdateManyWithWhereNestedInput;
 }
 
-export interface PostSubscriptionWhereInput {
+export interface LocationSubscriptionWhereInput {
   mutation_in?: MutationType[] | MutationType;
   updatedFields_contains?: String;
   updatedFields_contains_every?: String[] | String;
   updatedFields_contains_some?: String[] | String;
-  node?: PostWhereInput;
-  AND?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput;
-  OR?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput;
-  NOT?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput;
+  node?: LocationWhereInput;
+  AND?: LocationSubscriptionWhereInput[] | LocationSubscriptionWhereInput;
+  OR?: LocationSubscriptionWhereInput[] | LocationSubscriptionWhereInput;
+  NOT?: LocationSubscriptionWhereInput[] | LocationSubscriptionWhereInput;
 }
 
 export interface CommentUpdateWithWhereUniqueWithoutWrittenByInput {
@@ -1832,7 +1877,7 @@ export interface UserUpdateInput {
   website?: String;
   bio?: String;
   email?: String;
-  phoneNumber?: Int;
+  phoneNumber?: String;
   gender?: Gender;
   following?: UserUpdateManyWithoutFollowingInput;
   followers?: UserUpdateManyWithoutFollowersInput;
@@ -1938,48 +1983,15 @@ export interface UserUpdatepermissionsInput {
   set?: Permission[] | Permission;
 }
 
-export interface CommentWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  post?: PostWhereInput;
-  text?: String;
-  text_not?: String;
-  text_in?: String[] | String;
-  text_not_in?: String[] | String;
-  text_lt?: String;
-  text_lte?: String;
-  text_gt?: String;
-  text_gte?: String;
-  text_contains?: String;
-  text_not_contains?: String;
-  text_starts_with?: String;
-  text_not_starts_with?: String;
-  text_ends_with?: String;
-  text_not_ends_with?: String;
-  writtenBy?: UserWhereInput;
-  createdAt?: DateTimeInput;
-  createdAt_not?: DateTimeInput;
-  createdAt_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_lt?: DateTimeInput;
-  createdAt_lte?: DateTimeInput;
-  createdAt_gt?: DateTimeInput;
-  createdAt_gte?: DateTimeInput;
-  AND?: CommentWhereInput[] | CommentWhereInput;
-  OR?: CommentWhereInput[] | CommentWhereInput;
-  NOT?: CommentWhereInput[] | CommentWhereInput;
+export interface UserSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: UserWhereInput;
+  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
 }
 
 export interface UserUpsertWithoutLikesInput {
@@ -2120,7 +2132,7 @@ export interface UserPreviousValues {
   website?: String;
   bio?: String;
   email: String;
-  phoneNumber?: Int;
+  phoneNumber?: String;
   gender: Gender;
   password: String;
   resetToken?: String;
@@ -2140,7 +2152,7 @@ export interface UserPreviousValuesPromise
   website: () => Promise<String>;
   bio: () => Promise<String>;
   email: () => Promise<String>;
-  phoneNumber: () => Promise<Int>;
+  phoneNumber: () => Promise<String>;
   gender: () => Promise<Gender>;
   password: () => Promise<String>;
   resetToken: () => Promise<String>;
@@ -2160,7 +2172,7 @@ export interface UserPreviousValuesSubscription
   website: () => Promise<AsyncIterator<String>>;
   bio: () => Promise<AsyncIterator<String>>;
   email: () => Promise<AsyncIterator<String>>;
-  phoneNumber: () => Promise<AsyncIterator<Int>>;
+  phoneNumber: () => Promise<AsyncIterator<String>>;
   gender: () => Promise<AsyncIterator<Gender>>;
   password: () => Promise<AsyncIterator<String>>;
   resetToken: () => Promise<AsyncIterator<String>>;
@@ -2188,25 +2200,29 @@ export interface ContentEdgeSubscription
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface Like {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
+export interface PostSubscriptionPayload {
+  mutation: MutationType;
+  node: Post;
+  updatedFields: String[];
+  previousValues: PostPreviousValues;
 }
 
-export interface LikePromise extends Promise<Like>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  user: <T = UserPromise>() => T;
-  post: <T = PostPromise>() => T;
-  createdAt: () => Promise<DateTimeOutput>;
-}
-
-export interface LikeSubscription
-  extends Promise<AsyncIterator<Like>>,
+export interface PostSubscriptionPayloadPromise
+  extends Promise<PostSubscriptionPayload>,
     Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  user: <T = UserSubscription>() => T;
-  post: <T = PostSubscription>() => T;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  mutation: () => Promise<MutationType>;
+  node: <T = PostPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = PostPreviousValuesPromise>() => T;
+}
+
+export interface PostSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<PostSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = PostSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = PostPreviousValuesSubscription>() => T;
 }
 
 export interface ContentConnection {
@@ -2957,29 +2973,25 @@ export interface LocationSubscriptionPayloadSubscription
   previousValues: <T = LocationPreviousValuesSubscription>() => T;
 }
 
-export interface PostSubscriptionPayload {
-  mutation: MutationType;
-  node: Post;
-  updatedFields: String[];
-  previousValues: PostPreviousValues;
+export interface Like {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
 }
 
-export interface PostSubscriptionPayloadPromise
-  extends Promise<PostSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = PostPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = PostPreviousValuesPromise>() => T;
+export interface LikePromise extends Promise<Like>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  user: <T = UserPromise>() => T;
+  post: <T = PostPromise>() => T;
+  createdAt: () => Promise<DateTimeOutput>;
 }
 
-export interface PostSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<PostSubscriptionPayload>>,
+export interface LikeSubscription
+  extends Promise<AsyncIterator<Like>>,
     Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = PostSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = PostPreviousValuesSubscription>() => T;
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  user: <T = UserSubscription>() => T;
+  post: <T = PostSubscription>() => T;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface LikePreviousValues {
@@ -3029,7 +3041,7 @@ export interface User {
   website?: String;
   bio?: String;
   email: String;
-  phoneNumber?: Int;
+  phoneNumber?: String;
   gender: Gender;
   password: String;
   resetToken?: String;
@@ -3048,7 +3060,7 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   website: () => Promise<String>;
   bio: () => Promise<String>;
   email: () => Promise<String>;
-  phoneNumber: () => Promise<Int>;
+  phoneNumber: () => Promise<String>;
   gender: () => Promise<Gender>;
   following: <T = FragmentableArray<User>>(
     args?: {
@@ -3124,7 +3136,7 @@ export interface UserSubscription
   website: () => Promise<AsyncIterator<String>>;
   bio: () => Promise<AsyncIterator<String>>;
   email: () => Promise<AsyncIterator<String>>;
-  phoneNumber: () => Promise<AsyncIterator<Int>>;
+  phoneNumber: () => Promise<AsyncIterator<String>>;
   gender: () => Promise<AsyncIterator<Gender>>;
   following: <T = Promise<AsyncIterator<UserSubscription>>>(
     args?: {
@@ -3249,14 +3261,14 @@ The `String` scalar type represents textual data, represented as UTF-8 character
 export type String = string;
 
 /*
-The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point). 
-*/
-export type Float = number;
-
-/*
 The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean;
+
+/*
+The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point). 
+*/
+export type Float = number;
 
 export type Long = string;
 
