@@ -306,8 +306,8 @@ export const DELETE_COMMENT_MUTATION = gql`
 `;
 
 export const UPDATE_USER_MUTATION = gql`
-   mutation UPDATE_USER_MUTATION ($name: String, $username: String, $profilePicture: Upload, $website: String, $bio: String, $email: String, $phoneNumber: String, $gender: String) {
-     updateUser (name: $name, username: $username, profilePicture: $profilePicture, website: $website, bio: $bio, email: $email, phoneNumber: $phoneNumber, gender: $gender) {
+   mutation UPDATE_USER_MUTATION ($name: String, $username: String, $profilePicture: Upload, $website: String, $bio: String, $email: String, $phoneNumber: String, $gender: String, $oldPassword: String, $password: String) {
+     updateUser (name: $name, username: $username, profilePicture: $profilePicture, website: $website, bio: $bio, email: $email, phoneNumber: $phoneNumber, gender: $gender, oldPassword: $oldPassword, password: $password) {
        id
      }
    }

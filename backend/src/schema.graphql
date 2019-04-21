@@ -67,5 +67,5 @@ type Mutation {
   unlikePost(id: ID!): Like!
   addComment(id: ID!, text: String!): Comment!
   deleteComment(id: ID!): Comment!
-  updateUser(name: String, username: String, profilePicture: Upload, website: String, bio: String, email: String, phoneNumber: String, gender: String): User!
+  updateUser(name: String, username: String, profilePicture: Upload, website: String, bio: String, email: String, phoneNumber: String, gender: String, oldPassword: String, password: String): User!
 }

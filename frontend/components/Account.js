@@ -63,14 +63,40 @@ const EditProfileSchema = Yup.object().shape({
     .required('Gender is required.')
 });
 
+function equalTo(ref, msg) {
+	return this.test({
+		name: 'equalTo',
+		exclusive: false,
+    message: msg || '${path} must be the same as ${reference}',
+		params: {
+			reference: ref.path
+		},
+		test: function(value) {
+      return value === this.resolve(ref)
+		}
+	})
+};
+
+Yup.addMethod(Yup.string, 'equalTo', equalTo);
+
 const ChangePasswordSchema = Yup.object().shape({
   oldPassword: Yup.string()
     .required('Old password is required.'),
   password: Yup.string()
     .required('Password is required.'),
   passwordConfirm: Yup.string()
+    .equalTo(Yup.ref('password'))
     .required('Password confirm is required.'),
 });
+
+ChangePasswordSchema.validate({
+  password: 'Password12',
+  passwordConfirm: 'Password123'
+}, {
+  abortEarly: false
+})
+  .then(() => console.log('ok, arguments'))
+  .catch(error => console.log('failed', error))
 
 const Wrapper = styled.div`
   display: grid;
@@ -343,8 +369,6 @@ if (typeof (window) !== 'undefined') {
   Modal.setAppElement('body');
 }
 
-const notify = () => toast('Profile Saved.');
-
 const Account = ({ query, id }) => {
   const [content] = query;
   const [initialEditDetailsValues, setInitialEditDetailsValues] = useState({
@@ -432,7 +456,7 @@ const Account = ({ query, id }) => {
                   mutation={UPDATE_USER_MUTATION}
                   refetchQueries={[{ query: SINGLE_USER_QUERY, variables: { id } }]}
                   onCompleted={() => {
-                    notify();
+                    toast('Profile Saved.');
                   }}
                 >
                   {(updateUser, { error, loading }) => (
@@ -619,12 +643,11 @@ const Account = ({ query, id }) => {
                             passwordConfirm: ""
                           }}
                           validationSchema={ChangePasswordSchema}
-                          onSubmit={async (values, { resetForm }) => {
+                          onSubmit={async ({ oldPassword, password }, { resetForm }) => {
                             try {
-                              // TODO: Update password Mutation
-                              await updateUser({ variables: values });
-
+                              await updateUser({ variables: { oldPassword, password }});
                               resetForm();
+                              toast('Password Updated.');
                             } catch (e) {
                               console.error(`Formik Error: ${e}`);
                             }
@@ -647,7 +670,7 @@ const Account = ({ query, id }) => {
                                 <FormLabel>Confirm New Password</FormLabel>
                                 <FormInput
                                   type="password"
-                                  name="confirmPassword"
+                                  name="passwordConfirm"
                                 />
                               </FormRow>
                               <FormRow>

@@ -256,7 +256,7 @@ const Mutations = {
 
     return ctx.prisma.deleteComment({ id });
   },
-  updateUser: async (_, { name, username, profilePicture, website, bio, email, phoneNumber, gender }, ctx, info) => {
+  updateUser: async (_, { name, username, profilePicture, website, bio, email, phoneNumber, gender, oldPassword, password }, ctx, info) => {
     isLoggedIn(ctx);
 
     if (profilePicture) {
@@ -269,6 +269,17 @@ const Mutations = {
         url: resultSecureUrl,
         publicId
       }
+    }
+
+    if (password) {
+      const user = await ctx.prisma.user({ id: ctx.request.userId });
+      const valid = await bcrypt.compare(oldPassword, user.password);
+
+      if (!valid) {
+        throw new Error('Invalid password!');
+      }
+
+      password = await bcrypt.hash(password, 10);
     }
 
     return ctx.prisma.updateUser({
@@ -285,7 +296,8 @@ const Mutations = {
         bio,
         email,
         phoneNumber,
-        gender
+        gender,
+        password
       }
     }, info);
   }

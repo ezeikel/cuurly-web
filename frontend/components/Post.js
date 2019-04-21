@@ -35,6 +35,9 @@ const PostHeader = styled.header`
 
 const Photo = styled.div`
   display: grid;
+  img {
+    border-radius: 50%;
+  }
 `;
 
 const Details = styled.div`
@@ -195,7 +198,7 @@ const Post = ({ id }) => {
               <Wrapper>
                 <PostHeader>
                   <Photo>
-                    <img src={post.author.profilePicture.url} />
+                    <img src={post.author.profilePicture && post.author.profilePicture.url.replace('/upload', '/upload/w_30,h_30,c_lfill,g_face,dpr_2.0') } />
                   </Photo>
                   <Details>
                     <Username>{post.author.username}</Username>
