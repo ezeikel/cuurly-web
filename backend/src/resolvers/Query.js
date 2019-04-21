@@ -18,14 +18,7 @@ const Query = {
 
     return ctx.prisma.users({ where }, info);
   },
-  user: async (_, { id }, ctx, info) => {
-    const user = await ctx.prisma.user(({ id }), info);
-
-    //console.log({ info });
-    console.log({ user });
-
-    return user;
-  },
+  user: async (_, { id }, ctx, info) => ctx.prisma.user(({ id }), info),
   userz: (_, args, ctx, info) => ctx.prisma.users({}, info),
   following: (_, { id }, ctx, info) => ctx.prisma.user({ id }, info).following(),
   followers: (_, { id }, ctx, info) => ctx.prisma.user({ id }, info).followers(),

@@ -96,6 +96,7 @@ const ProfilePicture = styled.div`
   img {
     width: 38px;
     height: 38px;
+    border-radius: 50%;
   }
 `;
 
@@ -439,7 +440,7 @@ const Account = ({ query, id }) => {
                       <Edit>
                         <EditHeader>
                           <ProfilePicture>
-                            <img src={fileUrl || (profilePicture && profilePicture.url || BLANK_PROFILE_PICTURE) } />
+                            <img src={fileUrl || (profilePicture && profilePicture.url.replace('/upload', '/upload/w_38,h_38,c_lfill,g_face,dpr_2.0') || BLANK_PROFILE_PICTURE) } />
                             {/* <form>
                                 <input type="file" accept="image/jpeg,image/png" />
                               </form> */}
@@ -617,7 +618,7 @@ const Account = ({ query, id }) => {
                       <PasswordChange>
                         <EditHeader>
                           <ProfilePicture>
-                            <img src={profilePicture && profilePicture.url || BLANK_PROFILE_PICTURE} />
+                            <img src={profilePicture && profilePicture.url.replace('/upload', '/upload/w_38,h_38,c_lfill,g_face,dpr_2.0') || BLANK_PROFILE_PICTURE} />
                           </ProfilePicture>
                           <Username>
                             <span>{username}</span>

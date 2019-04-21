@@ -297,13 +297,11 @@ const Profile = ({ id }) => {
             if (loading) return <p>Loading...</p>;
             if (error) return <p>Error: {error.message}</p>;
 
-            console.log({ profilePicture });
-
             return (
               <Wrapper>
                 <Header>
                   <UserPhoto>
-                    <img src={profilePicture && profilePicture.url || BLANK_PROFILE_PICTURE } />
+                    <img src={profilePicture && profilePicture.url.replace('/upload', '/upload/w_150,h_150,c_lfill,g_face,dpr_2.0') || BLANK_PROFILE_PICTURE } />
                   </UserPhoto>
                   <UserInfo>
                     <FirstRow>

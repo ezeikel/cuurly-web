@@ -33,7 +33,8 @@ function createServer() {
         following: parent => prisma.user({ id: parent.id }).following(),
         followers: parent => prisma.user({ id: parent.id }).followers(),
         likes: parent => prisma.user({ id: parent.id }).likes(),
-        comments: parent => prisma.user({ id: parent.id }).comments()
+        comments: parent => prisma.user({ id: parent.id }).comments(),
+        profilePicture: parent => prisma.user({ id: parent.id }).profilePicture()
       },
       Post: {
         author: parent => prisma.post({ id: parent.id }).author(),
