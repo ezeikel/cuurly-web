@@ -7,6 +7,8 @@ import Downshift, { resetIdCounter } from 'downshift';
 import { SEARCH_USERS_QUERY } from '../apollo/queries';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+const BLANK_PROFILE_PICTURE = 'https://instagram.fbho1-1.fna.fbcdn.net/vp/65547464af3e7b33703032d5b5fb5232/5D0566F1/t51.2885-19/44884218_345707102882519_2446069589734326272_n.jpg?_nc_ht=instagram.fbho1-1.fna.fbcdn.net';
+
 const glow = keyframes `
   from {
     box-shadow: 0 0 0px yellow;
@@ -169,7 +171,7 @@ class AutoComplete extends Component {
                       highlighted={index === highlightedIndex}
                     >
                     <UserPhoto>
-                      <img src={user.profilePicture && user.profilePicture.url.replace('/upload', '/upload/w_150,h_150,c_lfill,g_face,dpr_2.0')} />
+                      <img src={user.profilePicture && user.profilePicture.url.replace('/upload', '/upload/w_150,h_150,c_lfill,g_face,dpr_2.0') || BLANK_PROFILE_PICTURE} />
                     </UserPhoto>
                     <UserInfo>
                       <Username>

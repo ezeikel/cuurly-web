@@ -421,7 +421,7 @@ const Profile = ({ id }) => {
                                         <FollowerPhoto>
                                           <img
                                             src={
-                                              follower.profilePicture.url
+                                              follower.profilePicture && follower.profilePicture.url.replace('/upload', '/upload/w_30,h_30,c_lfill,g_face,dpr_2.0') || BLANK_PROFILE_PICTURE
                                             }
                                             alt="profile-pic"
                                           />
@@ -504,7 +504,7 @@ const Profile = ({ id }) => {
                                         <FollowerPhoto>
                                           <img
                                             src={
-                                              following.profilePicture.url
+                                              following.profilePicture && following.profilePicture.url.replace('/upload', '/upload/w_30,h_30,c_lfill,g_face,dpr_2.0') || BLANK_PROFILE_PICTURE
                                             }
                                             alt="profile-pic"
                                           />
