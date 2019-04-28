@@ -78,7 +78,8 @@ const Mutations = {
   },
   signin: async (_, { username, password }, ctx, info) => {
     // 1. check if there is a user with that email
-    const user = await ctx.prisma.user({ username });
+    const user = await ctx.prisma.user({ username }, info);
+
     if (!user) {
       throw new Error(`No such user found for username ${username}`);
     }

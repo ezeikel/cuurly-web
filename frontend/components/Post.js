@@ -194,7 +194,7 @@ const Post = ({ id }) => {
             if (loading) return <p>Loading...</p>;
             if (error) return <p>Error: {error.message}</p>;
 
-            const isCurrentUsersPost = currentUser.id === post.author.id;
+            const isCurrentUsersPost =  currentUser && currentUser.id === post.author.id;
 
             return (
               <Wrapper>
@@ -210,7 +210,7 @@ const Post = ({ id }) => {
                   <StyledModal
                     isOpen={modalIsOpen}
                     onRequestClose={closeModal}
-                    conentLabel="Post Actions"
+                    contentLabel="Post Actions"
                   >
                   <ModalBody>
                     <PostActions>
@@ -267,9 +267,13 @@ const Post = ({ id }) => {
                   <img src={post.content.url.replace('/upload', '/upload/w_614,ar_4:5,c_limit,dpr_2.0') || BLANK_PROFILE_PICTURE} />
                 </PostContent>
                 <PostInteraction>
-                  <Buttons>
-                    <LikeButton postId={id} postLikes={post.likes} />
-                  </Buttons>
+                  {
+                    currentUser ? (
+                      <Buttons>
+                        <LikeButton postId={id} postLikes={post.likes} />
+                      </Buttons>
+                    ) : null
+                  }
                   {post.likes.length ? <Likes>{post.likes.length} like{post.likes.length > 1 ? 's' : null}</Likes> : null }
                   <Caption>
                     <Link href={`/user?id=${post.author.id}`}>
@@ -287,9 +291,13 @@ const Post = ({ id }) => {
                       includeSeconds: true
                     })} ago
                   </PostTime>
-                  <AddComment>
-                    <PostComment postId={post.id} />
-                  </AddComment>
+                  {
+                    currentUser ? (
+                      <AddComment>
+                        <PostComment postId={post.id} />
+                      </AddComment>
+                    ) : <span>Log in to comment.</span>
+                  }
                 </PostInteraction>
               </Wrapper>
             );

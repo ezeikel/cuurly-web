@@ -215,7 +215,9 @@ export const SIGNIN_MUTATION = gql`
       id
       name
       username
-      email
+      profilePicture {
+        url
+      }
       permissions
     }
   }

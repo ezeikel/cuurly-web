@@ -56,6 +56,17 @@ class Signin extends Component {
         mutation={SIGNIN_MUTATION}
         refetchQueries={[{ query: CURRENT_USER_QUERY }]}
         onCompleted={({ signin: { id } }) => router.push(`/feed?id=${id}`)}
+        update={(cache, { data: { signin } }) => {
+          // manually writing to cache to fix homepage conditional redirect not working
+          cache.writeQuery({
+            query: CURRENT_USER_QUERY,
+            data: {
+              currentUser: {
+                ...signin,
+                __typename: 'CurrentUser'
+              }
+          }})
+        }}
       >
         {(signin, { error, loading }) => (
           <Fragment>

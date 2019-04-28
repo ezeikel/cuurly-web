@@ -4,6 +4,8 @@ import LogoFull from '../components/LogoFull';
 import Button from '../components/styles/Button';
 import Signin from '../components/Signin';
 import Signup from '../components/Signup';
+import { withRouter } from 'next/router';
+import CurrentUser from '../components/CurrentUser';
 
 const Wrapper = styled.div`
   display: grid;
@@ -38,21 +40,37 @@ const Switch = styled.span`
   }
 `;
 
-const Home = ({ query }) => (
-  <Wrapper>
-    <FormWrapper>
-      {
-        query.mode === 'signin' ?
-          <Signin /> :
-          <Signup />
+const Home = ({ query, router }) => (
+  <CurrentUser>
+    {({ data: { currentUser } }) => {
+
+      // TODO: Removed this ~ was having trouble with homepage redirect after signin/signout
+      console.log({ currentUser });
+
+      if (currentUser) {
+        // if logged in redirect to user feed
+        router.push(`/feed?id=${currentUser.id}`);
+        return null;
       }
-    </FormWrapper>
-    {
-      query.mode === 'signin' ?
-        <Switch>Don't have an account? <Link href="/?mode=signup"><a>Sign up</a></Link></Switch> :
-        <Switch>Have an account? <Link href="/?mode=signin"><a>Sign in</a></Link></Switch>
-    }
-  </Wrapper>
+
+      return (
+        <Wrapper>
+          <FormWrapper>
+            {
+              query.mode === 'signin' ?
+                <Signin /> :
+                <Signup />
+            }
+          </FormWrapper>
+          {
+            query.mode === 'signin' ?
+              <Switch>Don't have an account? <Link href="/?mode=signup"><a>Sign up</a></Link></Switch> :
+              <Switch>Have an account? <Link href="/?mode=signin"><a>Sign in</a></Link></Switch>
+          }
+      </Wrapper>
+      )
+    }}
+  </CurrentUser>
 );
 
-export default Home;
+export default withRouter(Home);

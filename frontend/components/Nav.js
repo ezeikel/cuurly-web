@@ -62,12 +62,12 @@ const Nav = ({ theme }) => (
       currentUser ? (
         <Wrapper theme={theme}>
           <LogoWrapper>
-            <Link href={`/feed?id=${currentUser.id}`}>
+            <Link href={`/`}>
               <a>
                 <LogoImage fillColor="var(--color-black)" />
               </a>
             </Link>
-            <Link href={`/feed?id=${currentUser.id}`}>
+            <Link href={`/`}>
               <a>
                 <LogoText fillColor="var(--color-black)" />
               </a>
