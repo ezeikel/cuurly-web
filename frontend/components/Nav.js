@@ -2,7 +2,6 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CurrentUser from './CurrentUser';
-import Signout from './Signout';
 import Search from './Search';
 import LogoImage from './LogoImage';
 import LogoText from './LogoText';
