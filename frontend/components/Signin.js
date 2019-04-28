@@ -1,39 +1,86 @@
 import React, { Component, Fragment } from 'react';
 import { Mutation } from 'react-apollo';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup'
+import * as Yup from 'yup';
 import Spinner from './Spinner';
 import Button from './styles/Button';
 import { CURRENT_USER_QUERY, SIGNIN_MUTATION } from '../apollo/queries';
 import { withRouter } from 'next/router';
 import styled from 'styled-components';
+import formatAPIErrors from '../utils/formatAPIErrors';
+import FormError from './styles/FormError';
 
 const SigninSchema = Yup.object().shape({
   username: Yup.string()
-    .required('Required'),
+    .required('Please enter a Username.'),
   password: Yup.string()
-    .required('Required')
+    .required('Please enter a Password.')
 });
 
 const StyledForm = styled(Form)`
   display: grid;
-  grid-template-columns: auto 1fr;
-  grid-template-rows: 1fr auto;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr auto auto;
   grid-row-gap: var(--spacing-small);
 `;
 
-const Username = styled.div`
-  grid-row: 1 / span 1;
-  grid-column: 1 / -1;
+const InputWrapper = styled.div`
   display: grid;
-  grid-row-gap: var(--spacing-small);
 `;
 
-const Password = styled.div`
-  grid-row: 2 / span 1;
-  grid-column: 1 / -1;
+const Input = styled.div`
   display: grid;
-  grid-row-gap: var(--spacing-small);
+  grid-template-columns: 1fr 8px;
+  position: relative;
+  height: 36px;
+  margin: 0;
+  min-width: 0;
+  label {
+    color: #999;
+    font-size: 1.4rem;
+    height: 36px;
+    left: 8px;
+    line-height: 36px;
+    overflow: hidden;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    text-overflow: ellipsis;
+    transform-origin: left;
+    transition: transform ease-out .1s;
+    user-select: none;
+    white-space: nowrap;
+  }
+  input {
+    font-size: 1.6rem;
+    line-height: 1.8rem;
+    border: 0;
+    flex: 1 0 0;
+    margin: 0;
+    outline: 0;
+    overflow: hidden;
+    padding: 9px 0 7px 8px;
+    text-overflow: ellipsis;
+    background: #fafafa;
+    &.dirty {
+      font-size: 1.2rem;
+      & + label {
+        transform: scale(.83333) translateY(-12px);
+      }
+    }
+    &:focus {
+      & + label {
+        transform: scale(.83333) translateY(-12px);
+      }
+    }
+  }
+`;
+
+const StyledFormError = styled(FormError)`
+  ${({ errors }) => !errors ?
+    `
+    padding: 0;
+  ` : null}
 `;
 
 const StyledButton = styled(Button)`
@@ -73,35 +120,51 @@ class Signin extends Component {
             <Formik
               initialValues={{ username: '', password: '' }}
               validationSchema={SigninSchema}
-              onSubmit={async (values, { resetForm }) => {
+              onSubmit={async (values, { setSubmitting, setErrors, resetForm }) => {
                 try {
                   await signin({ variables: values });
                   resetForm();
                 } catch(e) {
-                  console.error(`Formik Error: ${e}`);
+                  const formattedErrors = formatAPIErrors(e);
+                  setErrors(formattedErrors);
                 }
+
+                setSubmitting(false);
               }}
             >
               {({
-                isSubmitting
+                isSubmitting,
+                errors
               }) => (
                 <StyledForm>
-                  <Username>
-                    <label>Username</label>
-                    <Field type="text" name="username" />
-                    {/* <ErrorMessage name="username" component="div" /> */}
-                  </Username>
-                  <Password>
-                    <label>Password</label>
-                    <Field type="password" name="password" />
-                    {/* <ErrorMessage name="password" component="div" /> */}
-                  </Password>
+                  <InputWrapper>
+                    <Input>
+                      <Field
+                          name="username"
+                          render={({ field }) => <input className={field.value.length > 0 ? 'dirty' : null} {...field} /> }
+                        />
+                      <label>Username</label>
+                    </Input>
+                  </InputWrapper>
+                  <InputWrapper>
+                    <Input>
+                      <Field
+                          name="password"
+                          render={({ field }) => <input  className={field.value.length > 0 ? 'dirty' : null} {...field} type="password"/> }
+                        />
+                      <label>Password</label>
+                    </Input>
+                  </InputWrapper>
+                  <StyledFormError errors={ errors.username || errors.password}>
+                    <ErrorMessage name="username" component="div" />
+                    <ErrorMessage name="password" component="div" />
+                  </StyledFormError>
                   <StyledButton type="submit" disabled={isSubmitting}>Sign In {isSubmitting ? <Spinner /> : null }</StyledButton>
                 </StyledForm>
               )}
             </Formik>
             {loading && <p>Loading...</p>}
-            {error && <p>Error :( Please try again</p>}
+            {error && console.error({ error })}
           </Fragment>
         )}
       </Mutation>

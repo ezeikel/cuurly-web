@@ -532,11 +532,11 @@ const Account = ({ query, id }) => {
 
                               try {
                                 await updateUser({ variables: submittedValues });
-
-                                setSubmitting(false);
                               } catch (e) {
                                 setErrors(e);
                               }
+
+                              setSubmitting(false);
                             }}
                           >
                             {({ isSubmitting, initialValues, touched, dirty, values }) => {

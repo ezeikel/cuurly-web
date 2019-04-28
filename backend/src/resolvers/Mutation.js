@@ -58,8 +58,18 @@ const Mutations = {
   signup: async (_, args, ctx, info) => {
     // lowercase email
     args.email = args.email.toLowerCase();
+
+    // TODO: Do some kind of check for taken username aswell
+    const exists = await ctx.prisma.user({ email });
+    if (exists) {
+      throw new Error(
+        "email: Hmm, a user with that email already exists. Use another one or sign in."
+      );
+    }
+
     // hash password
     const password = await bcrypt.hash(args.password, 10);
+
     // create user in the db
     const user = await ctx.prisma.createUser({
       ...args,
@@ -81,12 +91,17 @@ const Mutations = {
     const user = await ctx.prisma.user({ username }, info);
 
     if (!user) {
-      throw new Error(`No such user found for username ${username}`);
+      throw new Error(
+        "username: Hmm, we couldn't find that username in our records. Try again."
+      );
     }
     // 2. check if their password is correct
     const valid = await bcrypt.compare(password, user.password);
+
     if (!valid) {
-      throw new Error('Invalid password!');
+      throw new Error(
+        "password: Hmm, that password doesn't match the one we have on record. Try again."
+      );
     }
     // 3. generate the jwt token
     const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);

@@ -7,38 +7,40 @@ import Button from './styles/Button';
 import { CURRENT_USER_QUERY, SIGNUP_MUTATION } from '../apollo/queries';
 import { withRouter } from 'next/router';
 import styled from 'styled-components';
+import formatAPIErrors from '../utils/formatAPIErrors';
+import FormError from './styles/FormError';
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string()
-    .min(2, 'Too short')
-    .max(50, 'Too long')
-    .required('Required'),
+    .min(2, 'That name is too short.')
+    .max(50, 'That name is too long')
+    .required('Please enter a name.'),
   username: Yup.string()
-    .min(2, 'Too short')
-    .max(50, 'Too long')
-    .required('Required'),
+    .min(2, 'That username is too short.')
+    .max(50, 'That username is too long.')
+    .required('Please enter a username.'),
   email: Yup.string()
-    .email('Invalid email')
-    .required('Required'),
+    .email('That email is invalid. Please try again.')
+    .required('Please enter an email.'),
   password: Yup.string()
-    .min(9, 'Too short')
-    .required('Required')
+    .min(9, 'That password is too short.')
+    .required('Please enter a password.')
 });
 
 const InputWrapper = styled.div`
+  display: grid;
+`;
+
+const Input = styled.div`
   display: grid;
   grid-template-columns: 1fr 8px;
   position: relative;
   height: 36px;
   margin: 0;
   min-width: 0;
-`;
-
-const Input = styled.div`
-  display: grid;
   label {
     color: #999;
-    font-size: 12px;
+    font-size: 1.4rem;
     height: 36px;
     left: 8px;
     line-height: 36px;
@@ -53,8 +55,8 @@ const Input = styled.div`
     white-space: nowrap;
   }
   input {
-    font-size: 16px;
-    line-height: 18px;
+    font-size: 1.6rem;
+    line-height: 1.8rem;
     border: 0;
     flex: 1 0 0;
     margin: 0;
@@ -64,7 +66,7 @@ const Input = styled.div`
     text-overflow: ellipsis;
     background: #fafafa;
     &.dirty {
-      font-size: 12px;
+      font-size: 1.2rem;
       & + label {
         transform: scale(.83333) translateY(-12px);
       }
@@ -75,6 +77,13 @@ const Input = styled.div`
       }
     }
   }
+`;
+
+const StyledFormError = styled(FormError)`
+  ${({ errors }) => !errors ?
+    `
+    padding: 0;
+  ` : null}
 `;
 
 const StyledForm = styled(Form)`
@@ -104,70 +113,71 @@ const Signup = ({ router }) => {
           <Formik
             initialValues={{ email: '', name: '', username: '', password: '' }}
             validationSchema={SignupSchema}
-            onSubmit={async (values, { resetForm }) => {
+            onSubmit={async (values, { setSubmitting, setErrors, resetForm }) => {
               try {
                 await signup({ variables: values });
                 resetForm();
               } catch(e) {
-                console.error(`Formik Error: ${e}`);
+                const formattedErrors = formatAPIErrors(e);
+                setErrors(formattedErrors);
               }
+
+              setSubmitting(false);
             }}
           >
             {({
-              isSubmitting
+              isSubmitting,
+              errors
             }) => (
               <StyledForm>
                 <InputWrapper>
                   <Input>
                     <Field
                         name="name"
-                        render={({ field }) => <input className={field.value.length > 0 ? 'dirty' : null} {...field} /> }
+                        render={({ field }) => <input className={field.value.length > 0 ? 'dirty' : null} {...field} />}
                       />
                     <label>Name</label>
-                    {/* <ErrorMessage name="emaile" component="div" /> */}
                   </Input>
                 </InputWrapper>
                 <InputWrapper>
                   <Input>
                     <Field
                       name="email"
-                      render={({ field }) => <input className={field.value.length > 0 ? 'dirty' : null} {...field} type="email" /> }
+                      render={({ field }) => <input className={field.value.length > 0 ? 'dirty' : null} {...field} type="email" />}
                     />
                     <label>Email</label>
-                    {/* <ErrorMessage name="emaile" component="div" /> */}
                   </Input>
                 </InputWrapper>
                 <InputWrapper>
                   <Input>
                     <Field
                         name="username"
-                        render={({ field }) => <input className={field.value.length > 0 ? 'dirty' : null} {...field} /> }
+                        render={({ field }) => <input className={field.value.length > 0 ? 'dirty' : null} {...field} />}
                       />
                     <label>Username</label>
-                    {/* <ErrorMessage name="username" component="div" /> */}
                   </Input>
                 </InputWrapper>
                 <InputWrapper>
                   <Input>
                     <Field
                         name="password"
-                        render={({ field }) => {
-                          debugger;
-                          return (
-                            <input className={field.value.length > 0 ? 'dirty' : null} {...field} type="password" />
-                          )
-                         } }
+                        render={({ field }) => <input className={field.value.length > 0 ? 'dirty' : null} {...field} type="password" />}
                       />
                     <label>Password</label>
-                    {/* <ErrorMessage name="password" component="div" /> */}
                   </Input>
                 </InputWrapper>
-                <StyledButton type="submit" disabled={isSubmitting}>Submit {isSubmitting ? <Spinner /> : null }</StyledButton>
+                <StyledFormError errors={ errors.email || errors.name || errors.username || errors.password}>
+                  <ErrorMessage name="email" component="div" />
+                  <ErrorMessage name="name" component="div" />
+                  <ErrorMessage name="username" component="div" />
+                  <ErrorMessage name="password" component="div" />
+                </StyledFormError>
+                <StyledButton type="submit" disabled={isSubmitting}>Sign Up {isSubmitting ? <Spinner /> : null }</StyledButton>
               </StyledForm>
             )}
           </Formik>
           {loading && <p>Loading...</p>}
-          {error && <p>Error :( Please try again</p>}
+          {error && console.log({ error })}
         </Fragment>
       )}
     </Mutation>

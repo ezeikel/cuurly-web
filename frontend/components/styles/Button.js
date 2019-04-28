@@ -17,8 +17,9 @@ const Button = styled.button`
   text-overflow: ellipsis;
   user-select: none;
   white-space: nowrap;
-  font-size: 14px;
-  line-height: 18px;
+  font-family: var(--default-font-family);
+  font-size: 1.4rem;
+  line-height: 1.8rem;
   ${({ disabled }) => disabled  ?
   `
     opacity: 0.5;

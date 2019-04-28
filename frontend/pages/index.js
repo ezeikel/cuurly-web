@@ -44,9 +44,6 @@ const Home = ({ query, router }) => (
   <CurrentUser>
     {({ data: { currentUser } }) => {
 
-      // TODO: Removed this ~ was having trouble with homepage redirect after signin/signout
-      console.log({ currentUser });
-
       if (currentUser) {
         // if logged in redirect to user feed
         router.push(`/feed?id=${currentUser.id}`);
