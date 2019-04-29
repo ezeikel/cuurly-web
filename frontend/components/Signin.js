@@ -134,7 +134,8 @@ class Signin extends Component {
             >
               {({
                 isSubmitting,
-                errors
+                errors,
+                touched
               }) => (
                 <StyledForm>
                   <InputWrapper>
@@ -155,7 +156,7 @@ class Signin extends Component {
                       <label>Password</label>
                     </Input>
                   </InputWrapper>
-                  <StyledFormError errors={ errors.username || errors.password}>
+                  <StyledFormError errors={ (touched.username && errors.username) || (touched.password && errors.password) }>
                     <ErrorMessage name="username" component="div" />
                     <ErrorMessage name="password" component="div" />
                   </StyledFormError>

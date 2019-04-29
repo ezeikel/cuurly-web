@@ -127,7 +127,8 @@ const Signup = ({ router }) => {
           >
             {({
               isSubmitting,
-              errors
+              errors,
+              touched
             }) => (
               <StyledForm>
                 <InputWrapper>
@@ -166,7 +167,7 @@ const Signup = ({ router }) => {
                     <label>Password</label>
                   </Input>
                 </InputWrapper>
-                <StyledFormError errors={ errors.email || errors.name || errors.username || errors.password}>
+                <StyledFormError errors={ (touched.email && errors.email) || (touched.name && errors.name) || (touched.username && errors.username) || (touched.password && errors.password) }>
                   <ErrorMessage name="email" component="div" />
                   <ErrorMessage name="name" component="div" />
                   <ErrorMessage name="username" component="div" />
