@@ -9,7 +9,8 @@ const Button = styled.button`
   position: relative;
   box-sizing: border-box;
   cursor: pointer;
-  display: block;
+  display: flex;
+  justify-content: center;
   font-weight: 600;
   padding: 5px 9px;
   text-align: center;

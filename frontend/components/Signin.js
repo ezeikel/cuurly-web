@@ -86,7 +86,6 @@ const StyledFormError = styled(FormError)`
 const StyledButton = styled(Button)`
   grid-row: 3 / -1;
   grid-column: 1 / -1;
-  display: grid;
   background-color: #3897f0;
   border: 1px solid #3897f0;
   border-radius: 4px;
@@ -164,7 +163,7 @@ class Signin extends Component {
                 </StyledForm>
               )}
             </Formik>
-            {loading && <p>Loading...</p>}
+            {loading && console.log('loading...')}
             {error && console.error({ error })}
           </Fragment>
         )}

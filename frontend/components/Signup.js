@@ -177,8 +177,8 @@ const Signup = ({ router }) => {
               </StyledForm>
             )}
           </Formik>
-          {loading && <p>Loading...</p>}
-          {error && console.log({ error })}
+          {loading && console.log('loading...')}
+          {error && console.error({ error })}
         </Fragment>
       )}
     </Mutation>

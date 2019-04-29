@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { withRouter } from 'next/router';
 import styled, { ThemeProvider } from 'styled-components';
 import Header from './Header';
 import Meta from './Meta';
@@ -21,7 +22,7 @@ const theme = {
 
 const StyledPage = styled.div`
   display: grid;
-  grid-template-rows: 80px 1fr;
+  grid-template-rows: ${({ pathname }) => pathname === '/' || pathname === '/signin' ? `1fr` : `80px 1fr`};
   min-height: 100vh;
   background-color: ${({ theme }) => theme.default.white};
   color: ${({ theme }) => theme.default.textColor};
@@ -38,22 +39,23 @@ const Inner = styled.main`
   width: 100%;
 `;
 
-class Page extends Component {
-  render() {
-    return (
-      <ThemeProvider theme={theme}>
-        <StyledPage>
-          <Meta />
-          <Header/>
-          <Wrapper>
-            <Inner>
-              {this.props.children}
-            </Inner>
-          </Wrapper>
-        </StyledPage>
-      </ThemeProvider>
-    );
-  }
-}
+const Page = ({ children, router: { pathname } }) => (
+  <ThemeProvider theme={theme}>
+    <StyledPage pathname={pathname}>
+      <Meta />
+      {
+        pathname === '/' || pathname === '/signin' ?
+        null :
+        <Header/>
+      }
+      <Wrapper>
+        <Inner>
+          {children}
+        </Inner>
+      </Wrapper>
+    </StyledPage>
+  </ThemeProvider>
+);
 
-export default Page;
+
+export default withRouter(Page);
