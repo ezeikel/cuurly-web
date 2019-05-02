@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import Link from 'next/link';
 import { Mutation } from 'react-apollo';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
@@ -20,7 +21,7 @@ const SigninSchema = Yup.object().shape({
 const StyledForm = styled(Form)`
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr auto auto;
+  grid-template-rows: repeat(2, 1fr) repeat(3, auto);
   grid-row-gap: var(--spacing-small);
 `;
 
@@ -93,6 +94,12 @@ const StyledButton = styled(Button)`
   position: relative;
 `;
 
+const StyledForgotPasswordLink = styled.a`
+  justify-self: center;
+  color: #003569;
+  cursor: pointer;
+`;
+
 class Signin extends Component {
   render() {
     const { router } = this.props;
@@ -160,6 +167,9 @@ class Signin extends Component {
                     <ErrorMessage name="password" component="div" />
                   </StyledFormError>
                   <StyledButton type="submit" disabled={isSubmitting}>Sign In {isSubmitting ? <Spinner /> : null }</StyledButton>
+                  <Link href="/request-reset">
+                    <StyledForgotPasswordLink>Forgot password?</StyledForgotPasswordLink>
+                  </Link>
                 </StyledForm>
               )}
             </Formik>
