@@ -7,7 +7,12 @@ const defaults = require("../process.defaults");
 const keys = [
   "APP_SECRET",
   "FRONTEND_URL",
-  "PORT"
+  "PORT",
+  "STRIPE_SECRET",
+  "MAIL_HOST",
+  "MAIL_PORT",
+  "MAIL_USER",
+  "MAIL_PASS"
 ];
 
 let contents =

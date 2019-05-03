@@ -1,5 +1,8 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { randomBytes } = require('crypto');
+const { promisify } = require('util');
+const { transport, makeNiceEmail } = require('../mail');
 const cloudinary = require('cloudinary');
 const { isLoggedIn } = require('../utils');
 
@@ -116,6 +119,102 @@ const Mutations = {
   signout: (_, args, ctx, info) => {
     ctx.response.clearCookie('token');
     return { message: 'Goodbye!' };
+  },
+  requestReset: async (_, { email }, ctx, info) => {
+    // check if this user exists
+    const user = await ctx.prisma.user({ email }, info);
+
+    if (!user) {
+      throw new Error(
+        'email: Hmm, we couldn\'t find that email in our records. Try again.'
+      );
+    }
+
+    // set a reset token and expiry for that user
+    const randomBytesPromisified = promisify(randomBytes);
+    const resetToken = (await randomBytesPromisified(20)).toString('hex');
+    const resetTokenExpiry = (Date.now() + 36000000).toString(); // 1 hour from now
+
+    await ctx.prisma.updateUser({
+      where: {
+        email
+      },
+      data: {
+        resetToken,
+        resetTokenExpiry
+      }
+    });
+
+    console.log(user.email);
+    console.log(process.env.FRONTEND_URL);
+    console.log(resetToken);
+
+    // TODO: Hanging when trying to send email below
+
+    // email the user the reset token
+    const res = await transport.sendMail({
+      from: 'crowndapp@gmail.com',
+      to: user.email,
+      subject: 'Your password token',
+      html: makeNiceEmail(`
+        Your password reset token is here!
+        \n\n
+        <a href="${process.env.FRONTEND_URL}/reset?resetToken=${resetToken}"Click here to reset</a>
+      `)
+    });
+
+    console.log({ res })
+
+    // return message
+    return { message: `Message sent: ${res.messageId}`};
+  },
+  resetPassword: async(_, { password, confirmPassword }, ctx, info) => {
+    // check if that passwords match
+    if (password !== confirmPassword) {
+      throw new Error('Passwords don\'t  match');
+    }
+
+    // check if its a legit reset token
+    // check if its expired
+    const [user] = await ctx.prisma.users({
+      where: {
+        AND: [
+          { resetToken },
+          { resetTokenExpiry_gt: Date.now() - 3600000 }
+        ]
+      }
+    });
+
+    if (!user) {
+      throw new Error('This is token is either invalid or expired!');
+    }
+
+    // hash new password
+    const newPassword = await bcrypt.hash(password, 10);
+
+    // save a new password to the user and set resetToken fields back to null
+    const updatedUser = await ctx.prisma.updateUser({
+      where: {
+        email
+      },
+      data: {
+        password: newPassword,
+        resetToken: null,
+        resetTokenExpiry: null
+      }
+    });
+
+    // generate jwt
+    const token = jwt.sign({ userId: updatedUser.id }, process.env.APP_SECRET);
+
+    // we set the jwt as a cookie on the response
+    ctx.response.cookie('token', token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 365 // 1 year cookie
+    });
+
+    // TODO: Check if we are returning everything on user here
+    return updatedUser;
   },
   follow: async (_, { id }, ctx, info) => {
     isLoggedIn(ctx);

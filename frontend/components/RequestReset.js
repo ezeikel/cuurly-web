@@ -1,8 +1,8 @@
 import React from 'react';
 import { Mutation } from 'react-apollo';
 import { Formik, Field, Form } from 'formik';
-import * as Yup from 'yup';
-//import { REQUEST_RESET_MUTATION } from '../apollo/queries'
+import * as Yup from 'yup'
+import { REQUEST_RESET_MUTATION } from '../apollo/queries'
 import Spinner from './Spinner';
 import Button from './styles/Button';
 // import Form from './styles/Form';
@@ -21,43 +21,47 @@ const ReqeuestResetSchema = Yup.object().shape({
 });
 
 const RequestReset = () => (
-  <Formik
-    initialValues={{ email: '' }}
-    validationSchema={ReqeuestResetSchema}
-    onSubmit={async (values, { resetForm, setErrors }) => {
-      try {
-        await reset({
-          variables: values
-        });
+  <Mutation mutation={REQUEST_RESET_MUTATION}>
+    {(reset, { error, loading, called }) => (
+      <Formik
+        initialValues={{ email: '' }}
+        validationSchema={ReqeuestResetSchema}
+        onSubmit={async (values, { resetForm, setErrors }) => {
+          try {
+            await reset({
+              variables: values
+            });
 
-        resetForm();
-      } catch(e) {
-        setErrors(formatFormErrors(e));
-      }
-    }}
-  >
-    {({
-      isSubmitting,
-      errors,
-      touched
-    }) => (
-      <Form>
-        <div>
-          {/* {!error && !loading && called && <SuccessMessage>Success! Check your email for a reset link!</SuccessMessage>} */}
-          <div>
-            <label htmlFor="email">Email</label>
-            {errors.email && touched.email && <div>{errors.email}</div>}
-            <Field type="email" name="email" placeholder="kanye@yeezy.com" />
-          </div>
-        </div>
-        <div>
-          <Button type="submit">
-            <span>Reset password</span> {isSubmitting && loading ? <Spinner /> : null}
-          </Button>
-        </div>
-      </Form>
+            resetForm();
+          } catch(e) {
+            setErrors(formatFormErrors(e));
+          }
+        }}
+      >
+        {({
+          isSubmitting,
+          errors,
+          touched
+        }) => (
+          <Form>
+            <div>
+              {!error && !loading && called && <SuccessMessage>Success! Check your email for a reset link!</SuccessMessage>}
+              <div>
+                <label htmlFor="email">Email</label>
+                {errors.email && touched.email && <div>{errors.email}</div>}
+                <Field type="email" name="email" placeholder="kanye@yeezy.com" />
+              </div>
+            </div>
+            <div>
+              <Button type="submit" disabled={loading}>
+                <span>Reset password</span> {isSubmitting && loading ? <Spinner /> : null}
+              </Button>
+            </div>
+          </Form>
+        )}
+      </Formik>
     )}
-  </Formik>
+  </Mutation>
 );
 
 export default RequestReset;
