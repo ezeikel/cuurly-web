@@ -145,12 +145,6 @@ const Mutations = {
       }
     });
 
-    console.log(user.email);
-    console.log(process.env.FRONTEND_URL);
-    console.log(resetToken);
-
-    // TODO: Hanging when trying to send email below
-
     // email the user the reset token
     const res = await transport.sendMail({
       from: 'crowndapp@gmail.com',
@@ -162,8 +156,6 @@ const Mutations = {
         <a href="${process.env.FRONTEND_URL}/reset?resetToken=${resetToken}"Click here to reset</a>
       `)
     });
-
-    console.log({ res })
 
     // return message
     return { message: `Message sent: ${res.messageId}`};
