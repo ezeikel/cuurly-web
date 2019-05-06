@@ -1,14 +1,16 @@
 import React, { Fragment } from 'react';
 import { Mutation } from 'react-apollo';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup'
 import Spinner from './Spinner';
-import Button from './styles/Button';
 import { CURRENT_USER_QUERY, SIGNUP_MUTATION } from '../apollo/queries';
 import { withRouter } from 'next/router';
-import styled from 'styled-components';
 import formatAPIErrors from '../utils/formatAPIErrors';
-import FormError from './styles/FormError';
+import Form from './styles/Form';
+import InputWrapper from './styles/InputWrapper';
+import Input from './styles/Input';
+import SubmitButton from './styles/SubmitButton';
+import FormErrors from './styles/FormErrors';
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string()
@@ -26,80 +28,6 @@ const SignupSchema = Yup.object().shape({
     .min(9, 'That password is too short.')
     .required('Please enter a password.')
 });
-
-const InputWrapper = styled.div`
-  display: grid;
-`;
-
-const Input = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 8px;
-  position: relative;
-  height: 36px;
-  margin: 0;
-  min-width: 0;
-  label {
-    color: #999;
-    font-size: 1.4rem;
-    height: 36px;
-    left: 8px;
-    line-height: 36px;
-    overflow: hidden;
-    pointer-events: none;
-    position: absolute;
-    right: 0;
-    text-overflow: ellipsis;
-    transform-origin: left;
-    transition: transform ease-out .1s;
-    user-select: none;
-    white-space: nowrap;
-  }
-  input {
-    font-size: 1.6rem;
-    line-height: 1.8rem;
-    border: 0;
-    flex: 1 0 0;
-    margin: 0;
-    outline: 0;
-    overflow: hidden;
-    padding: 9px 0 7px 8px;
-    text-overflow: ellipsis;
-    background: #fafafa;
-    &.dirty {
-      font-size: 1.2rem;
-      & + label {
-        transform: scale(.83333) translateY(-12px);
-      }
-    }
-    &:focus {
-      & + label {
-        transform: scale(.83333) translateY(-12px);
-      }
-    }
-  }
-`;
-
-const StyledFormError = styled(FormError)`
-  ${({ errors }) => !errors ?
-    `
-    padding: 0;
-  ` : null}
-`;
-
-const StyledForm = styled(Form)`
-  display: grid;
-  grid-template-rows: repeat(4, 36px) auto;
-  grid-row-gap: var(--spacing-small);
-`;
-
-const StyledButton = styled(Button)`
-  display: grid;
-  background-color: #3897f0;
-  border: 1px solid #3897f0;
-  border-radius: 4px;
-  color: #fff;
-  position: relative;
-`;
 
 const Signup = ({ router }) => {
   return (
@@ -130,7 +58,7 @@ const Signup = ({ router }) => {
               errors,
               touched
             }) => (
-              <StyledForm>
+              <Form>
                 <InputWrapper>
                   <Input>
                     <Field
@@ -167,14 +95,14 @@ const Signup = ({ router }) => {
                     <label>Password</label>
                   </Input>
                 </InputWrapper>
-                <StyledFormError errors={ (touched.email && errors.email) || (touched.name && errors.name) || (touched.username && errors.username) || (touched.password && errors.password) }>
+                <FormErrors errors={ (touched.email && errors.email) || (touched.name && errors.name) || (touched.username && errors.username) || (touched.password && errors.password) }>
                   <ErrorMessage name="email" component="div" />
                   <ErrorMessage name="name" component="div" />
                   <ErrorMessage name="username" component="div" />
                   <ErrorMessage name="password" component="div" />
-                </StyledFormError>
-                <StyledButton type="submit" disabled={isSubmitting}>Sign Up {isSubmitting ? <Spinner /> : null }</StyledButton>
-              </StyledForm>
+                </FormErrors>
+                <SubmitButton type="submit" disabled={isSubmitting}>Sign Up {isSubmitting ? <Spinner /> : null }</SubmitButton>
+              </Form>
             )}
           </Formik>
           {loading && console.log('loading...')}

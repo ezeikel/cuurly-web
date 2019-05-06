@@ -5,7 +5,7 @@ const FormErrors = styled.div`
   line-height: 1.8rem;
   background-color: var(--color-red);
   color: var(--color-white);
-  ${({ errors }) => !errors ?
+  ${({ errors }) => errors ?
     `
     padding: var(--spacing-small);
   ` : null}
