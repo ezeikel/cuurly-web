@@ -1,5 +1,6 @@
 import React from 'react';
 import { Mutation } from 'react-apollo';
+import styled from 'styled-components';
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup'
 import { toast } from 'react-toastify';
@@ -11,13 +12,16 @@ import InputWrapper from './styles/InputWrapper';
 import Input from './styles/Input';
 import SubmitButton from './styles/SubmitButton';
 import FormErrors from './styles/FormErrors';
-import SuccessMessage from './styles/SuccessMessage';
 
 const ReqeuestResetSchema = Yup.object().shape({
   email: Yup.string()
     .email('Invalid email')
     .required('Required')
 });
+
+const StyledForm = styled(Form)`
+  width: 100%;
+`;
 
 const RequestReset = () => (
   <Mutation mutation={REQUEST_RESET_MUTATION}>
@@ -32,7 +36,7 @@ const RequestReset = () => (
             });
 
             resetForm();
-            toast('Check your email for a reset link.');
+            toast('Thanks! Please check your email for a link to reset your password.');
           } catch(e) {
             setErrors(formatAPIErrors(e));
           }
@@ -43,7 +47,7 @@ const RequestReset = () => (
           errors,
           touched
         }) => (
-          <Form>
+          <StyledForm>
             <InputWrapper>
               <Input>
                 <Field
@@ -58,9 +62,9 @@ const RequestReset = () => (
               <ErrorMessage name="password" component="div" />
             </FormErrors>
             <SubmitButton type="submit" disabled={loading}>
-              <span>Reset password</span> {isSubmitting && loading ? <Spinner /> : null}
+              <span>Send Reset Link</span> {isSubmitting && loading ? <Spinner /> : null}
             </SubmitButton>
-          </Form>
+          </StyledForm>
         )}
       </Formik>
     )}

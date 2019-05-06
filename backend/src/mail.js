@@ -18,9 +18,9 @@ const makeNiceEmail = text =>`
     line-height: 2;
     font-size: 20px;
   ">
-    <h2>Hello there!</h2>
+    <h2>Crownd</h2>
     <p>${text}</p>
-    <p>😘, Ezeikel Pemberton</p>
+    <p>Crownd Team</p>
   </div>
 `;
 

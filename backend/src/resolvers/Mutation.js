@@ -149,11 +149,16 @@ const Mutations = {
     const res = await transport.sendMail({
       from: 'crowndapp@gmail.com',
       to: user.email,
-      subject: 'Your password token',
+      subject: 'Reset Your Password',
       html: makeNiceEmail(`
-        Your password reset token is here!
+        Hi ${user.username},
         \n\n
-        <a href="${process.env.FRONTEND_URL}/reset?resetToken=${resetToken}"Click here to reset</a>
+        We got a request to reset your Crownd password.
+        <button style="color:#3b5998;text-decoration:none;display:block;width:370px">
+          <a href="${process.env.FRONTEND_URL}/reset?resetToken=${resetToken}">Reset Password</a>
+        </button>
+        \n\n
+        If you ignore this message, your password will not be changed. If you didn't request a password reset, <a href="#">let us know</a>.
       `)
     });
 
