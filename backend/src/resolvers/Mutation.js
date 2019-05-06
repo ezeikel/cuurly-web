@@ -160,7 +160,7 @@ const Mutations = {
     // return message
     return { message: `Message sent: ${res.messageId}`};
   },
-  resetPassword: async(_, { password, confirmPassword }, ctx, info) => {
+  resetPassword: async(_, { resetToken, password, confirmPassword }, ctx, info) => {
     // check if that passwords match
     if (password !== confirmPassword) {
       throw new Error('Passwords don\'t  match');
@@ -172,7 +172,7 @@ const Mutations = {
       where: {
         AND: [
           { resetToken },
-          { resetTokenExpiry_gt: Date.now() - 3600000 }
+          { resetTokenExpiry_gt: (Date.now() - 3600000).toString() }
         ]
       }
     });
@@ -187,7 +187,7 @@ const Mutations = {
     // save a new password to the user and set resetToken fields back to null
     const updatedUser = await ctx.prisma.updateUser({
       where: {
-        email
+        email: user.email
       },
       data: {
         password: newPassword,

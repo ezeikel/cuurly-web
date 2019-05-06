@@ -13,11 +13,11 @@ const Wrapper = styled.div`
   
 `;
 
-const resetPage = () => (
+const resetPage = ({ query }) => (
   <Wrapper>
     <FormWrapper>
       <h1>Forgot your password?</h1>
-      <Reset />
+      <Reset resetToken={query.resetToken} />
     </FormWrapper>
   </Wrapper>
 );

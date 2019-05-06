@@ -2,7 +2,9 @@ import React from 'react';
 import { Mutation } from 'react-apollo';
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup'
+import { toast } from 'react-toastify';
 import { REQUEST_RESET_MUTATION } from '../apollo/queries'
+import formatAPIErrors from '../utils/formatAPIErrors';
 import Spinner from './Spinner';
 import Form from './styles/Form';
 import InputWrapper from './styles/InputWrapper';
@@ -19,19 +21,20 @@ const ReqeuestResetSchema = Yup.object().shape({
 
 const RequestReset = () => (
   <Mutation mutation={REQUEST_RESET_MUTATION}>
-    {(reset, { error, loading, called }) => (
+    {(requestReset, { error, loading, called }) => (
       <Formik
         initialValues={{ email: '' }}
         validationSchema={ReqeuestResetSchema}
         onSubmit={async (values, { resetForm, setErrors }) => {
           try {
-            await reset({
+            await requestReset({
               variables: values
             });
 
             resetForm();
+            toast('Check your email for a reset link.');
           } catch(e) {
-            setErrors(formatFormErrors(e));
+            setErrors(formatAPIErrors(e));
           }
         }}
       >
@@ -41,7 +44,6 @@ const RequestReset = () => (
           touched
         }) => (
           <Form>
-            {!error && !loading && called && <SuccessMessage>Success! Check your email for a reset link!</SuccessMessage>}
             <InputWrapper>
               <Input>
                 <Field
