@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 import RequestReset from '../components/RequestReset';
+import FormWrapper from '../components/styles/FormWrapper';
 
 const Wrapper = styled.div`
   display: grid;
+  justify-items: center;
   grid-row-gap: var(--spacing-medium);
   h1 {
     margin: 0;
@@ -12,8 +14,10 @@ const Wrapper = styled.div`
 
 const requestResetPage = () => (
   <Wrapper>
-    <h1>Forgot your password?</h1>
-    <RequestReset />
+    <FormWrapper>
+      <h1>Forgot your password?</h1>
+      <RequestReset />
+    </FormWrapper>
   </Wrapper>
 );
 
