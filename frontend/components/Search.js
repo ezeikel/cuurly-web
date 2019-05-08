@@ -136,7 +136,7 @@ class AutoComplete extends Component {
     resetIdCounter();
 
     return (
-      <SearchStyles>
+      <SearchStyles className={this.props.className}>
         <Downshift
           onChange={routeToUser}
           itemToString={user => (user === null ? '' : user.username)}

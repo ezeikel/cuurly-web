@@ -13,9 +13,14 @@ const Wrapper = styled.nav`
   font-style: normal;
   color: ${({ theme }) => theme.default.textColor};
   display: grid;
-  grid-template-columns: auto 4fr auto 1fr;
+  grid-template-columns: auto auto 1fr;
+  grid-column-gap: var(--spacing-large);
   align-content: center;
+  justify-items: center;
   padding: var(--spacing-medium);
+  @media(min-width: 736px) {
+    grid-template-columns: auto 4fr auto 1fr;
+  }
 `;
 
 const NavActions = styled.ul`
@@ -25,6 +30,9 @@ const NavActions = styled.ul`
   align-items: center;
   justify-items: center;
   font-size: 1.8rem;
+  @media(min-width: 736px) {
+    grid-column-gap: var(--spacing-large);
+  }
 `;
 
 const LogoWrapper = styled.div`
@@ -42,7 +50,11 @@ const LogoWrapper = styled.div`
 `;
 
 const StyledSearch = styled(Search)`
-  width: 100%;
+  display: none;
+  @media(min-width: 736px) {
+    display: block
+  }
+
 `;
 
 const Upload = styled.div`
@@ -84,10 +96,10 @@ const Nav = ({ theme }) => (
               </Link>
             </li>
             <li>
-              <Link href={`/liked?id=${currentUser.id}`}>
+              <Link href={`/notifications?id=${currentUser.id}`}>
                 <a>
                   <FontAwesomeIcon
-                    icon={["fal", "heart"]}
+                    icon={["fal", "bell"]}
                     color="var(--color-black)"
                     size="lg"
                   />
@@ -121,7 +133,7 @@ const Nav = ({ theme }) => (
             <Link href="/upload">
               <a>
                 <FontAwesomeIcon
-                  icon={["fal", "camera"]}
+                  icon={["fal", "arrow-to-top"]}
                   color="var(--color-black)"
                   size="lg"
                 />
