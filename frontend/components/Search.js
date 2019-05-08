@@ -22,7 +22,6 @@ const SearchStyles = styled.div`
   position: relative;
   display: flex;
   justify-content: center;
-  width: 215px;
   input {
     display: flex;
     justify-items: center;
@@ -44,7 +43,6 @@ const ComboBox = styled.div`
 
 const DropDown = styled.div`
   position: absolute;
-  width: 100%;
   z-index: 2;
   border: 1px solid ${props => props.theme.lightgrey};
   width: 215px;

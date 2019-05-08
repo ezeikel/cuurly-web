@@ -6,28 +6,13 @@ import { fab } from "@fortawesome/free-brands-svg-icons";
 import { fas } from "@fortawesome/pro-solid-svg-icons";
 import { far } from "@fortawesome/pro-regular-svg-icons";
 import { fal } from "@fortawesome/pro-light-svg-icons";
-import {
-  faSearch,
-  faCompass,
-  faHeart,
-  faUser,
-  faPlus,
-  faTimes,
-  faCog,
-  faComment,
-  faBadgeCheck,
-  faInboxOut,
-  faEllipsisH,
-  faLock,
-  faKey
-} from "@fortawesome/pro-regular-svg-icons";
 import { toast, ToastContainer } from 'react-toastify';
 import withApolloClient from '../apollo/client';
 import Page from '../components/Page';
 import GlobalStyle from "../GlobalStyle";
 import 'react-toastify/dist/ReactToastify.min.css';
 
-library.add(fab, fas, far, fal, faSearch, faCompass, faHeart, faUser, faPlus, faTimes, faCog, faComment, faBadgeCheck, faInboxOut, faEllipsisH, faLock, faKey);
+library.add(fab, fas, far, fal);
 
 const StyledToastContainer = styled(ToastContainer).attrs({
   className: 'toast-container',

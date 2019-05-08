@@ -107,9 +107,11 @@ const PostsWrapper = styled.div`
 
 const Posts = styled.ul`
   display: grid;
-  grid-template-columns: repeat(3, 350px);
-  grid-auto-rows: 350px;
-  grid-gap: var(--spacing-large);
+  grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+  grid-gap: var(--spacing-tiny);
+  @media(min-width: 736px) {
+    grid-gap: var(--spacing-large);
+  }
 `;
 
 const StyledFollowButton = styled(FollowButton)`
@@ -266,6 +268,12 @@ const SettingsAction = styled.li`
     opacity: 0.3;
     pointer-events: none;
   ` : null}
+  }
+`;
+
+const Website = styled.span`
+  a {
+    color: #003569;
   }
 `;
 
@@ -547,7 +555,7 @@ const Profile = ({ id }) => {
                     <ThirdRow>
                       <Name>{name}</Name>
                       <span>{bio}</span>
-                      <span>{website}</span>
+                      <Website><a href={website} target="_blank">{website}</a></Website>
                     </ThirdRow>
                   </UserInfo>
                 </Header>

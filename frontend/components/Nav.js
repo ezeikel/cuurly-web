@@ -13,7 +13,7 @@ const Wrapper = styled.nav`
   font-style: normal;
   color: ${({ theme }) => theme.default.textColor};
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: auto 4fr auto 1fr;
   align-content: center;
   padding: var(--spacing-medium);
 `;
@@ -21,6 +21,7 @@ const Wrapper = styled.nav`
 const NavActions = styled.ul`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  grid-column-gap: var(--spacing-medium);
   align-items: center;
   justify-items: center;
   font-size: 1.8rem;
@@ -40,19 +41,16 @@ const LogoWrapper = styled.div`
   }
 `;
 
-const UploadAnchor = styled.a`
-  background-color: var(--color-primary);
-  padding: var(--spacing-tiny);
-  border-radius: 50%;
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
-  &:hover {
-    background-color: var(--color-primary-lighter);
-  }
+const StyledSearch = styled(Search)`
+  width: 100%;
+`;
+
+const Upload = styled.div`
+  display: grid;
+  justify-self: end;
 `;
 
 const UploadIcon = styled(FontAwesomeIcon)`
-  width: 24px !important; /* override font awesome styles */
 `;
 
 const Nav = ({ theme }) => (
@@ -72,7 +70,7 @@ const Nav = ({ theme }) => (
               </a>
             </Link>
           </LogoWrapper>
-          <Search />
+          <StyledSearch />
           <NavActions>
             <li>
               <Link href={`/explore?id=${currentUser.id}`}>
@@ -97,6 +95,17 @@ const Nav = ({ theme }) => (
               </Link>
             </li>
             <li>
+              <Link href={`/messages?id=${currentUser.id}`}>
+                <a>
+                  <FontAwesomeIcon
+                    icon={["fal", "paper-plane"]}
+                    color="var(--color-black)"
+                    size="lg"
+                  />
+                </a>
+              </Link>
+            </li>
+            <li>
               <Link href={`/user?id=${currentUser.id}`}>
                 <a>
                   <FontAwesomeIcon
@@ -107,18 +116,18 @@ const Nav = ({ theme }) => (
                 </a>
               </Link>
             </li>
-            <li>
-              <Link href="/upload">
-                <UploadAnchor>
-                  <UploadIcon
-                    icon={["fal", "plus"]}
-                    color="var(--color-white)"
-                    size="lg"
-                  />
-                </UploadAnchor>
-              </Link>
-            </li>
           </NavActions>
+          <Upload>
+            <Link href="/upload">
+              <a>
+                <FontAwesomeIcon
+                  icon={["fal", "camera"]}
+                  color="var(--color-black)"
+                  size="lg"
+                />
+              </a>
+            </Link>
+          </Upload>
         </Wrapper>
       ) : null
     }
