@@ -8,7 +8,7 @@ const Wrapper = styled.div`
   grid-template-columns: minmax(auto, 614px);
   justify-content: center;
   grid-row-gap: var(--spacing-medium);
-  padding: 60px var(--spacing-medium) var(--spacing-medium) var(--spacing-medium);
+  padding: var(--padding-page-wrap);
   h1 {
     margin: 0;
     font-size: 2.2rem;

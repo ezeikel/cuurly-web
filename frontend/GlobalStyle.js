@@ -28,6 +28,8 @@ export default createGlobalStyle`
   --spacing-large: 32px;
   --spacing-huge: 64px;
   --spacing-gargantuan: 128px;
+
+  --padding-page-wrap: 60px var(--spacing-medium) var(--spacing-medium) var(--spacing-medium);
   /* Font */
   --default-font-family: 'Source Sans Pro', sans-serif;
   --heading-font-family: 'Poppins', sans-serif;
