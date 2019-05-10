@@ -9,10 +9,26 @@ export default class MyDocument extends Document {
     return { ...page, styleTags };
   }
 
+  setGoogleAnalyticsTags() {
+    return {
+      __html: `
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-139930047-1');
+      `
+    };
+  }
+
   render() {
     return (
       <html>
-        <Head>{this.props.styleTags}</Head>
+        <Head>
+          {this.props.styleTags}
+          {/* Global site tag (gtag.js) - Google Analytics */}
+          <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139930047-1" />
+          <script dangerouslySetInnerHTML={this.setGoogleAnalyticsTags()} />
+        </Head>
         <body>
           <Main />
           <NextScript />
