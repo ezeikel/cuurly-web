@@ -5,10 +5,10 @@ import Post from '../components/Post';
 
 const Wrapper = styled.div`
   display: grid;
-  grid-template-columns: 614px;
+  grid-template-columns: minmax(auto, 614px);
   justify-content: center;
   grid-row-gap: var(--spacing-medium);
-  padding: 60px var(--spacing-medium) var(--spacing-medium) var(--spacing-medium);
+  padding: var(--padding-page-wrap);
   h1 {
     margin: 0;
     font-size: 2.2rem;

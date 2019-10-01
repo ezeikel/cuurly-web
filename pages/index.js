@@ -10,6 +10,7 @@ const Wrapper = styled.div`
   display: grid;
   justify-items: center;
   grid-row-gap: var(--spacing-medium);
+  padding: var(--padding-page-wrap);
 `;
 
 const Switch = styled.span`

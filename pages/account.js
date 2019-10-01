@@ -4,6 +4,7 @@ import Account from '../components/Account';
 
 const Wrapper = styled.article`
   display: grid;
+  padding: var(--padding-page-wrap);
 `;
 
 const AccountPage = ({ query }) => {
