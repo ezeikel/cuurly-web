@@ -1,10 +1,10 @@
-import Link from 'next/link';
-import styled from 'styled-components';
+import Link from "next/link";
+import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import CurrentUser from './CurrentUser';
-import Search from './Search';
-import LogoImage from './LogoImage';
-import LogoText from './LogoText';
+import CurrentUser from "./CurrentUser";
+import Search from "./Search";
+import LogoImage from "./LogoImage";
+import LogoText from "./LogoText";
 
 const Wrapper = styled.nav`
   width: 100%;
@@ -18,7 +18,7 @@ const Wrapper = styled.nav`
   align-content: center;
   justify-items: center;
   padding: var(--spacing-medium);
-  @media(min-width: 736px) {
+  @media (min-width: 736px) {
     grid-template-columns: auto 4fr auto 1fr;
   }
 `;
@@ -30,7 +30,7 @@ const NavActions = styled.ul`
   align-items: center;
   justify-items: center;
   font-size: 1.8rem;
-  @media(min-width: 736px) {
+  @media (min-width: 736px) {
     grid-column-gap: var(--spacing-large);
   }
 `;
@@ -51,10 +51,9 @@ const LogoWrapper = styled.div`
 
 const StyledSearch = styled(Search)`
   display: none;
-  @media(min-width: 736px) {
-    display: block
+  @media (min-width: 736px) {
+    display: block;
   }
-
 `;
 
 const Upload = styled.div`
@@ -62,13 +61,12 @@ const Upload = styled.div`
   justify-self: end;
 `;
 
-const UploadIcon = styled(FontAwesomeIcon)`
-`;
+const UploadIcon = styled(FontAwesomeIcon)``;
 
 const Nav = ({ theme }) => (
   <CurrentUser>
-    {({ data: { currentUser } }) =>
-      currentUser ? (
+    {({ data }) =>
+      data && data.currentUser ? (
         <Wrapper theme={theme}>
           <LogoWrapper>
             <Link href={`/`}>
@@ -85,7 +83,7 @@ const Nav = ({ theme }) => (
           <StyledSearch />
           <NavActions>
             <li>
-              <Link href={`/explore?id=${currentUser.id}`}>
+              <Link href={`/explore?id=${data.currentUser.id}`}>
                 <a>
                   <FontAwesomeIcon
                     icon={["fal", "compass"]}
@@ -96,7 +94,7 @@ const Nav = ({ theme }) => (
               </Link>
             </li>
             <li>
-              <Link href={`/notifications?id=${currentUser.id}`}>
+              <Link href={`/notifications?id=${data.currentUser.id}`}>
                 <a>
                   <FontAwesomeIcon
                     icon={["fal", "bell"]}
@@ -107,7 +105,7 @@ const Nav = ({ theme }) => (
               </Link>
             </li>
             <li>
-              <Link href={`/messages?id=${currentUser.id}`}>
+              <Link href={`/messages?id=${data.currentUser.id}`}>
                 <a>
                   <FontAwesomeIcon
                     icon={["fal", "paper-plane"]}
@@ -118,7 +116,7 @@ const Nav = ({ theme }) => (
               </Link>
             </li>
             <li>
-              <Link href={`/user?id=${currentUser.id}`}>
+              <Link href={`/user?id=${data.currentUser.id}`}>
                 <a>
                   <FontAwesomeIcon
                     icon={["fal", "user"]}

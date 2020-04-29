@@ -1,19 +1,21 @@
-import { useState, Fragment } from 'react';
+import { useState, Fragment } from "react";
 import Link from "next/link";
-import { Query } from 'react-apollo';
+import { Query } from "react-apollo";
 import styled from "styled-components";
-import { SINGLE_POST_QUERY } from '../apollo/queries';
-import LikeButton from './LikeButton';
-import PostComment from './PostComment';
-import CommentList from './styles/CommentList';
-import Comment from './Comment';
-import DeletePost from './DeletePost';
-import formatDistance from 'date-fns/formatDistance';
+import { SINGLE_POST_QUERY } from "../apollo/queries";
+import LikeButton from "./LikeButton";
+import PostComment from "./PostComment";
+import CommentList from "./styles/CommentList";
+import Comment from "./Comment";
+import DeletePost from "./DeletePost";
+import formatDistance from "date-fns/formatDistance";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Modal from 'react-modal';
-import CurrentUser from './CurrentUser';
+import Modal from "react-modal";
+import CurrentUser from "./CurrentUser";
 
-const BLANK_PROFILE_PICTURE = 'https://instagram.fbho1-1.fna.fbcdn.net/vp/65547464af3e7b33703032d5b5fb5232/5D0566F1/t51.2885-19/44884218_345707102882519_2446069589734326272_n.jpg?_nc_ht=instagram.fbho1-1.fna.fbcdn.net';
+// TODO: This seems to be erroring. Fix it/ replace with a local blank photo
+const BLANK_PROFILE_PICTURE =
+  "https://instagram.fbho1-1.fna.fbcdn.net/vp/65547464af3e7b33703032d5b5fb5232/5D0566F1/t51.2885-19/44884218_345707102882519_2446069589734326272_n.jpg?_nc_ht=instagram.fbho1-1.fna.fbcdn.net";
 
 const Wrapper = styled.article`
   display: grid;
@@ -106,16 +108,13 @@ const AddComment = styled.section`
 `;
 
 const ReactModalAdapter = ({ className, modalClassName, ...props }) => (
-  <Modal
-    className={modalClassName}
-    portalClassName={className}
-    {...props}
-  />
+  <Modal className={modalClassName} portalClassName={className} {...props} />
 );
 
-const StyledModal = styled(ReactModalAdapter).attrs({ //https://github.com/styled-components/styled-components/issues/1494
-  overlayClassName: 'overlay',
-  modalClassName: 'modal'
+const StyledModal = styled(ReactModalAdapter).attrs({
+  //https://github.com/styled-components/styled-components/issues/1494
+  overlayClassName: "overlay",
+  modalClassName: "modal",
 })`
   /* Portal styles here (though usually you will have none) */
   .overlay {
@@ -124,7 +123,7 @@ const StyledModal = styled(ReactModalAdapter).attrs({ //https://github.com/style
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0,0,0, 0.5);
+    background: rgba(0, 0, 0, 0.5);
     display: grid;
     place-items: center;
   }
@@ -140,8 +139,8 @@ const StyledModal = styled(ReactModalAdapter).attrs({ //https://github.com/style
   }
 `;
 
-if (typeof (window) !== 'undefined') {
-  Modal.setAppElement('body');
+if (typeof window !== "undefined") {
+  Modal.setAppElement("body");
 }
 
 const ModalBody = styled.div`
@@ -162,17 +161,21 @@ const PostAction = styled.li`
   & + li {
     border-top: 1px solid #efefef;
   }
-  span  {
+  span {
     cursor: pointer;
-  ${({ actionType }) => actionType === 'negative' ?
-  `
+    ${({ actionType }) =>
+      actionType === "negative"
+        ? `
     color: var(--color-red);
-  ` : null }
-  ${({ disabled }) => disabled ?
   `
+        : null}
+    ${({ disabled }) =>
+      disabled
+        ? `
     pointer-events: none;
     opacity: 0.3;
-  ` : null }
+  `
+        : null}
   }
 `;
 
@@ -188,116 +191,141 @@ const Post = ({ id }) => {
 
   return (
     <CurrentUser>
-      {({ data: { currentUser } }) => (
+      {({ data }) => (
         <Query query={SINGLE_POST_QUERY} variables={{ id }}>
-          {({ data: { post }, error, loading }) => {
+          {({ data, error, loading }) => {
             if (loading) return <p>Loading...</p>;
             if (error) return <p>Error: {error.message}</p>;
 
-            const isCurrentUsersPost =  currentUser && currentUser.id === post.author.id;
+            const isCurrentUsersPost =
+              data.currentUser && data.currentUser.id === data.post.author.id;
 
             return (
               <Wrapper>
                 <PostHeader>
                   <Photo>
-                    <img src={post.author.profilePicture && post.author.profilePicture.url.replace('/upload', '/upload/w_30,h_30,c_lfill,g_face,dpr_2.0') || BLANK_PROFILE_PICTURE } />
+                    <img
+                      src={
+                        (data.post.author.profilePicture &&
+                          data.post.author.profilePicture.url.replace(
+                            "/upload",
+                            "/upload/w_30,h_30,c_lfill,g_face,dpr_2.0"
+                          )) ||
+                        BLANK_PROFILE_PICTURE
+                      }
+                    />
                   </Photo>
                   <Details>
-                    <Username>{post.author.username}</Username>
-                    <Location>Random post location</Location>
+                    <Username>{data.post.author.username}</Username>
+                    <Location>Random data.post location</Location>
                   </Details>
-                  <StyledFontAwesomeIcon onClick={openModal} icon={["far", "ellipsis-h"]} color="var(--color-black)" size="lg" />
+                  <StyledFontAwesomeIcon
+                    onClick={openModal}
+                    icon={["far", "ellipsis-h"]}
+                    color="var(--color-black)"
+                    size="lg"
+                  />
                   <StyledModal
                     isOpen={modalIsOpen}
                     onRequestClose={closeModal}
                     contentLabel="Post Actions"
                   >
-                  <ModalBody>
-                    <PostActions>
-                      <PostAction>
-                        <span>Go to Post</span>
-                      </PostAction>
-                      {
-                        isCurrentUsersPost ? (
-                        <Fragment>
-                          <PostAction disabled={true}>
-                            <span>Archive</span>
+                    <ModalBody>
+                      <PostActions>
+                        <PostAction>
+                          <span>Go to Post</span>
+                        </PostAction>
+                        {isCurrentUsersPost ? (
+                          <Fragment>
+                            <PostAction disabled={true}>
+                              <span>Archive</span>
+                            </PostAction>
+                            <PostAction disabled={true}>
+                              <span>Edit</span>
+                            </PostAction>
+                          </Fragment>
+                        ) : null}
+                        <PostAction disabled={true}>
+                          <span>Copy Link</span>
+                        </PostAction>
+                        <PostAction disabled={true}>
+                          <span>Share</span>
+                        </PostAction>
+                        {isCurrentUsersPost ? (
+                          <PostAction actionType="negative">
+                            <DeletePost post={post} />
                           </PostAction>
-                          <PostAction disabled={true}>
-                            <span>Edit</span>
-                          </PostAction>
-                        </Fragment>
-                        ) : null
-                      }
-                      <PostAction disabled={true}>
-                        <span>Copy Link</span>
-                      </PostAction>
-                      <PostAction disabled={true}>
-                        <span>Share</span>
-                      </PostAction>
-                      {
-                        isCurrentUsersPost ?
-                        <PostAction actionType="negative">
-                          <DeletePost post={post} />
-                        </PostAction> : null
-                      }
-                      {
-                        !isCurrentUsersPost ? (
+                        ) : null}
+                        {!isCurrentUsersPost ? (
                           <Fragment>
                             <PostAction disabled={true}>
                               <span>Mute</span>
                             </PostAction>
-                              < PostAction disabled={true} actionType = "negative">
+                            <PostAction disabled={true} actionType="negative">
                               <span>Report</span>
                             </PostAction>
                             <PostAction actionType="negative">
                               <span>Unfollow</span>
                             </PostAction>
                           </Fragment>
-                        ) : null
-                      }
-                      <PostAction>
-                        <span onClick={closeModal}>Cancel</span>
-                      </PostAction>
-                    </PostActions>
-                  </ModalBody>
+                        ) : null}
+                        <PostAction>
+                          <span onClick={closeModal}>Cancel</span>
+                        </PostAction>
+                      </PostActions>
+                    </ModalBody>
                   </StyledModal>
                 </PostHeader>
                 <PostContent>
-                  <img src={post.content.url.replace('/upload', '/upload/w_614,ar_4:5,c_limit,dpr_2.0') || BLANK_PROFILE_PICTURE} />
+                  <img
+                    src={
+                      data.post.content.url.replace(
+                        "/upload",
+                        "/upload/w_614,ar_4:5,c_limit,dpr_2.0"
+                      ) || BLANK_PROFILE_PICTURE
+                    }
+                  />
                 </PostContent>
                 <PostInteraction>
-                  {
-                    currentUser ? (
-                      <Buttons>
-                        <LikeButton postId={id} postLikes={post.likes} />
-                      </Buttons>
-                    ) : null
-                  }
-                  {post.likes.length ? <Likes>{post.likes.length} like{post.likes.length > 1 ? 's' : null}</Likes> : null }
+                  {data.currentUser ? (
+                    <Buttons>
+                      <LikeButton postId={id} postLikes={data.post.likes} />
+                    </Buttons>
+                  ) : null}
+                  {data.post.likes.length ? (
+                    <Likes>
+                      {data.post.likes.length} like
+                      {data.post.likes.length > 1 ? "s" : null}
+                    </Likes>
+                  ) : null}
                   <Caption>
-                    <Link href={`/user?id=${post.author.id}`}>
-                      <a>{post.author.username}</a>
+                    <Link href={`/user?id=${data.post.author.id}`}>
+                      <a>{data.post.author.username}</a>
                     </Link>
-                    {post.caption}
+                    {data.post.caption}
                   </Caption>
                   <CommentList>
-                    {post.comments.map(comment => (
-                      <Comment key={comment.id} comment={comment} post={post} />
+                    {data.post.comments.map((comment) => (
+                      <Comment
+                        key={comment.id}
+                        comment={comment}
+                        post={data.post}
+                      />
                     ))}
                   </CommentList>
                   <PostTime>
-                    {formatDistance(post.createdAt, new Date(), {
-                      includeSeconds: true
-                    })} ago
+                    {formatDistance(data.post.createdAt, new Date(), {
+                      includeSeconds: true,
+                    })}{" "}
+                    ago
                   </PostTime>
-                  {
-                    currentUser ? (
-                      <AddComment>
-                        <PostComment postId={post.id} />
-                      </AddComment>
-                    ) : <span>Log in to comment.</span>
-                  }
+                  {data.currentUser ? (
+                    <AddComment>
+                      <PostComment postId={data.post.id} />
+                    </AddComment>
+                  ) : (
+                    <span>Log in to comment.</span>
+                  )}
                 </PostInteraction>
               </Wrapper>
             );
@@ -306,6 +334,6 @@ const Post = ({ id }) => {
       )}
     </CurrentUser>
   );
-}
+};
 
 export default Post;

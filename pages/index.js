@@ -1,10 +1,10 @@
-import Link from 'next/link';
-import { withRouter } from 'next/router';
-import styled from 'styled-components';
-import Signup from '../components/Signup';
-import CurrentUser from '../components/CurrentUser';
-import LogoText from '../components/LogoText';
-import FormWrapper from '../components/styles/FormWrapper';
+import Link from "next/link";
+import { withRouter } from "next/router";
+import styled from "styled-components";
+import Signup from "../components/Signup";
+import CurrentUser from "../components/CurrentUser";
+import LogoText from "../components/LogoText";
+import FormWrapper from "../components/styles/FormWrapper";
 
 const Wrapper = styled.div`
   display: grid;
@@ -32,11 +32,10 @@ const Switch = styled.span`
 
 const Home = ({ router }) => (
   <CurrentUser>
-    {({ data: { currentUser } }) => {
-
-      if (currentUser) {
+    {({ data }) => {
+      if (data && data.currentUser) {
         // if logged in redirect to user feed
-        router.push(`/feed?id=${currentUser.id}`);
+        router.push(`/feed?id=${data.currentUser.id}`);
         return null;
       }
 
@@ -46,9 +45,14 @@ const Home = ({ router }) => (
             <LogoText fillColor="var(--color-black)" />
             <Signup />
           </FormWrapper>
-          <Switch>Have an account? <Link href="/signin"><a>Sign in</a></Link></Switch>
-      </Wrapper>
-      )
+          <Switch>
+            Have an account?{" "}
+            <Link href="/signin">
+              <a>Sign in</a>
+            </Link>
+          </Switch>
+        </Wrapper>
+      );
     }}
   </CurrentUser>
 );

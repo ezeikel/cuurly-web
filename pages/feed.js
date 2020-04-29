@@ -1,7 +1,7 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 import { Query } from "react-apollo";
 import { FEED_QUERY } from "../apollo/queries";
-import Post from '../components/Post';
+import Post from "../components/Post";
 
 const Wrapper = styled.div`
   display: grid;
@@ -16,19 +16,15 @@ const Wrapper = styled.div`
 `;
 
 const FeedPage = ({ query }) => (
-  <Query query={ FEED_QUERY } variables={{ id: query.id }}>
-    {({ data: { feed }, error, loading }) => {
+  <Query query={FEED_QUERY} variables={{ id: query.id }}>
+    {({ data, error, loading }) => {
       if (loading) return <p>Loading...</p>;
       if (error) return <p>Error: {error.message}</p>;
 
       return (
-      <Wrapper>
-        {
-          feed.map(post => (
-            <Post key={post.id} id={post.id}/>
-          ))
-        }
-      </Wrapper>
+        <Wrapper>
+          {data && data.feed.map((post) => <Post key={post.id} id={post.id} />)}
+        </Wrapper>
       );
     }}
   </Query>
