@@ -1,4 +1,3 @@
-import React from 'react';
 import { withRouter } from 'next/router';
 import styled, { ThemeProvider } from 'styled-components';
 import Header from './Header';

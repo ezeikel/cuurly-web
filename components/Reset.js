@@ -1,4 +1,3 @@
-import React from 'react';
 import { withRouter } from 'next/router';
 import { Mutation } from 'react-apollo';
 import { Formik, Field, ErrorMessage } from 'formik';
