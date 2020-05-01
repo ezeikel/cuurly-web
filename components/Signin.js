@@ -1,6 +1,6 @@
-import React, { Component, Fragment } from "react";
+import { Fragment } from "react";
 import Link from "next/link";
-import { Mutation } from "react-apollo";
+import { useMutation } from "@apollo/react-hooks";
 import { Formik, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Spinner from "./Spinner";
@@ -25,108 +25,101 @@ const StyledForgotPasswordLink = styled.a`
   cursor: pointer;
 `;
 
-class Signin extends Component {
-  render() {
-    const { router } = this.props;
+const Signin = ({ router }) => {
+  const [signin, { data, loading, error }] = useMutation(SIGNIN_MUTATION, {
+    onCompleted({ signin: { id } }) {
+      router.push(`/feed?id=${id}`);
+    },
+    update(cache, { data: { signin } }) {
+      // manually writing to cache to fix homepage conditional redirect not working
+      cache.writeQuery({
+        query: CURRENT_USER_QUERY,
+        data: {
+          currentUser: {
+            ...signin,
+            __typename: "CurrentUser",
+          },
+        },
+      });
+    },
+    refetchQueries: [{ query: CURRENT_USER_QUERY }],
+  });
 
-    return (
-      <Mutation
-        mutation={SIGNIN_MUTATION}
-        refetchQueries={[{ query: CURRENT_USER_QUERY }]}
-        onCompleted={({ signin: { id } }) => router.push(`/feed?id=${id}`)}
-        update={(cache, { data: { signin } }) => {
-          debugger;
-          // manually writing to cache to fix homepage conditional redirect not working
-          cache.writeQuery({
-            query: CURRENT_USER_QUERY,
-            data: {
-              currentUser: {
-                ...signin,
-                __typename: "CurrentUser",
-              },
-            },
-          });
+  debugger;
+
+  return (
+    <Fragment>
+      <Formik
+        initialValues={{ username: "", password: "" }}
+        validationSchema={SigninSchema}
+        onSubmit={async (values, { setSubmitting, setErrors, resetForm }) => {
+          try {
+            await signin({ variables: values });
+            resetForm();
+          } catch (e) {
+            debugger;
+            const formattedErrors = formatAPIErrors(e);
+            setErrors(formattedErrors);
+          }
+
+          setSubmitting(false);
         }}
       >
-        {(signin, { error, loading }) => (
-          <Fragment>
-            <Formik
-              initialValues={{ username: "", password: "" }}
-              validationSchema={SigninSchema}
-              onSubmit={async (
-                values,
-                { setSubmitting, setErrors, resetForm }
-              ) => {
-                try {
-                  await signin({ variables: values });
-                  resetForm();
-                } catch (e) {
-                  debugger;
-                  const formattedErrors = formatAPIErrors(e);
-                  setErrors(formattedErrors);
-                }
-
-                setSubmitting(false);
-              }}
+        {({ isSubmitting, errors, touched }) => (
+          <Form>
+            <InputWrapper>
+              <Input>
+                <Field
+                  name="username"
+                  render={({ field }) => (
+                    <input
+                      className={field.value.length > 0 ? "dirty" : null}
+                      {...field}
+                    />
+                  )}
+                />
+                <label>Username</label>
+              </Input>
+            </InputWrapper>
+            <InputWrapper>
+              <Input>
+                <Field
+                  name="password"
+                  render={({ field }) => (
+                    <input
+                      className={field.value.length > 0 ? "dirty" : null}
+                      {...field}
+                      type="password"
+                    />
+                  )}
+                />
+                <label>Password</label>
+              </Input>
+            </InputWrapper>
+            <FormErrors
+              errors={
+                (touched.username && errors.username) ||
+                (touched.password && errors.password)
+              }
             >
-              {({ isSubmitting, errors, touched }) => (
-                <Form>
-                  <InputWrapper>
-                    <Input>
-                      <Field
-                        name="username"
-                        render={({ field }) => (
-                          <input
-                            className={field.value.length > 0 ? "dirty" : null}
-                            {...field}
-                          />
-                        )}
-                      />
-                      <label>Username</label>
-                    </Input>
-                  </InputWrapper>
-                  <InputWrapper>
-                    <Input>
-                      <Field
-                        name="password"
-                        render={({ field }) => (
-                          <input
-                            className={field.value.length > 0 ? "dirty" : null}
-                            {...field}
-                            type="password"
-                          />
-                        )}
-                      />
-                      <label>Password</label>
-                    </Input>
-                  </InputWrapper>
-                  <FormErrors
-                    errors={
-                      (touched.username && errors.username) ||
-                      (touched.password && errors.password)
-                    }
-                  >
-                    <ErrorMessage name="username" component="div" />
-                    <ErrorMessage name="password" component="div" />
-                  </FormErrors>
-                  <SubmitButton type="submit" disabled={isSubmitting}>
-                    Sign In {isSubmitting ? <Spinner /> : null}
-                  </SubmitButton>
-                  <Link href="/request-reset">
-                    <StyledForgotPasswordLink>
-                      Forgot password?
-                    </StyledForgotPasswordLink>
-                  </Link>
-                </Form>
-              )}
-            </Formik>
-            {loading && console.log("loading...")}
-            {error && console.error({ error })}
-          </Fragment>
+              <ErrorMessage name="username" component="div" />
+              <ErrorMessage name="password" component="div" />
+            </FormErrors>
+            <SubmitButton type="submit" disabled={isSubmitting}>
+              Sign In {isSubmitting ? <Spinner /> : null}
+            </SubmitButton>
+            <Link href="/request-reset">
+              <StyledForgotPasswordLink>
+                Forgot password?
+              </StyledForgotPasswordLink>
+            </Link>
+          </Form>
         )}
-      </Mutation>
-    );
-  }
-}
+      </Formik>
+      {loading && console.log("loading...")}
+      {error && console.error({ error })}
+    </Fragment>
+  );
+};
 
 export default withRouter(Signin);
