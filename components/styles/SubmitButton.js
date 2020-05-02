@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import Button from './Button';
+import styled from "styled-components";
+import Button from "./Button";
 
 const SubmitButton = styled(Button)`
   background-color: #3897f0;
@@ -7,6 +7,7 @@ const SubmitButton = styled(Button)`
   border-radius: 4px;
   color: #fff;
   position: relative;
+  margin-top: 32px;
 `;
 
 export default SubmitButton;

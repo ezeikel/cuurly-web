@@ -39,7 +39,7 @@
     "downshift": "^3.1.12",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
-    "formik": "^1.5.1",
+    "formik": "^2.1.4",
     "graphql": "^15.0.0",
     "graphql-tag": "^2.10.3",
     "lodash.debounce": "^4.0.8",
@@ -132,7 +132,8 @@
             "styled-components",
             {
               "ssr": true,
-              "displayName": true
+              "displayName": true,
+              "preprocess": false
             }
           ]
         ]

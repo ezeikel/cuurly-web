@@ -1,18 +1,14 @@
-import { Fragment } from "react";
 import Link from "next/link";
 import { useMutation } from "@apollo/react-hooks";
-import { Formik, Field, ErrorMessage } from "formik";
+import { Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Spinner from "./Spinner";
 import { CURRENT_USER_QUERY, SIGNIN_MUTATION } from "../apollo/queries";
 import { withRouter } from "next/router";
 import styled from "styled-components";
 import formatAPIErrors from "../utils/formatAPIErrors";
-import Form from "./styles/Form";
-import InputWrapper from "./styles/InputWrapper";
-import Input from "./styles/Input";
-import SubmitButton from "./styles/SubmitButton";
-import FormErrors from "./styles/FormErrors";
+import { SubmitButton, FormErrors } from "./styles";
+import TextInput from "./TextInput";
 
 const SigninSchema = Yup.object().shape({
   username: Yup.string().required("Please enter a Username."),
@@ -20,9 +16,18 @@ const SigninSchema = Yup.object().shape({
 });
 
 const StyledForgotPasswordLink = styled.a`
-  justify-self: center;
+  align-self: center;
   color: #003569;
   cursor: pointer;
+  margin-top: 16px;
+`;
+
+const StyledForm = styled(Form)`
+  display: flex;
+  flex-direction: column;
+  > div + input {
+    margin-top: 16px;
+  }
 `;
 
 const Signin = ({ router }) => {
@@ -45,10 +50,8 @@ const Signin = ({ router }) => {
     refetchQueries: [{ query: CURRENT_USER_QUERY }],
   });
 
-  debugger;
-
   return (
-    <Fragment>
+    <>
       <Formik
         initialValues={{ username: "", password: "" }}
         validationSchema={SigninSchema}
@@ -57,7 +60,6 @@ const Signin = ({ router }) => {
             await signin({ variables: values });
             resetForm();
           } catch (e) {
-            debugger;
             const formattedErrors = formatAPIErrors(e);
             setErrors(formattedErrors);
           }
@@ -65,37 +67,10 @@ const Signin = ({ router }) => {
           setSubmitting(false);
         }}
       >
-        {({ isSubmitting, errors, touched }) => (
-          <Form>
-            <InputWrapper>
-              <Input>
-                <Field
-                  name="username"
-                  render={({ field }) => (
-                    <input
-                      className={field.value.length > 0 ? "dirty" : null}
-                      {...field}
-                    />
-                  )}
-                />
-                <label>Username</label>
-              </Input>
-            </InputWrapper>
-            <InputWrapper>
-              <Input>
-                <Field
-                  name="password"
-                  render={({ field }) => (
-                    <input
-                      className={field.value.length > 0 ? "dirty" : null}
-                      {...field}
-                      type="password"
-                    />
-                  )}
-                />
-                <label>Password</label>
-              </Input>
-            </InputWrapper>
+        {({ isSubmitting, touched, errors }) => (
+          <StyledForm>
+            <TextInput label="Username" name="username" type="text" />
+            <TextInput label="Password" name="password" type="text" />
             <FormErrors
               errors={
                 (touched.username && errors.username) ||
@@ -113,12 +88,12 @@ const Signin = ({ router }) => {
                 Forgot password?
               </StyledForgotPasswordLink>
             </Link>
-          </Form>
+          </StyledForm>
         )}
       </Formik>
       {loading && console.log("loading...")}
       {error && console.error({ error })}
-    </Fragment>
+    </>
   );
 };
 
