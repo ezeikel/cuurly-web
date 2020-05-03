@@ -1,10 +1,11 @@
 import Link from "next/link";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import CurrentUser from "./CurrentUser";
 import Search from "./Search";
 import LogoImage from "./LogoImage";
 import LogoText from "./LogoText";
+import { useQuery } from "react-apollo";
+import { CURRENT_USER_QUERY } from "../apollo/queries";
 
 const Wrapper = styled.nav`
   width: 100%;
@@ -61,87 +62,89 @@ const Upload = styled.div`
   justify-self: end;
 `;
 
-const UploadIcon = styled(FontAwesomeIcon)``;
+const Nav = ({ theme }) => {
+  const {
+    loading,
+    error,
+    data: { currentUser } = {}, // setting default value when destructing as data is undefined when loading - https://github.com/apollographql/react-apollo/issues/3323#issuecomment-523430331
+  } = useQuery(CURRENT_USER_QUERY);
 
-const Nav = ({ theme }) => (
-  <CurrentUser>
-    {({ data }) =>
-      data && data.currentUser ? (
-        <Wrapper theme={theme}>
-          <LogoWrapper>
-            <Link href={`/`}>
-              <a>
-                <LogoImage fillColor="var(--color-black)" />
-              </a>
-            </Link>
-            <Link href={`/`}>
-              <a>
-                <LogoText fillColor="var(--color-black)" />
-              </a>
-            </Link>
-          </LogoWrapper>
-          <StyledSearch />
-          <NavActions>
-            <li>
-              <Link href={`/explore?id=${data.currentUser.id}`}>
-                <a>
-                  <FontAwesomeIcon
-                    icon={["fal", "compass"]}
-                    color="var(--color-black)"
-                    size="lg"
-                  />
-                </a>
-              </Link>
-            </li>
-            <li>
-              <Link href={`/notifications?id=${data.currentUser.id}`}>
-                <a>
-                  <FontAwesomeIcon
-                    icon={["fal", "bell"]}
-                    color="var(--color-black)"
-                    size="lg"
-                  />
-                </a>
-              </Link>
-            </li>
-            <li>
-              <Link href={`/messages?id=${data.currentUser.id}`}>
-                <a>
-                  <FontAwesomeIcon
-                    icon={["fal", "paper-plane"]}
-                    color="var(--color-black)"
-                    size="lg"
-                  />
-                </a>
-              </Link>
-            </li>
-            <li>
-              <Link href={`/user?id=${data.currentUser.id}`}>
-                <a>
-                  <FontAwesomeIcon
-                    icon={["fal", "user"]}
-                    color="var(--color-black)"
-                    size="lg"
-                  />
-                </a>
-              </Link>
-            </li>
-          </NavActions>
-          <Upload>
-            <Link href="/upload">
-              <a>
-                <FontAwesomeIcon
-                  icon={["fal", "arrow-to-top"]}
-                  color="var(--color-black)"
-                  size="lg"
-                />
-              </a>
-            </Link>
-          </Upload>
-        </Wrapper>
-      ) : null
-    }
-  </CurrentUser>
-);
+  if (!currentUser) return null;
+
+  return (
+    <Wrapper theme={theme}>
+      <LogoWrapper>
+        <Link href={`/`}>
+          <a>
+            <LogoImage fillColor="var(--color-black)" />
+          </a>
+        </Link>
+        <Link href={`/`}>
+          <a>
+            <LogoText fillColor="var(--color-black)" />
+          </a>
+        </Link>
+      </LogoWrapper>
+      <StyledSearch />
+      <NavActions>
+        <li>
+          <Link href={`/explore?id=${currentUser.id}`}>
+            <a>
+              <FontAwesomeIcon
+                icon={["fal", "compass"]}
+                color="var(--color-black)"
+                size="lg"
+              />
+            </a>
+          </Link>
+        </li>
+        <li>
+          <Link href={`/notifications?id=${currentUser.id}`}>
+            <a>
+              <FontAwesomeIcon
+                icon={["fal", "bell"]}
+                color="var(--color-black)"
+                size="lg"
+              />
+            </a>
+          </Link>
+        </li>
+        <li>
+          <Link href={`/messages?id=${currentUser.id}`}>
+            <a>
+              <FontAwesomeIcon
+                icon={["fal", "paper-plane"]}
+                color="var(--color-black)"
+                size="lg"
+              />
+            </a>
+          </Link>
+        </li>
+        <li>
+          <Link href={`/user?id=${currentUser.id}`}>
+            <a>
+              <FontAwesomeIcon
+                icon={["fal", "user"]}
+                color="var(--color-black)"
+                size="lg"
+              />
+            </a>
+          </Link>
+        </li>
+      </NavActions>
+      <Upload>
+        <Link href="/upload">
+          <a>
+            <FontAwesomeIcon
+              icon={["fal", "arrow-to-top"]}
+              color="var(--color-black)"
+              size="lg"
+            />
+          </a>
+        </Link>
+      </Upload>
+    </Wrapper>
+  );
+};
 
 export default Nav;

@@ -1,15 +1,14 @@
-import { Component } from 'react';
-import Router from 'next/router';
-import { ApolloConsumer } from 'react-apollo';
-import styled, { keyframes } from 'styled-components';
-import debounce from 'lodash.debounce';
-import Downshift, { resetIdCounter } from 'downshift';
-import { SEARCH_USERS_QUERY } from '../apollo/queries';
+import { Component } from "react";
+import Router from "next/router";
+import { ApolloConsumer } from "react-apollo";
+import styled, { keyframes } from "styled-components";
+import debounce from "lodash.debounce";
+import Downshift, { resetIdCounter } from "downshift";
+import { SEARCH_USERS_QUERY } from "../apollo/queries";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import blankProfilePicture from "../utils/blankProfileImage";
 
-const BLANK_PROFILE_PICTURE = 'https://instagram.fbho1-1.fna.fbcdn.net/vp/65547464af3e7b33703032d5b5fb5232/5D0566F1/t51.2885-19/44884218_345707102882519_2446069589734326272_n.jpg?_nc_ht=instagram.fbho1-1.fna.fbcdn.net';
-
-const glow = keyframes `
+const glow = keyframes`
   from {
     box-shadow: 0 0 0px yellow;
   }
@@ -44,7 +43,7 @@ const ComboBox = styled.div`
 const DropDown = styled.div`
   position: absolute;
   z-index: 2;
-  border: 1px solid ${props => props.theme.lightgrey};
+  border: 1px solid ${(props) => props.theme.lightgrey};
   width: 215px;
 `;
 
@@ -53,8 +52,8 @@ const DropDownItem = styled.div`
   grid-template-columns: auto 1fr;
   grid-column-gap: var(--spacing-small);
   align-items: center;
-  border-bottom: 1px solid ${props => props.theme.lightgrey};
-  background: ${props => (props.highlighted ? '#f7f7f7' : 'white')};
+  border-bottom: 1px solid ${(props) => props.theme.lightgrey};
+  background: ${(props) => (props.highlighted ? "#f7f7f7" : "white")};
   padding: 8px 14px;
   transition: all 0.2s;
   font-size: 1.4rem;
@@ -95,41 +94,43 @@ const Name = styled.span`
 
 function routeToUser(user) {
   Router.push({
-    pathname: '/user',
+    pathname: "/user",
     query: {
-      id: user.id
-    }
+      id: user.id,
+    },
   });
 }
 
 class AutoComplete extends Component {
   state = {
     users: [],
-    loading: false
+    loading: false,
   };
 
   onChange = debounce(async (e, client) => {
-    const { target: { value } } = e;
+    const {
+      target: { value },
+    } = e;
 
     if (!value) return;
 
     // turn loading on
     this.setState({
-      loading: true
+      loading: true,
     });
 
     // manually query apollo client
     const res = await client.query({
       query: SEARCH_USERS_QUERY,
       variables: {
-        searchTerm: value
-      }
+        searchTerm: value,
+      },
     });
 
     this.setState({
       users: res.data.users,
-      loading: false
-    })
+      loading: false,
+    });
   }, 350);
 
   render() {
@@ -139,23 +140,30 @@ class AutoComplete extends Component {
       <SearchStyles className={this.props.className}>
         <Downshift
           onChange={routeToUser}
-          itemToString={user => (user === null ? '' : user.username)}
+          itemToString={(user) => (user === null ? "" : user.username)}
         >
-          {({ getInputProps, getItemProps, isOpen, inputValue, highlightedIndex, getRootProps }) => (
+          {({
+            getInputProps,
+            getItemProps,
+            isOpen,
+            inputValue,
+            highlightedIndex,
+            getRootProps,
+          }) => (
             <ComboBox {...getRootProps()}>
               <ApolloConsumer>
-                {client => (
+                {(client) => (
                   <input
                     {...getInputProps({
-                      type: 'search',
-                      placeholder: 'Search',
-                      id: 'search',
-                      className: this.state.loading ? 'loading' : '',
-                      onChange: e => {
+                      type: "search",
+                      placeholder: "Search",
+                      id: "search",
+                      className: this.state.loading ? "loading" : "",
+                      onChange: (e) => {
                         e.persist();
 
                         this.onChange(e, client);
-                      }
+                      },
                     })}
                   />
                 )}
@@ -168,36 +176,43 @@ class AutoComplete extends Component {
                       key={user.id}
                       highlighted={index === highlightedIndex}
                     >
-                    <UserPhoto>
-                      <img src={user.profilePicture && user.profilePicture.url.replace('/upload', '/upload/w_150,h_150,c_lfill,g_face,dpr_2.0') || BLANK_PROFILE_PICTURE} />
-                    </UserPhoto>
-                    <UserInfo>
-                      <Username>
-                        {user.username}
-                        {user.verified ?
-                          <FontAwesomeIcon icon={["fas", "badge-check"]} color="#3E9AED" size="sm" />
-                          : null
-                        }
-                      </Username>
-                      <Name>
-                        {user.name}
-                      </Name>
-
-                    </UserInfo>
+                      <UserPhoto>
+                        <img
+                          src={
+                            (user.profilePicture &&
+                              user.profilePicture.url.replace(
+                                "/upload",
+                                "/upload/w_150,h_150,c_lfill,g_face,dpr_2.0"
+                              )) ||
+                            blankProfilePicture()
+                          }
+                        />
+                      </UserPhoto>
+                      <UserInfo>
+                        <Username>
+                          {user.username}
+                          {user.verified ? (
+                            <FontAwesomeIcon
+                              icon={["fas", "badge-check"]}
+                              color="#3E9AED"
+                              size="sm"
+                            />
+                          ) : null}
+                        </Username>
+                        <Name>{user.name}</Name>
+                      </UserInfo>
                     </DropDownItem>
                   ))}
-                  {!this.state.users.length && !this.state.loading &&
-                    <DropDownItem>
-                      Nothing found for {inputValue}
-                    </DropDownItem>
-                  }
+                  {!this.state.users.length && !this.state.loading && (
+                    <DropDownItem>Nothing found for {inputValue}</DropDownItem>
+                  )}
                 </DropDown>
               )}
             </ComboBox>
           )}
         </Downshift>
       </SearchStyles>
-    )
+    );
   }
 }
 

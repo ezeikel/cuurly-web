@@ -1,7 +1,7 @@
-import gql from "graphql-tag"
+import gql from "graphql-tag";
 
 export const CURRENT_USER_QUERY = gql`
-  query {
+  query CURRENT_USER_QUERY {
     currentUser {
       id
       name
@@ -54,7 +54,7 @@ export const SINGLE_USER_QUERY = gql`
 `;
 
 export const USER_FOLLOWERS_QUERY = gql`
-  query USER_FOLLOWERS_QUERY ($id: ID!) {
+  query USER_FOLLOWERS_QUERY($id: ID!) {
     followers(id: $id) {
       id
       name
@@ -74,7 +74,7 @@ export const USER_FOLLOWERS_QUERY = gql`
 `;
 
 export const USER_FOLLOWING_QUERY = gql`
-  query USER_FOLLOWING_QUERY ($id: ID!) {
+  query USER_FOLLOWING_QUERY($id: ID!) {
     following(id: $id) {
       id
       name
@@ -146,11 +146,7 @@ export const EXPLORE_QUERY = gql`
 
 export const SEARCH_USERS_QUERY = gql`
   query SEARCH_USERS_QUERY($searchTerm: String!) {
-    users(
-      where: {
-        username_contains: $searchTerm,
-      }
-    ) {
+    users(where: { username_contains: $searchTerm }) {
       id
       username
       name
@@ -189,11 +185,11 @@ export const LIKED_POSTS_QUERY = gql`
 
 export const SIGNUP_MUTATION = gql`
   mutation SIGNUP_MUTATION(
-    $name: String!,
-    $username: String!,
-    $email: String!,
-    $password: String!,
-    ) {
+    $name: String!
+    $username: String!
+    $email: String!
+    $password: String!
+  ) {
     signup(
       name: $name
       username: $username
@@ -240,97 +236,114 @@ export const REQUEST_RESET_MUTATION = gql`
 `;
 
 export const RESET_MUTATION = gql`
-   mutation RESET_MUTATION($resetToken: String!, $password: String!, $confirmPassword: String!) {
-     resetPassword(resetToken: $resetToken, password: $password, confirmPassword: $confirmPassword) {
-       id
-       email
-       username
-       name
-       permissions
-     }
-   }
+  mutation RESET_MUTATION(
+    $resetToken: String!
+    $password: String!
+    $confirmPassword: String!
+  ) {
+    resetPassword(
+      resetToken: $resetToken
+      password: $password
+      confirmPassword: $confirmPassword
+    ) {
+      id
+      email
+      username
+      name
+      permissions
+    }
+  }
 `;
 
 export const CREATE_POST_MUTATION = gql`
-   mutation CREATE_POST_MUTATION (
-     $file: Upload!
-     $caption: String!
-   ) {
-     createPost (
-       file: $file
-       caption: $caption
-     ) {
-       id
-     }
-   }
+  mutation CREATE_POST_MUTATION($file: Upload!, $caption: String!) {
+    createPost(file: $file, caption: $caption) {
+      id
+    }
+  }
 `;
 
 export const DELETE_POST_MUTATION = gql`
-   mutation DELETE_POST_MUTATION (
-     $id: ID!
-     $publicId: String!
-   ) {
-     deletePost (
-       id: $id
-       publicId: $publicId
-     ) {
-       id
-     }
-   }
+  mutation DELETE_POST_MUTATION($id: ID!, $publicId: String!) {
+    deletePost(id: $id, publicId: $publicId) {
+      id
+    }
+  }
 `;
 
 export const FOLLOW_MUTATION = gql`
-   mutation FOLLOW_MUTATION ($id: ID!) {
-     follow (id: $id) {
-       id
-     }
-   }
-`
-;
+  mutation FOLLOW_MUTATION($id: ID!) {
+    follow(id: $id) {
+      id
+    }
+  }
+`;
 export const UNFOLLOW_MUTATION = gql`
-   mutation FOLLOW_MUTATION ($id: ID!) {
-     unfollow (id: $id) {
-       id
-     }
-   }
+  mutation FOLLOW_MUTATION($id: ID!) {
+    unfollow(id: $id) {
+      id
+    }
+  }
 `;
 
 export const LIKE_POST_MUTATION = gql`
-   mutation LIKE_POST_MUTATION ($id: ID!) {
-     likePost (id: $id) {
-       id
-     }
-   }
+  mutation LIKE_POST_MUTATION($id: ID!) {
+    likePost(id: $id) {
+      id
+    }
+  }
 `;
 
 export const UNLIKE_POST_MUTATION = gql`
-   mutation UNLIKE_POST_MUTATION ($id: ID!) {
-     unlikePost (id: $id) {
-       id
-     }
-   }
+  mutation UNLIKE_POST_MUTATION($id: ID!) {
+    unlikePost(id: $id) {
+      id
+    }
+  }
 `;
 
 export const ADD_COMMENT_MUTATION = gql`
-   mutation ADD_COMMENT_MUTATION ($id: ID!, $text: String!) {
-     addComment (id: $id, text: $text) {
-       id
-     }
-   }
+  mutation ADD_COMMENT_MUTATION($id: ID!, $text: String!) {
+    addComment(id: $id, text: $text) {
+      id
+    }
+  }
 `;
 
 export const DELETE_COMMENT_MUTATION = gql`
-   mutation DELETE_COMMENT_MUTATION ($id: ID!) {
-     deleteComment (id: $id) {
-       id
-     }
-   }
+  mutation DELETE_COMMENT_MUTATION($id: ID!) {
+    deleteComment(id: $id) {
+      id
+    }
+  }
 `;
 
 export const UPDATE_USER_MUTATION = gql`
-   mutation UPDATE_USER_MUTATION ($name: String, $username: String, $profilePicture: Upload, $website: String, $bio: String, $email: String, $phoneNumber: String, $gender: String, $oldPassword: String, $password: String) {
-     updateUser (name: $name, username: $username, profilePicture: $profilePicture, website: $website, bio: $bio, email: $email, phoneNumber: $phoneNumber, gender: $gender, oldPassword: $oldPassword, password: $password) {
-       id
-     }
-   }
+  mutation UPDATE_USER_MUTATION(
+    $name: String
+    $username: String
+    $profilePicture: Upload
+    $website: String
+    $bio: String
+    $email: String
+    $phoneNumber: String
+    $gender: String
+    $oldPassword: String
+    $password: String
+  ) {
+    updateUser(
+      name: $name
+      username: $username
+      profilePicture: $profilePicture
+      website: $website
+      bio: $bio
+      email: $email
+      phoneNumber: $phoneNumber
+      gender: $gender
+      oldPassword: $oldPassword
+      password: $password
+    ) {
+      id
+    }
+  }
 `;

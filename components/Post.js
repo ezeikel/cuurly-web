@@ -12,10 +12,7 @@ import formatDistance from "date-fns/formatDistance";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Modal from "react-modal";
 import CurrentUser from "./CurrentUser";
-
-// TODO: This seems to be erroring. Fix it/ replace with a local blank photo
-const BLANK_PROFILE_PICTURE =
-  "https://instagram.fbho1-1.fna.fbcdn.net/vp/65547464af3e7b33703032d5b5fb5232/5D0566F1/t51.2885-19/44884218_345707102882519_2446069589734326272_n.jpg?_nc_ht=instagram.fbho1-1.fna.fbcdn.net";
+import blankProfilePicture from "../utils/blankProfileImage";
 
 const Wrapper = styled.article`
   display: grid;
@@ -211,7 +208,7 @@ const Post = ({ id }) => {
                             "/upload",
                             "/upload/w_30,h_30,c_lfill,g_face,dpr_2.0"
                           )) ||
-                        BLANK_PROFILE_PICTURE
+                        blankProfilePicture()
                       }
                     />
                   </Photo>
@@ -282,7 +279,7 @@ const Post = ({ id }) => {
                       data.post.content.url.replace(
                         "/upload",
                         "/upload/w_614,ar_4:5,c_limit,dpr_2.0"
-                      ) || BLANK_PROFILE_PICTURE
+                      ) || blankProfilePicture()
                     }
                   />
                 </PostContent>

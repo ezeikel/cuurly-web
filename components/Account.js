@@ -3,21 +3,19 @@ import Link from "next/link";
 import { Query, Mutation } from "react-apollo";
 import styled from "styled-components";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import * as Yup from "yup";
-import Modal from 'react-modal';
+import Modal from "react-modal";
 import Spinner from "./Spinner";
 import Button from "./styles/Button";
-import { CURRENT_USER_QUERY, SINGLE_USER_QUERY, UPDATE_USER_MUTATION } from "../apollo/queries";
+import {
+  CURRENT_USER_QUERY,
+  SINGLE_USER_QUERY,
+  UPDATE_USER_MUTATION,
+} from "../apollo/queries";
+import blankProfilePicture from "../utils/blankProfileImage";
 
-const BLANK_PROFILE_PICTURE = 'https://instagram.fbho1-1.fna.fbcdn.net/vp/65547464af3e7b33703032d5b5fb5232/5D0566F1/t51.2885-19/44884218_345707102882519_2446069589734326272_n.jpg?_nc_ht=instagram.fbho1-1.fna.fbcdn.net';
-
-const GENDER_OPTIONS = [
-  'MALE',
-  'FEMALE',
-  'NON BINARY',
-  'NOT SPECIFIED'
-];
+const GENDER_OPTIONS = ["MALE", "FEMALE", "NON BINARY", "NOT SPECIFIED"];
 
 const PHONE_REGEX = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
@@ -49,54 +47,50 @@ function isEqual(a, b) {
 
 // TODO: Need to validate only on changed fields
 const EditProfileSchema = Yup.object().shape({
-  name: Yup.string()
-    .required('Name is required.'),
-  username: Yup.string()
-    .required('Username is required.'),
+  name: Yup.string().required("Name is required."),
+  username: Yup.string().required("Username is required."),
   website: Yup.string(),
   bio: Yup.string(),
-  email: Yup.string()
-    .email('Invalid email'),
-  phoneNumber: Yup.string()
-    .matches(PHONE_REGEX, 'Phone number is not valid.'),
-  gender: Yup.string()
-    .required('Gender is required.')
+  email: Yup.string().email("Invalid email"),
+  phoneNumber: Yup.string().matches(PHONE_REGEX, "Phone number is not valid."),
+  gender: Yup.string().required("Gender is required."),
 });
 
 function equalTo(ref, msg) {
-	return this.test({
-		name: 'equalTo',
-		exclusive: false,
-    message: msg || '${path} must be the same as ${reference}',
-		params: {
-			reference: ref.path
-		},
-		test: function(value) {
-      return value === this.resolve(ref)
-		}
-	})
-};
+  return this.test({
+    name: "equalTo",
+    exclusive: false,
+    message: msg || "${path} must be the same as ${reference}",
+    params: {
+      reference: ref.path,
+    },
+    test: function (value) {
+      return value === this.resolve(ref);
+    },
+  });
+}
 
-Yup.addMethod(Yup.string, 'equalTo', equalTo);
+Yup.addMethod(Yup.string, "equalTo", equalTo);
 
 const ChangePasswordSchema = Yup.object().shape({
-  oldPassword: Yup.string()
-    .required('Old password is required.'),
-  password: Yup.string()
-    .required('Password is required.'),
+  oldPassword: Yup.string().required("Old password is required."),
+  password: Yup.string().required("Password is required."),
   passwordConfirm: Yup.string()
-    .equalTo(Yup.ref('password'))
-    .required('Password confirm is required.'),
+    .equalTo(Yup.ref("password"))
+    .required("Password confirm is required."),
 });
 
-ChangePasswordSchema.validate({
-  password: 'Password12',
-  passwordConfirm: 'Password123'
-}, {
-  abortEarly: false
-})
-  .then(() => console.log('ok, arguments'))
-  .catch(error => console.log('failed', error))
+ChangePasswordSchema.validate(
+  {
+    password: "Password12",
+    passwordConfirm: "Password123",
+  },
+  {
+    abortEarly: false,
+  }
+)
+  .then(() => console.log("ok, arguments"))
+  .catch((error) => console.log("failed", error));
 
 const Wrapper = styled.div`
   display: grid;
@@ -281,16 +275,13 @@ const ChangeProfilePhotoForm = styled.form`
 `;
 
 const ReactModalAdapter = ({ className, modalClassName, ...props }) => (
-  <Modal
-    className={modalClassName}
-    portalClassName={className}
-    {...props}
-  />
+  <Modal className={modalClassName} portalClassName={className} {...props} />
 );
 
-const StyledChangeProfilePictureModal = styled(ReactModalAdapter).attrs({ //https://github.com/styled-components/styled-components/issues/1494
-  overlayClassName: 'overlay',
-  modalClassName: 'modal'
+const StyledChangeProfilePictureModal = styled(ReactModalAdapter).attrs({
+  //https://github.com/styled-components/styled-components/issues/1494
+  overlayClassName: "overlay",
+  modalClassName: "modal",
 })`
   /* Portal styles here (though usually you will have none) */
   .overlay {
@@ -299,7 +290,7 @@ const StyledChangeProfilePictureModal = styled(ReactModalAdapter).attrs({ //http
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0,0,0, 0.5);
+    background: rgba(0, 0, 0, 0.5);
     display: grid;
     place-items: center;
   }
@@ -351,22 +342,26 @@ const SettingsAction = styled.li`
   & + li {
     border-top: 1px solid #efefef;
   }
-  span  {
+  span {
     cursor: pointer;
-  ${({ actionType }) => actionType === 'negative' ?
-    `
+    ${({ actionType }) =>
+      actionType === "negative"
+        ? `
     color: var(--color-red);
-  ` : null}
-  ${({ disabled }) => disabled ?
-    `
+  `
+        : null}
+    ${({ disabled }) =>
+      disabled
+        ? `
     opacity: 0.3;
     pointer-events: none;
-  ` : null}
+  `
+        : null}
   }
 `;
 
-if (typeof (window) !== 'undefined') {
-  Modal.setAppElement('body');
+if (typeof window !== "undefined") {
+  Modal.setAppElement("body");
 }
 
 const Account = ({ query, id }) => {
@@ -378,21 +373,25 @@ const Account = ({ query, id }) => {
     bio: "",
     email: "",
     phoneNumber: "",
-    gender: ""
+    gender: "",
   });
-  const [changeProfilePictureModalIsOpen, setCangeProfilePictureModalIsOpen] = useState(false);
-  const [fileUrl, setFileUrl ] = useState(null);
-  const [file, setFile ] = useState(null);
+  const [
+    changeProfilePictureModalIsOpen,
+    setCangeProfilePictureModalIsOpen,
+  ] = useState(false);
+  const [fileUrl, setFileUrl] = useState(null);
+  const [file, setFile] = useState(null);
 
-  const openChangeProfilePictureModal = () => setCangeProfilePictureModalIsOpen(true);
-  const closeChangeProfilePictureModal = () => setCangeProfilePictureModalIsOpen(false);
+  const openChangeProfilePictureModal = () =>
+    setCangeProfilePictureModalIsOpen(true);
+  const closeChangeProfilePictureModal = () =>
+    setCangeProfilePictureModalIsOpen(false);
 
-  const handleChange = file => {
+  const handleChange = (file) => {
     setFileUrl(URL.createObjectURL(file));
     setFile(file);
     closeChangeProfilePictureModal();
   };
-
 
   return (
     <Query
@@ -400,7 +399,26 @@ const Account = ({ query, id }) => {
       variables={{ id }}
       fetchPolicy="cache-and-network" // TODO: Fix for not getting the updated information on page reload after Mutation and refetchQueries
     >
-      {({ data: { user: { profilePicture, username, name, bio, email, phoneNumber, gender, website, posts, followers, following, verified } }, error, loading }) => {
+      {({
+        data: {
+          user: {
+            profilePicture,
+            username,
+            name,
+            bio,
+            email,
+            phoneNumber,
+            gender,
+            website,
+            posts,
+            followers,
+            following,
+            verified,
+          },
+        },
+        error,
+        loading,
+      }) => {
         if (loading) return <p>Loading...</p>;
         if (error) return <p>Error: {error.message}</p>;
 
@@ -417,26 +435,17 @@ const Account = ({ query, id }) => {
                   <a>Change Password</a>
                 </Link>
               </Action>
-              <Action
-                disabled={true}
-                active={content === "manage-access"}
-              >
+              <Action disabled={true} active={content === "manage-access"}>
                 <Link href="/account?manage-access">
                   <a>Authorized Applications</a>
                 </Link>
               </Action>
-              <Action
-                disabled={true}
-                active={content === "email-settingss"}
-              >
+              <Action disabled={true} active={content === "email-settingss"}>
                 <Link href="/account?email-settings">
                   <a>Email and SMS</a>
                 </Link>
               </Action>
-              <Action
-                disabled={true}
-                active={content === "contact-history"}
-              >
+              <Action disabled={true} active={content === "contact-history"}>
                 <Link href="/account?contact-history">
                   <a>Manage Contacts</a>
                 </Link>
@@ -454,9 +463,11 @@ const Account = ({ query, id }) => {
               {content === "edit" ? (
                 <Mutation
                   mutation={UPDATE_USER_MUTATION}
-                  refetchQueries={[{ query: SINGLE_USER_QUERY, variables: { id } }]}
+                  refetchQueries={[
+                    { query: SINGLE_USER_QUERY, variables: { id } },
+                  ]}
                   onCompleted={() => {
-                    toast('Profile Saved.');
+                    toast("Profile Saved.");
                   }}
                 >
                   {(updateUser, { error, loading }) => (
@@ -464,14 +475,26 @@ const Account = ({ query, id }) => {
                       <Edit>
                         <EditHeader>
                           <ProfilePicture>
-                            <img src={fileUrl || (profilePicture && profilePicture.url.replace('/upload', '/upload/w_38,h_38,c_lfill,g_face,dpr_2.0') || BLANK_PROFILE_PICTURE) } />
+                            <img
+                              src={
+                                fileUrl ||
+                                (profilePicture &&
+                                  profilePicture.url.replace(
+                                    "/upload",
+                                    "/upload/w_38,h_38,c_lfill,g_face,dpr_2.0"
+                                  )) ||
+                                blankProfilePicture()
+                              }
+                            />
                             {/* <form>
                                 <input type="file" accept="image/jpeg,image/png" />
                               </form> */}
                           </ProfilePicture>
                           <ChangeProfilePicture>
                             <span>{username}</span>
-                            <span onClick={openChangeProfilePictureModal}>Change Profile Photo</span>
+                            <span onClick={openChangeProfilePictureModal}>
+                              Change Profile Photo
+                            </span>
                           </ChangeProfilePicture>
                           <StyledChangeProfilePictureModal
                             isOpen={changeProfilePictureModalIsOpen}
@@ -487,7 +510,13 @@ const Account = ({ query, id }) => {
                                   <ChangeProfilePhotoForm>
                                     <label>
                                       Upload Photo
-                                      <input accept="image/jpeg,image/png" type="file" onChange={e => handleChange(e.target.files[0]) } />
+                                      <input
+                                        accept="image/jpeg,image/png"
+                                        type="file"
+                                        onChange={(e) =>
+                                          handleChange(e.target.files[0])
+                                        }
+                                      />
                                     </label>
                                   </ChangeProfilePhotoForm>
                                 </SettingsAction>
@@ -495,7 +524,9 @@ const Account = ({ query, id }) => {
                                   <span>Remove Current Photo</span>
                                 </SettingsAction>
                                 <SettingsAction>
-                                  <span onClick={closeChangeProfilePictureModal}>
+                                  <span
+                                    onClick={closeChangeProfilePictureModal}
+                                  >
                                     Cancel
                                   </span>
                                 </SettingsAction>
@@ -512,11 +543,14 @@ const Account = ({ query, id }) => {
                               bio: bio || "",
                               email: email || "",
                               phoneNumber: phoneNumber || "",
-                              gender: gender || ""
+                              gender: gender || "",
                             }}
                             validationSchema={EditProfileSchema}
-                            onSubmit={async (values, { setSubmitting, setErrors }) => {
-                              const submittedValues = {...values};
+                            onSubmit={async (
+                              values,
+                              { setSubmitting, setErrors }
+                            ) => {
+                              const submittedValues = { ...values };
 
                               // add the updated profile picture to the data to be sent to the mutation
                               if (fileUrl) {
@@ -524,14 +558,19 @@ const Account = ({ query, id }) => {
                               }
 
                               // removed values that havent changed
-                              for(const field in values) {
-                                if (initialEditDetailsValues[field] === submittedValues[field]) {
+                              for (const field in values) {
+                                if (
+                                  initialEditDetailsValues[field] ===
+                                  submittedValues[field]
+                                ) {
                                   delete submittedValues[field];
                                 }
                               }
 
                               try {
-                                await updateUser({ variables: submittedValues });
+                                await updateUser({
+                                  variables: submittedValues,
+                                });
                               } catch (e) {
                                 setErrors(e);
                               }
@@ -539,11 +578,20 @@ const Account = ({ query, id }) => {
                               setSubmitting(false);
                             }}
                           >
-                            {({ isSubmitting, initialValues, touched, dirty, values }) => {
+                            {({
+                              isSubmitting,
+                              initialValues,
+                              touched,
+                              dirty,
+                              values,
+                            }) => {
                               let emptyValues = true;
 
                               for (const key in initialEditDetailsValues) {
-                                if (initialEditDetailsValues[key] === null || initialEditDetailsValues[key] === "") {
+                                if (
+                                  initialEditDetailsValues[key] === null ||
+                                  initialEditDetailsValues[key] === ""
+                                ) {
                                   emptyValues = true;
                                 } else {
                                   emptyValues = false;
@@ -552,7 +600,9 @@ const Account = ({ query, id }) => {
                               }
 
                               if (emptyValues) {
-                                setInitialEditDetailsValues({...initialValues});
+                                setInitialEditDetailsValues({
+                                  ...initialValues,
+                                });
                               }
 
                               return (
@@ -571,7 +621,10 @@ const Account = ({ query, id }) => {
                                   </FormRow>
                                   <FormRow>
                                     <FormLabel>Bio</FormLabel>
-                                    <FormInput component="textarea" name="bio" />
+                                    <FormInput
+                                      component="textarea"
+                                      name="bio"
+                                    />
                                   </FormRow>
                                   <FormRow>
                                     <FormLabel>Email</FormLabel>
@@ -579,27 +632,36 @@ const Account = ({ query, id }) => {
                                   </FormRow>
                                   <FormRow>
                                     <FormLabel>Phone Number</FormLabel>
-                                    <FormInput
-                                      type="tel"
-                                      name="phoneNumber"
-                                    />
+                                    <FormInput type="tel" name="phoneNumber" />
                                   </FormRow>
                                   <FormRow>
                                     <FormLabel>Gender</FormLabel>
-                                    <FormInput component="select" name="gender" value={values.gender} >
-                                      {
-                                        GENDER_OPTIONS.map(option => (
-                                          <option key={option} value={option.replace(/\s/g, '')} >
-                                            {option.charAt(0) + option.slice(1).toLowerCase()}
-                                          </option>
-                                        ))
-                                      }
-
+                                    <FormInput
+                                      component="select"
+                                      name="gender"
+                                      value={values.gender}
+                                    >
+                                      {GENDER_OPTIONS.map((option) => (
+                                        <option
+                                          key={option}
+                                          value={option.replace(/\s/g, "")}
+                                        >
+                                          {option.charAt(0) +
+                                            option.slice(1).toLowerCase()}
+                                        </option>
+                                      ))}
                                     </FormInput>
                                   </FormRow>
                                   <FormRow>
-                                    <Button type="submit" disabled={ isSubmitting || (!fileUrl && isEqual(values, initialValues))} >
-                                      {`Submit${isSubmitting ? 'ting' : ''}`}
+                                    <Button
+                                      type="submit"
+                                      disabled={
+                                        isSubmitting ||
+                                        (!fileUrl &&
+                                          isEqual(values, initialValues))
+                                      }
+                                    >
+                                      {`Submit${isSubmitting ? "ting" : ""}`}
                                       {isSubmitting ? <Spinner /> : null}
                                     </Button>
                                   </FormRow>
@@ -611,7 +673,7 @@ const Account = ({ query, id }) => {
                                     </Link>
                                   </FormRow>
                                 </StyledForm>
-                              )
+                              );
                             }}
                           </Formik>
                         </div>
@@ -622,15 +684,27 @@ const Account = ({ query, id }) => {
               ) : null}
               {content === "password-change" ? (
                 <Mutation
-                mutation={UPDATE_USER_MUTATION}
-                refetchQueries={[{ query: CURRENT_USER_QUERY },  { query: SINGLE_USER_QUERY, variables: { id } }]}
+                  mutation={UPDATE_USER_MUTATION}
+                  refetchQueries={[
+                    { query: CURRENT_USER_QUERY },
+                    { query: SINGLE_USER_QUERY, variables: { id } },
+                  ]}
                 >
                   {(updateUser, { error, loading }) => (
                     <Fragment>
                       <PasswordChange>
                         <EditHeader>
                           <ProfilePicture>
-                            <img src={profilePicture && profilePicture.url.replace('/upload', '/upload/w_38,h_38,c_lfill,g_face,dpr_2.0') || BLANK_PROFILE_PICTURE} />
+                            <img
+                              src={
+                                (profilePicture &&
+                                  profilePicture.url.replace(
+                                    "/upload",
+                                    "/upload/w_38,h_38,c_lfill,g_face,dpr_2.0"
+                                  )) ||
+                                blankProfilePicture()
+                              }
+                            />
                           </ProfilePicture>
                           <Username>
                             <span>{username}</span>
@@ -640,14 +714,19 @@ const Account = ({ query, id }) => {
                           initialValues={{
                             oldPassword: "",
                             password: "",
-                            passwordConfirm: ""
+                            passwordConfirm: "",
                           }}
                           validationSchema={ChangePasswordSchema}
-                          onSubmit={async ({ oldPassword, password }, { resetForm }) => {
+                          onSubmit={async (
+                            { oldPassword, password },
+                            { resetForm }
+                          ) => {
                             try {
-                              await updateUser({ variables: { oldPassword, password }});
+                              await updateUser({
+                                variables: { oldPassword, password },
+                              });
                               resetForm();
-                              toast('Password Updated.');
+                              toast("Password Updated.");
                             } catch (e) {
                               console.error(`Formik Error: ${e}`);
                             }
@@ -657,10 +736,7 @@ const Account = ({ query, id }) => {
                             <StyledForm>
                               <FormRow>
                                 <FormLabel>Old Password</FormLabel>
-                                <FormInput
-                                  type="password"
-                                  name="oldPassword"
-                                />
+                                <FormInput type="password" name="oldPassword" />
                               </FormRow>
                               <FormRow>
                                 <FormLabel>New Password</FormLabel>

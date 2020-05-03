@@ -1,5 +1,4 @@
-import { Component } from "react";
-import { Query } from "react-apollo";
+import { useQuery } from "react-apollo";
 import { SINGLE_POST_QUERY } from "../apollo/queries";
 import Link from "next/link";
 import styled from "styled-components";
@@ -24,7 +23,7 @@ const Overlay = styled.div`
   place-items: center;
   position: absolute;
   top: 0;
-  background: rgba(0,0,0,0.3);
+  background: rgba(0, 0, 0, 0.3);
   width: 100%;
   height: 100%;
   opacity: 0;
@@ -51,41 +50,53 @@ const Stat = styled.span`
   line-height: 2.4rem;
 `;
 
-class PostPreview extends Component {
-  render() {
-    return (
-      <Query query={SINGLE_POST_QUERY} variables={{ id: this.props.id }}>
-        {({ data: { post }, error, loading }) => {
-          if (loading) return <p>Loading...</p>;
-          if (error) return <p>Error: {error.message}</p>;
+const PostPreview = ({ id }) => {
+  const {
+    loading,
+    error,
+    data: { post } = {}, // setting default value when destructing as data is undefined when loading - https://github.com/apollographql/react-apollo/issues/3323#issuecomment-523430331
+  } = useQuery(SINGLE_POST_QUERY, {
+    variables: { id },
+  });
 
-          return (
-            <Wrapper>
-              <Link href={`/post?id=${this.props.id}`}>
-                <a>
-                  <Preview key={post.id}>
-                    <img src={post.content.url.replace('/upload', '/upload/w_350,h_350,ar_1:1,c_fill,dpr_2.0')} />
-                  </Preview>
-                  <Overlay>
-                    <Stats>
-                      <Stat>
-                        <FontAwesomeIcon icon={["fas", "heart"]}color="var(--color-white)" size="lg"/>
-                        {post.likes.length}
-                      </Stat>
-                      <Stat>
-                        <FontAwesomeIcon icon={["fas", "comment"]}color="var(--color-white)" size="lg"/>
-                        {post.comments.length}
-                      </Stat>
-                    </Stats>
-                  </Overlay>
-                </a>
-              </Link>
-            </Wrapper>
-          );
-        }}
-      </Query>
-    );
-  }
-}
+  if (!post) return null;
+
+  return (
+    <Wrapper>
+      <Link href={`/post?id=${id}`}>
+        <a>
+          <Preview key={post.id}>
+            <img
+              src={post.content.url.replace(
+                "/upload",
+                "/upload/w_350,h_350,ar_1:1,c_fill,dpr_2.0"
+              )}
+            />
+          </Preview>
+          <Overlay>
+            <Stats>
+              <Stat>
+                <FontAwesomeIcon
+                  icon={["fas", "heart"]}
+                  color="var(--color-white)"
+                  size="lg"
+                />
+                {post.likes.length}
+              </Stat>
+              <Stat>
+                <FontAwesomeIcon
+                  icon={["fas", "comment"]}
+                  color="var(--color-white)"
+                  size="lg"
+                />
+                {post.comments.length}
+              </Stat>
+            </Stats>
+          </Overlay>
+        </a>
+      </Link>
+    </Wrapper>
+  );
+};
 
 export default PostPreview;

@@ -1,24 +1,27 @@
-import { useState, useRef } from 'react';
-import Link from 'next/link';
-import Router from 'next/router';
-import { Query } from 'react-apollo';
-import styled from 'styled-components';
+import { useState, useRef } from "react";
+import Link from "next/link";
+import Router from "next/router";
+import { useQuery } from "@apollo/react-hooks";
+import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Modal from 'react-modal';
-import { SINGLE_USER_QUERY, USER_FOLLOWING_QUERY, USER_FOLLOWERS_QUERY } from '../apollo/queries';
-import FollowButton from './FollowButton';
-import PostPreview from './PostPreview';
-import CurrentUser from './CurrentUser';
-import Button from './styles/Button';
-import Signout from './Signout';
-
-const BLANK_PROFILE_PICTURE = 'https://instagram.fbho1-1.fna.fbcdn.net/vp/65547464af3e7b33703032d5b5fb5232/5D0566F1/t51.2885-19/44884218_345707102882519_2446069589734326272_n.jpg?_nc_ht=instagram.fbho1-1.fna.fbcdn.net';
+import Modal from "react-modal";
+import {
+  SINGLE_USER_QUERY,
+  USER_FOLLOWING_QUERY,
+  USER_FOLLOWERS_QUERY,
+  CURRENT_USER_QUERY,
+} from "../apollo/queries";
+import FollowButton from "./FollowButton";
+import PostPreview from "./PostPreview";
+import Button from "./styles/Button";
+import Signout from "./Signout";
+import blankProfilePicture from "../utils/blankProfileImage";
 
 const Wrapper = styled.div`
   display: grid;
   grid-row-gap: var(--spacing-large);
   padding: 30px 16px 24px;
-  @media(min-width: 736px) {
+  @media (min-width: 736px) {
     padding-top: 60px;
     grid-row-gap: var(--spacing-huge);
   }
@@ -30,7 +33,7 @@ const Header = styled.header`
   grid-template-rows: repeat(2, auto) 1fr;
   grid-row-gap: var(--spacing-large);
   grid-column-gap: var(--spacing-large);
-  @media(min-width: 736px) {
+  @media (min-width: 736px) {
     grid-column-gap: var(--spacing-huge);
   }
 `;
@@ -38,13 +41,15 @@ const Header = styled.header`
 const Username = styled.span`
   font-size: 28px;
   line-height: 32px;
-  ${({ verified }) => verified ?
-  `
+  ${({ verified }) =>
+    verified
+      ? `
     display: grid;
     grid-template-columns: auto auto;
     grid-column-gap: var(--spacing-small);
     place-items: center;
-  ` : null }
+  `
+      : null}
 `;
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
@@ -60,7 +65,7 @@ const UserPhoto = styled.div`
   img {
     border-radius: 50%;
   }
-  @media(min-width: 736px) {
+  @media (min-width: 736px) {
     width: 150px;
     height: 150px;
     grid-row: 1 / -1;
@@ -78,16 +83,14 @@ const FirstRow = styled.div`
   justify-content: start;
   align-items: center;
   span {
-
   }
   button {
     grid-row: 2 / -1;
-    grid-column: 1 / -1
+    grid-column: 1 / -1;
   }
   svg {
-
   }
-  @media(min-width: 736px) {
+  @media (min-width: 736px) {
     grid-template-rows: 1fr;
     grid-column-gap: var(--spacing-large);
     button {
@@ -107,7 +110,7 @@ const SecondRow = styled.div`
   align-items: center;
   border-top: 1px solid #efefef;
   padding: 12px 0;
-  @media(min-width: 736px) {
+  @media (min-width: 736px) {
     grid-column: 2 / -1;
     grid-row: 2 / span 1;
     grid-template-columns: repeat(3, auto);
@@ -124,7 +127,7 @@ const Stat = styled.div`
   grid-template-rows: 1fr 1fr;
   place-items: center;
   color: #999;
-  @media(min-width: 736px) {
+  @media (min-width: 736px) {
     display: block;
     color: var(--color-black);
   }
@@ -142,7 +145,7 @@ const ThirdRow = styled.div`
   grid-template-rows: repeat(3, auto);
   font-size: 1.6rem;
   line-height: 2.4rem;
-  @media(min-width: 736px) {
+  @media (min-width: 736px) {
     grid-column: 2 / -1;
     grid-row: 3 / span 1;
   }
@@ -160,7 +163,7 @@ const Posts = styled.ul`
   display: grid;
   grid-template: repeat(3, 1fr) / repeat(3, 1fr);
   grid-gap: var(--spacing-tiny);
-  @media(min-width: 736px) {
+  @media (min-width: 736px) {
     grid-gap: var(--spacing-large);
   }
 `;
@@ -170,16 +173,13 @@ const StyledFollowButton = styled(FollowButton)`
 `;
 
 const ReactModalAdapter = ({ className, modalClassName, ...props }) => (
-  <Modal
-    className={modalClassName}
-    portalClassName={className}
-    {...props}
-  />
+  <Modal className={modalClassName} portalClassName={className} {...props} />
 );
 
-const StyledStatsModal = styled(ReactModalAdapter).attrs({ //https://github.com/styled-components/styled-components/issues/1494
-  overlayClassName: 'overlay',
-  modalClassName: 'modal'
+const StyledStatsModal = styled(ReactModalAdapter).attrs({
+  //https://github.com/styled-components/styled-components/issues/1494
+  overlayClassName: "overlay",
+  modalClassName: "modal",
 })`
   /* Portal styles here (though usually you will have none) */
   .overlay {
@@ -188,7 +188,7 @@ const StyledStatsModal = styled(ReactModalAdapter).attrs({ //https://github.com/
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0,0,0, 0.5);
+    background: rgba(0, 0, 0, 0.5);
     display: grid;
     place-items: center;
   }
@@ -229,7 +229,7 @@ const ModalBody = styled.div`
 const StyledSettingsModal = styled(ReactModalAdapter).attrs({
   //https://github.com/styled-components/styled-components/issues/1494
   overlayClassName: "overlay",
-  modalClassName: "modal"
+  modalClassName: "modal",
 })`
   /* Portal styles here (though usually you will have none) */
   .overlay {
@@ -254,8 +254,8 @@ const StyledSettingsModal = styled(ReactModalAdapter).attrs({
   }
 `;
 
-if (typeof (window) !== 'undefined') {
-  Modal.setAppElement('body');
+if (typeof window !== "undefined") {
+  Modal.setAppElement("body");
 }
 
 const FollowerList = styled.ul`
@@ -308,17 +308,21 @@ const SettingsAction = styled.li`
   & + li {
     border-top: 1px solid #efefef;
   }
-  span  {
+  span {
     cursor: pointer;
-  ${({ actionType }) => actionType === 'negative' ?
-    `
+    ${({ actionType }) =>
+      actionType === "negative"
+        ? `
     color: var(--color-red);
-  ` : null}
-  ${({ disabled }) => disabled ?
-    `
+  `
+        : null}
+    ${({ disabled }) =>
+      disabled
+        ? `
     opacity: 0.3;
     pointer-events: none;
-  ` : null}
+  `
+        : null}
   }
 `;
 
@@ -333,6 +337,48 @@ const Profile = ({ id }) => {
   const [followingModalIsOpen, setFollowingModalIsOpen] = useState(false);
   const [settingsModalIsOpen, setSettingsModalIsOpen] = useState(false);
   const subtitleEl = useRef(null);
+
+  const {
+    loading: currentUserLoading,
+    error: currentUserError,
+    data: { currentUser } = {}, // setting default value when destructing as data is undefined when loading - https://github.com/apollographql/react-apollo/issues/3323#issuecomment-523430331
+  } = useQuery(CURRENT_USER_QUERY);
+
+  const {
+    loading: singleUserLoading,
+    error: singleUserError,
+    data: {
+      user: {
+        profilePicture,
+        username,
+        name,
+        bio,
+        website,
+        posts,
+        followers,
+        following,
+        verified,
+      } = {},
+    } = {},
+  } = useQuery(SINGLE_USER_QUERY, {
+    variables: { id },
+  });
+
+  // const {
+  //   loading: userFollowingLoading,
+  //   error: userFollowingError,
+  //   data: { following },
+  // } = useQuery(USER_FOLLOWING_QUERY, {
+  //   variables: { id },
+  // });
+
+  // const {
+  //   loading: userFollowersLoading,
+  //   error: userFollowersError,
+  //   data: { followers },
+  // } = useQuery(USER_FOLLOWERS_QUERY, {
+  //   variables: { id },
+  // });
 
   const openFollowersModal = () => setFollowersModalIsOpen(true);
   const closeFollowersModal = () => setFollowersModalIsOpen(false);
@@ -349,279 +395,234 @@ const Profile = ({ id }) => {
   };
 
   return (
-    <CurrentUser>
-      {({ data: { currentUser } }) => (
-        <Query query={SINGLE_USER_QUERY} variables={{ id }}>
-          {({ data: { user: { id, profilePicture, username, name, bio, website, posts, followers, following, verified }}, error, loading }) => {
-            if (loading) return <p>Loading...</p>;
-            if (error) return <p>Error: {error.message}</p>;
-
-            return (
-              <Wrapper>
-                <Header>
-                  <UserPhoto>
-                    <img src={profilePicture && profilePicture.url.replace('/upload', '/upload/w_150,h_150,c_lfill,g_face,dpr_2.0') || BLANK_PROFILE_PICTURE } />
-                  </UserPhoto>
-                  <FirstRow>
-                    <Username verified={verified}>
-                      {username}
-                      {verified ? (
-                        <FontAwesomeIcon
-                          icon={["fas", "badge-check"]}
-                          color="#3E9AED"
-                          size="xs"
-                        />
-                      ) : null}
-                    </Username>
-                    {currentUser && currentUser.id === id ? (
-                      <Button>
-                        <Link href="/account?edit">
-                          <a>Edit profile</a>
-                        </Link>
-                      </Button>
-                    ) : (
-                      <StyledFollowButton
-                        userId={id}
-                        usersFollowers={followers.map(
-                          follower => follower.id
-                        )}
-                      />
-                    )}
-                    <StyledFontAwesomeIcon
-                      onClick={openSettingsModal}
-                      icon={["fal", "cog"]}
-                      color="var(--color-black)"
-                      size="2x"
-                    />
-                    <StyledSettingsModal
-                      isOpen={settingsModalIsOpen}
-                      onRequestClose={closeSettingsModal}
-                      contentLabel="Settings Modal"
-                    >
-                      <ModalBody>
-                        <SettingsActions>
-                          <SettingsAction>
-                            <span>
-                              <Link href="/account?password-change">
-                                <a>Change Password</a>
-                              </Link>
-                            </span>
-                          </SettingsAction>
-                          <SettingsAction disabled={true}>
-                            <span>Nametag</span>
-                          </SettingsAction>
-                          <SettingsAction disabled={true}>
-                            <span>Authorized Apps</span>
-                          </SettingsAction>
-                          <SettingsAction disabled={true}>
-                            <span>Notifications</span>
-                          </SettingsAction>
-                          <SettingsAction disabled={true}>
-                            <span>Privacy and Security</span>
-                          </SettingsAction>
-                          <SettingsAction>
-                            <Signout />
-                          </SettingsAction>
-                          <SettingsAction>
-                            <span onClick={closeSettingsModal}>
-                              Cancel
-                            </span>
-                          </SettingsAction>
-                        </SettingsActions>
-                      </ModalBody>
-                    </StyledSettingsModal>
-                  </FirstRow>
-                  <SecondRow>
-                    <Stat style={{ cursor: "auto" }}>
-                      <Number>{posts.length}</Number> posts
-                    </Stat>
-                    <Stat onClick={openFollowersModal}>
-                      <Number>{followers.length}</Number>{" "}
-                      followers
-                    </Stat>
-                    <StyledStatsModal
-                      isOpen={followersModalIsOpen}
-                      onRequestClose={closeFollowersModal}
-                      contentLabel="Followers Modal"
-                    >
-                      <ModalHeader>
-                        <h1 ref={subtitleEl}>Followers</h1>
-                        <FontAwesomeIcon
-                          icon={["fal", "times"]}
-                          color="var(--color-black)"
-                          size="lg"
-                          onClick={closeFollowersModal}
-                        />
-                      </ModalHeader>
-                      <ModalBody>
-                        <Query
-                          query={USER_FOLLOWERS_QUERY}
-                          variables={{ id }}
-                        >
-                          {({
-                            data: { followers },
-                            error,
-                            loading
-                          }) => {
-                            if (loading) return <p>Loading...</p>;
-                            if (error)
-                              return (
-                                <p>Error: {error.message}</p>
-                              );
-
-                            return (
-                              <FollowerList>
-                                {followers.map(follower => (
-                                  <FollowerWrapper
-                                    key={follower.id}
-                                  >
-                                    <Follower>
-                                      <FollowerPhoto>
-                                        <img
-                                          src={
-                                            follower.profilePicture && follower.profilePicture.url.replace('/upload', '/upload/w_30,h_30,c_lfill,g_face,dpr_2.0') || BLANK_PROFILE_PICTURE
-                                          }
-                                          alt="profile-pic"
-                                        />
-                                      </FollowerPhoto>
-                                      <FollowerName>
-                                        <span>
-                                          <Link
-                                            href={`/user?id=${
-                                              follower.id
-                                            }`}
-                                          >
-                                            <a>
-                                              {follower.username}
-                                            </a>
-                                          </Link>
-                                        </span>
-                                        <span>
-                                          {follower.name}
-                                        </span>
-                                      </FollowerName>
-                                      <FollowerAction>
-                                        <FollowButton
-                                          userId={follower.id}
-                                          usersFollowers={follower.followers.map(
-                                            follower =>
-                                              follower.id
-                                          )}
-                                        />
-                                      </FollowerAction>
-                                    </Follower>
-                                  </FollowerWrapper>
-                                ))}
-                              </FollowerList>
-                            );
-                          }}
-                        </Query>
-                      </ModalBody>
-                    </StyledStatsModal>
-                    <Stat onClick={openFollowingModal}>
-                      <Number>{following.length}</Number>{" "}
-                      following
-                    </Stat>
-                    <StyledStatsModal
-                      isOpen={followingModalIsOpen}
-                      onRequestClose={closeFollowingModal}
-                      contentLabel="Following Modal"
-                    >
-                      <ModalHeader>
-                        <h1 ref={subtitleEl}>Following</h1>
-                        <FontAwesomeIcon
-                          icon={["fal", "times"]}
-                          color="var(--color-black)"
-                          size="lg"
-                          onClick={closeFollowingModal}
-                        />
-                      </ModalHeader>
-                      <ModalBody>
-                        <Query
-                          query={USER_FOLLOWING_QUERY}
-                          variables={{ id }}
-                        >
-                          {({
-                            data: { following },
-                            error,
-                            loading
-                          }) => {
-                            if (loading) return <p>Loading...</p>;
-                            if (error)
-                              return (
-                                <p>Error: {error.message}</p>
-                              );
-
-                            return (
-                              <FollowerList>
-                                {following.map(following => (
-                                  <FollowerWrapper
-                                    key={following.id}
-                                  >
-                                    <Follower>
-                                      <FollowerPhoto>
-                                        <img
-                                          src={
-                                            following.profilePicture && following.profilePicture.url.replace('/upload', '/upload/w_30,h_30,c_lfill,g_face,dpr_2.0') || BLANK_PROFILE_PICTURE
-                                          }
-                                          alt="profile-pic"
-                                        />
-                                      </FollowerPhoto>
-                                      <FollowerName>
-                                        <span>
-                                          <Link
-                                            href={`/user?id=${
-                                              following.id
-                                            }`}
-                                          >
-                                            <a>
-                                              {following.username}
-                                            </a>
-                                          </Link>
-                                        </span>
-                                        <span>
-                                          {following.name}
-                                        </span>
-                                      </FollowerName>
-                                      <FollowerAction>
-                                        <FollowButton
-                                          userId={following.id}
-                                          usersFollowers={following.followers.map(
-                                            follower =>
-                                              follower.id
-                                          )}
-                                        />
-                                      </FollowerAction>
-                                    </Follower>
-                                  </FollowerWrapper>
-                                ))}
-                              </FollowerList>
-                            );
-                          }}
-                        </Query>
-                      </ModalBody>
-                    </StyledStatsModal>
-                  </SecondRow>
-                  <ThirdRow>
-                      <Name>{name}</Name>
-                      <span>{bio}</span>
-                      <Website><a href={website} target="_blank">{website}</a></Website>
-                    </ThirdRow>
-                </Header>
-                <PostsWrapper>
-                  <Posts>
-                    {posts.map(post => (
-                      <PostPreview key={post.id} id={post.id} />
-                    ))}
-                  </Posts>
-                </PostsWrapper>
-              </Wrapper>
-            );
-          }}
-        </Query>
-      )}
-    </CurrentUser>
+    <Wrapper>
+      <Header>
+        <UserPhoto>
+          <img
+            src={
+              (profilePicture &&
+                profilePicture.url.replace(
+                  "/upload",
+                  "/upload/w_150,h_150,c_lfill,g_face,dpr_2.0"
+                )) ||
+              blankProfilePicture()
+            }
+          />
+        </UserPhoto>
+        <FirstRow>
+          <Username verified={verified}>
+            {username}
+            {verified ? (
+              <FontAwesomeIcon
+                icon={["fas", "badge-check"]}
+                color="#3E9AED"
+                size="xs"
+              />
+            ) : null}
+          </Username>
+          {currentUser && currentUser.id === id ? (
+            <Button>
+              <Link href="/account?edit">
+                <a>Edit profile</a>
+              </Link>
+            </Button>
+          ) : (
+            <StyledFollowButton
+              currentUser={currentUser}
+              userId={id}
+              usersFollowers={
+                followers && followers.map((follower) => follower.id)
+              }
+            />
+          )}
+          <StyledFontAwesomeIcon
+            onClick={openSettingsModal}
+            icon={["fal", "cog"]}
+            color="var(--color-black)"
+            size="2x"
+          />
+          <StyledSettingsModal
+            isOpen={settingsModalIsOpen}
+            onRequestClose={closeSettingsModal}
+            contentLabel="Settings Modal"
+          >
+            <ModalBody>
+              <SettingsActions>
+                <SettingsAction>
+                  <span>
+                    <Link href="/account?password-change">
+                      <a>Change Password</a>
+                    </Link>
+                  </span>
+                </SettingsAction>
+                <SettingsAction disabled={true}>
+                  <span>Nametag</span>
+                </SettingsAction>
+                <SettingsAction disabled={true}>
+                  <span>Authorized Apps</span>
+                </SettingsAction>
+                <SettingsAction disabled={true}>
+                  <span>Notifications</span>
+                </SettingsAction>
+                <SettingsAction disabled={true}>
+                  <span>Privacy and Security</span>
+                </SettingsAction>
+                <SettingsAction>
+                  <Signout />
+                </SettingsAction>
+                <SettingsAction>
+                  <span onClick={closeSettingsModal}>Cancel</span>
+                </SettingsAction>
+              </SettingsActions>
+            </ModalBody>
+          </StyledSettingsModal>
+        </FirstRow>
+        <SecondRow>
+          <Stat style={{ cursor: "auto" }}>
+            <Number>{(posts && posts.length) || 0}</Number> posts
+          </Stat>
+          <Stat onClick={openFollowersModal}>
+            <Number>{(followers && followers.length) || 0}</Number> followers
+          </Stat>
+          <StyledStatsModal
+            isOpen={followersModalIsOpen}
+            onRequestClose={closeFollowersModal}
+            contentLabel="Followers Modal"
+          >
+            <ModalHeader>
+              <h1 ref={subtitleEl}>Followers</h1>
+              <FontAwesomeIcon
+                icon={["fal", "times"]}
+                color="var(--color-black)"
+                size="lg"
+                onClick={closeFollowersModal}
+              />
+            </ModalHeader>
+            <ModalBody>
+              <FollowerList>
+                {followers &&
+                  followers.map((follower) => (
+                    <FollowerWrapper key={follower.id}>
+                      <Follower>
+                        <FollowerPhoto>
+                          <img
+                            src={
+                              (follower.profilePicture &&
+                                follower.profilePicture.url.replace(
+                                  "/upload",
+                                  "/upload/w_30,h_30,c_lfill,g_face,dpr_2.0"
+                                )) ||
+                              blankProfilePicture()
+                            }
+                            alt="profile-pic"
+                          />
+                        </FollowerPhoto>
+                        <FollowerName>
+                          <span>
+                            <Link href={`/user?id=${follower.id}`}>
+                              <a>{follower.username}</a>
+                            </Link>
+                          </span>
+                          <span>{follower.name}</span>
+                        </FollowerName>
+                        <FollowerAction>
+                          <FollowButton
+                            currentUser={currentUser}
+                            userId={follower.id}
+                            key={currentUser}
+                            usersFollowers={
+                              follower &&
+                              follower.followers &&
+                              follower.followers.map((follower) => follower.id)
+                            }
+                          />
+                        </FollowerAction>
+                      </Follower>
+                    </FollowerWrapper>
+                  ))}
+              </FollowerList>
+            </ModalBody>
+          </StyledStatsModal>
+          <Stat onClick={openFollowingModal}>
+            <Number>{(following && followers.length) || 0}</Number> following
+          </Stat>
+          <StyledStatsModal
+            isOpen={followingModalIsOpen}
+            onRequestClose={closeFollowingModal}
+            contentLabel="Following Modal"
+          >
+            <ModalHeader>
+              <h1 ref={subtitleEl}>Following</h1>
+              <FontAwesomeIcon
+                icon={["fal", "times"]}
+                color="var(--color-black)"
+                size="lg"
+                onClick={closeFollowingModal}
+              />
+            </ModalHeader>
+            <ModalBody>
+              <FollowerList>
+                {following &&
+                  following.map((following) => (
+                    <FollowerWrapper key={following.id}>
+                      <Follower>
+                        <FollowerPhoto>
+                          <img
+                            src={
+                              (following.profilePicture &&
+                                following.profilePicture.url.replace(
+                                  "/upload",
+                                  "/upload/w_30,h_30,c_lfill,g_face,dpr_2.0"
+                                )) ||
+                              blankProfilePicture()
+                            }
+                            alt="profile-pic"
+                          />
+                        </FollowerPhoto>
+                        <FollowerName>
+                          <span>
+                            <Link href={`/user?id=${following.id}`}>
+                              <a>{following.username}</a>
+                            </Link>
+                          </span>
+                          <span>{following.name}</span>
+                        </FollowerName>
+                        <FollowerAction>
+                          <FollowButton
+                            currentUser={currentUser}
+                            userId={following.id}
+                            usersFollowers={
+                              following &&
+                              following.followers &&
+                              following.followers.map((follower) => follower.id)
+                            }
+                          />
+                        </FollowerAction>
+                      </Follower>
+                    </FollowerWrapper>
+                  ))}
+              </FollowerList>
+            </ModalBody>
+          </StyledStatsModal>
+        </SecondRow>
+        <ThirdRow>
+          <Name>{name}</Name>
+          <span>{bio}</span>
+          <Website>
+            <a href={website} target="_blank">
+              {website}
+            </a>
+          </Website>
+        </ThirdRow>
+      </Header>
+      <PostsWrapper>
+        <Posts>
+          {posts &&
+            posts.map((post) => <PostPreview key={post.id} id={post.id} />)}
+        </Posts>
+      </PostsWrapper>
+    </Wrapper>
   );
-}
+};
 
 export default Profile;

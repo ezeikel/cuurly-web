@@ -1,11 +1,11 @@
+import { withRouter } from "next/router";
 import Link from "next/link";
 import { useMutation } from "@apollo/react-hooks";
 import { Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import styled from "styled-components";
 import Spinner from "./Spinner";
 import { CURRENT_USER_QUERY, SIGNIN_MUTATION } from "../apollo/queries";
-import { withRouter } from "next/router";
-import styled from "styled-components";
 import formatAPIErrors from "../utils/formatAPIErrors";
 import { SubmitButton, FormErrors } from "./styles";
 import TextInput from "./TextInput";

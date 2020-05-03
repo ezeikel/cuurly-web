@@ -1,10 +1,12 @@
+import dynamic from "next/dynamic";
 import styled from "styled-components";
-import Router from 'next/router';
-import NProgress from 'nprogress';
-import Nav from './Nav';
+import Router from "next/router";
+import NProgress from "nprogress";
+
+const Nav = dynamic(() => import("./Nav"));
 
 NProgress.configure({
-  showSpinner: false
+  showSpinner: false,
 });
 
 Router.onRouteChangeStart = () => {
