@@ -349,7 +349,7 @@ const Profile = ({ id }) => {
     return () => {
       Router.events.off("routeChangeStart", handleRouteChange);
     };
-  });
+  }, []);
 
   const {
     loading: currentUserLoading,

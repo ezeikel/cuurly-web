@@ -70,7 +70,7 @@
     "casual": "^1.6.2",
     "enzyme-to-json": "^3.4.4",
     "graphql-tools": "^5.0.0",
-    "jest": "^25.5.3",
+    "jest": "^25.5.4",
     "jest-transform-graphql": "^2.1.0"
   },
   "jest": {
