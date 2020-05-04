@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Search from "./Search";
 import LogoImage from "./LogoImage";
 import LogoText from "./LogoText";
-import { useQuery } from "react-apollo";
+import { useQuery } from "@apollo/react-hooks";
 import { CURRENT_USER_QUERY } from "../apollo/queries";
 
 const Wrapper = styled.nav`

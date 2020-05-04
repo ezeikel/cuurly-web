@@ -2,7 +2,7 @@ import Link from "next/link";
 import { withRouter } from "next/router";
 import styled from "styled-components";
 import Signup from "../components/Signup";
-import { useQuery } from "react-apollo";
+import { useQuery } from "@apollo/react-hooks";
 import { CURRENT_USER_QUERY } from "../apollo/queries";
 import LogoText from "../components/LogoText";
 import FormWrapper from "../components/styles/FormWrapper";

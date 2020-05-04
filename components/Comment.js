@@ -1,8 +1,7 @@
 import Link from "next/link";
-import { Mutation } from "react-apollo";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useQuery } from "react-apollo";
+import { useQuery, useMutation } from "@apollo/react-hooks";
 import { CURRENT_USER_QUERY } from "../apollo/queries";
 import { SINGLE_POST_QUERY, DELETE_COMMENT_MUTATION } from "../apollo/queries";
 
@@ -26,46 +25,38 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
 
 const Comment = ({ comment, post }) => {
   const {
-    loading,
-    error,
+    loading: currentUserLoading,
+    error: currentUserError,
     data: { currentUser } = {}, // setting default value when destructing as data is undefined when loading - https://github.com/apollographql/react-apollo/issues/3323#issuecomment-523430331
   } = useQuery(CURRENT_USER_QUERY);
 
   if (!currentUser) return null;
 
+  const [
+    deleteComment,
+    { data, loading: deleteCommentLoading, error: deleteCommentError },
+  ] = useMutation(DELETE_COMMENT_MUTATION, {
+    variables: { id: comment.id },
+    refetchQueries: [{ query: SINGLE_POST_QUERY, variables: { id: post.id } }],
+  });
+
+  const canDelete =
+    (currentUser && currentUser.id === comment.writtenBy.id) ||
+    (currentUser && currentUser.id === post.author.id);
+
   return (
-    <Wrapper
-      canDelete={
-        (currentUser &&
-          currentUser.id &&
-          currentUser.id === comment.writtenBy.id) ||
-        currentUser.id === post.author.id
-      }
-    >
+    <Wrapper canDelete={canDelete}>
       <Link href={`/user?id=${comment.writtenBy.id}`}>
         <StyledAnchor>{comment.writtenBy.username}</StyledAnchor>
       </Link>
       <span>{comment.text}</span>
-      {(currentUser &&
-        currentUser.id &&
-        currentUser.id === comment.writtenBy.id) ||
-      currentUser.id === post.author.id ? (
-        <Mutation
-          mutation={DELETE_COMMENT_MUTATION}
-          variables={{ id: comment.id }}
-          refetchQueries={[
-            { query: SINGLE_POST_QUERY, variables: { id: post.id } },
-          ]}
-        >
-          {(deleteComment, { error, loading }) => (
-            <StyledFontAwesomeIcon
-              onClick={deleteComment}
-              icon={["fal", "times"]}
-              color="#c7c7c7"
-              size="lg"
-            />
-          )}
-        </Mutation>
+      {canDelete ? (
+        <StyledFontAwesomeIcon
+          onClick={deleteComment}
+          icon={["fal", "times"]}
+          color="#c7c7c7"
+          size="lg"
+        />
       ) : null}
     </Wrapper>
   );

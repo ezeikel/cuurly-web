@@ -1,6 +1,6 @@
 import { Component } from "react";
 import Router from "next/router";
-import { ApolloConsumer } from "react-apollo";
+import { ApolloConsumer } from "@apollo/react-hooks";
 import styled, { keyframes } from "styled-components";
 import debounce from "lodash.debounce";
 import Downshift, { resetIdCounter } from "downshift";

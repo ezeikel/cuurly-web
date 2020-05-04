@@ -1,25 +1,20 @@
-import React, { Component } from 'react';
-import { Query } from 'react-apollo';
-import { ALL_USERS_QUERY } from '../apollo/queries';
+import { useQuery } from "@apollo/react-hooks";
+import { ALL_USERS_QUERY } from "../apollo/queries";
 
-class Users extends Component {
-  render() {
-    return (
-        <Query
-          query={ALL_USERS_QUERY}
-        >
-          {({data, error, loading}) => {
-            if (loading) return <p>Loading...</p>;
-            if (error) return <p>Error: {error.message}</p>;
-            return (
-              <ul>
-                {data.users.map(user => <li key={user.id}>{user.username}</li>)}
-              </ul>
-            );
-          }}
-        </Query>
-    )
-  }
-}
+const Users = () => {
+  const {
+    loading,
+    error,
+    data: { users } = {}, // setting default value when destructing as data is undefined when loading - https://github.com/apollographql/react-apollo/issues/3323#issuecomment-523430331
+  } = useQuery(ALL_USERS_QUERY);
+
+  return (
+    <ul>
+      {data.users.map((user) => (
+        <li key={user.id}>{user.username}</li>
+      ))}
+    </ul>
+  );
+};
 
 export default Users;
