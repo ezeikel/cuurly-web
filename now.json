@@ -1,12 +1,7 @@
 {
-  "name": "crownd-web",
-  "version": 2,
   "build": {
     "env": {
-      "NPM_TOKEN": "3340ECCE-636E-49DE-834C-BD1E43E9C4D6"
+      "NPM_TOKEN": "@fontawesome_npm_token"
     }
-  },
-  "builds": [
-    { "src": "package.json", "use": "@now/next" }
-  ]
+  }
 }
