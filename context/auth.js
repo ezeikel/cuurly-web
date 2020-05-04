@@ -1,40 +1,48 @@
-import React, { createContext, Component } from 'react';
-import { withApollo, Query } from 'react-apollo';
-import { withRouter } from 'next/router';
+import React, { createContext, Component } from "react";
+import { withApollo, Query } from "react-apollo";
+import { withRouter } from "next/router";
 import {
   CURRENT_CACHED_USER_QUERY,
   SIGNIN_MUTATION,
   SIGNOUT_MUTATION,
   SIGNUP_MUTATION,
-} from '../apollo/queries';
+} from "../apollo/queries";
+
+// TODO: Replace all of this with useContext, useEffect and maybe a custom hook to house it all
 
 // create React context
 export const AuthContext = createContext();
 
 class Provider extends Component {
   state = {
-    signup: async ({ email, firstName, lastName, username, password }, { setSubmitting, setErrors, resetForm }) => {
+    signup: async (
+      { email, firstName, lastName, username, password },
+      { setSubmitting, setErrors, resetForm }
+    ) => {
       try {
         const { client, router } = this.props;
 
         await client.mutate({
           mutation: SIGNUP_MUTATION,
           variables: { email, firstName, lastName, username, password },
-          update: async (cache, { data: { signup:user } }) => {
+          update: async (cache, { data: { signup: user } }) => {
             this._updateCurrentUser(cache, { ...user, isAuthenticated: true });
 
             resetForm();
 
             // redirect to homepage
             router.push(`/user?id=${user.id}`);
-          }
+          },
         });
       } catch (e) {
         setErrors(e);
       }
       setSubmitting(false);
     },
-    signin: async ({ email, password }, { setSubmitting, setErrors, resetForm }) => {
+    signin: async (
+      { email, password },
+      { setSubmitting, setErrors, resetForm }
+    ) => {
       // get full user details using cookie set in browser after SIGNIN_MUTATION
       try {
         const { client, history } = this.props;
@@ -43,15 +51,15 @@ class Provider extends Component {
         await client.mutate({
           mutation: SIGNIN_MUTATION,
           variables: { email, password },
-          update: async (cache, { data: { signin:user } }) => {
+          update: async (cache, { data: { signin: user } }) => {
             this._updateCurrentUser(cache, { ...user, isAuthenticated: true });
 
             // exposed by Formik
             resetForm();
 
             // redirect to homepage
-            history.push('/');
-          }
+            history.push("/");
+          },
         });
       } catch (e) {
         // send erros back to Formik form
@@ -60,7 +68,6 @@ class Provider extends Component {
       setSubmitting(false);
     },
     signout: async () => {
-
       if (result.value) {
         try {
           const { client, history } = this.props;
@@ -68,19 +75,24 @@ class Provider extends Component {
           // trigger res.clearCookie() on the server
           await client.mutate({
             mutation: SIGNOUT_MUTATION,
-            update: async(cache, { data: { signout: { message } }}) => {
+            update: async (
+              cache,
+              {
+                data: {
+                  signout: { message },
+                },
+              }
+            ) => {
               // redirect to homepage
-              history.push('/');
+              history.push("/");
 
               // reset cache to its defaults
               await client.resetStore();
-            }
+            },
           });
-
         } catch (e) {}
       }
-
-    }
+    },
   };
 
   async componentDidMount() {
@@ -91,7 +103,7 @@ class Provider extends Component {
      * verify token validity etc
      */
     const {
-      data: { currentUser }
+      data: { currentUser },
     } = await client.query({ query: CURRENT_CACHED_USER_QUERY });
     console.log({ currentUser });
   }
@@ -105,8 +117,8 @@ class Provider extends Component {
     const data = {
       currentUser: {
         ...user,
-        __typename: 'CurrentUser'
-      }
+        __typename: "CurrentUser",
+      },
     };
 
     console.log({ data });
@@ -118,18 +130,17 @@ class Provider extends Component {
 export const AuthProvider = withApollo(withRouter(Provider));
 
 // consumer for AuthContext
-export const AuthConsumer = props => <AuthContext.Consumer {...props} />;
+export const AuthConsumer = (props) => <AuthContext.Consumer {...props} />;
 
 // withAuth hoc passes down original props and currentUser and context as props to new wrapped component
-export const withAuth = WrappedComponent => props => (
-  <Query
-    query={CURRENT_CACHED_USER_QUERY}
-    fetchPolicy='cache-only'
-  >
+export const withAuth = (WrappedComponent) => (props) => (
+  <Query query={CURRENT_CACHED_USER_QUERY} fetchPolicy="cache-only">
     {({ data: { currentUser } }) => {
       return (
         <AuthConsumer>
-          {ctx => <WrappedComponent {...props} currentUser={currentUser} {...ctx} />}
+          {(ctx) => (
+            <WrappedComponent {...props} currentUser={currentUser} {...ctx} />
+          )}
         </AuthConsumer>
       );
     }}

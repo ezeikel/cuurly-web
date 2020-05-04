@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Router from "next/router";
 import { useQuery } from "@apollo/react-hooks";
@@ -338,6 +338,19 @@ const Profile = ({ id }) => {
   const [settingsModalIsOpen, setSettingsModalIsOpen] = useState(false);
   const subtitleEl = useRef(null);
 
+  useEffect(() => {
+    const handleRouteChange = () => {
+      closeFollowersModal();
+      closeFollowingModal();
+    };
+
+    Router.events.on("routeChangeStart", handleRouteChange);
+
+    return () => {
+      Router.events.off("routeChangeStart", handleRouteChange);
+    };
+  });
+
   const {
     loading: currentUserLoading,
     error: currentUserError,
@@ -355,8 +368,8 @@ const Profile = ({ id }) => {
         bio,
         website,
         posts,
-        followers,
-        following,
+        followers: followersIds,
+        following: followingIds,
         verified,
       } = {},
     } = {},
@@ -364,21 +377,21 @@ const Profile = ({ id }) => {
     variables: { id },
   });
 
-  // const {
-  //   loading: userFollowingLoading,
-  //   error: userFollowingError,
-  //   data: { following },
-  // } = useQuery(USER_FOLLOWING_QUERY, {
-  //   variables: { id },
-  // });
+  const {
+    loading: userFollowingLoading,
+    error: userFollowingError,
+    data: { following } = {},
+  } = useQuery(USER_FOLLOWING_QUERY, {
+    variables: { id },
+  });
 
-  // const {
-  //   loading: userFollowersLoading,
-  //   error: userFollowersError,
-  //   data: { followers },
-  // } = useQuery(USER_FOLLOWERS_QUERY, {
-  //   variables: { id },
-  // });
+  const {
+    loading: userFollowersLoading,
+    error: userFollowersError,
+    data: { followers } = {},
+  } = useQuery(USER_FOLLOWERS_QUERY, {
+    variables: { id },
+  });
 
   const openFollowersModal = () => setFollowersModalIsOpen(true);
   const closeFollowersModal = () => setFollowersModalIsOpen(false);
@@ -388,11 +401,6 @@ const Profile = ({ id }) => {
 
   const openSettingsModal = () => setSettingsModalIsOpen(true);
   const closeSettingsModal = () => setSettingsModalIsOpen(false);
-
-  Router.onRouteChangeStart = () => {
-    closeFollowersModal();
-    closeFollowingModal();
-  };
 
   return (
     <Wrapper>
@@ -431,7 +439,7 @@ const Profile = ({ id }) => {
               currentUser={currentUser}
               userId={id}
               usersFollowers={
-                followers && followers.map((follower) => follower.id)
+                followersIds && followersIds.map((follower) => follower.id)
               }
             />
           )}
@@ -482,7 +490,8 @@ const Profile = ({ id }) => {
             <Number>{(posts && posts.length) || 0}</Number> posts
           </Stat>
           <Stat onClick={openFollowersModal}>
-            <Number>{(followers && followers.length) || 0}</Number> followers
+            <Number>{(followersIds && followersIds.length) || 0}</Number>{" "}
+            followers
           </Stat>
           <StyledStatsModal
             isOpen={followersModalIsOpen}
@@ -529,8 +538,7 @@ const Profile = ({ id }) => {
                           <FollowButton
                             currentUser={currentUser}
                             userId={follower.id}
-                            key={currentUser}
-                            usersFollowers={
+                            userList={
                               follower &&
                               follower.followers &&
                               follower.followers.map((follower) => follower.id)
@@ -544,7 +552,8 @@ const Profile = ({ id }) => {
             </ModalBody>
           </StyledStatsModal>
           <Stat onClick={openFollowingModal}>
-            <Number>{(following && followers.length) || 0}</Number> following
+            <Number>{(followingIds && followingIds.length) || 0}</Number>{" "}
+            following
           </Stat>
           <StyledStatsModal
             isOpen={followingModalIsOpen}
@@ -591,7 +600,7 @@ const Profile = ({ id }) => {
                           <FollowButton
                             currentUser={currentUser}
                             userId={following.id}
-                            usersFollowers={
+                            userList={
                               following &&
                               following.followers &&
                               following.followers.map((follower) => follower.id)

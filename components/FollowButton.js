@@ -22,12 +22,12 @@ const StyledButton = styled(Button)`
       : null}
 `;
 
-const FollowButton = ({ currentUser, userId, usersFollowers }) => {
-  if (!currentUser || !usersFollowers) return null;
+const FollowButton = ({ currentUser, userId, userList }) => {
+  if (!currentUser || !userList || currentUser.id === userId) return null;
 
   const [follow, { data, loading, error }] = useMutation(FOLLOW_MUTATION, {
     mutation:
-      usersFollowers && usersFollowers.includes(currentUser.id)
+      userList && userList.includes(currentUser.id)
         ? UNFOLLOW_MUTATION
         : FOLLOW_MUTATION,
     variables: { id: userId },
@@ -50,12 +50,12 @@ const FollowButton = ({ currentUser, userId, usersFollowers }) => {
 
   return (
     <StyledButton
-      mode={usersFollowers.includes(currentUser.id) ? "unfollow" : "follow"}
+      mode={userList.includes(currentUser.id) ? "unfollow" : "follow"}
       onClick={follow}
     >
       {loading ? (
         <Spinner />
-      ) : usersFollowers.includes(currentUser.id) ? (
+      ) : userList.includes(currentUser.id) ? (
         "Unfollow"
       ) : (
         "Follow"

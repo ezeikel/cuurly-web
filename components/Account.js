@@ -414,8 +414,8 @@ const Account = ({ query, id }) => {
             followers,
             following,
             verified,
-          },
-        },
+          } = {},
+        } = {},
         error,
         loading,
       }) => {
