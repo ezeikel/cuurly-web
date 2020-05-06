@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import Router from "next/router";
 import { useQuery } from "@apollo/react-hooks";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -188,19 +187,6 @@ const Profile = ({ id }) => {
   const [followersModalIsOpen, setFollowersModalIsOpen] = useState(false);
   const [followingModalIsOpen, setFollowingModalIsOpen] = useState(false);
   const [settingsModalIsOpen, setSettingsModalIsOpen] = useState(false);
-
-  useEffect(() => {
-    const handleRouteChange = () => {
-      closeFollowersModal();
-      closeFollowingModal();
-    };
-
-    Router.events.on("routeChangeStart", handleRouteChange);
-
-    return () => {
-      Router.events.off("routeChangeStart", handleRouteChange);
-    };
-  }, []);
 
   const {
     loading: currentUserLoading,

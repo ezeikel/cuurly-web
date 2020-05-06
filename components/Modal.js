@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import Router from "next/router";
 import Modal from "react-modal";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -64,6 +66,18 @@ const GenericModal = ({
   close,
   children,
 }) => {
+  useEffect(() => {
+    const handleRouteChange = () => {
+      close();
+    };
+
+    Router.events.on("routeChangeStart", handleRouteChange);
+
+    return () => {
+      Router.events.off("routeChangeStart", handleRouteChange);
+    };
+  }, []);
+
   return (
     <StyledStatsModal
       isOpen={isOpen}
