@@ -9,7 +9,6 @@ const Wrapper = styled.span`
 
 const Signout = ({ router }) => {
   const [signout, { data, loading, error }] = useMutation(SIGNOUT_MUTATION, {
-    variables: { id: comment.id },
     update(cache) {
       // manually writing to cache to fix homepage conditional redirect not working
       cache.writeQuery({

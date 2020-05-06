@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Router from "next/router";
 import { useQuery } from "@apollo/react-hooks";
@@ -14,8 +14,10 @@ import {
 import FollowButton from "./FollowButton";
 import PostPreview from "./PostPreview";
 import Button from "./styles/Button";
-import Signout from "./Signout";
 import blankProfilePicture from "../utils/blankProfileImage";
+import GenericModal from "./Modal";
+import UserList from "./UserList";
+import SettingsOptions from "./SettingsOptions";
 
 const Wrapper = styled.div`
   display: grid;
@@ -172,159 +174,9 @@ const StyledFollowButton = styled(FollowButton)`
   padding: 0 24px;
 `;
 
-const ReactModalAdapter = ({ className, modalClassName, ...props }) => (
-  <Modal className={modalClassName} portalClassName={className} {...props} />
-);
-
-const StyledStatsModal = styled(ReactModalAdapter).attrs({
-  //https://github.com/styled-components/styled-components/issues/1494
-  overlayClassName: "overlay",
-  modalClassName: "modal",
-})`
-  /* Portal styles here (though usually you will have none) */
-  .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: grid;
-    place-items: center;
-  }
-  .modal {
-    display: grid;
-    grid-template-rows: 43px 1fr;
-    background-color: var(--color-white);
-    min-height: 200px;
-    max-height: 400px;
-    width: 400px;
-    border-radius: 4px;
-    outline: 0;
-  }
-`;
-
-const ModalHeader = styled.header`
-  display: grid;
-  grid-template-columns: 1fr 42px;
-  align-items: center;
-  border-bottom: 1px solid #efefef;
-  h1 {
-    justify-self: center;
-    font-size: 1.6rem;
-    line-height: 2.4rem;
-    margin: 0;
-  }
-  svg {
-    align-self: center;
-    justify-self: center;
-    cursor: pointer;
-  }
-`;
-
-const ModalBody = styled.div`
-  overflow-y: scroll;
-`;
-
-const StyledSettingsModal = styled(ReactModalAdapter).attrs({
-  //https://github.com/styled-components/styled-components/issues/1494
-  overlayClassName: "overlay",
-  modalClassName: "modal",
-})`
-  /* Portal styles here (though usually you will have none) */
-  .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: grid;
-    place-items: center;
-  }
-  .modal {
-    display: grid;
-    background-color: var(--color-white);
-    min-height: 200px;
-    max-height: 400px;
-    width: 400px;
-    border-radius: 4px;
-    outline: 0;
-    overflow-y: scroll;
-  }
-`;
-
 if (typeof window !== "undefined") {
   Modal.setAppElement("body");
 }
-
-const FollowerList = styled.ul`
-  display: grid;
-`;
-
-const FollowerWrapper = styled.li`
-  display: grid;
-`;
-
-const Follower = styled.div`
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  grid-column-gap: var(--spacing-small);
-  align-items: center;
-  padding: 8px 16px;
-`;
-
-const FollowerPhoto = styled.div`
-  display: grid;
-  width: 30px;
-  height: 30px;
-  img {
-    border-radius: 50%;
-  }
-`;
-
-const FollowerName = styled.div`
-  display: grid;
-  grid-template-rows: 1fr 1fr;
-  font-size: 1.4rem;
-  line-height: 1.8rem;
-`;
-
-const FollowerAction = styled.div`
-  display: grid;
-`;
-
-const SettingsActions = styled.ul`
-  display: grid;
-`;
-
-const SettingsAction = styled.li`
-  display: grid;
-  align-items: center;
-  justify-content: space-around;
-  min-height: 48px;
-  padding: 4px 8px;
-  line-height: 1.5;
-  & + li {
-    border-top: 1px solid #efefef;
-  }
-  span {
-    cursor: pointer;
-    ${({ actionType }) =>
-      actionType === "negative"
-        ? `
-    color: var(--color-red);
-  `
-        : null}
-    ${({ disabled }) =>
-      disabled
-        ? `
-    opacity: 0.3;
-    pointer-events: none;
-  `
-        : null}
-  }
-`;
 
 const Website = styled.span`
   a {
@@ -336,7 +188,6 @@ const Profile = ({ id }) => {
   const [followersModalIsOpen, setFollowersModalIsOpen] = useState(false);
   const [followingModalIsOpen, setFollowingModalIsOpen] = useState(false);
   const [settingsModalIsOpen, setSettingsModalIsOpen] = useState(false);
-  const subtitleEl = useRef(null);
 
   useEffect(() => {
     const handleRouteChange = () => {
@@ -438,7 +289,7 @@ const Profile = ({ id }) => {
             <StyledFollowButton
               currentUser={currentUser}
               userId={id}
-              usersFollowers={
+              userList={
                 followersIds && followersIds.map((follower) => follower.id)
               }
             />
@@ -449,41 +300,14 @@ const Profile = ({ id }) => {
             color="var(--color-black)"
             size="2x"
           />
-          <StyledSettingsModal
+          <GenericModal
             isOpen={settingsModalIsOpen}
             onRequestClose={closeSettingsModal}
             contentLabel="Settings Modal"
+            close={closeSettingsModal}
           >
-            <ModalBody>
-              <SettingsActions>
-                <SettingsAction>
-                  <span>
-                    <Link href="/account?password-change">
-                      <a>Change Password</a>
-                    </Link>
-                  </span>
-                </SettingsAction>
-                <SettingsAction disabled={true}>
-                  <span>Nametag</span>
-                </SettingsAction>
-                <SettingsAction disabled={true}>
-                  <span>Authorized Apps</span>
-                </SettingsAction>
-                <SettingsAction disabled={true}>
-                  <span>Notifications</span>
-                </SettingsAction>
-                <SettingsAction disabled={true}>
-                  <span>Privacy and Security</span>
-                </SettingsAction>
-                <SettingsAction>
-                  <Signout />
-                </SettingsAction>
-                <SettingsAction>
-                  <span onClick={closeSettingsModal}>Cancel</span>
-                </SettingsAction>
-              </SettingsActions>
-            </ModalBody>
-          </StyledSettingsModal>
+            <SettingsOptions close={closeSettingsModal} />
+          </GenericModal>
         </FirstRow>
         <SecondRow>
           <Stat style={{ cursor: "auto" }}>
@@ -493,126 +317,28 @@ const Profile = ({ id }) => {
             <Number>{(followersIds && followersIds.length) || 0}</Number>{" "}
             followers
           </Stat>
-          <StyledStatsModal
+          <GenericModal
             isOpen={followersModalIsOpen}
             onRequestClose={closeFollowersModal}
             contentLabel="Followers Modal"
+            heading="Followers"
+            close={closeFollowersModal}
           >
-            <ModalHeader>
-              <h1 ref={subtitleEl}>Followers</h1>
-              <FontAwesomeIcon
-                icon={["fal", "times"]}
-                color="var(--color-black)"
-                size="lg"
-                onClick={closeFollowersModal}
-              />
-            </ModalHeader>
-            <ModalBody>
-              <FollowerList>
-                {followers &&
-                  followers.map((follower) => (
-                    <FollowerWrapper key={follower.id}>
-                      <Follower>
-                        <FollowerPhoto>
-                          <img
-                            src={
-                              (follower.profilePicture &&
-                                follower.profilePicture.url.replace(
-                                  "/upload",
-                                  "/upload/w_30,h_30,c_lfill,g_face,dpr_2.0"
-                                )) ||
-                              blankProfilePicture()
-                            }
-                            alt="profile-pic"
-                          />
-                        </FollowerPhoto>
-                        <FollowerName>
-                          <span>
-                            <Link href={`/user?id=${follower.id}`}>
-                              <a>{follower.username}</a>
-                            </Link>
-                          </span>
-                          <span>{follower.name}</span>
-                        </FollowerName>
-                        <FollowerAction>
-                          <FollowButton
-                            currentUser={currentUser}
-                            userId={follower.id}
-                            userList={
-                              follower &&
-                              follower.followers &&
-                              follower.followers.map((follower) => follower.id)
-                            }
-                          />
-                        </FollowerAction>
-                      </Follower>
-                    </FollowerWrapper>
-                  ))}
-              </FollowerList>
-            </ModalBody>
-          </StyledStatsModal>
+            <UserList users={followers} currentUser={currentUser} />
+          </GenericModal>
           <Stat onClick={openFollowingModal}>
             <Number>{(followingIds && followingIds.length) || 0}</Number>{" "}
             following
           </Stat>
-          <StyledStatsModal
+          <GenericModal
             isOpen={followingModalIsOpen}
             onRequestClose={closeFollowingModal}
             contentLabel="Following Modal"
+            heading="Following"
+            close={closeFollowingModal}
           >
-            <ModalHeader>
-              <h1 ref={subtitleEl}>Following</h1>
-              <FontAwesomeIcon
-                icon={["fal", "times"]}
-                color="var(--color-black)"
-                size="lg"
-                onClick={closeFollowingModal}
-              />
-            </ModalHeader>
-            <ModalBody>
-              <FollowerList>
-                {following &&
-                  following.map((following) => (
-                    <FollowerWrapper key={following.id}>
-                      <Follower>
-                        <FollowerPhoto>
-                          <img
-                            src={
-                              (following.profilePicture &&
-                                following.profilePicture.url.replace(
-                                  "/upload",
-                                  "/upload/w_30,h_30,c_lfill,g_face,dpr_2.0"
-                                )) ||
-                              blankProfilePicture()
-                            }
-                            alt="profile-pic"
-                          />
-                        </FollowerPhoto>
-                        <FollowerName>
-                          <span>
-                            <Link href={`/user?id=${following.id}`}>
-                              <a>{following.username}</a>
-                            </Link>
-                          </span>
-                          <span>{following.name}</span>
-                        </FollowerName>
-                        <FollowerAction>
-                          <FollowButton
-                            currentUser={currentUser}
-                            userId={following.id}
-                            userList={
-                              following &&
-                              following.followers &&
-                              following.followers.map((follower) => follower.id)
-                            }
-                          />
-                        </FollowerAction>
-                      </Follower>
-                    </FollowerWrapper>
-                  ))}
-              </FollowerList>
-            </ModalBody>
-          </StyledStatsModal>
+            <UserList users={following} currentUser={currentUser} />
+          </GenericModal>
         </SecondRow>
         <ThirdRow>
           <Name>{name}</Name>

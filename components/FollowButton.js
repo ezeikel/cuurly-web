@@ -23,20 +23,18 @@ const StyledButton = styled(Button)`
 `;
 
 const FollowButton = ({ currentUser, userId, userList }) => {
+  debugger;
   if (!currentUser || !userList || currentUser.id === userId) return null;
 
-  const [follow, { data, loading, error }] = useMutation(FOLLOW_MUTATION, {
-    mutation:
-      userList && userList.includes(currentUser.id)
-        ? UNFOLLOW_MUTATION
-        : FOLLOW_MUTATION,
+  const MUTATION =
+    userList && userList.includes(currentUser.id)
+      ? UNFOLLOW_MUTATION
+      : FOLLOW_MUTATION;
+
+  const [follow, { data, loading, error }] = useMutation(MUTATION, {
     variables: { id: userId },
     refetchQueries: [
       { query: SINGLE_USER_QUERY, variables: { id: userId } },
-      {
-        query: SINGLE_USER_QUERY,
-        variables: { id: currentUser.id },
-      },
       {
         query: USER_FOLLOWERS_QUERY,
         variables: { id: currentUser.id },
