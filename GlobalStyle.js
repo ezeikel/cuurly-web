@@ -1,6 +1,11 @@
 import { createGlobalStyle } from "styled-components";
+import { config, dom } from "@fortawesome/fontawesome-svg-core";
+config.autoAddCss = false;
 
 export default createGlobalStyle`
+  /* fixes fontawesome icon sizes */
+  ${dom.css()}
+
 /* CSS Variables */
 :root {
   /* Colors */
