@@ -88,11 +88,15 @@ const Nav = ({ theme }) => {
       <StyledSearch />
       <NavActions>
         <li>
-          <FontAwesomeIcon
-            icon={["fal", "compass"]}
-            color="var(--color-black)"
-            size="lg"
-          />
+          <Link href={`/explore?id=${currentUser.id}`}>
+            <a>
+              <FontAwesomeIcon
+                icon={["fal", "compass"]}
+                color="var(--color-black)"
+                size="lg"
+              />
+            </a>
+          </Link>
         </li>
         <li>
           <Link href={`/notifications?id=${currentUser.id}`}>

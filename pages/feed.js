@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Query } from "react-apollo";
+import { useQuery } from "@apollo/react-hooks";
 import { FEED_QUERY } from "../apollo/queries";
 import Post from "../components/Post";
 
@@ -15,19 +15,24 @@ const Wrapper = styled.div`
   }
 `;
 
-const FeedPage = ({ query }) => (
-  <Query query={FEED_QUERY} variables={{ id: query.id }}>
-    {({ data, error, loading }) => {
-      if (loading) return <p>Loading...</p>;
-      if (error) return <p>Error: {error.message}</p>;
+const FeedPage = ({ query }) => {
+  const {
+    loading,
+    error,
+    data: { feed } = {}, // setting default value when destructing as data is undefined when loading - https://github.com/apollographql/react-apollo/issues/3323#issuecomment-523430331
+  } = useQuery(FEED_QUERY, {
+    variables: { id: query.id },
+  });
 
-      return (
-        <Wrapper>
-          {data && data.feed.map((post) => <Post key={post.id} id={post.id} />)}
-        </Wrapper>
-      );
-    }}
-  </Query>
-);
+  if (!feed) return null;
+
+  return (
+    <Wrapper>
+      {feed.map((post) => (
+        <Post key={post.id} id={post.id} />
+      ))}
+    </Wrapper>
+  );
+};
 
 export default FeedPage;

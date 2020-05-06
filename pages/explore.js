@@ -1,7 +1,7 @@
-import styled from 'styled-components';
-import { Query } from "react-apollo";
+import styled from "styled-components";
+import { useQuery } from "@apollo/react-hooks";
 import { EXPLORE_QUERY } from "../apollo/queries";
-import Post from '../components/Post';
+import Post from "../components/Post";
 
 const Wrapper = styled.div`
   display: grid;
@@ -12,26 +12,27 @@ const Wrapper = styled.div`
   }
 `;
 
-const ExplorePage = ({ query }) => (
-  <Query query={ EXPLORE_QUERY } variables={{ id: query.id }}>
-    {({ data: { explore }, error, loading }) => {
-      if (loading) return <p>Loading...</p>;
-      if (error) return <p>Error: {error.message}</p>;
+const ExplorePage = ({ query }) => {
+  const {
+    loading,
+    error,
+    data: { explore } = {}, // setting default value when destructing as data is undefined when loading - https://github.com/apollographql/react-apollo/issues/3323#issuecomment-523430331
+  } = useQuery(EXPLORE_QUERY, {
+    variables: { id: query.id },
+  });
 
-      return (
-        explore.length ?
-          <Wrapper>
-            <h1>Explore.</h1>
-            {
-              explore.map(post => (
-                <Post key={post.id} id={post.id}/>
-              ))
-            }
-          </Wrapper>
-        : <span>No posts found.</span>
-      );
-    }}
-  </Query>
-);
+  if (!explore) return null;
+
+  if (explore.length === 0) return <span>No posts found.</span>;
+
+  return (
+    <Wrapper>
+      <h1>Explore.</h1>
+      {explore.map((post) => (
+        <Post key={post.id} id={post.id} />
+      ))}
+    </Wrapper>
+  );
+};
 
 export default ExplorePage;
