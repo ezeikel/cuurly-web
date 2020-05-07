@@ -30,8 +30,8 @@ const Signup = ({ router }) => {
   const [signup, { data, loading, error }] = useMutation(SIGNUP_MUTATION, {
     mutation: SIGNUP_MUTATION,
     refetchQueries: [{ query: CURRENT_USER_QUERY }],
-    onCompleted({ signup: { id } }) {
-      router.push(`/user?id=${id}`);
+    onCompleted({ signup: { username } }) {
+      router.push(`/${username}`);
     },
   });
 

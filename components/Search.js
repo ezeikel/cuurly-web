@@ -94,10 +94,7 @@ const Name = styled.span`
 
 function routeToUser(user) {
   Router.push({
-    pathname: "/user",
-    query: {
-      id: user.id,
-    },
+    pathname: `/${user.username}`,
   });
 }
 

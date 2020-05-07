@@ -306,7 +306,7 @@ const Post = ({ id }) => {
           </Likes>
         ) : null}
         <Caption>
-          <Link href={`/user?id=${post.author.id}`}>
+          <Link href={`/${post.author.username}`}>
             <a>{post.author.username}</a>
           </Link>
           {post.caption}

@@ -26,8 +26,8 @@ export const ALL_USERS_QUERY = gql`
 `;
 
 export const SINGLE_USER_QUERY = gql`
-  query SINGLE_USER_QUERY($id: ID!) {
-    user(id: $id) {
+  query SINGLE_USER_QUERY($id: ID, $username: String, $email: String) {
+    user(id: $id, username: $username, email: $email) {
       id
       name
       username
@@ -54,8 +54,8 @@ export const SINGLE_USER_QUERY = gql`
 `;
 
 export const USER_FOLLOWERS_QUERY = gql`
-  query USER_FOLLOWERS_QUERY($id: ID!) {
-    followers(id: $id) {
+  query USER_FOLLOWERS_QUERY($id: ID, $username: String, $email: String) {
+    followers(id: $id, username: $username, email: $email) {
       id
       name
       username
@@ -74,8 +74,8 @@ export const USER_FOLLOWERS_QUERY = gql`
 `;
 
 export const USER_FOLLOWING_QUERY = gql`
-  query USER_FOLLOWING_QUERY($id: ID!) {
-    following(id: $id) {
+  query USER_FOLLOWING_QUERY($id: ID, $username: String, $email: String) {
+    following(id: $id, username: $username, email: $email) {
       id
       name
       username

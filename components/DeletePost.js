@@ -23,7 +23,7 @@ const DeletePost = ({ post, router }) => {
   ] = useMutation(DELETE_POST_MUTATION, {
     variables: { id: post.id, publicId: post.content.publicId },
     onCompleted() {
-      router.push(`/user?id=${currentUser.id}`);
+      router.push(`/${currentUser.username}`);
     },
     refetchQueries: [
       {

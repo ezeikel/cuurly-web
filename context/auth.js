@@ -31,7 +31,7 @@ class Provider extends Component {
             resetForm();
 
             // redirect to homepage
-            router.push(`/user?id=${user.id}`);
+            router.push(`/${user.username}`);
           },
         });
       } catch (e) {

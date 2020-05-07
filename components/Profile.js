@@ -183,7 +183,8 @@ const Website = styled.span`
   }
 `;
 
-const Profile = ({ id }) => {
+const Profile = ({ username }) => {
+  debugger;
   const [followersModalIsOpen, setFollowersModalIsOpen] = useState(false);
   const [followingModalIsOpen, setFollowingModalIsOpen] = useState(false);
   const [settingsModalIsOpen, setSettingsModalIsOpen] = useState(false);
@@ -199,8 +200,8 @@ const Profile = ({ id }) => {
     error: singleUserError,
     data: {
       user: {
+        id,
         profilePicture,
-        username,
         name,
         bio,
         website,
@@ -211,7 +212,7 @@ const Profile = ({ id }) => {
       } = {},
     } = {},
   } = useQuery(SINGLE_USER_QUERY, {
-    variables: { id },
+    variables: { username },
   });
 
   const {
@@ -219,7 +220,7 @@ const Profile = ({ id }) => {
     error: userFollowingError,
     data: { following } = {},
   } = useQuery(USER_FOLLOWING_QUERY, {
-    variables: { id },
+    variables: { username },
   });
 
   const {
@@ -227,7 +228,7 @@ const Profile = ({ id }) => {
     error: userFollowersError,
     data: { followers } = {},
   } = useQuery(USER_FOLLOWERS_QUERY, {
-    variables: { id },
+    variables: { username },
   });
 
   const openFollowersModal = () => setFollowersModalIsOpen(true);

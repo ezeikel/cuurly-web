@@ -60,7 +60,7 @@ const UserList = ({ users, currentUser }) => {
             </FollowerPhoto>
             <FollowerName>
               <span>
-                <Link href={`/user?id=${user.id}`}>
+                <Link href={`/${user.username}`}>
                   <a>{user.username}</a>
                 </Link>
               </span>

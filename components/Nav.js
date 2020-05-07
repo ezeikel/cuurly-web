@@ -121,7 +121,7 @@ const Nav = ({ theme }) => {
           </Link>
         </li>
         <li>
-          <Link href={`/user?id=${currentUser.id}`}>
+          <Link href={`/${currentUser.username}`}>
             <a>
               <FontAwesomeIcon
                 icon={["fal", "user"]}

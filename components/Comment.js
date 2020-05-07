@@ -46,7 +46,7 @@ const Comment = ({ comment, post }) => {
 
   return (
     <Wrapper canDelete={canDelete}>
-      <Link href={`/user?id=${comment.writtenBy.id}`}>
+      <Link href={`/${comment.writtenBy.username}`}>
         <StyledAnchor>{comment.writtenBy.username}</StyledAnchor>
       </Link>
       <span>{comment.text}</span>
