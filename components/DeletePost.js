@@ -44,8 +44,6 @@ const DeletePost = ({ post, router }) => {
   return (
     <Fragment>
       <span onClick={deletePost}>Delete</span>
-      {loading && <p>Loading...</p>}
-      {error && <p>Error :( Please try again</p>}
     </Fragment>
   );
 };

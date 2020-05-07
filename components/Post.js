@@ -240,7 +240,11 @@ const Post = ({ id }) => {
           <ModalBody>
             <PostActions>
               <PostAction>
-                <span>Go to Post</span>
+                <Link href={`/post/${post.id}`}>
+                  <a>
+                    <span>Go to Post</span>
+                  </a>
+                </Link>
               </PostAction>
               {isCurrentUsersPost ? (
                 <Fragment>
