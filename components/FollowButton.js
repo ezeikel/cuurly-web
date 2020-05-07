@@ -23,7 +23,6 @@ const StyledButton = styled(Button)`
 `;
 
 const FollowButton = ({ currentUser, userId, userList }) => {
-  debugger;
   if (!currentUser || !userList || currentUser.id === userId) return null;
 
   const MUTATION =

@@ -8,7 +8,7 @@ import {
   SIGNUP_MUTATION,
 } from "../apollo/queries";
 
-// TODO: Replace all of this with useContext, useEffect and maybe a custom hook to house it all
+// TODO: This is not being used by anything. Replace all of this with useContext, useEffect and maybe a custom hook to house it all
 
 // create React context
 export const AuthContext = createContext();
