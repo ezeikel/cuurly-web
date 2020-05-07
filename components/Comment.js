@@ -1,7 +1,7 @@
 import Link from "next/link";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useQuery, useMutation } from "@apollo/react-hooks";
+import { useQuery, useMutation } from "@apollo/client";
 import { CURRENT_USER_QUERY } from "../apollo/queries";
 import { SINGLE_POST_QUERY, DELETE_COMMENT_MUTATION } from "../apollo/queries";
 

@@ -1,6 +1,6 @@
 import { useCallback, useState, Fragment, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation } from "@apollo/client";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { CREATE_POST_MUTATION, CURRENT_USER_QUERY } from "../apollo/queries";
 import { withRouter } from "next/router";

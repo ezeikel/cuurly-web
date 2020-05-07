@@ -1,6 +1,6 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { useQuery, useMutation } from "@apollo/react-hooks";
+import { useQuery, useMutation } from "@apollo/client";
 import { CURRENT_USER_QUERY } from "../apollo/queries";
 import { SINGLE_POST_QUERY, ADD_COMMENT_MUTATION } from "../apollo/queries";
 import styled from "styled-components";

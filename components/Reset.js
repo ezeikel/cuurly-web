@@ -1,5 +1,5 @@
 import { withRouter } from "next/router";
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation } from "@apollo/client";
 import { Formik, Field, ErrorMessage } from "formik";
 import styled from "styled-components";
 import * as Yup from "yup";

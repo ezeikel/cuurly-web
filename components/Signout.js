@@ -1,5 +1,5 @@
 import { withRouter } from "next/router";
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation } from "@apollo/client";
 import { SIGNOUT_MUTATION, CURRENT_USER_QUERY } from "../apollo/queries";
 import styled from "styled-components";
 

@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 import { SINGLE_POST_QUERY } from "../apollo/queries";
 import Link from "next/link";
 import styled from "styled-components";

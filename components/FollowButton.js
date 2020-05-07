@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation } from "@apollo/client";
 import {
   SINGLE_USER_QUERY,
   FOLLOW_MUTATION,

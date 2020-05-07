@@ -1,5 +1,5 @@
 import React, { createContext, Component } from "react";
-import { withApollo, Query } from "react-apollo";
+import { withApollo, Query } from "@apollo/client";
 import { withRouter } from "next/router";
 import {
   CURRENT_CACHED_USER_QUERY,

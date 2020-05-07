@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 import { LIKED_POSTS_QUERY } from "../apollo/queries";
 
 const Liked = ({ query }) => {

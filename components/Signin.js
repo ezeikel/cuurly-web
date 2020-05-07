@@ -1,6 +1,6 @@
 import { withRouter } from "next/router";
 import Link from "next/link";
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation } from "@apollo/client";
 import { Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import styled from "styled-components";
@@ -70,7 +70,7 @@ const Signin = ({ router }) => {
         {({ isSubmitting, touched, errors }) => (
           <StyledForm>
             <TextInput label="Username" name="username" type="text" />
-            <TextInput label="Password" name="password" type="text" />
+            <TextInput label="Password" name="password" type="password" />
             <FormErrors
               errors={
                 (touched.username && errors.username) ||

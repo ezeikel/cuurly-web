@@ -27,7 +27,6 @@
     "@zeit/next-css": "^1.0.1",
     "apollo-boost": "^0.4.7",
     "apollo-cache-inmemory": "^1.6.5",
-    "apollo-client": "^2.6.8",
     "apollo-link": "^1.2.14",
     "apollo-link-error": "^1.1.13",
     "apollo-link-http": "^1.5.17",
@@ -49,7 +48,6 @@
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-adopt": "^0.6.0",
-    "react-apollo": "^3.1.5",
     "react-dom": "^16.13.1",
     "react-dropzone": "^10.1.0",
     "react-modal": "^3.11.2",
@@ -111,7 +109,8 @@
             "styled-components",
             {
               "ssr": true,
-              "displayName": true
+              "displayName": true,
+              "preprocess": false
             }
           ]
         ]

@@ -1,5 +1,5 @@
 import { withRouter } from "next/router";
-import { useQuery, useMutation } from "@apollo/react-hooks";
+import { useQuery, useMutation } from "@apollo/client";
 import {
   DELETE_POST_MUTATION,
   SINGLE_USER_QUERY,

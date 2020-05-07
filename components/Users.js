@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 import { ALL_USERS_QUERY } from "../apollo/queries";
 
 const Users = () => {

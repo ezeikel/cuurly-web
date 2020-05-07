@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 import { EXPLORE_QUERY } from "../apollo/queries";
 import Post from "../components/Post";
 

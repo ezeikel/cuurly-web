@@ -1,6 +1,6 @@
 import { useState, Fragment } from "react";
 import Link from "next/link";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 import styled from "styled-components";
 import LikeButton from "./LikeButton";
 import PostComment from "./PostComment";

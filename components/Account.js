@@ -1,6 +1,6 @@
 import { Fragment, useState } from "react";
 import Link from "next/link";
-import { useQuery, useMutation } from "@apollo/react-hooks";
+import { useQuery, useMutation } from "@apollo/client";
 import styled from "styled-components";
 import { Formik, Form, Field } from "formik";
 import { toast } from "react-toastify";
