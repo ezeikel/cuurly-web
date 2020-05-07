@@ -184,7 +184,6 @@ const Website = styled.span`
 `;
 
 const Profile = ({ username }) => {
-  debugger;
   const [followersModalIsOpen, setFollowersModalIsOpen] = useState(false);
   const [followingModalIsOpen, setFollowingModalIsOpen] = useState(false);
   const [settingsModalIsOpen, setSettingsModalIsOpen] = useState(false);

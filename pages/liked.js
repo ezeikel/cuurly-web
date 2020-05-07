@@ -21,7 +21,7 @@ const Liked = ({ query }) => {
       <ul>
         {user.likes.map((like) => (
           <div key={like.post.id}>
-            <Link href={`/post?id=${like.post.id}`}>
+            <Link href={`/post/${like.post.id}`}>
               <a>{like.post.author.username}</a>
             </Link>
             <img src={like.post.content.url} />

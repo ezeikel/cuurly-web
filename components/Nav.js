@@ -99,7 +99,7 @@ const Nav = ({ theme }) => {
           </Link>
         </li>
         <li>
-          <Link href={`/notifications?id=${currentUser.id}`}>
+          <Link href={`/notifications`}>
             <a>
               <FontAwesomeIcon
                 icon={["fal", "bell"]}
@@ -110,7 +110,7 @@ const Nav = ({ theme }) => {
           </Link>
         </li>
         <li>
-          <Link href={`/messages?id=${currentUser.id}`}>
+          <Link href={`/inbox`}>
             <a>
               <FontAwesomeIcon
                 icon={["fal", "paper-plane"]}

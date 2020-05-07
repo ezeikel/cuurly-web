@@ -99,7 +99,7 @@ const Upload = ({ router }) => {
     CREATE_POST_MUTATION,
     {
       onCompleted({ createPost: { id } }) {
-        router.push(`/post?id=${id}`);
+        router.push(`/post/${id}`);
       },
       refetchQueries: [{ query: CURRENT_USER_QUERY }],
     }

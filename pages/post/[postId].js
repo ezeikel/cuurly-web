@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import Post from '../components/Post';
+import styled from "styled-components";
+import Post from "../../components/Post";
 
 const Wrapper = styled.div`
   display: grid;
@@ -15,7 +15,7 @@ const Wrapper = styled.div`
 
 const PostPage = ({ query }) => (
   <Wrapper>
-    <Post id={query.id} />
+    <Post id={query.postId} />
   </Wrapper>
 );
 
