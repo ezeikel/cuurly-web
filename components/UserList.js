@@ -50,12 +50,10 @@ const UserList = ({ users, currentUser }) => {
             <FollowerPhoto>
               <img
                 src={
-                  (user.profilePicture &&
-                    user.profilePicture.url.replace(
-                      "/upload",
-                      "/upload/w_30,h_30,c_lfill,g_face,dpr_2.0"
-                    )) ||
-                  blankProfilePicture()
+                  user.profilePicture?.url.replace(
+                    "/upload",
+                    "/upload/w_30,h_30,c_lfill,g_face,dpr_2.0"
+                  ) || blankProfilePicture()
                 }
                 alt="profile-pic"
               />

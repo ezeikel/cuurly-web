@@ -41,8 +41,8 @@ const Comment = ({ comment, post }) => {
   });
 
   const canDelete =
-    (currentUser && currentUser.id === comment.writtenBy.id) ||
-    (currentUser && currentUser.id === post.author.id);
+    currentUser.id === comment.writtenBy.id ||
+    currentUser.id === post.author.id;
 
   return (
     <Wrapper canDelete={canDelete}>

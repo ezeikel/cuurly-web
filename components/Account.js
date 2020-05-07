@@ -274,6 +274,7 @@ const ChangeProfilePhotoForm = styled.form`
   }
 `;
 
+// TODO: Replace modal in this file with GenericModal component
 const ReactModalAdapter = ({ className, modalClassName, ...props }) => (
   <Modal className={modalClassName} portalClassName={className} {...props} />
 );
@@ -473,11 +474,10 @@ const Account = ({ query, id }) => {
                   <img
                     src={
                       fileUrl ||
-                      (profilePicture &&
-                        profilePicture.url.replace(
-                          "/upload",
-                          "/upload/w_38,h_38,c_lfill,g_face,dpr_2.0"
-                        )) ||
+                      profilePicture?.url.replace(
+                        "/upload",
+                        "/upload/w_38,h_38,c_lfill,g_face,dpr_2.0"
+                      ) ||
                       blankProfilePicture()
                     }
                   />

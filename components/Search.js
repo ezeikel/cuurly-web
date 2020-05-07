@@ -179,12 +179,10 @@ class AutoComplete extends Component {
                       <UserPhoto>
                         <img
                           src={
-                            (user.profilePicture &&
-                              user.profilePicture.url.replace(
-                                "/upload",
-                                "/upload/w_150,h_150,c_lfill,g_face,dpr_2.0"
-                              )) ||
-                            blankProfilePicture()
+                            user.profilePicture?.url.replace(
+                              "/upload",
+                              "/upload/w_150,h_150,c_lfill,g_face,dpr_2.0"
+                            ) || blankProfilePicture()
                           }
                         />
                       </UserPhoto>
