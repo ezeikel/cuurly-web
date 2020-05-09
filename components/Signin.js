@@ -33,7 +33,12 @@ const StyledForm = styled(Form)`
 const Signin = ({ router }) => {
   const [signin, { data, loading, error }] = useMutation(SIGNIN_MUTATION, {
     onCompleted({ signin: { id } }) {
-      router.push(`/feed?id=${id}`);
+      router.push(
+        {
+          pathname: "/feed",
+        },
+        "/"
+      );
     },
     update(cache, { data: { signin } }) {
       // manually writing to cache to fix homepage conditional redirect not working

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useQuery } from "@apollo/client";
-import { FEED_QUERY } from "../apollo/queries";
+import { FEED_QUERY, CURRENT_USER_QUERY } from "../apollo/queries";
 import Post from "../components/Post";
 
 const Wrapper = styled.div`
@@ -15,13 +15,20 @@ const Wrapper = styled.div`
   }
 `;
 
-const FeedPage = ({ query }) => {
+const FeedPage = () => {
+  const {
+    loading: currentUserLoading,
+    error: currentUserError,
+    data: { currentUser } = {}, // setting default value when destructing as data is undefined when loading - https://github.com/apollographql/react-apollo/issues/3323#issuecomment-523430331
+  } = useQuery(CURRENT_USER_QUERY);
+
   const {
     loading,
     error,
     data: { feed } = {}, // setting default value when destructing as data is undefined when loading - https://github.com/apollographql/react-apollo/issues/3323#issuecomment-523430331
   } = useQuery(FEED_QUERY, {
-    variables: { id: query.id },
+    variables: { id: currentUser.id },
+    skip: currentUser === null, // wait for currentUser query before executing this one - https://github.com/apollographql/react-apollo/issues/3624#issuecomment-545990545
   });
 
   if (!feed) return null;

@@ -4,8 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Search from "./Search";
 import LogoImage from "./LogoImage";
 import LogoText from "./LogoText";
-import { useQuery } from "@apollo/client";
-import { CURRENT_USER_QUERY } from "../apollo/queries";
 
 const Wrapper = styled.nav`
   width: 100%;
@@ -62,15 +60,7 @@ const Upload = styled.div`
   justify-self: end;
 `;
 
-const Nav = ({ theme }) => {
-  const {
-    loading,
-    error,
-    data: { currentUser } = {}, // setting default value when destructing as data is undefined when loading - https://github.com/apollographql/react-apollo/issues/3323#issuecomment-523430331
-  } = useQuery(CURRENT_USER_QUERY);
-
-  if (!currentUser) return null;
-
+const Nav = ({ theme, currentUser }) => {
   return (
     <Wrapper theme={theme}>
       <LogoWrapper>

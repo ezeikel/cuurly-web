@@ -13,10 +13,11 @@ import {
 import FollowButton from "./FollowButton";
 import PostPreview from "./PostPreview";
 import Button from "./styles/Button";
-import blankProfilePicture from "../utils/blankProfileImage";
 import GenericModal from "./Modal";
 import UserList from "./UserList";
 import SettingsOptions from "./SettingsOptions";
+import UserAvatar from "./UserAvatar";
+import Username from "./Username";
 
 const Wrapper = styled.div`
   display: grid;
@@ -39,38 +40,8 @@ const Header = styled.header`
   }
 `;
 
-const Username = styled.span`
-  font-size: 28px;
-  line-height: 32px;
-  ${({ verified }) =>
-    verified
-      ? `
-    display: grid;
-    grid-template-columns: auto auto;
-    grid-column-gap: var(--spacing-small);
-    place-items: center;
-  `
-      : null}
-`;
-
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
   cursor: pointer;
-`;
-
-const UserPhoto = styled.div`
-  grid-row: 1 / span 2;
-  grid-column: 1 / span 1;
-  display: grid;
-  width: 77px;
-  height: 77px;
-  img {
-    border-radius: 50%;
-  }
-  @media (min-width: 736px) {
-    width: 150px;
-    height: 150px;
-    grid-row: 1 / -1;
-  }
 `;
 
 const FirstRow = styled.div`
@@ -242,29 +213,9 @@ const Profile = ({ username }) => {
   return (
     <Wrapper>
       <Header>
-        <UserPhoto>
-          <img
-            src={
-              (profilePicture &&
-                profilePicture.url.replace(
-                  "/upload",
-                  "/upload/w_150,h_150,c_lfill,g_face,dpr_2.0"
-                )) ||
-              blankProfilePicture()
-            }
-          />
-        </UserPhoto>
+        <UserAvatar photo={profilePicture} />
         <FirstRow>
-          <Username verified={verified}>
-            {username}
-            {verified ? (
-              <FontAwesomeIcon
-                icon={["fas", "badge-check"]}
-                color="#3E9AED"
-                size="xs"
-              />
-            ) : null}
-          </Username>
+          <Username user={{ username, verified }} />
           {currentUser && currentUser.id === id ? (
             <Button>
               <Link href="/account?edit">
