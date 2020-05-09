@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const Wrapper = styled.div`
+const Wrapper = styled.span`
   font-size: 28px;
   line-height: 32px;
   ${({ verified }) =>

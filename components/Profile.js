@@ -18,6 +18,8 @@ import UserList from "./UserList";
 import SettingsOptions from "./SettingsOptions";
 import UserAvatar from "./UserAvatar";
 import Username from "./Username";
+import Spinner from "./Spinner";
+import NumberOf from "./NumberOf";
 
 const Wrapper = styled.div`
   display: grid;
@@ -89,25 +91,6 @@ const SecondRow = styled.div`
     border-top: none;
     padding: 0;
   }
-`;
-
-const Stat = styled.div`
-  font-size: 1.6rem;
-  line-height: 1.8rem;
-  cursor: pointer;
-  display: grid;
-  grid-template-rows: 1fr 1fr;
-  place-items: center;
-  color: #999;
-  @media (min-width: 736px) {
-    display: block;
-    color: var(--color-black);
-  }
-`;
-
-const Number = styled.span`
-  font-weight: bold;
-  color: var(--color-black);
 `;
 
 const ThirdRow = styled.div`
@@ -210,6 +193,8 @@ const Profile = ({ username }) => {
   const openSettingsModal = () => setSettingsModalIsOpen(true);
   const closeSettingsModal = () => setSettingsModalIsOpen(false);
 
+  if (singleUserLoading || currentUserLoading) return <Spinner />;
+
   return (
     <Wrapper>
       <Header>
@@ -247,13 +232,12 @@ const Profile = ({ username }) => {
           </GenericModal>
         </FirstRow>
         <SecondRow>
-          <Stat style={{ cursor: "auto" }}>
-            <Number>{(posts && posts.length) || 0}</Number> posts
-          </Stat>
-          <Stat onClick={openFollowersModal}>
-            <Number>{(followersIds && followersIds.length) || 0}</Number>{" "}
-            followers
-          </Stat>
+          <NumberOf name="posts" length={posts.length} />
+          <NumberOf
+            name="followers"
+            length={followersIds.length}
+            clickHandler={openFollowersModal}
+          />
           <GenericModal
             isOpen={followersModalIsOpen}
             onRequestClose={closeFollowersModal}
@@ -263,10 +247,11 @@ const Profile = ({ username }) => {
           >
             <UserList users={followers} currentUser={currentUser} />
           </GenericModal>
-          <Stat onClick={openFollowingModal}>
-            <Number>{(followingIds && followingIds.length) || 0}</Number>{" "}
-            following
-          </Stat>
+          <NumberOf
+            name="following"
+            length={followingIds.length}
+            clickHandler={openFollowingModal}
+          />
           <GenericModal
             isOpen={followingModalIsOpen}
             onRequestClose={closeFollowingModal}

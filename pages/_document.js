@@ -1,12 +1,31 @@
-import Document, { Head, Main, NextScript } from 'next/document';
-import { ServerStyleSheet } from 'styled-components';
+import Document, { Head, Main, NextScript } from "next/document";
+import { ServerStyleSheet } from "styled-components";
 
 export default class MyDocument extends Document {
-  static getInitialProps({ renderPage }) {
+  static async getInitialProps(ctx) {
     const sheet = new ServerStyleSheet();
-    const page = renderPage(App => props => sheet.collectStyles(<App {...props} />));
-    const styleTags = sheet.getStyleElement();
-    return { ...page, styleTags };
+    const originalRenderPage = ctx.renderPage;
+
+    try {
+      ctx.renderPage = () =>
+        originalRenderPage({
+          enhanceApp: (App) => (props) =>
+            sheet.collectStyles(<App {...props} />),
+        });
+
+      const initialProps = await Document.getInitialProps(ctx);
+      return {
+        ...initialProps,
+        styles: (
+          <>
+            {initialProps.styles}
+            {sheet.getStyleElement()}
+          </>
+        ),
+      };
+    } finally {
+      sheet.seal();
+    }
   }
 
   setGoogleAnalyticsTags() {
@@ -16,7 +35,7 @@ export default class MyDocument extends Document {
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
         gtag('config', 'UA-139930047-1');
-      `
+      `,
     };
   }
 
@@ -24,9 +43,11 @@ export default class MyDocument extends Document {
     return (
       <html>
         <Head>
-          {this.props.styleTags}
           {/* Global site tag (gtag.js) - Google Analytics */}
-          <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139930047-1" />
+          <script
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=UA-139930047-1"
+          />
           <script dangerouslySetInnerHTML={this.setGoogleAnalyticsTags()} />
         </Head>
         <body>

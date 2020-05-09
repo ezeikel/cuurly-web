@@ -203,7 +203,7 @@ const Post = ({ id }) => {
     variables: { id },
   });
 
-  if (!post) return null;
+  if (singlePostLoading || !post) return null;
 
   const isCurrentUsersPost = currentUser && currentUser.id === post.author.id;
 

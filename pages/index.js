@@ -40,7 +40,6 @@ const Home = ({ router }) => {
   } = useQuery(CURRENT_USER_QUERY);
 
   useEffect(() => {
-    console.log("useEffect()");
     if (currentUser) {
       // if logged in redirect to user feed
       router.push(
