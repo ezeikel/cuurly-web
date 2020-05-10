@@ -1,8 +1,5 @@
-import { useState } from "react";
-import Link from "next/link";
 import { useQuery } from "@apollo/client";
 import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Modal from "react-modal";
 import {
   SINGLE_USER_QUERY,
@@ -10,16 +7,12 @@ import {
   USER_FOLLOWERS_QUERY,
   CURRENT_USER_QUERY,
 } from "../apollo/queries";
-import FollowButton from "./FollowButton";
 import PostPreview from "./PostPreview";
-import Button from "./styles/Button";
-import GenericModal from "./Modal";
-import UserList from "./UserList";
-import SettingsOptions from "./SettingsOptions";
 import UserAvatar from "./UserAvatar";
-import Username from "./Username";
 import Spinner from "./Spinner";
-import NumberOf from "./NumberOf";
+import UserNumbers from "./UserNumbers";
+import UserBio from "./UserBio";
+import ProfileNav from "./ProfileNav";
 
 const Wrapper = styled.div`
   display: grid;
@@ -42,74 +35,6 @@ const Header = styled.header`
   }
 `;
 
-const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-  cursor: pointer;
-`;
-
-const FirstRow = styled.div`
-  grid-column: 2 / -1;
-  grid-row: 1 / span 1;
-  display: grid;
-  grid-template-columns: repeat(3, auto);
-  grid-template-rows: 1fr 1fr;
-  grid-row-gap: var(--spacing-medium);
-  grid-column-gap: var(--spacing-medium);
-  justify-content: start;
-  align-items: center;
-  span {
-  }
-  button {
-    grid-row: 2 / -1;
-    grid-column: 1 / -1;
-  }
-  svg {
-  }
-  @media (min-width: 736px) {
-    grid-template-rows: 1fr;
-    grid-column-gap: var(--spacing-large);
-    button {
-      grid-row: auto;
-      grid-column: auto;
-    }
-  }
-`;
-
-const SecondRow = styled.div`
-  grid-column: 1 / -1;
-  grid-row: 3 / span 1;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  justify-content: start;
-  grid-column-gap: var(--spacing-large);
-  align-items: center;
-  border-top: 1px solid #efefef;
-  padding: 12px 0;
-  @media (min-width: 736px) {
-    grid-column: 2 / -1;
-    grid-row: 2 / span 1;
-    grid-template-columns: repeat(3, auto);
-    border-top: none;
-    padding: 0;
-  }
-`;
-
-const ThirdRow = styled.div`
-  grid-column: 1 / -1;
-  grid-row: 2 / span 1;
-  display: grid;
-  grid-template-rows: repeat(3, auto);
-  font-size: 1.6rem;
-  line-height: 2.4rem;
-  @media (min-width: 736px) {
-    grid-column: 2 / -1;
-    grid-row: 3 / span 1;
-  }
-`;
-
-const Name = styled.span`
-  font-weight: bold;
-`;
-
 const PostsWrapper = styled.div`
   display: grid;
 `;
@@ -123,25 +48,11 @@ const Posts = styled.ul`
   }
 `;
 
-const StyledFollowButton = styled(FollowButton)`
-  padding: 0 24px;
-`;
-
 if (typeof window !== "undefined") {
   Modal.setAppElement("body");
 }
 
-const Website = styled.span`
-  a {
-    color: #003569;
-  }
-`;
-
 const Profile = ({ username }) => {
-  const [followersModalIsOpen, setFollowersModalIsOpen] = useState(false);
-  const [followingModalIsOpen, setFollowingModalIsOpen] = useState(false);
-  const [settingsModalIsOpen, setSettingsModalIsOpen] = useState(false);
-
   const {
     loading: currentUserLoading,
     error: currentUserError,
@@ -159,7 +70,7 @@ const Profile = ({ username }) => {
         bio,
         website,
         posts,
-        followers: followersIds,
+        followers: followerIds,
         following: followingIds,
         verified,
       } = {},
@@ -184,93 +95,28 @@ const Profile = ({ username }) => {
     variables: { username },
   });
 
-  const openFollowersModal = () => setFollowersModalIsOpen(true);
-  const closeFollowersModal = () => setFollowersModalIsOpen(false);
-
-  const openFollowingModal = () => setFollowingModalIsOpen(true);
-  const closeFollowingModal = () => setFollowingModalIsOpen(false);
-
-  const openSettingsModal = () => setSettingsModalIsOpen(true);
-  const closeSettingsModal = () => setSettingsModalIsOpen(false);
-
   if (singleUserLoading || currentUserLoading) return <Spinner />;
 
   return (
     <Wrapper>
       <Header>
         <UserAvatar photo={profilePicture} />
-        <FirstRow>
-          <Username user={{ username, verified }} />
-          {currentUser && currentUser.id === id ? (
-            <Button>
-              <Link href="/account?edit">
-                <a>Edit profile</a>
-              </Link>
-            </Button>
-          ) : (
-            <StyledFollowButton
-              currentUser={currentUser}
-              userId={id}
-              userList={
-                followersIds && followersIds.map((follower) => follower.id)
-              }
-            />
-          )}
-          <StyledFontAwesomeIcon
-            onClick={openSettingsModal}
-            icon={["fal", "cog"]}
-            color="var(--color-black)"
-            size="2x"
-          />
-          <GenericModal
-            isOpen={settingsModalIsOpen}
-            onRequestClose={closeSettingsModal}
-            contentLabel="Settings Modal"
-            close={closeSettingsModal}
-          >
-            <SettingsOptions close={closeSettingsModal} />
-          </GenericModal>
-        </FirstRow>
-        <SecondRow>
-          <NumberOf name="posts" length={posts.length} />
-          <NumberOf
-            name="followers"
-            length={followersIds.length}
-            clickHandler={openFollowersModal}
-          />
-          <GenericModal
-            isOpen={followersModalIsOpen}
-            onRequestClose={closeFollowersModal}
-            contentLabel="Followers Modal"
-            heading="Followers"
-            close={closeFollowersModal}
-          >
-            <UserList users={followers} currentUser={currentUser} />
-          </GenericModal>
-          <NumberOf
-            name="following"
-            length={followingIds.length}
-            clickHandler={openFollowingModal}
-          />
-          <GenericModal
-            isOpen={followingModalIsOpen}
-            onRequestClose={closeFollowingModal}
-            contentLabel="Following Modal"
-            heading="Following"
-            close={closeFollowingModal}
-          >
-            <UserList users={following} currentUser={currentUser} />
-          </GenericModal>
-        </SecondRow>
-        <ThirdRow>
-          <Name>{name}</Name>
-          <span>{bio}</span>
-          <Website>
-            <a href={website} target="_blank">
-              {website}
-            </a>
-          </Website>
-        </ThirdRow>
+        <ProfileNav
+          id={id}
+          currentUser={currentUser}
+          username={username}
+          verified={verified}
+          followerIds={followerIds}
+        />
+        <UserNumbers
+          currentUser={currentUser}
+          posts={posts}
+          following={following}
+          followers={followers}
+          followingIds={followingIds}
+          followerIds={followerIds}
+        />
+        <UserBio name={name} bio={bio} website={website} />
       </Header>
       <PostsWrapper>
         <Posts>
