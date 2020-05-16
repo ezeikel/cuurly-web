@@ -39,7 +39,7 @@ const FollowerAction = styled.div`
   display: grid;
 `;
 
-const UserList = ({ users, currentUser }) => {
+const UserList = ({ users, singleUser, currentUser }) => {
   if (!users) return null;
 
   return (
@@ -68,11 +68,11 @@ const UserList = ({ users, currentUser }) => {
             </FollowerName>
             <FollowerAction>
               <FollowButton
+                singleUser={singleUser}
                 currentUser={currentUser}
                 userId={user.id}
                 userList={
-                  user.followers &&
-                  user.followers.map((follower) => follower.id)
+                  user.followers && user.followers.map((user) => user.id)
                 }
               />
             </FollowerAction>

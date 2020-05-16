@@ -22,7 +22,7 @@ const StyledButton = styled(Button)`
       : null}
 `;
 
-const FollowButton = ({ currentUser, userId, userList }) => {
+const FollowButton = ({ singleUser, currentUser, userId, userList }) => {
   if (!currentUser || !userList || currentUser.id === userId) return null;
 
   const MUTATION =
@@ -31,16 +31,16 @@ const FollowButton = ({ currentUser, userId, userList }) => {
       : FOLLOW_MUTATION;
 
   const [follow, { data, loading, error }] = useMutation(MUTATION, {
-    variables: { id: userId },
+    variables: { id: userId }, // the user to be followed/unfollowed
     refetchQueries: [
-      { query: SINGLE_USER_QUERY, variables: { id: userId } },
+      { query: SINGLE_USER_QUERY, variables: { username: singleUser } },
       {
         query: USER_FOLLOWERS_QUERY,
-        variables: { id: currentUser.id },
+        variables: { username: singleUser },
       },
       {
         query: USER_FOLLOWING_QUERY,
-        variables: { id: currentUser.id },
+        variables: { username: singleUser },
       },
     ],
   });

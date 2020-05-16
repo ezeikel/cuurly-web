@@ -110,6 +110,7 @@ const Profile = ({ username }) => {
         />
         <UserNumbers
           currentUser={currentUser}
+          singleUser={username} // TODO: Put singleUser in context and rename to username to be whoever we are currently looking at
           posts={posts}
           following={following}
           followers={followers}

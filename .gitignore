@@ -7,3 +7,4 @@ layout.md
 .env
 process.defaults.js
 .npmrc
+.now

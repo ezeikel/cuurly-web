@@ -24,6 +24,7 @@ const Wrapper = styled.div`
 `;
 
 const UserNumbers = ({
+  singleUser,
   currentUser,
   posts,
   followerIds,
@@ -55,7 +56,11 @@ const UserNumbers = ({
         heading="Followers"
         close={closeFollowersModal}
       >
-        <UserList users={followers} currentUser={currentUser} />
+        <UserList
+          users={followers}
+          singleUser={singleUser}
+          currentUser={currentUser}
+        />
       </GenericModal>
       <NumberOf
         name="following"
@@ -69,7 +74,11 @@ const UserNumbers = ({
         heading="Following"
         close={closeFollowingModal}
       >
-        <UserList users={following} currentUser={currentUser} />
+        <UserList
+          users={following}
+          singleUser={singleUser}
+          currentUser={currentUser}
+        />
       </GenericModal>
     </Wrapper>
   );

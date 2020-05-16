@@ -60,6 +60,7 @@ const ProfileNav = ({ id, currentUser, username, verified, followerIds }) => {
         </Button>
       ) : (
         <StyledFollowButton
+          singleUser={username}
           currentUser={currentUser}
           userId={id}
           userList={followerIds && followerIds.map((follower) => follower.id)}
