@@ -89,7 +89,7 @@ const Nav = ({ theme, currentUser }) => {
           </Link>
         </li>
         <li>
-          <Link href={`/notifications`}>
+          <Link href={`/`}>
             <a>
               <FontAwesomeIcon
                 icon={["fal", "bell"]}
@@ -100,7 +100,7 @@ const Nav = ({ theme, currentUser }) => {
           </Link>
         </li>
         <li>
-          <Link href={`/inbox`}>
+          <Link href={`/`}>
             <a>
               <FontAwesomeIcon
                 icon={["fal", "paper-plane"]}
@@ -111,7 +111,7 @@ const Nav = ({ theme, currentUser }) => {
           </Link>
         </li>
         <li>
-          <Link href={`/${currentUser.username}`}>
+          <Link href="/[username]" as={`/${currentUser.username}`}>
             <a>
               <FontAwesomeIcon
                 icon={["fal", "user"]}
