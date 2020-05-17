@@ -31,7 +31,7 @@ class Provider extends Component {
             resetForm();
 
             // redirect to homepage
-            router.push(`/${user.username}`);
+            router.push({ pathname: "/[username]" }, `/${user.username}`);
           },
         });
       } catch (e) {

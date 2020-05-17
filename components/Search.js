@@ -93,9 +93,12 @@ const Name = styled.span`
 `;
 
 function routeToUser(user) {
-  Router.push({
-    pathname: `/${user.username}`,
-  });
+  Router.push(
+    {
+      pathname: "/[username]",
+    },
+    `/${user.username}`
+  );
 }
 
 class AutoComplete extends Component {
