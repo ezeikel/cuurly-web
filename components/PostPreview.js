@@ -63,7 +63,7 @@ const PostPreview = ({ id }) => {
 
   return (
     <Wrapper>
-      <Link href={`/post/${id}`}>
+      <Link href="/post/[postId]" as={`/post/${post.id}`}>
         <a>
           <Preview key={post.id}>
             <img

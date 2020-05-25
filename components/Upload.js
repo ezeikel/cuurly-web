@@ -108,8 +108,13 @@ const Upload = ({ router }) => {
   useEffect(() => setMounted(true), []);
 
   const onDrop = useCallback((files) => {
-    setFileUrl(URL.createObjectURL(files[0]));
-    setFile(files[0]);
+    const fileUrl = URL.createObjectURL(files[0]);
+    const file = files[0];
+
+    console.log({ fileUrl, file });
+
+    setFileUrl(fileUrl);
+    setFile(file);
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });

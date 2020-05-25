@@ -240,7 +240,7 @@ const Post = ({ id }) => {
           <ModalBody>
             <PostActions>
               <PostAction>
-                <Link href={`/post/${post.id}`}>
+                <Link href="/post/[postId]" as={`/post/${post.id}`}>
                   <a>
                     <span>Go to Post</span>
                   </a>
