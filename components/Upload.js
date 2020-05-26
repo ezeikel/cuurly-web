@@ -100,8 +100,7 @@ const acceptedFileTypes = [
 ];
 
 const Upload = ({ router }) => {
-  const [fileUrl, setFileUrl] = useState(null);
-  const [file, setFile] = useState(null);
+  const [files, setFiles] = useState(null);
   const [mounted, setMounted] = useState(false);
 
   const [createPost, { data, loading, error }] = useMutation(
@@ -114,67 +113,37 @@ const Upload = ({ router }) => {
     }
   );
 
-  useEffect(() => setMounted(true), []);
-
-  const verifyFile = (files) => {
-    if (files && files.length > 0) {
-      const currentFile = files[0];
-      console.log({ currentFile });
-      if (currentFile.size > imageMaxSize) {
-        alert(
-          "This file is not allowed. " +
-            currentFile.size +
-            " bytes is too large"
-        );
-        return false;
-      }
-      if (!acceptedFileTypes.includes(currentFile.type)) {
-        alert("This file is not allowed. Only images are allowed.");
-        return false;
-      }
-      return true;
-    }
-  };
-
-  // const onDrop = useCallback((files) => {
-  //   setFileUrl(URL.createObjectURL(files[0]));
-  //   setFile(files[0]);
-  //   const fileUrl = URL.createObjectURL(files[0]);
-  //   const file = files[0];
-
-  //   console.log({ fileUrl, file });
-
-  //   setFileUrl(fileUrl);
-  //   setFile(file);
-  // }, []);
-
-  const onDrop = useCallback((files) => {
-    debugger;
-
-    if (files && files.length > 0) {
-      const isVerified = verifyFile(files);
-      if (isVerified) {
-        // imageBase64Data
-        const currentFile = files[0];
-        const reader = new FileReader();
-        reader.addEventListener(
-          "load",
-          () => {
-            const base64 = reader.result;
-            setFileUrl(base64);
-            setFile(currentFile);
-          },
-          false
-        );
-
-        reader.readAsDataURL(currentFile);
-      }
-    }
+  useEffect(() => {
+    setMounted(true);
   }, []);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  useEffect(
+    () => () => {
+      // make sure to revoke the data uris to avoid memory leaks
+      files && files.forEach((file) => URL.revokeObjectURL(file.preview));
+    },
+    [files]
+  );
 
-  console.log({ isDragActive });
+  const onDrop = useCallback((files) => {
+    setFiles(
+      files.map((file) =>
+        Object.assign(file, {
+          preview: URL.createObjectURL(file),
+        })
+      )
+    );
+
+    console.log(files.map((file) => file.type));
+  }, []);
+
+  // BUG: when dragging a file that has not downloaded from icloud it appends .icloud to the filename and has no type
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: acceptedFileTypes.join(","),
+    multiple: false,
+    maxSize: imageMaxSize,
+  });
 
   return (
     <Wrapper>
@@ -182,7 +151,8 @@ const Upload = ({ router }) => {
         initialValues={{ caption: "" }}
         onSubmit={async (values, { resetForm }) => {
           try {
-            await createPost({ variables: { ...values, file } });
+            // TODO: only one file for now e.g. files[0]
+            await createPost({ variables: { ...values, file: files[0] } });
             resetForm();
           } catch (e) {
             console.error(`Formik Error: ${e}`);
@@ -221,9 +191,15 @@ const Upload = ({ router }) => {
               ) : null}
               <FormDetails>
                 <Preview>
-                  {file && (
-                    <img width="200" src={fileUrl} alt="upload preview" />
-                  )}
+                  {files?.length > 0 &&
+                    files.map((file) => (
+                      <img
+                        key={file.preview}
+                        width="200"
+                        src={file.preview}
+                        alt="upload preview"
+                      />
+                    ))}
                 </Preview>
                 <StyledTextBox
                   component="textarea"
