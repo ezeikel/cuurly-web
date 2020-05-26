@@ -31,7 +31,7 @@ const Signup = ({ router }) => {
     mutation: SIGNUP_MUTATION,
     refetchQueries: [{ query: CURRENT_USER_QUERY }],
     onCompleted({ signup: { username } }) {
-      router.push(`/${username}`);
+      router.push("/[username]", `/${username}`);
     },
   });
 

@@ -90,6 +90,15 @@ const StyledButton = styled(Button)`
   justify-self: center;
 `;
 
+const imageMaxSize = 1000000000; // bytes
+const acceptedFileTypes = [
+  "image/x-png",
+  "image/png",
+  "image/jpg",
+  "image/jpeg",
+  "image/gif",
+];
+
 const Upload = ({ router }) => {
   const [fileUrl, setFileUrl] = useState(null);
   const [file, setFile] = useState(null);
@@ -99,7 +108,7 @@ const Upload = ({ router }) => {
     CREATE_POST_MUTATION,
     {
       onCompleted({ createPost: { id } }) {
-        router.push(`/post/${id}`);
+        router.push("/post/[postId]", `/post/${id}`);
       },
       refetchQueries: [{ query: CURRENT_USER_QUERY }],
     }
@@ -107,17 +116,65 @@ const Upload = ({ router }) => {
 
   useEffect(() => setMounted(true), []);
 
+  const verifyFile = (files) => {
+    if (files && files.length > 0) {
+      const currentFile = files[0];
+      console.log({ currentFile });
+      if (currentFile.size > imageMaxSize) {
+        alert(
+          "This file is not allowed. " +
+            currentFile.size +
+            " bytes is too large"
+        );
+        return false;
+      }
+      if (!acceptedFileTypes.includes(currentFile.type)) {
+        alert("This file is not allowed. Only images are allowed.");
+        return false;
+      }
+      return true;
+    }
+  };
+
+  // const onDrop = useCallback((files) => {
+  //   setFileUrl(URL.createObjectURL(files[0]));
+  //   setFile(files[0]);
+  //   const fileUrl = URL.createObjectURL(files[0]);
+  //   const file = files[0];
+
+  //   console.log({ fileUrl, file });
+
+  //   setFileUrl(fileUrl);
+  //   setFile(file);
+  // }, []);
+
   const onDrop = useCallback((files) => {
-    const fileUrl = URL.createObjectURL(files[0]);
-    const file = files[0];
+    debugger;
 
-    console.log({ fileUrl, file });
+    if (files && files.length > 0) {
+      const isVerified = verifyFile(files);
+      if (isVerified) {
+        // imageBase64Data
+        const currentFile = files[0];
+        const reader = new FileReader();
+        reader.addEventListener(
+          "load",
+          () => {
+            const base64 = reader.result;
+            setFileUrl(base64);
+            setFile(currentFile);
+          },
+          false
+        );
 
-    setFileUrl(fileUrl);
-    setFile(file);
+        reader.readAsDataURL(currentFile);
+      }
+    }
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+
+  console.log({ isDragActive });
 
   return (
     <Wrapper>
