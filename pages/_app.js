@@ -7,10 +7,23 @@ import { fas } from "@fortawesome/pro-solid-svg-icons";
 import { far } from "@fortawesome/pro-regular-svg-icons";
 import { fal } from "@fortawesome/pro-light-svg-icons";
 import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
+import * as Sentry from "@sentry/browser";
+import GlobalStyle from "../GlobalStyle";
 import withApolloClient from "../apollo/client";
 import Page from "../components/Page";
-import GlobalStyle from "../GlobalStyle";
-import "react-toastify/dist/ReactToastify.min.css";
+
+console.log({
+  enabled: process.env.NODE_ENV === "production",
+  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+  release: process.env.SENTRY_RELEASE,
+});
+
+Sentry.init({
+  enabled: process.env.NODE_ENV === "production",
+  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+  release: process.env.SENTRY_RELEASE,
+});
 
 library.add(fab, fas, far, fal);
 
@@ -58,14 +71,26 @@ class MyApp extends App {
     return { pageProps };
   }
 
+  // componentDidCatch(error, errorInfo) {
+  //   Sentry.withScope((scope) => {
+  //     Object.keys(errorInfo).forEach((key) => {
+  //       scope.setExtra(key, errorInfo[key]);
+  //     });
+
+  //     Sentry.captureException(error);
+  //   });
+
+  //   super.componentDidCatch(error, errorInfo);
+  // }
+
   render() {
-    const { Component, apollo, pageProps } = this.props;
+    const { Component, apollo, pageProps, err } = this.props;
 
     return (
       <ApolloProvider client={apollo}>
         <GlobalStyle />
         <Page>
-          <Component {...pageProps} />
+          <Component {...pageProps} err={err} />
         </Page>
         <StyledToastContainer
           position="bottom-center"

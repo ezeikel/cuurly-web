@@ -5,6 +5,7 @@ node_modules/
 .build/
 layout.md
 .env
+.env*.local
 process.defaults.js
 .npmrc
 .now
