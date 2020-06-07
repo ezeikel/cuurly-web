@@ -15,14 +15,6 @@ const {
 
 process.env.SENTRY_DSN = SENTRY_DSN;
 
-console.log({
-  dsn: SENTRY_DSN,
-  node: NODE_ENV,
-  org: SENTRY_ORG,
-  project: SENTRY_PROJECT,
-  token: SENTRY_AUTH_TOKEN,
-});
-
 module.exports = withCSS(
   withSourceMaps({
     target: "serverless",
@@ -59,8 +51,6 @@ module.exports = withCSS(
         NODE_ENV === "production"
       ) {
         process.env.SENTRY_RELEASE = options.buildId;
-
-        console.log({ release: process.env.SENTRY_RELEASE });
 
         config.plugins.push(
           new SentryWebpackPlugin({

@@ -13,12 +13,6 @@ import GlobalStyle from "../GlobalStyle";
 import withApolloClient from "../apollo/client";
 import Page from "../components/Page";
 
-console.log({
-  enabled: process.env.NODE_ENV === "production",
-  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
-  release: process.env.SENTRY_RELEASE,
-});
-
 Sentry.init({
   enabled: process.env.NODE_ENV === "production",
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
@@ -70,18 +64,6 @@ class MyApp extends App {
     pageProps.query = ctx.query;
     return { pageProps };
   }
-
-  // componentDidCatch(error, errorInfo) {
-  //   Sentry.withScope((scope) => {
-  //     Object.keys(errorInfo).forEach((key) => {
-  //       scope.setExtra(key, errorInfo[key]);
-  //     });
-
-  //     Sentry.captureException(error);
-  //   });
-
-  //   super.componentDidCatch(error, errorInfo);
-  // }
 
   render() {
     const { Component, apollo, pageProps, err } = this.props;
