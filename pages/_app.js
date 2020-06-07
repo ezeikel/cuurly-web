@@ -15,6 +15,7 @@ import Page from "../components/Page";
 
 Sentry.init({
   enabled: process.env.NODE_ENV === "production",
+  environment: process.NODE_ENV,
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
   release: process.env.SENTRY_RELEASE,
 });

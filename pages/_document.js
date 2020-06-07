@@ -10,7 +10,7 @@ process.on("uncaughtException", (err) => {
   Sentry.captureException(err);
 });
 
-export default class MyDocument extends Document {
+class MyDocument extends Document {
   static async getInitialProps(ctx) {
     const sheet = new ServerStyleSheet();
     const originalRenderPage = ctx.renderPage;
@@ -67,3 +67,5 @@ export default class MyDocument extends Document {
     );
   }
 }
+
+export default MyDocument;
