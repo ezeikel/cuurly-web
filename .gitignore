@@ -7,5 +7,4 @@ layout.md
 .env
 .env*.local
 process.defaults.js
-.npmrc
 .now
