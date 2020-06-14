@@ -66,12 +66,19 @@ const PostPreview = ({ id }) => {
       <Link href="/post/[postId]" as={`/post/${post.id}`}>
         <a>
           <Preview key={post.id}>
-            <img
-              src={post.content.url.replace(
-                "/upload",
-                "/upload/w_350,h_350,ar_1:1,c_fill,dpr_2.0"
-              )}
-            />
+            {/(\.png$|\.jpg$)/.test(post.content.url) ? (
+              <img
+                src={post.content.url.replace(
+                  "/upload",
+                  "/upload/w_350,h_350,ar_1:1,c_fill,dpr_2.0"
+                )}
+              />
+            ) : (
+              <video controls>
+                <source src={post.content.url} />
+                Your browser does not support HTML5 video.
+              </video>
+            )}
           </Preview>
           <Overlay>
             <Stats>

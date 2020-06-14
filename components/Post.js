@@ -288,14 +288,19 @@ const Post = ({ id }) => {
         </StyledModal>
       </PostHeader>
       <PostContent>
-        <img
-          src={
-            post.content.url.replace(
+        {/(\.png$|\.jpg$)/.test(post.content.url) ? (
+          <img
+            src={post.content.url.replace(
               "/upload",
-              "/upload/w_614,ar_4:5,c_limit,dpr_2.0"
-            ) || blankProfilePicture()
-          }
-        />
+              "/upload/w_350,h_350,ar_1:1,c_fill,dpr_2.0"
+            )}
+          />
+        ) : (
+          <video controls>
+            <source src={post.content.url} />
+            Your browser does not support HTML5 video.
+          </video>
+        )}
       </PostContent>
       <PostInteraction>
         {currentUser ? (

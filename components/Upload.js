@@ -97,6 +97,7 @@ const acceptedFileTypes = [
   "image/jpg",
   "image/jpeg",
   "image/gif",
+  "video/*",
 ];
 
 const Upload = ({ router }) => {
@@ -133,8 +134,6 @@ const Upload = ({ router }) => {
         })
       )
     );
-
-    console.log(files.map((file) => file.type));
   }, []);
 
   // BUG: when dragging a file that has not downloaded from icloud it appends .icloud to the filename and has no type
@@ -192,14 +191,25 @@ const Upload = ({ router }) => {
               <FormDetails>
                 <Preview>
                   {files?.length > 0 &&
-                    files.map((file) => (
-                      <img
-                        key={file.preview}
-                        width="200"
-                        src={file.preview}
-                        alt="upload preview"
-                      />
-                    ))}
+                    files.map((file) => {
+                      if (/^video/.test(file.type)) {
+                        return (
+                          <video width="200" key={file.preview} controls>
+                            <source src={file.preview} />
+                            Your browser does not support HTML5 video.
+                          </video>
+                        );
+                      } else {
+                        return (
+                          <img
+                            key={file.preview}
+                            width="200"
+                            src={file.preview}
+                            alt="upload preview"
+                          />
+                        );
+                      }
+                    })}
                 </Preview>
                 <StyledTextBox
                   component="textarea"
