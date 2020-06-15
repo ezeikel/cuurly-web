@@ -97,6 +97,7 @@ const acceptedFileTypes = [
   "image/jpg",
   "image/jpeg",
   "image/gif",
+  "image/heic",
   "video/*",
 ];
 

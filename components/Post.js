@@ -288,7 +288,7 @@ const Post = ({ id }) => {
         </StyledModal>
       </PostHeader>
       <PostContent>
-        {/(\.png$|\.jpg$)/.test(post.content.url) ? (
+        {/(\.png$|\.jpg$|\.heic$|)/.test(post.content.url) ? (
           <img
             src={post.content.url.replace(
               "/upload",
