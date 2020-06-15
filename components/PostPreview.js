@@ -66,7 +66,7 @@ const PostPreview = ({ id }) => {
       <Link href="/post/[postId]" as={`/post/${post.id}`}>
         <a>
           <Preview key={post.id}>
-            {/(\.png$|\.jpg$|\.heic$|)/.test(post.content.url) ? (
+            {/(\.png$|\.jpg$|\.heic$)/.test(post.content.url) ? (
               <img
                 src={post.content.url.replace(
                   "/upload",
