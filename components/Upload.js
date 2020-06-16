@@ -9,6 +9,7 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import TextBox from "./styles/TextBox";
 import Button from "./styles/Button";
+import heic2any from "heic2any";
 
 const Wrapper = styled.div`
   display: grid;
@@ -104,6 +105,7 @@ const acceptedFileTypes = [
 const Upload = ({ router }) => {
   const [files, setFiles] = useState(null);
   const [mounted, setMounted] = useState(false);
+  const [convertingImage, setConvertingImage] = useState(false);
 
   const [createPost, { data, loading, error }] = useMutation(
     CREATE_POST_MUTATION,
@@ -127,14 +129,28 @@ const Upload = ({ router }) => {
     [files]
   );
 
-  const onDrop = useCallback((files) => {
+  const onDrop = useCallback(async (files) => {
     setFiles(
-      files.map((file) =>
-        Object.assign(file, {
-          preview: URL.createObjectURL(file),
+      await Promise.all(
+        files.map(async (file) => {
+          let result;
+          if (file.type === "image/heic") {
+            setConvertingImage(true);
+            result = await heic2any({
+              blob: file,
+              toType: "image/jpeg",
+            });
+          } else {
+            result = file;
+          }
+
+          return Object.assign(file, {
+            preview: URL.createObjectURL(result),
+          });
         })
       )
     );
+    setConvertingImage(false);
   }, []);
 
   // BUG: when dragging a file that has not downloaded from icloud it appends .icloud to the filename and has no type
@@ -192,7 +208,7 @@ const Upload = ({ router }) => {
               <FormDetails>
                 <Preview>
                   {files?.length > 0 &&
-                    files.map((file) => {
+                    files.map((file, index) => {
                       if (/^video/.test(file.type)) {
                         return (
                           <video width="200" key={file.preview} controls>
@@ -211,6 +227,7 @@ const Upload = ({ router }) => {
                         );
                       }
                     })}
+                  {convertingImage && <div>Converting image...</div>}
                 </Preview>
                 <StyledTextBox
                   component="textarea"
