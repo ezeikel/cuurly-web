@@ -290,10 +290,9 @@ const Post = ({ id }) => {
       <PostContent>
         {/(\.png$|\.jpg$|\.heic$)/.test(post.content.url) ? (
           <img
-            src={post.content.url.replace(
-              "/upload",
-              "/upload/w_350,h_350,ar_1:1,c_fill,dpr_2.0"
-            )}
+            src={post.content.url
+              .replace(/(\.png$|\.heic$)/, ".jpg")
+              .replace("/upload", "/upload/w_350,h_350,ar_1:1,c_fill,dpr_2.0")}
           />
         ) : (
           <video controls>
