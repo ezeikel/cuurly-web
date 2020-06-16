@@ -12,6 +12,7 @@ import * as Sentry from "@sentry/browser";
 import GlobalStyle from "../GlobalStyle";
 import withApolloClient from "../apollo/client";
 import Page from "../components/Page";
+import "video.js/dist/video-js.css";
 
 Sentry.init({
   enabled: process.env.NODE_ENV === "production",

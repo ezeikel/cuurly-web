@@ -3,6 +3,7 @@ import { SINGLE_POST_QUERY } from "../apollo/queries";
 import Link from "next/link";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import VideoPlayer from "./VideoPlayer";
 
 const Wrapper = styled.li`
   position: relative;
@@ -61,6 +62,17 @@ const PostPreview = ({ id }) => {
 
   if (!post) return null;
 
+  const videoJsOptions = {
+    autoplay: false,
+    controls: true,
+    sources: [
+      {
+        src: post.content.url,
+        type: "video/mp4",
+      },
+    ],
+  };
+
   return (
     <Wrapper>
       <Link href="/post/[postId]" as={`/post/${post.id}`}>
@@ -76,10 +88,7 @@ const PostPreview = ({ id }) => {
                   )}
               />
             ) : (
-              <video controls>
-                <source src={post.content.url} />
-                Your browser does not support HTML5 video.
-              </video>
+              <VideoPlayer {...videoJsOptions} />
             )}
           </Preview>
           <Overlay>

@@ -16,6 +16,7 @@ import {
   CURRENT_USER_QUERY,
 } from "../apollo/queries";
 import blankProfilePicture from "../utils/blankProfileImage";
+import VideoPlayer from "./VideoPlayer";
 
 const Wrapper = styled.article`
   display: grid;
@@ -207,6 +208,17 @@ const Post = ({ id }) => {
 
   const isCurrentUsersPost = currentUser && currentUser.id === post.author.id;
 
+  const videoJsOptions = {
+    autoplay: false,
+    controls: true,
+    sources: [
+      {
+        src: post.content.url,
+        type: "video/mp4",
+      },
+    ],
+  };
+
   return (
     <Wrapper>
       <PostHeader>
@@ -295,10 +307,7 @@ const Post = ({ id }) => {
               .replace("/upload", "/upload/w_350,h_350,ar_1:1,c_fill,dpr_2.0")}
           />
         ) : (
-          <video controls>
-            <source src={post.content.url} />
-            Your browser does not support HTML5 video.
-          </video>
+          <VideoPlayer {...videoJsOptions} />
         )}
       </PostContent>
       <PostInteraction>
