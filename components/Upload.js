@@ -121,13 +121,12 @@ const Upload = ({ router }) => {
     setMounted(true);
   }, []);
 
-  useEffect(
-    () => () => {
+  useEffect(() => {
+    return () => {
       // make sure to revoke the data uris to avoid memory leaks
       files && files.forEach((file) => URL.revokeObjectURL(file.preview));
-    },
-    [files]
-  );
+    };
+  }, [files]);
 
   const onDrop = useCallback(async (files) => {
     setFiles(
@@ -140,6 +139,7 @@ const Upload = ({ router }) => {
               blob: file,
               toType: "image/jpeg",
             });
+            setConvertingImage(false);
           } else {
             result = file;
           }
@@ -150,7 +150,6 @@ const Upload = ({ router }) => {
         })
       )
     );
-    setConvertingImage(false);
   }, []);
 
   // BUG: when dragging a file that has not downloaded from icloud it appends .icloud to the filename and has no type
