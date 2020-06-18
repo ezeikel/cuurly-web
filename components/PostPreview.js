@@ -65,6 +65,7 @@ const PostPreview = ({ id }) => {
   const videoJsOptions = {
     autoplay: false,
     controls: true,
+    fluid: true,
     sources: [
       {
         src: post.content.url,
