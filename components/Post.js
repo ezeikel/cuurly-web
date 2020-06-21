@@ -210,7 +210,6 @@ const Post = ({ id }) => {
 
   const videoJsOptions = {
     autoplay: false,
-    controls: true,
     fluid: true,
     sources: [
       {

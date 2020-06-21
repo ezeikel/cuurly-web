@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import videojs from "video.js";
 
 const VideoPlayer = (props) => {
@@ -17,7 +17,7 @@ const VideoPlayer = (props) => {
       // destroy player on unmount
       player.dispose();
     };
-  }, [props, videoEl]);
+  }, [videoEl]); // BUGFIX: had to remove 'props' from dependency array to fix issue of video element no longer being in the DOM. Probably bug in - https://github.com/vercel/next.js/tree/canary/examples/with-videojs
   // wrap the player in a div with a `data-vjs-player` attribute
   // so videojs won't create additional wrapper in the DOM
   // see https://github.com/videojs/video.js/pull/3856

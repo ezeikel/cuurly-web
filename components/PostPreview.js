@@ -8,11 +8,14 @@ import VideoPlayer from "./VideoPlayer";
 const Wrapper = styled.li`
   position: relative;
   cursor: pointer;
+  width: 100%;
+  height: 100%;
 `;
 
 const Preview = styled.div`
   height: 100%;
-  img {
+  img,
+  video {
     object-fit: cover;
     height: 100%;
     width: 100%;
@@ -64,8 +67,7 @@ const PostPreview = ({ id }) => {
 
   const videoJsOptions = {
     autoplay: false,
-    controls: true,
-    fluid: true,
+    fill: true,
     sources: [
       {
         src: post.content.url,
@@ -89,6 +91,7 @@ const PostPreview = ({ id }) => {
                   )}
               />
             ) : (
+              /* TODO: instagram uses the poster <img /> here instead of the actual video element */
               <VideoPlayer {...videoJsOptions} />
             )}
           </Preview>

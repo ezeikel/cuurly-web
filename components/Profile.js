@@ -41,9 +41,12 @@ const PostsWrapper = styled.div`
 
 const Posts = styled.ul`
   display: grid;
-  grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+  grid-template: repeat(auto-fill, minmax(123px, 293px)) / 1fr;
   grid-gap: var(--spacing-tiny);
   @media (min-width: 736px) {
+    justify-content: center;
+    grid-template-columns: repeat(3, minmax(123px, 293px));
+    grid-auto-rows: minmax(123px, 293px);
     grid-gap: var(--spacing-large);
   }
 `;
