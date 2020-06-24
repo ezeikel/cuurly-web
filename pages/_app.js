@@ -1,7 +1,6 @@
 import App from "next/app";
 import { ApolloProvider } from "@apollo/client";
 import styled from "styled-components";
-import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { fas } from "@fortawesome/pro-solid-svg-icons";
 import { far } from "@fortawesome/pro-regular-svg-icons";
@@ -13,6 +12,12 @@ import GlobalStyle from "../GlobalStyle";
 import withApolloClient from "../apollo/client";
 import Page from "../components/Page";
 import "video.js/dist/video-js.css";
+import { config, library } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css"; // Import the CSS
+config.autoAddCss = false; // Tell Font Awesome to skip adding the CSS automatically since it's being imported above
+
+// TODO: only add required icons instead of whole libraries
+library.add(fab, fas, far, fal);
 
 Sentry.init({
   enabled: process.env.NODE_ENV === "production",
@@ -20,8 +25,6 @@ Sentry.init({
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
   release: process.env.SENTRY_RELEASE,
 });
-
-library.add(fab, fas, far, fal);
 
 const StyledToastContainer = styled(ToastContainer).attrs({
   className: "toast-container",

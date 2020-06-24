@@ -1,5 +1,86 @@
 import { useState, useEffect, useCallback } from "react";
 import videojs from "video.js";
+import styled from "styled-components";
+import ReactDOM from "react-dom";
+import PlayButton from "./PlayButton";
+
+const Wrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  video {
+    cursor: pointer;
+    &:focus {
+      outline: none;
+    }
+  }
+  .vjs-button {
+    width: 140px;
+    height: 140px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -70px;
+    margin-top: -70px;
+    cursor: pointer;
+    pointer-events: none;
+    &:focus {
+      outline: none;
+      svg {
+        outline: none;
+        path {
+          outline: none;
+        }
+      }
+    }
+    &.hide {
+      display: none;
+    }
+  }
+`;
+
+// TODO: should probably move this to another file and just export vjsPlayButon
+
+const vjsButton = videojs.getComponent("Button");
+
+class vjsPlayButon extends vjsButton {
+  constructor(player, options) {
+    super(player, options);
+
+    this.mount = this.mount.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+
+    player.ready(() => {
+      this.mount();
+    });
+
+    this.player_.on("ended", () => {
+      this.removeClass("hide");
+    });
+
+    this.player_.on("pause", () => {
+      this.removeClass("hide");
+    });
+
+    this.player_.on("play", () => {
+      this.addClass("hide");
+    });
+
+    this.on("dispose", () => {
+      ReactDOM.unmountComponentAtNode(this.el());
+    });
+  }
+
+  handleClick() {
+    // clicking on the video itself pauses/plays so not needed here
+    return;
+  }
+
+  mount() {
+    ReactDOM.render(<PlayButton vjsButton={this} />, this.el());
+  }
+}
+
+vjsButton.registerComponent("vjsPlayButton", vjsPlayButon);
 
 const VideoPlayer = (props) => {
   const [videoEl, setVideoEl] = useState(null);
@@ -13,6 +94,9 @@ const VideoPlayer = (props) => {
     // instantiate Video.js
     const player = videojs(videoEl, props);
 
+    // player.getChild("controlBar").addChild("vjsPlayButton", {});
+    player.addChild("vjsPlayButton", {});
+
     return () => {
       // destroy player on unmount
       player.dispose();
@@ -21,12 +105,27 @@ const VideoPlayer = (props) => {
   // wrap the player in a div with a `data-vjs-player` attribute
   // so videojs won't create additional wrapper in the DOM
   // see https://github.com/videojs/video.js/pull/3856
+
+  // not using controls. Clicking on video itself will play/pause
+  const handleClick = () => {
+    if (videoEl.paused) {
+      videoEl.play();
+    } else {
+      videoEl.pause();
+    }
+  };
+
   return (
-    <>
+    <Wrapper>
       <div data-vjs-player>
-        <video ref={onVideo} className="video-js" playsInline />
+        <video
+          ref={onVideo}
+          className="video-js"
+          playsInline
+          onClick={handleClick}
+        />
       </div>
-    </>
+    </Wrapper>
   );
 };
 
