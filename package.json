@@ -1,7 +1,7 @@
 {
-  "name": "crownd-frontend",
+  "name": "cuurly-frontend",
   "version": "0.0.1",
-  "description": "Crownd - Frontend",
+  "description": "Cuurly - Frontend",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

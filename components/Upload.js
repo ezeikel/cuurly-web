@@ -158,6 +158,7 @@ const Upload = ({ router }) => {
     accept: acceptedFileTypes.join(","),
     multiple: false,
     maxSize: imageMaxSize,
+    name: "image", // TODO: this was uncommitted change?
   });
 
   return (
@@ -189,7 +190,8 @@ const Upload = ({ router }) => {
                       }
                       size="5x"
                     />
-                    <StyledInput {...getInputProps()} />
+                    {/* TODO: this was uncommitted change? */}
+                    <StyledInput {...getInputProps()} name="image" />
                     {isDragActive ? (
                       <DropzoneText>
                         <span>Drop it like it's hot</span>
