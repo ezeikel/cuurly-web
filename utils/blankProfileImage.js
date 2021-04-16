@@ -1,1 +1,3 @@
-export default () => "/default-avatar.png";
+const blankProfileImage = () => "/default-avatar.png";
+
+export default blankProfileImage;

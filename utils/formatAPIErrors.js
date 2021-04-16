@@ -1,4 +1,4 @@
-export default ({ message }) => {
+const formatAPIErrors = ({ message }) => {
   const error = message.split(":");
   const field = error[1].trim();
   const value = error[2].trim();
@@ -7,3 +7,5 @@ export default ({ message }) => {
     [field]: value,
   };
 };
+
+export default formatAPIErrors;
