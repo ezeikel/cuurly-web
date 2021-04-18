@@ -1,16 +1,18 @@
+import { useContext } from "react";
 import Link from "next/link";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { AuthContext } from "../context/auth";
 import Search from "./Search";
 import LogoImage from "./LogoImage";
 import LogoText from "./LogoText";
 
 const Wrapper = styled.nav`
   width: 100%;
-  max-width: ${({ theme }) => theme.default.maxWidth};
+  /* max-width: ${({ theme }) => theme.default.maxWidth}; */
   font-family: var(--default-font-family);
   font-style: normal;
-  color: ${({ theme }) => theme.default.textColor};
+  /* color: ${({ theme }) => theme.default.textColor}; */
   display: grid;
   grid-template-columns: auto auto 1fr;
   grid-column-gap: var(--spacing-large);
@@ -60,9 +62,11 @@ const Upload = styled.div`
   justify-self: end;
 `;
 
-const Nav = ({ theme, currentUser }) => {
+const Nav = () => {
+  const { currentUser } = useContext(AuthContext);
+
   return (
-    <Wrapper theme={theme}>
+    <Wrapper>
       <LogoWrapper>
         <Link href={`/`}>
           <a>

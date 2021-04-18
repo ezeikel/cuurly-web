@@ -37,8 +37,6 @@ const IndexPage = () => {
   const router = useRouter();
   const { loading, error, currentUser } = useContext(AuthContext);
 
-  console.log({ currentUser });
-
   useEffect(() => {
     if (currentUser) {
       // if logged in redirect to user feed

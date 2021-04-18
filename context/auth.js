@@ -2,7 +2,6 @@ import { useQuery } from "@apollo/client";
 import { createContext } from "react";
 import { CURRENT_USER_QUERY } from "../apollo/queries";
 
-// create context
 export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
@@ -10,7 +9,9 @@ export const AuthContextProvider = ({ children }) => {
     loading,
     error,
     data: { currentUser } = {}, // setting default value when destructing as data is undefined when loading - https://github.com/apollographql/react-apollo/issues/3323#issuecomment-523430331
-  } = useQuery(CURRENT_USER_QUERY);
+  } = useQuery(CURRENT_USER_QUERY, {
+    pollInterval: 60000, // check every 60 seconds
+  });
 
   return (
     <AuthContext.Provider
