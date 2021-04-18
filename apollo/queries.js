@@ -41,9 +41,33 @@ export const SINGLE_USER_QUERY = gql`
       gender
       followers {
         id
+        name
+        username
+        profilePicture {
+          url
+        }
+        verified
+        followers {
+          id
+        }
+        following {
+          id
+        }
       }
       following {
         id
+        name
+        username
+        profilePicture {
+          url
+        }
+        verified
+        followers {
+          id
+        }
+        following {
+          id
+        }
       }
       posts {
         id

@@ -1,9 +1,53 @@
-import { withRouter } from "next/router";
+import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import styled, { ThemeProvider } from "styled-components";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+  faTimes,
+  faCompass,
+  faBell,
+  faPaperPlane,
+  faUser,
+  faArrowToTop,
+  faLock,
+  faKey,
+  faHeart as falHeart,
+  faCog,
+} from "@fortawesome/pro-light-svg-icons";
+import {
+  faComment,
+  faBadgeCheck,
+  faHeart as fasHeart,
+  faPlay,
+} from "@fortawesome/pro-solid-svg-icons";
+import { faInboxOut, faEllipsisH } from "@fortawesome/pro-regular-svg-icons";
+import "video.js/dist/video-js.css";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
+import GlobalStyle from "../GlobalStyle";
 import Meta from "./Meta";
+import { AuthContextProvider } from "../context/auth";
 
 const Header = dynamic(() => import("./Header"));
+
+library.add(
+  faTimes,
+  faCompass,
+  faBell,
+  faPaperPlane,
+  faUser,
+  faArrowToTop,
+  faLock,
+  faKey,
+  falHeart,
+  faCog,
+  faComment,
+  faBadgeCheck,
+  fasHeart,
+  faPlay,
+  faInboxOut,
+  faEllipsisH,
+);
 
 const theme = {
   red: "#FF0000",
@@ -40,16 +84,67 @@ const Inner = styled.main`
   width: 100%;
 `;
 
-const Page = ({ children, router: { pathname } }) => (
-  <ThemeProvider theme={theme}>
-    <StyledPage pathname={pathname}>
-      <Meta />
-      {pathname === "/" || pathname === "/signin" ? null : <Header />}
-      <Wrapper>
-        <Inner>{children}</Inner>
-      </Wrapper>
-    </StyledPage>
-  </ThemeProvider>
-);
+const StyledToastContainer = styled(ToastContainer).attrs({
+  className: "toast-container",
+  toastClassName: "toast",
+  bodyClassName: "body",
+  progressClassName: "progress",
+})`
+  /* .toast-container */
+  bottom: 0;
+  left: 0;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  .toast {
+    background-color: var(--color-black);
+    margin: 0;
+    cursor: auto;
+  }
+  button[aria-label="close"] {
+    display: none;
+  }
+  .toast {
+    background-color: var(--color-black);
+  }
+  .body {
+    background-color: var(--color-black);
+    color: var(--color-white);
+    font-family: var(--default-font-family);
+    margin: 0;
+    display: grid;
+    align-items: center;
+  }
+`;
 
-export default withRouter(Page);
+const Page = ({ children }) => {
+  const { pathname } = useRouter();
+
+  return (
+    <>
+      <GlobalStyle />
+      <ThemeProvider theme={theme}>
+        <StyledPage pathname={pathname}>
+          <Meta />
+          <AuthContextProvider>
+            {pathname === "/" || pathname === "/signin" ? null : <Header />}
+            <Wrapper>
+              <Inner>{children}</Inner>
+              <StyledToastContainer
+                position="bottom-center"
+                draggable
+                hideProgressBar
+                pauseOnHover
+                autoClose={3000}
+                closeOnClick={false}
+              />
+            </Wrapper>
+            {/* <Footer /> */}
+          </AuthContextProvider>
+        </StyledPage>
+      </ThemeProvider>
+    </>
+  );
+};
+
+export default Page;

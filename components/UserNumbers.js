@@ -27,9 +27,7 @@ const UserNumbers = ({
   singleUser,
   currentUser,
   posts,
-  followerIds,
   followers,
-  followingIds,
   following,
 }) => {
   const [followersModalIsOpen, setFollowersModalIsOpen] = useState(false);
@@ -46,7 +44,7 @@ const UserNumbers = ({
       <NumberOf name="posts" length={posts.length} />
       <NumberOf
         name="followers"
-        length={(followerIds && followerIds.length) || 0}
+        length={followers.length}
         clickHandler={openFollowersModal}
       />
       <GenericModal
@@ -64,7 +62,7 @@ const UserNumbers = ({
       </GenericModal>
       <NumberOf
         name="following"
-        length={(followingIds && followingIds.length) || 0}
+        length={following.length}
         clickHandler={openFollowingModal}
       />
       <GenericModal

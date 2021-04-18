@@ -63,7 +63,7 @@ const ProfileNav = ({ id, currentUser, username, verified, followerIds }) => {
           singleUser={username}
           currentUser={currentUser}
           userId={id}
-          userList={followerIds && followerIds.map((follower) => follower.id)}
+          userList={followerIds}
         />
       )}
       <StyledFontAwesomeIcon

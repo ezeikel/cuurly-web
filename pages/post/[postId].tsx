@@ -1,3 +1,5 @@
+import { FunctionComponent } from "react";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 import Post from "../../components/Post";
 
@@ -7,16 +9,19 @@ const Wrapper = styled.div`
   justify-content: center;
   grid-row-gap: var(--spacing-medium);
   padding: var(--padding-page-wrap);
-  h1 {
-    margin: 0;
-    font-size: 2.2rem;
-  }
 `;
 
-const PostPage = ({ query }) => (
-  <Wrapper>
-    <Post id={query.postId} />
-  </Wrapper>
-);
+const PostPage: FunctionComponent = () => {
+  const router = useRouter();
+  const { postId } = router.query;
+
+  if (!postId) return null;
+
+  return (
+    <Wrapper>
+      <Post id={postId} />
+    </Wrapper>
+  );
+};
 
 export default PostPage;

@@ -1,12 +1,7 @@
 import { useQuery } from "@apollo/client";
 import styled from "styled-components";
 import Modal from "react-modal";
-import {
-  SINGLE_USER_QUERY,
-  USER_FOLLOWING_QUERY,
-  USER_FOLLOWERS_QUERY,
-  CURRENT_USER_QUERY,
-} from "../apollo/queries";
+import { SINGLE_USER_QUERY, CURRENT_USER_QUERY } from "../apollo/queries";
 import PostPreview from "./PostPreview";
 import UserAvatar from "./UserAvatar";
 import Spinner from "./Spinner";
@@ -73,28 +68,12 @@ const Profile = ({ username }) => {
         bio,
         website,
         posts,
-        followers: followerIds,
-        following: followingIds,
+        followers,
+        following,
         verified,
       } = {},
     } = {},
   } = useQuery(SINGLE_USER_QUERY, {
-    variables: { username },
-  });
-
-  const {
-    loading: userFollowingLoading,
-    error: userFollowingError,
-    data: { following } = {},
-  } = useQuery(USER_FOLLOWING_QUERY, {
-    variables: { username },
-  });
-
-  const {
-    loading: userFollowersLoading,
-    error: userFollowersError,
-    data: { followers } = {},
-  } = useQuery(USER_FOLLOWERS_QUERY, {
     variables: { username },
   });
 
@@ -109,7 +88,7 @@ const Profile = ({ username }) => {
           currentUser={currentUser}
           username={username}
           verified={verified}
-          followerIds={followerIds}
+          followerIds={followers.map(follower => follower.id)}
         />
         <UserNumbers
           currentUser={currentUser}
@@ -117,15 +96,13 @@ const Profile = ({ username }) => {
           posts={posts}
           following={following}
           followers={followers}
-          followingIds={followingIds}
-          followerIds={followerIds}
         />
         <UserBio name={name} bio={bio} website={website} />
       </Header>
       <PostsWrapper>
         <Posts>
           {posts &&
-            posts.map((post) => <PostPreview key={post.id} id={post.id} />)}
+            posts.map(post => <PostPreview key={post.id} id={post.id} />)}
         </Posts>
       </PostsWrapper>
     </Wrapper>

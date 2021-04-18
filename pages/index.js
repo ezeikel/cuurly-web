@@ -1,12 +1,13 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import Link from "next/link";
-import { withRouter } from "next/router";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 import Signup from "../components/Signup";
 import { useQuery } from "@apollo/client";
 import { CURRENT_USER_QUERY } from "../apollo/queries";
 import LogoText from "../components/LogoText";
 import FormWrapper from "../components/styles/FormWrapper";
+import { AuthContext } from "../context/auth";
 
 const Wrapper = styled.div`
   display: grid;
@@ -32,12 +33,11 @@ const Switch = styled.span`
   }
 `;
 
-const Home = ({ router }) => {
-  const {
-    loading,
-    error,
-    data: { currentUser } = {}, // setting default value when destructing as data is undefined when loading - https://github.com/apollographql/react-apollo/issues/3323#issuecomment-523430331
-  } = useQuery(CURRENT_USER_QUERY);
+const IndexPage = () => {
+  const router = useRouter();
+  const { loading, error, currentUser } = useContext(AuthContext);
+
+  console.log({ currentUser });
 
   useEffect(() => {
     if (currentUser) {
@@ -46,7 +46,7 @@ const Home = ({ router }) => {
         {
           pathname: "/feed",
         },
-        "/"
+        "/",
       );
     }
   }, [currentUser]);
@@ -67,4 +67,4 @@ const Home = ({ router }) => {
   );
 };
 
-export default withRouter(Home);
+export default IndexPage;
