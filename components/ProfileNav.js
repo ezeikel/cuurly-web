@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Link from "next/link";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -7,6 +7,7 @@ import SettingsOptions from "./SettingsOptions";
 import Username from "./Username";
 import Button from "./styles/Button";
 import FollowButton from "./FollowButton";
+import { AuthContext } from "../context/auth";
 
 const Wrapper = styled.div`
   grid-column: 2 / -1;
@@ -40,11 +41,8 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
   cursor: pointer;
 `;
 
-const StyledFollowButton = styled(FollowButton)`
-  padding: 0 24px;
-`;
-
-const ProfileNav = ({ id, currentUser, username, verified, followerIds }) => {
+const ProfileNav = ({ id, username, verified, followerIds }) => {
+  const { currentUser } = useContext(AuthContext);
   const [settingsModalIsOpen, setSettingsModalIsOpen] = useState(false);
   const openSettingsModal = () => setSettingsModalIsOpen(true);
   const closeSettingsModal = () => setSettingsModalIsOpen(false);
@@ -52,18 +50,17 @@ const ProfileNav = ({ id, currentUser, username, verified, followerIds }) => {
   return (
     <Wrapper>
       <Username user={{ username, verified }} />
-      {currentUser && currentUser.id === id ? (
+      {currentUser?.id === id ? (
         <Button>
           <Link href="/account?edit">
             <a>Edit profile</a>
           </Link>
         </Button>
       ) : (
-        <StyledFollowButton
-          singleUser={username}
-          currentUser={currentUser}
+        <FollowButton
+          username={username}
           userId={id}
-          userList={followerIds}
+          userFollowers={followerIds}
         />
       )}
       <StyledFontAwesomeIcon

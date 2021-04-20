@@ -1,14 +1,14 @@
-import styled from "styled-components";
+import { useContext } from "react";
 import { useMutation } from "@apollo/client";
+import styled from "styled-components";
 import {
-  SINGLE_USER_QUERY,
   FOLLOW_MUTATION,
+  SINGLE_USER_QUERY,
   UNFOLLOW_MUTATION,
-  USER_FOLLOWING_QUERY,
-  USER_FOLLOWERS_QUERY,
 } from "../apollo/queries";
 import Button from "./styles/Button";
 import Spinner from "./Spinner";
+import { AuthContext } from "../context/auth";
 
 const StyledButton = styled(Button)`
   height: 100%;
@@ -22,37 +22,34 @@ const StyledButton = styled(Button)`
       : null}
 `;
 
-const FollowButton = ({ singleUser, currentUser, userId, userList }) => {
-  if (!currentUser || !userList || currentUser.id === userId) return null;
+// username - needed to refetch single user query
+// userId - the user we are looking at in lists userId - need it to for the nutation
+// userFollowers - the user we are looking at in list followers list - so we can know if we can follow or unfollow
 
-  const MUTATION =
-    userList && userList.includes(currentUser.id)
-      ? UNFOLLOW_MUTATION
-      : FOLLOW_MUTATION;
+const FollowButton = ({ username, userId, userFollowers }) => {
+  const { currentUser } = useContext(AuthContext);
 
-  const [follow, { data, loading, error }] = useMutation(MUTATION, {
-    variables: { id: userId }, // the user to be followed/unfollowed
-    refetchQueries: [
-      { query: SINGLE_USER_QUERY, variables: { username: singleUser } },
-      {
-        query: USER_FOLLOWERS_QUERY,
-        variables: { username: singleUser },
-      },
-      {
-        query: USER_FOLLOWING_QUERY,
-        variables: { username: singleUser },
-      },
-    ],
+  if (!currentUser || !userFollowers || currentUser.id === userId) return null;
+
+  const MUTATION = userFollowers?.includes(currentUser.id)
+    ? UNFOLLOW_MUTATION
+    : FOLLOW_MUTATION;
+
+  const [follow, { loading }] = useMutation(MUTATION, {
+    // the user to be followed/unfollowed
+    variables: { id: userId },
+    // the data for the user who was followed/unfollowed comes from the single user query i.e the user we were originally looking at
+    refetchQueries: [{ query: SINGLE_USER_QUERY, variables: { username } }],
   });
 
   return (
     <StyledButton
-      mode={userList.includes(currentUser.id) ? "unfollow" : "follow"}
+      mode={userFollowers.includes(currentUser.id) ? "unfollow" : "follow"}
       onClick={follow}
     >
       {loading ? (
         <Spinner />
-      ) : userList.includes(currentUser.id) ? (
+      ) : userFollowers.includes(currentUser.id) ? (
         "Unfollow"
       ) : (
         "Follow"

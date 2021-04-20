@@ -1,13 +1,15 @@
+import { useContext } from "react";
 import { useQuery } from "@apollo/client";
 import styled from "styled-components";
 import Modal from "react-modal";
-import { SINGLE_USER_QUERY, CURRENT_USER_QUERY } from "../apollo/queries";
+import { SINGLE_USER_QUERY } from "../apollo/queries";
 import PostPreview from "./PostPreview";
 import UserAvatar from "./UserAvatar";
 import Spinner from "./Spinner";
 import UserNumbers from "./UserNumbers";
 import UserBio from "./UserBio";
 import ProfileNav from "./ProfileNav";
+import { AuthContext } from "../context/auth";
 
 const Wrapper = styled.div`
   display: grid;
@@ -52,12 +54,6 @@ if (typeof window !== "undefined") {
 
 const Profile = ({ username }) => {
   const {
-    loading: currentUserLoading,
-    error: currentUserError,
-    data: { currentUser } = {}, // setting default value when destructing as data is undefined when loading - https://github.com/apollographql/react-apollo/issues/3323#issuecomment-523430331
-  } = useQuery(CURRENT_USER_QUERY);
-
-  const {
     loading: singleUserLoading,
     error: singleUserError,
     data: {
@@ -77,7 +73,7 @@ const Profile = ({ username }) => {
     variables: { username },
   });
 
-  if (singleUserLoading || currentUserLoading) return <Spinner />;
+  if (singleUserLoading) return <Spinner />;
 
   return (
     <Wrapper>
@@ -85,14 +81,12 @@ const Profile = ({ username }) => {
         <UserAvatar photo={profilePicture} />
         <ProfileNav
           id={id}
-          currentUser={currentUser}
           username={username}
           verified={verified}
           followerIds={followers.map(follower => follower.id)}
         />
         <UserNumbers
-          currentUser={currentUser}
-          singleUser={username} // TODO: Put singleUser in context and rename to username to be whoever we are currently looking at
+          username={username}
           posts={posts}
           following={following}
           followers={followers}

@@ -23,13 +23,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const UserNumbers = ({
-  singleUser,
-  currentUser,
-  posts,
-  followers,
-  following,
-}) => {
+const UserNumbers = ({ username, posts, followers, following }) => {
   const [followersModalIsOpen, setFollowersModalIsOpen] = useState(false);
   const [followingModalIsOpen, setFollowingModalIsOpen] = useState(false);
 
@@ -54,11 +48,7 @@ const UserNumbers = ({
         heading="Followers"
         close={closeFollowersModal}
       >
-        <UserList
-          users={followers}
-          singleUser={singleUser}
-          currentUser={currentUser}
-        />
+        <UserList username={username} users={followers} />
       </GenericModal>
       <NumberOf
         name="following"
@@ -72,11 +62,7 @@ const UserNumbers = ({
         heading="Following"
         close={closeFollowingModal}
       >
-        <UserList
-          users={following}
-          singleUser={singleUser}
-          currentUser={currentUser}
-        />
+        <UserList username={username} users={following} />
       </GenericModal>
     </Wrapper>
   );

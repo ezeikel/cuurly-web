@@ -3,8 +3,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import Signup from "../components/Signup";
-import { useQuery } from "@apollo/client";
-import { CURRENT_USER_QUERY } from "../apollo/queries";
 import LogoText from "../components/LogoText";
 import FormWrapper from "../components/styles/FormWrapper";
 import { AuthContext } from "../context/auth";
@@ -35,7 +33,7 @@ const Switch = styled.span`
 
 const IndexPage = () => {
   const router = useRouter();
-  const { loading, error, currentUser } = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
 
   useEffect(() => {
     if (currentUser) {

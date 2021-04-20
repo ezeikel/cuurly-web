@@ -39,12 +39,12 @@ const FollowerAction = styled.div`
   display: grid;
 `;
 
-const UserList = ({ users, singleUser, currentUser }) => {
+const UserList = ({ username, users }) => {
   if (!users) return null;
 
   return (
     <Wrapper>
-      {users.map((user) => (
+      {users.map(user => (
         <FollowerWrapper key={user.id}>
           <Follower>
             <FollowerPhoto>
@@ -52,7 +52,7 @@ const UserList = ({ users, singleUser, currentUser }) => {
                 src={
                   user.profilePicture?.url.replace(
                     "/upload",
-                    "/upload/w_30,h_30,c_lfill,g_face,dpr_2.0"
+                    "/upload/w_30,h_30,c_lfill,g_face,dpr_2.0",
                   ) || blankProfilePicture()
                 }
                 alt="profile-pic"
@@ -68,12 +68,9 @@ const UserList = ({ users, singleUser, currentUser }) => {
             </FollowerName>
             <FollowerAction>
               <FollowButton
-                singleUser={singleUser}
-                currentUser={currentUser}
+                username={username}
                 userId={user.id}
-                userList={
-                  user.followers && user.followers.map((user) => user.id)
-                }
+                userFollowers={user.followers?.map(user => user.id)}
               />
             </FollowerAction>
           </Follower>
