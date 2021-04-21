@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, FunctionComponent } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import styled from "styled-components";
@@ -11,7 +11,7 @@ const Wrapper = styled.header`
   border-bottom: 1px solid rgba(0, 0, 0, 0.0975);
 `;
 
-const Header = () => {
+const Header: FunctionComponent = () => {
   const router = useRouter();
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { useState, Fragment } from "react";
+import { useState, useContext } from "react";
 import Link from "next/link";
 import { useQuery } from "@apollo/client";
 import styled from "styled-components";
@@ -17,6 +17,7 @@ import {
 } from "../apollo/queries";
 import blankProfilePicture from "../utils/blankProfileImage";
 import VideoPlayer from "./VideoPlayer";
+import { AuthContext } from "../context/auth";
 
 const Wrapper = styled.article`
   display: grid;
@@ -186,15 +187,11 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
 
 const Post = ({ id }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
-
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => setModalIsOpen(false);
+  const { currentUser } = useContext(AuthContext);
 
-  const {
-    loading: currentUserLoading,
-    error: currentUserError,
-    data: { currentUser } = {}, // setting default value when destructing as data is undefined when loading - https://github.com/apollographql/react-apollo/issues/3323#issuecomment-523430331
-  } = useQuery(CURRENT_USER_QUERY);
+  if (!id || !currentUser) return null;
 
   const {
     loading: singlePostLoading,
@@ -228,7 +225,7 @@ const Post = ({ id }) => {
               (post.author.profilePicture &&
                 post.author.profilePicture.url.replace(
                   "/upload",
-                  "/upload/w_30,h_30,c_lfill,g_face,dpr_2.0"
+                  "/upload/w_30,h_30,c_lfill,g_face,dpr_2.0",
                 )) ||
               blankProfilePicture()
             }
@@ -259,14 +256,14 @@ const Post = ({ id }) => {
                 </Link>
               </PostAction>
               {isCurrentUsersPost ? (
-                <Fragment>
+                <>
                   <PostAction disabled={true}>
                     <span>Archive</span>
                   </PostAction>
                   <PostAction disabled={true}>
                     <span>Edit</span>
                   </PostAction>
-                </Fragment>
+                </>
               ) : null}
               <PostAction disabled={true}>
                 <span>Copy Link</span>
@@ -280,7 +277,7 @@ const Post = ({ id }) => {
                 </PostAction>
               ) : null}
               {!isCurrentUsersPost ? (
-                <Fragment>
+                <>
                   <PostAction disabled={true}>
                     <span>Mute</span>
                   </PostAction>
@@ -290,7 +287,7 @@ const Post = ({ id }) => {
                   <PostAction actionType="negative">
                     <span>Unfollow</span>
                   </PostAction>
-                </Fragment>
+                </>
               ) : null}
               <PostAction>
                 <span onClick={closeModal}>Cancel</span>
@@ -329,7 +326,7 @@ const Post = ({ id }) => {
           {post.caption}
         </Caption>
         <CommentList>
-          {post.comments.map((comment) => (
+          {post.comments.map(comment => (
             <Comment key={comment.id} comment={comment} post={post} />
           ))}
         </CommentList>

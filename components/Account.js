@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useContext, useState } from "react";
 import Link from "next/link";
 import { useQuery, useMutation } from "@apollo/client";
 import styled from "styled-components";
@@ -14,6 +14,7 @@ import {
   UPDATE_USER_MUTATION,
 } from "../apollo/queries";
 import blankProfilePicture from "../utils/blankProfileImage";
+import { AuthContext } from "../context/auth";
 
 const GENDER_OPTIONS = ["MALE", "FEMALE", "NON BINARY", "NOT SPECIFIED"];
 
@@ -80,17 +81,18 @@ const ChangePasswordSchema = Yup.object().shape({
     .required("Password confirm is required."),
 });
 
-ChangePasswordSchema.validate(
-  {
-    password: "Password12",
-    passwordConfirm: "Password123",
-  },
-  {
-    abortEarly: false,
-  }
-)
-  .then(() => console.log("ok, arguments"))
-  .catch((error) => console.log("failed", error));
+// FIXME: not sure why this is here
+// ChangePasswordSchema.validate(
+//   {
+//     password: "Password12",
+//     passwordConfirm: "Password123",
+//   },
+//   {
+//     abortEarly: false,
+//   },
+// )
+//   .then(() => console.log("ok, arguments"))
+//   .catch(error => console.log("failed", error));
 
 const Wrapper = styled.div`
   display: grid;
@@ -365,8 +367,11 @@ if (typeof window !== "undefined") {
   Modal.setAppElement("body");
 }
 
-const Account = ({ query, id }) => {
-  const [content] = query;
+const Account = ({ mode }) => {
+  const { currentUser } = useContext(AuthContext);
+
+  if (!currentUser) return null;
+
   const [initialEditDetailsValues, setInitialEditDetailsValues] = useState({
     name: "",
     username: "",
@@ -403,7 +408,7 @@ const Account = ({ query, id }) => {
       } = {},
     } = {}, // setting default value when destructing as data is undefined when loading - https://github.com/apollographql/react-apollo/issues/3323#issuecomment-523430331
   } = useQuery(SINGLE_USER_QUERY, {
-    variables: { id },
+    variables: { id: currentUser.id },
     fetchPolicy: "cache-and-network",
   });
 
@@ -415,7 +420,7 @@ const Account = ({ query, id }) => {
       toast("Profile Saved.");
     },
     refetchQueries: [
-      { query: SINGLE_USER_QUERY, variables: { id } },
+      { query: SINGLE_USER_QUERY, variables: { id: currentUser.id } },
       { query: CURRENT_USER_QUERY },
     ],
   });
@@ -425,7 +430,7 @@ const Account = ({ query, id }) => {
   const closeChangeProfilePictureModal = () =>
     setCangeProfilePictureModalIsOpen(false);
 
-  const handleChange = (file) => {
+  const handleChange = file => {
     setFileUrl(URL.createObjectURL(file));
     setFile(file);
     closeChangeProfilePictureModal();
@@ -434,39 +439,39 @@ const Account = ({ query, id }) => {
   return (
     <Wrapper>
       <ActionList>
-        <Action active={content === "edit"}>
+        <Action active={mode === "edit"}>
           <Link href="/account?edit">
             <a>Edit Profile</a>
           </Link>
         </Action>
-        <Action active={content === "password-change"}>
+        <Action active={mode === "password-change"}>
           <Link href="/account?password-change">
             <a>Change Password</a>
           </Link>
         </Action>
-        <Action disabled={true} active={content === "manage-access"}>
+        <Action disabled={true} active={mode === "manage-access"}>
           <Link href="/account?manage-access">
             <a>Authorized Applications</a>
           </Link>
         </Action>
-        <Action disabled={true} active={content === "email-settingss"}>
+        <Action disabled={true} active={mode === "email-settingss"}>
           <Link href="/account?email-settings">
             <a>Email and SMS</a>
           </Link>
         </Action>
-        <Action disabled={true} active={content === "contact-history"}>
+        <Action disabled={true} active={mode === "contact-history"}>
           <Link href="/account?contact-history">
             <a>Manage Contacts</a>
           </Link>
         </Action>
-        <Action disabled={true} active={content === "privacy-and-security"}>
+        <Action disabled={true} active={mode === "privacy-and-security"}>
           <Link href="/account?privacy-and-security">
             <a>Privacy and Security</a>
           </Link>
         </Action>
       </ActionList>
       <Content>
-        {content === "edit" ? (
+        {mode === "edit" ? (
           <Fragment>
             <Edit>
               <EditHeader>
@@ -476,7 +481,7 @@ const Account = ({ query, id }) => {
                       fileUrl ||
                       profilePicture?.url.replace(
                         "/upload",
-                        "/upload/w_38,h_38,c_lfill,g_face,dpr_2.0"
+                        "/upload/w_38,h_38,c_lfill,g_face,dpr_2.0",
                       ) ||
                       blankProfilePicture()
                     }
@@ -508,7 +513,7 @@ const Account = ({ query, id }) => {
                             <input
                               accept="image/jpeg,image/png"
                               type="file"
-                              onChange={(e) => handleChange(e.target.files[0])}
+                              onChange={e => handleChange(e.target.files[0])}
                             />
                           </label>
                         </ChangeProfilePhotoForm>
@@ -627,7 +632,7 @@ const Account = ({ query, id }) => {
                             name="gender"
                             value={values.gender}
                           >
-                            {GENDER_OPTIONS.map((option) => (
+                            {GENDER_OPTIONS.map(option => (
                               <option
                                 key={option}
                                 value={option.replace(/\s/g, "")}
@@ -665,7 +670,7 @@ const Account = ({ query, id }) => {
             </Edit>
           </Fragment>
         ) : null}
-        {content === "password-change" ? (
+        {mode === "password-change" ? (
           <Fragment>
             <PasswordChange>
               <EditHeader>
@@ -675,7 +680,7 @@ const Account = ({ query, id }) => {
                       (profilePicture &&
                         profilePicture.url.replace(
                           "/upload",
-                          "/upload/w_38,h_38,c_lfill,g_face,dpr_2.0"
+                          "/upload/w_38,h_38,c_lfill,g_face,dpr_2.0",
                         )) ||
                       blankProfilePicture()
                     }
