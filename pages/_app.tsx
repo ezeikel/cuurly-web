@@ -1,3 +1,4 @@
+import type { AppProps } from "next/app";
 import { ApolloProvider } from "@apollo/client";
 import * as Sentry from "@sentry/browser";
 import { useApollo } from "../apollo/client";
@@ -10,7 +11,7 @@ Sentry.init({
   release: process.env.SENTRY_RELEASE,
 });
 
-const MyApp = ({ Component, pageProps }) => {
+const MyApp = ({ Component, pageProps }: AppProps) => {
   const apolloClient = useApollo(pageProps.initialApolloState);
 
   return (

@@ -1,7 +1,8 @@
-import styled from 'styled-components';
+import { FunctionComponent } from "react";
+import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import RequestReset from '../components/RequestReset';
-import FormWrapper from '../components/styles/FormWrapper';
+import RequestReset from "../components/RequestReset";
+import FormWrapper from "../components/styles/FormWrapper";
 
 const Wrapper = styled.div`
   display: grid;
@@ -25,7 +26,7 @@ const StyledFormWrapper = styled(FormWrapper)`
   justify-items: center;
 `;
 
-const requestResetPage = () => (
+const requestResetPage: FunctionComponent = () => (
   <Wrapper>
     <StyledFormWrapper>
       <FontAwesomeIcon
@@ -34,7 +35,10 @@ const requestResetPage = () => (
         size="3x"
       />
       <h1>Trouble Logging In?</h1>
-      <Copy>Enter your email address and we'll send you a link to reset your password and get back into your account.</Copy>
+      <Copy>
+        Enter your email address and we'll send you a link to reset your
+        password and get back into your account.
+      </Copy>
       <RequestReset />
     </StyledFormWrapper>
   </Wrapper>

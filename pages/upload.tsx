@@ -1,9 +1,11 @@
+import { FunctionComponent } from "react";
 import dynamic from "next/dynamic";
+
 const Upload = dynamic(() => import("../components/Upload"), {
   ssr: false,
 });
 
-const uploadPage = () => (
+const uploadPage: FunctionComponent = () => (
   // TODO: Eventually make this a modal
   <Upload />
 );

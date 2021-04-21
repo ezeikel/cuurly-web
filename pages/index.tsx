@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { FunctionComponent, useContext, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import styled from "styled-components";
@@ -31,7 +31,7 @@ const Switch = styled.span`
   }
 `;
 
-const IndexPage = () => {
+const IndexPage: FunctionComponent = () => {
   const router = useRouter();
   const { currentUser } = useContext(AuthContext);
 

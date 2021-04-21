@@ -1,8 +1,9 @@
-import Link from 'next/link';
-import styled from 'styled-components';
-import Signin from '../components/Signin';
-import LogoText from '../components/LogoText';
-import FormWrapper from '../components/styles/FormWrapper';
+import { FunctionComponent } from "react";
+import Link from "next/link";
+import styled from "styled-components";
+import Signin from "../components/Signin";
+import LogoText from "../components/LogoText";
+import FormWrapper from "../components/styles/FormWrapper";
 
 const Wrapper = styled.div`
   display: grid;
@@ -28,13 +29,18 @@ const Switch = styled.span`
   }
 `;
 
-const SigninPage = () => (
+const SigninPage: FunctionComponent = () => (
   <Wrapper>
     <FormWrapper>
       <LogoText fillColor="var(--color-black)" />
       <Signin />
     </FormWrapper>
-    <Switch>Don't have an account?  <Link href="/"><a>Sign up</a></Link></Switch>
+    <Switch>
+      Don't have an account?{" "}
+      <Link href="/">
+        <a>Sign up</a>
+      </Link>
+    </Switch>
   </Wrapper>
 );
 
