@@ -35,10 +35,10 @@ const UserNumbers = ({ username, posts, followers, following }) => {
 
   return (
     <Wrapper>
-      <NumberOf name="posts" length={posts.length} />
+      <NumberOf name="posts" length={posts?.length} />
       <NumberOf
         name="followers"
-        length={followers.length}
+        length={followers?.length}
         clickHandler={openFollowersModal}
       />
       <GenericModal
@@ -52,7 +52,7 @@ const UserNumbers = ({ username, posts, followers, following }) => {
       </GenericModal>
       <NumberOf
         name="following"
-        length={following.length}
+        length={following?.length}
         clickHandler={openFollowingModal}
       />
       <GenericModal

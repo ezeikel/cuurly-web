@@ -39,21 +39,21 @@ const SettingsOptions = ({ close }) => {
     <Wrapper>
       <Action>
         <span>
-          <Link href="/account?password-change">
+          <Link href="/account?action=password-change">
             <a>Change Password</a>
           </Link>
         </span>
       </Action>
-      <Action disabled={true}>
+      <Action disabled>
         <span>Nametag</span>
       </Action>
-      <Action disabled={true}>
+      <Action disabled>
         <span>Authorized Apps</span>
       </Action>
-      <Action disabled={true}>
+      <Action disabled>
         <span>Notifications</span>
       </Action>
-      <Action disabled={true}>
+      <Action disabled>
         <span>Privacy and Security</span>
       </Action>
       <Action>

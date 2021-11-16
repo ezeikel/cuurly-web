@@ -18,7 +18,8 @@ import { AuthContext } from "../context/auth";
 
 const GENDER_OPTIONS = ["MALE", "FEMALE", "NON BINARY", "NOT SPECIFIED"];
 
-const PHONE_REGEX = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+const PHONE_REGEX =
+  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
 function isEqual(a, b) {
   // Create arrays of property names
@@ -381,10 +382,8 @@ const Account = ({ mode }) => {
     phoneNumber: "",
     gender: "",
   });
-  const [
-    changeProfilePictureModalIsOpen,
-    setCangeProfilePictureModalIsOpen,
-  ] = useState(false);
+  const [changeProfilePictureModalIsOpen, setCangeProfilePictureModalIsOpen] =
+    useState(false);
   const [fileUrl, setFileUrl] = useState(null);
   const [file, setFile] = useState(null);
 
@@ -449,22 +448,22 @@ const Account = ({ mode }) => {
             <a>Change Password</a>
           </Link>
         </Action>
-        <Action disabled={true} active={mode === "manage-access"}>
+        <Action disabled active={mode === "manage-access"}>
           <Link href="/account?manage-access">
             <a>Authorized Applications</a>
           </Link>
         </Action>
-        <Action disabled={true} active={mode === "email-settingss"}>
+        <Action disabled active={mode === "email-settingss"}>
           <Link href="/account?email-settings">
             <a>Email and SMS</a>
           </Link>
         </Action>
-        <Action disabled={true} active={mode === "contact-history"}>
+        <Action disabled active={mode === "contact-history"}>
           <Link href="/account?contact-history">
             <a>Manage Contacts</a>
           </Link>
         </Action>
-        <Action disabled={true} active={mode === "privacy-and-security"}>
+        <Action disabled active={mode === "privacy-and-security"}>
           <Link href="/account?privacy-and-security">
             <a>Privacy and Security</a>
           </Link>
@@ -518,7 +517,7 @@ const Account = ({ mode }) => {
                           </label>
                         </ChangeProfilePhotoForm>
                       </SettingsAction>
-                      <SettingsAction disabled={true}>
+                      <SettingsAction disabled>
                         <span>Remove Current Photo</span>
                       </SettingsAction>
                       <SettingsAction>
@@ -656,7 +655,7 @@ const Account = ({ mode }) => {
                           </Button>
                         </FormRow>
                         <FormRow>
-                          <Link href="/account?disable">
+                          <Link href="/account?action=disable">
                             <ForgotPasswordLink>
                               Temporarily disable my account
                             </ForgotPasswordLink>

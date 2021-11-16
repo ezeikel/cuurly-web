@@ -33,6 +33,8 @@ const FeedPage: FunctionComponent = () => {
 
   if (!feed) return null;
 
+  if (feed.length === 0) return <span>No posts found.</span>;
+
   return (
     <Wrapper>
       {feed.map(post => (

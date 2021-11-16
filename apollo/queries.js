@@ -4,12 +4,13 @@ export const CURRENT_USER_QUERY = gql`
   query CURRENT_USER_QUERY {
     currentUser {
       id
-      name
+      firstName
+      lastName
       username
       profilePicture {
         url
       }
-      permissions
+      role
     }
   }
 `;
@@ -18,7 +19,8 @@ export const ALL_USERS_QUERY = gql`
   query ALL_USERS_QUERY {
     users {
       id
-      name
+      firstName
+      lastName
       username
       email
     }
@@ -29,7 +31,8 @@ export const SINGLE_USER_QUERY = gql`
   query SINGLE_USER_QUERY($id: ID, $username: String, $email: String) {
     user(id: $id, username: $username, email: $email) {
       id
-      name
+      firstName
+      lastName
       username
       profilePicture {
         url
@@ -41,7 +44,8 @@ export const SINGLE_USER_QUERY = gql`
       gender
       followers {
         id
-        name
+        firstName
+        lastName
         username
         profilePicture {
           url
@@ -56,7 +60,8 @@ export const SINGLE_USER_QUERY = gql`
       }
       following {
         id
-        name
+        firstName
+        lastName
         username
         profilePicture {
           url
@@ -81,7 +86,8 @@ export const USER_FOLLOWERS_QUERY = gql`
   query USER_FOLLOWERS_QUERY($id: ID, $username: String, $email: String) {
     followers(id: $id, username: $username, email: $email) {
       id
-      name
+      firstName
+      lastName
       username
       profilePicture {
         url
@@ -101,7 +107,8 @@ export const USER_FOLLOWING_QUERY = gql`
   query USER_FOLLOWING_QUERY($id: ID, $username: String, $email: String) {
     following(id: $id, username: $username, email: $email) {
       id
-      name
+      firstName
+      lastName
       username
       profilePicture {
         url
@@ -173,7 +180,8 @@ export const SEARCH_USERS_QUERY = gql`
     users(where: { username_contains: $searchTerm }) {
       id
       username
-      name
+      firstName
+      lastName
       profilePicture {
         url
       }
@@ -209,22 +217,25 @@ export const LIKED_POSTS_QUERY = gql`
 
 export const SIGNUP_MUTATION = gql`
   mutation SIGNUP_MUTATION(
-    $name: String!
+    $firstName: String!
+    $lastName: String!
     $username: String!
     $email: String!
     $password: String!
   ) {
     signup(
-      name: $name
+      firstName: $firstName
+      lastName: $lastName
       username: $username
       email: $email
       password: $password
     ) {
       id
-      name
+      firstName
+      lastName
       username
       email
-      permissions
+      role
     }
   }
 `;
@@ -233,12 +244,13 @@ export const SIGNIN_MUTATION = gql`
   mutation SIGNIN_MUTATION($username: String!, $password: String!) {
     signin(username: $username, password: $password) {
       id
-      name
+      firstName
+      lastName
       username
       profilePicture {
         url
       }
-      permissions
+      role
     }
   }
 `;
@@ -273,8 +285,9 @@ export const RESET_MUTATION = gql`
       id
       email
       username
-      name
-      permissions
+      firstName
+      lastName
+      role
     }
   }
 `;
@@ -344,7 +357,8 @@ export const DELETE_COMMENT_MUTATION = gql`
 
 export const UPDATE_USER_MUTATION = gql`
   mutation UPDATE_USER_MUTATION(
-    $name: String
+    $firstName: String
+    $lastName: String
     $username: String
     $profilePicture: Upload
     $website: String
@@ -356,7 +370,8 @@ export const UPDATE_USER_MUTATION = gql`
     $password: String
   ) {
     updateUser(
-      name: $name
+      firstName: $firstName
+      lastName: $lastName
       username: $username
       profilePicture: $profilePicture
       website: $website

@@ -83,7 +83,7 @@ const Profile = ({ username }) => {
           id={id}
           username={username}
           verified={verified}
-          followerIds={followers.map(follower => follower.id)}
+          followerIds={followers?.map(follower => follower.id)}
         />
         <UserNumbers
           username={username}
