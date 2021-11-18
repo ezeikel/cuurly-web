@@ -1,3 +1,3 @@
-# Crownd
+# Cuurly Web App
 
-frontend
+This is the Cuurly web app frontend.

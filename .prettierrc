@@ -1,5 +1,4 @@
 {
-  "arrowParens": "avoid",
   "bracketSpacing": true,
   "htmlWhitespaceSensitivity": "ignore",
   "insertPragma": false,
@@ -13,6 +12,5 @@
   "singleQuote": false,
   "trailingComma": "all",
   "useTabs": false,
-  "vueIndentScriptAndStyle": false,
   "tabWidth": 2
 }

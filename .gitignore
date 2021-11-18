@@ -1,10 +1,38 @@
+# dependencies
 node_modules/
-.DS_Store
-*.log
+
+# testing
+coverage/
+
+# vercel
+.now/
+.vercel/
+
+# next.js
 .next/
-.build/
-layout.md
+out/
+
+# production
+build/
+
+# misc
+.DS_Store
+.idea/*
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
 .env
-.env*.local
-process.defaults.js
-.now
+.env.*
+
+# cypress
+cypress/results/*
+cypress/reports/*
+cypress/screenshots/*
+cypress/videos/*
+
+# TypeScript incremental compilation cache
+*.tsbuildinfo
