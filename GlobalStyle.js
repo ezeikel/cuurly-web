@@ -1,6 +1,16 @@
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle, keyframes } from "styled-components";
 import { config, dom } from "@fortawesome/fontawesome-svg-core";
+
 config.autoAddCss = false;
+
+export const rotateKeyFrame = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+`;
 
 export default createGlobalStyle`
   /* fixes fontawesome icon sizes */

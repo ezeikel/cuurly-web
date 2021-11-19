@@ -1,7 +1,7 @@
 import { FunctionComponent } from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import Account from "../components/Account";
+import Account from "../components/Account/Account";
 
 const Wrapper = styled.div`
   display: grid;

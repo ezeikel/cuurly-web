@@ -1,7 +1,7 @@
 import { FunctionComponent } from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import Post from "../../components/Post";
+import Post from "../../components/Post/Post";
 
 const Wrapper = styled.div`
   display: grid;

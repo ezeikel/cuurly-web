@@ -1,12 +1,14 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
 import { ServerStyleSheet } from "styled-components";
-import * as Sentry from "@sentry/browser";
+import * as Sentry from "@sentry/nextjs";
+import "video.js/dist/video-js.css";
+import "react-toastify/dist/ReactToastify.min.css";
 
-process.on("unhandledRejection", err => {
+process.on("unhandledRejection", (err) => {
   Sentry.captureException(err);
 });
 
-process.on("uncaughtException", err => {
+process.on("uncaughtException", (err) => {
   Sentry.captureException(err);
 });
 
@@ -18,7 +20,9 @@ class MyDocument extends Document {
     try {
       ctx.renderPage = () =>
         originalRenderPage({
-          enhanceApp: App => props => sheet.collectStyles(<App {...props} />),
+          enhanceApp: (App) => (props) =>
+            // eslint-disable-next-line react/jsx-props-no-spreading
+            sheet.collectStyles(<App {...props} />),
         });
 
       const initialProps = await Document.getInitialProps(ctx);
@@ -36,6 +40,7 @@ class MyDocument extends Document {
     }
   }
 
+  // eslint-disable-next-line class-methods-use-this
   setGoogleAnalyticsTags() {
     return {
       __html: `

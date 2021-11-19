@@ -1,8 +1,7 @@
 import { FunctionComponent } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import RequestReset from "../components/RequestReset";
-import FormWrapper from "../components/styles/FormWrapper";
+import RequestReset from "../components/RequestReset/RequestReset";
 
 const Wrapper = styled.div`
   display: grid;
@@ -22,7 +21,7 @@ const Copy = styled.span`
   color: #999999;
 `;
 
-const StyledFormWrapper = styled(FormWrapper)`
+const StyledFormWrapper = styled.div`
   justify-items: center;
 `;
 
@@ -36,7 +35,7 @@ const requestResetPage: FunctionComponent = () => (
       />
       <h1>Trouble Logging In?</h1>
       <Copy>
-        Enter your email address and we'll send you a link to reset your
+        Enter your email address and we&apos;ll send you a link to reset your
         password and get back into your account.
       </Copy>
       <RequestReset />

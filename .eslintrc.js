@@ -50,6 +50,7 @@ module.exports = {
     ],
     "no-console": [2, { allow: ["warn", "error"] }],
     "no-underscore-dangle": [2, { allow: ["_id"] }],
+    "react/function-component-definition": 0,
   },
   settings: {
     "import/resolver": {

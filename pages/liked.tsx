@@ -2,7 +2,7 @@ import { FunctionComponent } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useQuery } from "@apollo/client";
-import { LIKED_POSTS_QUERY } from "../apollo/queries";
+import { LIKED_POSTS_QUERY } from "../../apollo/queries";
 
 const Liked: FunctionComponent = () => {
   const router = useRouter();
@@ -24,7 +24,7 @@ const Liked: FunctionComponent = () => {
     <div>
       <h1>Likes</h1>
       <ul>
-        {user.likes.map(like => (
+        {user.likes.map((like) => (
           <div key={like.post.id}>
             <Link href="/post/[postId]" as={`/post/${like.post.id}`}>
               <a>{like.post.author.username}</a>

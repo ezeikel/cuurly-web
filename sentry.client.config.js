@@ -13,6 +13,6 @@ Sentry.init({
   // that it will also get attached to your source maps
   enabled:
     process.env.NODE_ENV === "staging" || process.env.NODE_ENV === "production",
-  environment: process.NODE_ENV,
+  environment: process.env.NODE_ENV,
   release: process.env.SENTRY_RELEASE,
 });

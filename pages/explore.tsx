@@ -2,8 +2,8 @@ import { FunctionComponent } from "react";
 import { useRouter } from "next/router";
 import { useQuery } from "@apollo/client";
 import styled from "styled-components";
-import { EXPLORE_QUERY } from "../apollo/queries";
-import Post from "../components/Post";
+import { EXPLORE_QUERY } from "../../apollo/queries";
+import Post from "../components/Post/Post";
 
 const Wrapper = styled.div`
   display: grid;
@@ -33,7 +33,7 @@ const ExplorePage: FunctionComponent = () => {
   return (
     <Wrapper>
       <h1>Explore.</h1>
-      {explore.map(post => (
+      {explore.map((post) => (
         <Post key={post.id} id={post.id} />
       ))}
     </Wrapper>

@@ -60,7 +60,7 @@ export const initializeApollo = (initialState = null) => {
   return _apolloClient;
 };
 
-export const useApollo = initialState => {
+export const useApollo = (initialState) => {
   const store = useMemo(() => initializeApollo(initialState), [initialState]);
   return store;
 };

@@ -2,10 +2,9 @@ import { FunctionComponent, useContext, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import Signup from "../components/Signup";
-import LogoText from "../components/LogoText";
-import FormWrapper from "../components/styles/FormWrapper";
-import { AuthContext } from "../context/auth";
+import Signup from "../components/Signup/Signup";
+import LogoText from "../components/svgs/LogoText";
+import { AuthContext } from "../contexts/auth";
 
 const Wrapper = styled.div`
   display: grid;
@@ -49,10 +48,10 @@ const IndexPage: FunctionComponent = () => {
 
   return (
     <Wrapper>
-      <FormWrapper>
-        <LogoText fillColor="var(--color-black)" />
+      <div>
+        <LogoText fill="var(--color-black)" />
         <Signup />
-      </FormWrapper>
+      </div>
       <Switch>
         Have an account?{" "}
         <Link href="/signin">

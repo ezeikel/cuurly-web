@@ -1,9 +1,8 @@
 import { FunctionComponent } from "react";
 import Link from "next/link";
 import styled from "styled-components";
-import Signin from "../components/Signin";
-import LogoText from "../components/LogoText";
-import FormWrapper from "../components/styles/FormWrapper";
+import Signin from "../components/Signin/Signin";
+import LogoText from "../components/svgs/LogoText";
 
 const Wrapper = styled.div`
   display: grid;
@@ -31,12 +30,12 @@ const Switch = styled.span`
 
 const SigninPage: FunctionComponent = () => (
   <Wrapper>
-    <FormWrapper>
-      <LogoText fillColor="var(--color-black)" />
+    <div>
+      <LogoText fill="var(--color-black)" />
       <Signin />
-    </FormWrapper>
+    </div>
     <Switch>
-      Don't have an account?{" "}
+      Don&apos;t have an account? &nbsp;
       <Link href="/">
         <a>Sign up</a>
       </Link>

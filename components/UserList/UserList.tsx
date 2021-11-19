@@ -1,0 +1,54 @@
+import Link from "next/link";
+import blankProfilePicture from "../../utils/blankProfileImage";
+import FollowButton from "../FollowButton/FollowButton";
+import {
+  Wrapper,
+  FollowerWrapper,
+  Follower,
+  FollowerPhoto,
+  FollowerName,
+  FollowerAction,
+} from "./UserList.styled";
+
+const UserList = ({ username, users }) => {
+  if (!users) return null;
+
+  return (
+    <Wrapper>
+      {users.map((user) => (
+        <FollowerWrapper key={user.id}>
+          <Follower>
+            <FollowerPhoto>
+              <img
+                src={
+                  user.profilePicture?.url.replace(
+                    "/upload",
+                    "/upload/w_30,h_30,c_lfill,g_face,dpr_2.0",
+                  ) || blankProfilePicture()
+                }
+                alt="profile-pic"
+              />
+            </FollowerPhoto>
+            <FollowerName>
+              <span>
+                <Link href="/[username]" as={`/${user.username}`}>
+                  <a>{user.username}</a>
+                </Link>
+              </span>
+              <span>{user.name}</span>
+            </FollowerName>
+            <FollowerAction>
+              <FollowButton
+                username={username}
+                userId={user.id}
+                userFollowers={user.followers?.map((user) => user.id)}
+              />
+            </FollowerAction>
+          </Follower>
+        </FollowerWrapper>
+      ))}
+    </Wrapper>
+  );
+};
+
+export default UserList;

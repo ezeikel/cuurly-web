@@ -2,8 +2,8 @@ import { useContext, FunctionComponent } from "react";
 import styled from "styled-components";
 import { useQuery } from "@apollo/client";
 import { FEED_QUERY } from "../apollo/queries";
-import Post from "../components/Post";
-import { AuthContext } from "../context/auth";
+import Post from "../components/Post/Post";
+import { AuthContext } from "../contexts/auth";
 
 const Wrapper = styled.div`
   display: grid;
@@ -23,8 +23,6 @@ const FeedPage: FunctionComponent = () => {
   if (!currentUser) return null;
 
   const {
-    loading,
-    error,
     data: { feed } = {}, // setting default value when destructing as data is undefined when loading - https://github.com/apollographql/react-apollo/issues/3323#issuecomment-523430331
   } = useQuery(FEED_QUERY, {
     variables: { id: currentUser.id },
@@ -37,7 +35,7 @@ const FeedPage: FunctionComponent = () => {
 
   return (
     <Wrapper>
-      {feed.map(post => (
+      {feed.map((post) => (
         <Post key={post.id} id={post.id} />
       ))}
     </Wrapper>

@@ -2,8 +2,7 @@ import { FunctionComponent } from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Reset from "../components/Reset";
-import FormWrapper from "../components/styles/FormWrapper";
+import Reset from "../components/Reset/Reset";
 
 const Wrapper = styled.div`
   display: grid;
@@ -23,7 +22,7 @@ const Copy = styled.span`
   color: #999999;
 `;
 
-const StyledFormWrapper = styled(FormWrapper)`
+const StyledFormWrapper = styled.div`
   justify-items: center;
 `;
 
@@ -41,8 +40,8 @@ const resetPage: FunctionComponent = () => {
         />
         <h1>Set New Password</h1>
         <Copy>
-          Enter your new password and we'll get you back into your account in no
-          time!
+          Enter your new password and we&apos;ll get you back into your account
+          in no time!
         </Copy>
         <Reset resetToken={resetToken} />
       </StyledFormWrapper>
