@@ -22,7 +22,6 @@ import {
 } from "@fortawesome/pro-solid-svg-icons";
 import { faInboxOut, faEllipsisH } from "@fortawesome/pro-regular-svg-icons";
 import Meta from "../Meta";
-import { AuthContextProvider } from "../../contexts/auth";
 import { StyledPage, Wrapper, Inner } from "./Page.styled";
 import Notification from "../Notification/Notification";
 
@@ -70,20 +69,18 @@ const Page = ({ children }) => {
     <ThemeProvider theme={theme}>
       <StyledPage pathname={pathname}>
         <Meta />
-        <AuthContextProvider>
-          {pathname === "/" || pathname === "/signin" ? null : <Header />}
-          <Wrapper>
-            <Inner>{children}</Inner>
-            <Notification
-              position="bottom-center"
-              draggable
-              hideProgressBar
-              pauseOnHover
-              autoClose={3000}
-              closeOnClick={false}
-            />
-          </Wrapper>
-        </AuthContextProvider>
+        {pathname === "/" || pathname === "/signin" ? null : <Header />}
+        <Wrapper>
+          <Inner>{children}</Inner>
+          <Notification
+            position="bottom-center"
+            draggable
+            hideProgressBar
+            pauseOnHover
+            autoClose={3000}
+            closeOnClick={false}
+          />
+        </Wrapper>
       </StyledPage>
     </ThemeProvider>
   );

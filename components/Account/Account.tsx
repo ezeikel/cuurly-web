@@ -1,10 +1,9 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { useQuery, useMutation } from "@apollo/client";
 import { Formik } from "formik";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
-import Modal from "react-modal";
 import Spinner from "../svgs/Spinner";
 import Button from "../Button/Button";
 import {
@@ -13,7 +12,6 @@ import {
   UPDATE_USER_MUTATION,
 } from "../../apollo/queries";
 import blankProfilePicture from "../../utils/blankProfileImage";
-import { AuthContext } from "../../contexts/auth";
 import {
   Wrapper,
   Edit,
@@ -33,6 +31,7 @@ import {
 } from "./Account.styled";
 import ChangeProfilePictureModal from "../modals/ChangeProfilePictureModal/ChangeProfilePictureModal";
 import { PHONE_REGEX, GENDER_OPTIONS } from "../../constants";
+import useUser from "../../hooks/useUser";
 
 function isEqual(a, b) {
   // Create arrays of property names
@@ -71,49 +70,37 @@ const EditProfileSchema = Yup.object().shape({
   gender: Yup.string().required("Gender is required."),
 });
 
-function equalTo(ref, msg) {
-  return this.test({
-    name: "equalTo",
-    exclusive: false,
-    message: msg || "${path} must be the same as ${reference}",
-    params: {
-      reference: ref.path,
-    },
-    test: function (value) {
-      return value === this.resolve(ref);
-    },
-  });
-}
-
-Yup.addMethod(Yup.string, "equalTo", equalTo);
-
 const ChangePasswordSchema = Yup.object().shape({
   oldPassword: Yup.string().required("Old password is required."),
   password: Yup.string().required("Password is required."),
-  passwordConfirm: Yup.string()
-    .equalTo(Yup.ref("password"))
+  passwordConfirmation: Yup.string()
+    .oneOf([Yup.ref("password"), null], "Passwords must match")
     .required("Password confirm is required."),
 });
 
-// FIXME: not sure why this is here
-// ChangePasswordSchema.validate(
-//   {
-//     password: "Password12",
-//     passwordConfirm: "Password123",
-//   },
-//   {
-//     abortEarly: false,
-//   },
-// )
-//   .then(() => console.log("ok, arguments"))
-//   .catch(error => console.log("failed", error));
+type SingleUser = {
+  name: string;
+  username: string;
+  website: string;
+  bio: string;
+  email: string;
+  phoneNumber: string;
+  gender: string;
+  profilePicture: {
+    url: string;
+  };
+};
 
-if (typeof window !== "undefined") {
-  Modal.setAppElement("body");
-}
+type SingleUserData = {
+  user: SingleUser;
+};
+
+type SingleUserVars = {
+  id: string;
+};
 
 const Account = ({ mode }) => {
-  const { currentUser } = useContext(AuthContext);
+  const { user: currentUser } = useUser();
 
   if (!currentUser) return null;
 
@@ -125,6 +112,7 @@ const Account = ({ mode }) => {
     email: "",
     phoneNumber: "",
     gender: "",
+    profilePicture: "",
   });
   const [isChangeProfilePictureModalOpen, setIsChangeProfilePictureModalOpen] =
     useState(false);
@@ -134,17 +122,17 @@ const Account = ({ mode }) => {
   const {
     data: {
       user: {
-        profilePicture,
-        username,
         name,
+        username,
+        website,
         bio,
-        email,
         phoneNumber,
         gender,
-        website,
+        profilePicture,
+        email,
       } = {},
     } = {}, // setting default value when destructing as data is undefined when loading - https://github.com/apollographql/react-apollo/issues/3323#issuecomment-523430331
-  } = useQuery(SINGLE_USER_QUERY, {
+  } = useQuery<SingleUserData, SingleUserVars>(SINGLE_USER_QUERY, {
     variables: { id: currentUser.id },
     fetchPolicy: "cache-and-network",
   });
@@ -164,9 +152,9 @@ const Account = ({ mode }) => {
   const closeChangeProfilePictureModal = () =>
     setIsChangeProfilePictureModalOpen(false);
 
-  const handleChange = (file) => {
-    setFileUrl(URL.createObjectURL(file));
-    setFile(file);
+  const handleChange = (chosenFile) => {
+    setFileUrl(URL.createObjectURL(chosenFile));
+    setFile(chosenFile);
     closeChangeProfilePictureModal();
   };
 
@@ -246,6 +234,7 @@ const Account = ({ mode }) => {
                   email: email || "",
                   phoneNumber: phoneNumber || "",
                   gender: gender || "",
+                  profilePicture: "",
                 }}
                 validationSchema={EditProfileSchema}
                 onSubmit={async (values, { setSubmitting, setErrors }) => {
@@ -257,13 +246,13 @@ const Account = ({ mode }) => {
                   }
 
                   // removed values that havent changed
-                  for (const field in values) {
+                  Object.keys(values).forEach((field) => {
                     if (
                       initialEditDetailsValues[field] === submittedValues[field]
                     ) {
                       delete submittedValues[field];
                     }
-                  }
+                  });
 
                   try {
                     await updateUser({
@@ -277,27 +266,6 @@ const Account = ({ mode }) => {
                 }}
               >
                 {({ isSubmitting, initialValues, values }) => {
-                  let emptyValues = true;
-
-                  for (const key in initialEditDetailsValues) {
-                    if (
-                      initialEditDetailsValues[key] === null ||
-                      initialEditDetailsValues[key] === ""
-                    ) {
-                      emptyValues = true;
-                    } else {
-                      emptyValues = false;
-                      break;
-                    }
-                  }
-
-                  // FIX: this causes maximum update depth error
-                  // if (emptyValues) {
-                  //   setInitialEditDetailsValues({
-                  //     ...initialValues,
-                  //   });
-                  // }
-
                   return (
                     <StyledForm>
                       <FormRow>
@@ -380,6 +348,7 @@ const Account = ({ mode }) => {
                       )) ||
                     blankProfilePicture()
                   }
+                  alt="profile"
                 />
               </ProfilePicture>
               <Username>
@@ -390,7 +359,7 @@ const Account = ({ mode }) => {
               initialValues={{
                 oldPassword: "",
                 password: "",
-                passwordConfirm: "",
+                passwordConfirmation: "",
               }}
               validationSchema={ChangePasswordSchema}
               onSubmit={async ({ oldPassword, password }, { resetForm }) => {
@@ -417,7 +386,7 @@ const Account = ({ mode }) => {
                   </FormRow>
                   <FormRow>
                     <FormLabel>Confirm New Password</FormLabel>
-                    <FormInput type="password" name="passwordConfirm" />
+                    <FormInput type="password" name="passwordConfirmation" />
                   </FormRow>
                   <FormRow>
                     <Button type="submit" disabled={isSubmitting}>

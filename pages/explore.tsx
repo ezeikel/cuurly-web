@@ -2,7 +2,7 @@ import { FunctionComponent } from "react";
 import { useRouter } from "next/router";
 import { useQuery } from "@apollo/client";
 import styled from "styled-components";
-import { EXPLORE_QUERY } from "../../apollo/queries";
+import { EXPLORE_QUERY } from "../apollo/queries";
 import Post from "../components/Post/Post";
 
 const Wrapper = styled.div`
@@ -19,8 +19,6 @@ const ExplorePage: FunctionComponent = () => {
   const { id } = router.query;
 
   const {
-    loading,
-    error,
     data: { explore } = {}, // setting default value when destructing as data is undefined when loading - https://github.com/apollographql/react-apollo/issues/3323#issuecomment-523430331
   } = useQuery(EXPLORE_QUERY, {
     variables: { id },

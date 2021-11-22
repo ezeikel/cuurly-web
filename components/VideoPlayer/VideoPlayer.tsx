@@ -1,95 +1,53 @@
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useRef } from "react";
 import videojs from "video.js";
-import ReactDOM from "react-dom";
-import PlayButton from "../PlayButton/PlayButton";
 import { Wrapper } from "./VideoPlayer.styled";
 
-// TODO: should probably move this to another file and just export vjsPlayButon
-
-const vjsButton = videojs.getComponent("Button");
-
-class vjsPlayButon extends vjsButton {
-  constructor(player, options) {
-    super(player, options);
-
-    this.mount = this.mount.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-
-    player.ready(() => {
-      this.mount();
-    });
-
-    this.player_.on("ended", () => {
-      this.removeClass("hide");
-    });
-
-    this.player_.on("pause", () => {
-      this.removeClass("hide");
-    });
-
-    this.player_.on("play", () => {
-      this.addClass("hide");
-    });
-
-    this.on("dispose", () => {
-      ReactDOM.unmountComponentAtNode(this.el());
-    });
-  }
-
-  handleClick() {
-    // clicking on the video itself pauses/plays so not needed here
-    return;
-  }
-
-  mount() {
-    ReactDOM.render(<PlayButton vjsButton={this} />, this.el());
-  }
-}
-
-vjsButton.registerComponent("vjsPlayButton", vjsPlayButon);
-
 const VideoPlayer = (props) => {
-  const [videoEl, setVideoEl] = useState(null);
-  const onVideo = useCallback((el) => {
-    setVideoEl(el);
-  }, []);
+  const videoRef = useRef(null);
+  const playerRef = useRef(null);
+  const { options, onReady } = props;
 
   useEffect(() => {
-    if (videoEl === null) return;
+    // make sure Video.js player is only initialized once
+    if (!playerRef.current) {
+      const videoElement = videoRef.current;
+      if (!videoElement) return;
 
-    // instantiate Video.js
-    const player = videojs(videoEl, props);
+      // eslint-disable-next-line no-multi-assign
+      const player = (playerRef.current = videojs(videoElement, options, () => {
+        console.log("player is ready"); // eslint-disable-line no-console
+        onReady && onReady(player); // eslint-disable-line @typescript-eslint/no-unused-expressions
+      }));
+    } else {
+      // you can update player here [update player through props]
+      // const player = playerRef.current;
+      // player.autoplay(options.autoplay);
+      // player.src(options.sources);
+    }
+  }, [options, videoRef]);
 
-    // player.getChild("controlBar").addChild("vjsPlayButton", {});
-    player.addChild("vjsPlayButton", {});
+  // Dispose the Video.js player when the functional component unmounts
+  useEffect(() => {
+    const player = playerRef.current;
 
     return () => {
-      // destroy player on unmount
-      player.dispose();
+      if (player) {
+        player.dispose();
+        playerRef.current = null;
+      }
     };
-  }, [videoEl]); // BUGFIX: had to remove 'props' from dependency array to fix issue of video element no longer being in the DOM. Probably bug in - https://github.com/vercel/next.js/tree/canary/examples/with-videojs
-  // wrap the player in a div with a `data-vjs-player` attribute
-  // so videojs won't create additional wrapper in the DOM
-  // see https://github.com/videojs/video.js/pull/3856
-
-  // not using controls. Clicking on video itself will play/pause
-  const handleClick = () => {
-    if (videoEl.paused) {
-      videoEl.play();
-    } else {
-      videoEl.pause();
-    }
-  };
+  }, [playerRef]);
 
   return (
     <Wrapper>
       <div data-vjs-player>
         <video
-          ref={onVideo}
-          className="video-js"
+          ref={videoRef}
+          className="video-js vjs-big-play-centered"
           playsInline
-          onClick={handleClick}
-        />
+        >
+          <track kind="captions" />
+        </video>
       </div>
     </Wrapper>
   );

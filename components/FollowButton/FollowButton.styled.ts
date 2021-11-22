@@ -7,7 +7,7 @@ type StyledButtonProps = {
   mode: string;
 };
 
-export const StyledButton = styled(Button)<StyledButtonProps>`
+export const Wrapper = styled(Button)<StyledButtonProps>`
   height: 100%;
   ${({ mode }) =>
     mode === "follow"

@@ -1,9 +1,9 @@
-import { useContext, FunctionComponent } from "react";
+import { FunctionComponent } from "react";
 import styled from "styled-components";
 import { useQuery } from "@apollo/client";
 import { FEED_QUERY } from "../apollo/queries";
 import Post from "../components/Post/Post";
-import { AuthContext } from "../contexts/auth";
+import useUser from "../hooks/useUser";
 
 const Wrapper = styled.div`
   display: grid;
@@ -18,7 +18,7 @@ const Wrapper = styled.div`
 `;
 
 const FeedPage: FunctionComponent = () => {
-  const { currentUser } = useContext(AuthContext);
+  const { user: currentUser } = useUser();
 
   if (!currentUser) return null;
 

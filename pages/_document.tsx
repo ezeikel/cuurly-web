@@ -61,6 +61,7 @@ class MyDocument extends Document {
             async
             src="https://www.googletagmanager.com/gtag/js?id=UA-139930047-1"
           />
+          {/* eslint-disable-next-line react/no-danger */}
           <script dangerouslySetInnerHTML={this.setGoogleAnalyticsTags()} />
         </Head>
         <body>

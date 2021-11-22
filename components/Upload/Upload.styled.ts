@@ -12,18 +12,6 @@ export const FormWrapper = styled.div`
   display: grid;
 `;
 
-export const Dropzone = styled.section`
-  display: grid;
-  place-items: center;
-  border: 1px dashed
-    ${({ isDragActive }) => (isDragActive ? "var(--color-white)" : "#efefef")};
-  transition: background-color 0.2s ease-in-out;
-  background-color: ${({ isDragActive }) =>
-    isDragActive ? "var(--color-primary-lighter)" : "var(--color-white)"};
-  padding: var(--spacing-gargantuan);
-  outline: 0;
-`;
-
 export const StyledInput = styled.input`
   opacity: 0;
   width: 0;
@@ -65,7 +53,7 @@ export const Preview = styled.div`
   }
 `;
 
-export const StyledTextBox = styled(TextareaInput)`
+export const StyledTextareaInput = styled(TextareaInput)`
   grid-row: 1 / span 3;
   grid-column: 2 / -1;
   height: 100%;

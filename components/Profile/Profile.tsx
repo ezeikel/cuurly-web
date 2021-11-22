@@ -1,5 +1,4 @@
 import { useQuery } from "@apollo/client";
-import Modal from "react-modal";
 import { SINGLE_USER_QUERY } from "../../apollo/queries";
 import PostPreview from "../PostPreview/PostPreview";
 import UserAvatar from "../UserAvatar/UserAvatar";
@@ -9,9 +8,27 @@ import UserBio from "../UserBio/UserBio";
 import ProfileNav from "../ProfileNav/ProfileNav";
 import { Wrapper, Header, PostsWrapper, Posts } from "./Profile.styled";
 
-if (typeof window !== "undefined") {
-  Modal.setAppElement("body");
-}
+type SingleUser = {
+  id: string;
+  name: string;
+  profilePicture: {
+    url: string;
+  };
+  website: string;
+  bio: string;
+  posts: any; // TODO
+  followers: any; // TODO
+  following: any; // TODO
+  verified: boolean;
+};
+
+type SingleUserData = {
+  user: SingleUser;
+};
+
+type SingleUserVars = {
+  username: string;
+};
 
 const Profile = ({ username }) => {
   const {
@@ -19,17 +36,17 @@ const Profile = ({ username }) => {
     data: {
       user: {
         id,
-        profilePicture,
         name,
-        bio,
+        profilePicture,
         website,
+        bio,
         posts,
         followers,
         following,
         verified,
       } = {},
     } = {},
-  } = useQuery(SINGLE_USER_QUERY, {
+  } = useQuery<SingleUserData, SingleUserVars>(SINGLE_USER_QUERY, {
     variables: { username },
   });
 

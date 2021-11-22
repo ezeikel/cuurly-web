@@ -5,7 +5,6 @@ import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { RESET_MUTATION } from "../../apollo/queries";
 import formatAPIErrors from "../../utils/formatAPIErrors";
-import Spinner from "../svgs/Spinner";
 import SubmitButton from "../SubmitButton/SubmitButton";
 import { StyledForm } from "./Reset.styled";
 import TextInput from "../form/inputs/TextInput/TextInput";
@@ -16,7 +15,7 @@ const ResetSchema = Yup.object().shape({
 });
 
 const Reset = ({ resetToken, router }) => {
-  const [reset, { data, loading, error }] = useMutation(RESET_MUTATION);
+  const [reset] = useMutation(RESET_MUTATION);
 
   return (
     <Formik
@@ -39,7 +38,7 @@ const Reset = ({ resetToken, router }) => {
         }
       }}
     >
-      {({ isSubmitting, errors, touched }) => (
+      {({ isSubmitting }) => (
         <StyledForm>
           <div>
             <TextInput name="password" type="password" label="New Password" />
@@ -51,9 +50,11 @@ const Reset = ({ resetToken, router }) => {
               label="New Password Confirmation"
             />
           </div>
-          <SubmitButton type="submit" disabled={isSubmitting}>
-            Reset Password{isSubmitting ? <Spinner /> : null}
-          </SubmitButton>
+          <SubmitButton
+            text="Reset Password"
+            submittingText="Resetting Password"
+            disabled={isSubmitting}
+          />
         </StyledForm>
       )}
     </Formik>

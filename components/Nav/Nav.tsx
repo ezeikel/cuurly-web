@@ -1,19 +1,13 @@
-import { useContext } from "react";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { AuthContext } from "../../contexts/auth";
+import Search from "../Search/Search";
 import LogoImage from "../svgs/LogoImage";
 import LogoText from "../svgs/LogoText";
-import {
-  Wrapper,
-  NavActions,
-  LogoWrapper,
-  StyledSearch,
-  Upload,
-} from "./Nav.styled";
+import { Wrapper, NavActions, LogoWrapper, Upload } from "./Nav.styled";
+import useUser from "../../hooks/useUser";
 
 const Nav = () => {
-  const { currentUser } = useContext(AuthContext);
+  const { user: currentUser } = useUser();
 
   return (
     <Wrapper>
@@ -29,7 +23,7 @@ const Nav = () => {
           </a>
         </Link>
       </LogoWrapper>
-      <StyledSearch />
+      <Search />
       <NavActions>
         <li>
           <Link href={`/explore?id=${currentUser.id}`}>

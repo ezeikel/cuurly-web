@@ -2,7 +2,6 @@ import { withRouter } from "next/router";
 import { useMutation } from "@apollo/client";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import Spinner from "../svgs/Spinner";
 import { CURRENT_USER_QUERY, SIGNUP_MUTATION } from "../../apollo/queries";
 import formatAPIErrors from "../../utils/formatAPIErrors";
 import TextInput from "../form/inputs/TextInput/TextInput";
@@ -57,9 +56,11 @@ const Signup = ({ router }) => {
             <TextInput label="email" name="email" type="email" />
             <TextInput label="username" name="username" type="text" />
             <TextInput label="password" name="password" type="password" />
-            <SubmitButton type="submit" disabled={isSubmitting}>
-              Sign Up {isSubmitting ? <Spinner /> : null}
-            </SubmitButton>
+            <SubmitButton
+              text="Sign Up"
+              submittingText="Signing Up"
+              disabled={isSubmitting}
+            />
           </Form>
         )}
       </Formik>

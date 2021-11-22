@@ -7,8 +7,6 @@ import { Wrapper, Preview, Overlay, Stats, Stat } from "./PostPreview.styled";
 
 const PostPreview = ({ id }) => {
   const {
-    loading,
-    error,
     data: { post } = {}, // setting default value when destructing as data is undefined when loading - https://github.com/apollographql/react-apollo/issues/3323#issuecomment-523430331
   } = useQuery(SINGLE_POST_QUERY, {
     variables: { id },
@@ -40,10 +38,13 @@ const PostPreview = ({ id }) => {
                     "/upload",
                     "/upload/w_350,h_350,ar_1:1,c_fill,dpr_2.0",
                   )}
+                alt="post preview"
               />
             ) : (
               /* TODO: instagram uses the poster <img /> here instead of the actual video element */
-              <VideoPlayer {...videoJsOptions} />
+              <VideoPlayer
+                {...videoJsOptions} /* eslint-disable-line react/jsx-props-no-spreading */
+              />
             )}
           </Preview>
           <Overlay>

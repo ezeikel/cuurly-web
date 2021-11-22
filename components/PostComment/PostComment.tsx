@@ -1,22 +1,17 @@
 import { Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { useQuery, useMutation } from "@apollo/client";
-import {
-  CURRENT_USER_QUERY,
-  SINGLE_POST_QUERY,
-  ADD_COMMENT_MUTATION,
-} from "../../apollo/queries";
+import { useMutation } from "@apollo/client";
+import { SINGLE_POST_QUERY, ADD_COMMENT_MUTATION } from "../../apollo/queries";
 import { StyledField, StyledForm } from "./PostComment.styled";
+import useUser from "../../hooks/useUser";
 
 const CommentSchema = Yup.object().shape({
   text: Yup.string().required("Comment can not be blank."),
-  //.min(1, 'Comment can not be blank.')
+  // .min(1, 'Comment can not be blank.')
 });
 
 const PostComment = ({ postId }) => {
-  const {
-    data: { currentUser } = {}, // setting default value when destructing as data is undefined when loading - https://github.com/apollographql/react-apollo/issues/3323#issuecomment-523430331
-  } = useQuery(CURRENT_USER_QUERY);
+  const { user: currentUser } = useUser();
 
   if (!currentUser) return null;
 

@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { useQuery } from "@apollo/client";
 import styled from "styled-components";
@@ -11,7 +11,6 @@ import DeletePost from "../DeletePost/DeletePost";
 import { SINGLE_POST_QUERY } from "../../apollo/queries";
 import blankProfilePicture from "../../utils/blankProfileImage";
 import VideoPlayer from "../VideoPlayer/VideoPlayer";
-import { AuthContext } from "../../contexts/auth";
 import {
   Wrapper,
   PostHeader,
@@ -32,6 +31,7 @@ import {
   PostAction,
 } from "./Post.styled";
 import GenericModal from "../GenericModal/GenericModal";
+import useUser from "../../hooks/useUser";
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
   cursor: pointer;
@@ -41,7 +41,7 @@ const Post = ({ id }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => setModalIsOpen(false);
-  const { currentUser } = useContext(AuthContext);
+  const { user: currentUser } = useUser();
 
   if (!id || !currentUser) return null;
 
@@ -142,7 +142,9 @@ const Post = ({ id }) => {
                 </>
               ) : null}
               <PostAction>
-                <span onClick={closeModal}>Cancel</span>
+                <button type="button" onClick={closeModal}>
+                  Cancel
+                </button>
               </PostAction>
             </PostActions>
           </ModalBody>
@@ -157,7 +159,7 @@ const Post = ({ id }) => {
             alt="post"
           />
         ) : (
-          <VideoPlayer {...videoJsOptions} />
+          <VideoPlayer {...videoJsOptions} /> // eslint-disable-line react/jsx-props-no-spreading
         )}
       </PostContent>
       <PostInteraction>

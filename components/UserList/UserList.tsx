@@ -41,7 +41,7 @@ const UserList = ({ username, users }) => {
               <FollowButton
                 username={username}
                 userId={user.id}
-                userFollowers={user.followers?.map((user) => user.id)}
+                userFollowers={user.followers?.map((follower) => follower.id)}
               />
             </FollowerAction>
           </Follower>

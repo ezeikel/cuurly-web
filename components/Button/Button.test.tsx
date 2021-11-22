@@ -3,7 +3,7 @@ import Button, { ButtonProps } from "./Button";
 
 describe("Button", () => {
   const defaultButton = {
-    title: "Button",
+    text: "Button",
     disabled: false,
   } as ButtonProps;
 

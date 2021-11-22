@@ -2,8 +2,8 @@ import styled from "styled-components";
 import { Form, Field } from "formik";
 
 type ActionProps = {
-  active: boolean;
-  disabled: boolean;
+  active?: boolean;
+  disabled?: boolean;
 };
 
 export const Wrapper = styled.div`

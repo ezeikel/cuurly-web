@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 type ActionProps = {
-  disabled: boolean;
-  actionType: string;
+  disabled?: boolean;
+  actionType?: string;
 };
 
 export const Wrapper = styled.ul`

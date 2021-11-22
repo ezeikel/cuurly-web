@@ -1,6 +1,12 @@
 import { Wrapper, Number } from "./NumberOf.styled";
 
-const NumberOf = ({ name, length, clickHandler }) => {
+type NumberOfProps = {
+  name: string;
+  length: number;
+  clickHandler?: () => void;
+};
+
+const NumberOf = ({ name, length, clickHandler }: NumberOfProps) => {
   return (
     <Wrapper
       onClick={clickHandler}

@@ -2,42 +2,23 @@ import { HTMLProps, MouseEvent, ReactElement, ReactNode } from "react";
 import { Wrapper } from "./Button.styled";
 
 export type ButtonProps = HTMLProps<HTMLButtonElement> & {
-  variant?: string;
-  title?: string;
-  backgroundColor?: string;
-  border?: string;
-  textColor?: string;
+  text?: string;
   disabled?: boolean;
-  className?: string;
-  children?: ReactNode;
   type?: "button" | "submit" | "reset";
   onClick?: (event?: MouseEvent) => void;
+  children?: ReactNode;
 };
 
 const Button = ({
-  variant = "default",
-  title,
-  backgroundColor = "var(--color-blue)",
-  border = "none",
-  textColor = "var(--color-white)",
+  text,
   disabled = false,
-  className,
-  children,
   type = "button",
   onClick,
+  children,
 }: ButtonProps): ReactElement => (
-  <Wrapper
-    variant={variant}
-    textColor={textColor}
-    backgroundColor={backgroundColor}
-    border={border}
-    disabled={disabled}
-    className={className}
-    type={type}
-    onClick={onClick}
-  >
+  <Wrapper disabled={disabled} onClick={onClick} type={type}>
     {children}
-    {title}
+    {text}
   </Wrapper>
 );
 

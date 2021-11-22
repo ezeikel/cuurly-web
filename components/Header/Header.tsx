@@ -1,12 +1,13 @@
-import { useContext, useEffect, FunctionComponent } from "react";
+import { useEffect, FunctionComponent } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import NProgress from "nprogress";
-import { AuthContext } from "../../contexts/auth";
 import { Wrapper } from "./Header.styled";
+import useUser from "../../hooks/useUser";
 
 const Header: FunctionComponent = () => {
   const router = useRouter();
+  const { user: currentUser } = useUser();
 
   useEffect(() => {
     NProgress.configure({
@@ -35,8 +36,6 @@ const Header: FunctionComponent = () => {
       router.events.off("routeChangeError", handleRouteChangeError);
     };
   }, []);
-
-  const { currentUser } = useContext(AuthContext);
 
   if (!currentUser) return null;
 

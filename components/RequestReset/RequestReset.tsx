@@ -4,7 +4,6 @@ import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { REQUEST_RESET_MUTATION } from "../../apollo/queries";
 import formatAPIErrors from "../../utils/formatAPIErrors";
-import Spinner from "../svgs/Spinner";
 import SubmitButton from "../SubmitButton/SubmitButton";
 import { StyledForm } from "./RequestReset.styled";
 import TextInput from "../form/inputs/TextInput/TextInput";
@@ -14,7 +13,7 @@ const ReqeuestResetSchema = Yup.object().shape({
 });
 
 const RequestReset = () => {
-  const [requestReset, { loading }] = useMutation(REQUEST_RESET_MUTATION);
+  const [requestReset] = useMutation(REQUEST_RESET_MUTATION);
 
   return (
     <Formik
@@ -40,10 +39,11 @@ const RequestReset = () => {
           <div>
             <TextInput name="email" type="email" label="Email" />
           </div>
-          <SubmitButton type="submit" disabled={loading}>
-            <span>Send Reset Link</span> &nbsp;
-            {isSubmitting && loading ? <Spinner /> : null}
-          </SubmitButton>
+          <SubmitButton
+            text="Send Reset Link"
+            submittingText="Sending Reset Link"
+            disabled={isSubmitting}
+          />
         </StyledForm>
       )}
     </Formik>

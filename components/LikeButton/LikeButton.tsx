@@ -1,23 +1,21 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useQuery, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import {
-  CURRENT_USER_QUERY,
   SINGLE_POST_QUERY,
   LIKE_POST_MUTATION,
   UNLIKE_POST_MUTATION,
   LIKED_POSTS_QUERY,
   SINGLE_USER_QUERY,
 } from "../../apollo/queries";
+import useUser from "../../hooks/useUser";
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
   cursor: pointer;
 `;
 
 const LikeButton = ({ postId, postLikes }) => {
-  const {
-    data: { currentUser } = {}, // setting default value when destructing as data is undefined when loading - https://github.com/apollographql/react-apollo/issues/3323#issuecomment-523430331
-  } = useQuery(CURRENT_USER_QUERY);
+  const { user: currentUser } = useUser();
 
   if (!currentUser) return null;
 
@@ -74,7 +72,7 @@ const LikeButton = ({ postId, postLikes }) => {
           : "var(--color-black)"
       }
       size="lg"
-      onClick={mutateFunc}
+      onClick={() => mutateFunc()}
     />
   );
 };

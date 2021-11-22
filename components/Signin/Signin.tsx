@@ -3,7 +3,6 @@ import Link from "next/link";
 import { useMutation } from "@apollo/client";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import Spinner from "../svgs/Spinner";
 import { CURRENT_USER_QUERY, SIGNIN_MUTATION } from "../../apollo/queries";
 import formatAPIErrors from "../../utils/formatAPIErrors";
 import TextInput from "../form/inputs/TextInput/TextInput";
@@ -25,13 +24,13 @@ const Signin = ({ router }) => {
         "/",
       );
     },
-    update(cache, { data: { signin } }) {
+    update(cache, { data: { signin: cachedSignin } }) {
       // manually writing to cache to fix homepage conditional redirect not working
       cache.writeQuery({
         query: CURRENT_USER_QUERY,
         data: {
           currentUser: {
-            ...signin,
+            ...cachedSignin,
             __typename: "CurrentUser",
           },
         },
@@ -61,9 +60,11 @@ const Signin = ({ router }) => {
           <StyledForm>
             <TextInput label="Username" name="username" type="text" />
             <TextInput label="Password" name="password" type="password" />
-            <SubmitButton type="submit" disabled={isSubmitting}>
-              Sign In {isSubmitting ? <Spinner /> : null}
-            </SubmitButton>
+            <SubmitButton
+              text="Sign In"
+              submittingText="Signing In"
+              disabled={isSubmitting}
+            />
             <Link href="/request-reset">
               <StyledForgotPasswordLink>
                 Forgot password?

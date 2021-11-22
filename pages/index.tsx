@@ -1,10 +1,10 @@
-import { FunctionComponent, useContext, useEffect } from "react";
+import { FunctionComponent, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import Signup from "../components/Signup/Signup";
 import LogoText from "../components/svgs/LogoText";
-import { AuthContext } from "../contexts/auth";
+import useUser from "../hooks/useUser";
 
 const Wrapper = styled.div`
   display: grid;
@@ -32,7 +32,7 @@ const Switch = styled.span`
 
 const IndexPage: FunctionComponent = () => {
   const router = useRouter();
-  const { currentUser } = useContext(AuthContext);
+  const { user: currentUser } = useUser();
 
   useEffect(() => {
     if (currentUser) {

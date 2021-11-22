@@ -6,11 +6,13 @@ import {
   clearAllBodyScrollLocks,
 } from "body-scroll-lock";
 import Modal from "react-modal";
-import { StyledModal, Body } from "./GenericModal.styled";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { StyledModal, Header, Body } from "./GenericModal.styled";
 
 Modal.setAppElement("body");
 
 type GenericModalProps = {
+  heading?: string;
   autoWidth?: boolean;
   maxWidth?: number;
   isOpen: boolean;
@@ -24,6 +26,7 @@ type GenericModalProps = {
 };
 
 const GenericModal = ({
+  heading,
   autoWidth,
   maxWidth,
   isOpen = false,
@@ -76,6 +79,17 @@ const GenericModal = ({
       center={center}
       className={className}
     >
+      {heading ? (
+        <Header>
+          <h1>{heading}</h1>
+          <FontAwesomeIcon
+            icon={["fal", "times"]}
+            color="var(--color-black)"
+            size="lg"
+            onClick={close}
+          />
+        </Header>
+      ) : null}
       <Body ref={modalEl}>{children}</Body>
     </StyledModal>
   );

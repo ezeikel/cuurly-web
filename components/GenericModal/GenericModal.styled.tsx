@@ -85,6 +85,24 @@ export const StyledModal = styled(ReactModalAdapter).attrs({
   }
 `;
 
+export const Header = styled.section`
+  display: grid;
+  grid-template-columns: 1fr 42px;
+  align-items: center;
+  border-bottom: 1px solid #efefef;
+  h1 {
+    justify-self: center;
+    font-size: 1.6rem;
+    line-height: 2.4rem;
+    margin: 0;
+  }
+  svg {
+    align-self: center;
+    justify-self: center;
+    cursor: pointer;
+  }
+`;
+
 export const Body = styled.div`
   flex: 1;
 `;

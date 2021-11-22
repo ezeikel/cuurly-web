@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
-export const Wrapper = styled.div`
+type WrapperProps = {
+  disableClick?: boolean;
+};
+
+export const Wrapper = styled.div<WrapperProps>`
   font-size: 1.6rem;
   line-height: 1.8rem;
   cursor: ${({ disableClick }) => (disableClick ? "auto" : "pointer")};

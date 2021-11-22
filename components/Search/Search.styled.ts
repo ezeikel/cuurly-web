@@ -1,5 +1,9 @@
 import styled, { keyframes } from "styled-components";
 
+type DropdownItemProps = {
+  highlighted?: boolean;
+};
+
 export const glow = keyframes`
   from {
     box-shadow: 0 0 0px yellow;
@@ -39,13 +43,13 @@ export const DropDown = styled.div`
   width: 215px;
 `;
 
-export const DropDownItem = styled.div`
+export const DropdownItem = styled.div<DropdownItemProps>`
   display: grid;
   grid-template-columns: auto 1fr;
   grid-column-gap: var(--spacing-small);
   align-items: center;
-  border-bottom: 1px solid ${(props) => props.theme.lightgrey};
-  background: ${(props) => (props.highlighted ? "#f7f7f7" : "white")};
+  border-bottom: 1px solid ${({ theme }) => theme.lightgrey};
+  background: ${({ highlighted }) => (highlighted ? "#f7f7f7" : "white")};
   padding: 8px 14px;
   transition: all 0.2s;
   font-size: 1.4rem;

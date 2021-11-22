@@ -43,13 +43,6 @@ export const LogoWrapper = styled.div`
   }
 `;
 
-export const StyledSearch = styled(Search)`
-  display: none;
-  @media (min-width: 736px) {
-    display: block;
-  }
-`;
-
 export const Upload = styled.div`
   display: grid;
   justify-self: end;

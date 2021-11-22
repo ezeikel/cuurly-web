@@ -28,7 +28,9 @@ const SettingsOptions = ({ close }) => {
         <Signout />
       </Action>
       <Action>
-        <span onClick={close}>Cancel</span>
+        <button type="button" onClick={() => close()}>
+          Cancel
+        </button>
       </Action>
     </Wrapper>
   );
