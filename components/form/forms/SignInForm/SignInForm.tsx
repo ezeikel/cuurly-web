@@ -1,21 +1,26 @@
-import { withRouter } from "next/router";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import { useMutation } from "@apollo/client";
-import { Formik } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import { CURRENT_USER_QUERY, SIGNIN_MUTATION } from "../../apollo/queries";
-import formatAPIErrors from "../../utils/formatAPIErrors";
-import TextInput from "../form/inputs/TextInput/TextInput";
-import { StyledForgotPasswordLink, StyledForm } from "./Signin.styled";
-import SubmitButton from "../SubmitButton/SubmitButton";
+import classNames from "classnames";
+import formatAPIErrors from "../../../../utils/formatAPIErrors";
+import {
+  CURRENT_USER_QUERY,
+  SIGNIN_MUTATION,
+} from "../../../../apollo/queries";
+import Button from "../../../Button/Button";
+import FormWrapper from "../../FormWrapper/FormWrapper";
+import TextInput from "../../inputs/TextInput/TextInput";
 
-const SigninSchema = Yup.object().shape({
+const SignInSchema = Yup.object().shape({
   username: Yup.string().required("Please enter a Username."),
   password: Yup.string().required("Please enter a Password."),
 });
 
-const Signin = ({ router }) => {
-  const [signin, { loading, error }] = useMutation(SIGNIN_MUTATION, {
+const SignInForm = ({ className }) => {
+  const router = useRouter();
+  const [signin] = useMutation(SIGNIN_MUTATION, {
     onCompleted() {
       router.push(
         {
@@ -39,11 +44,15 @@ const Signin = ({ router }) => {
     refetchQueries: [{ query: CURRENT_USER_QUERY }],
   });
 
+  const wrapperClass = classNames("", {
+    [className]: className,
+  });
+
   return (
-    <>
+    <FormWrapper className={wrapperClass}>
       <Formik
         initialValues={{ username: "", password: "" }}
-        validationSchema={SigninSchema}
+        validationSchema={SignInSchema}
         onSubmit={async (values, { setSubmitting, setErrors, resetForm }) => {
           try {
             await signin({ variables: values });
@@ -57,26 +66,34 @@ const Signin = ({ router }) => {
         }}
       >
         {({ isSubmitting }) => (
-          <StyledForm>
-            <TextInput label="Username" name="username" type="text" />
-            <TextInput label="Password" name="password" type="password" />
-            <SubmitButton
+          <Form className="flex flex-col">
+            <div className="mb-4">
+              <TextInput
+                className="mb-4"
+                label="Username"
+                name="username"
+                type="text"
+              />
+              <TextInput label="Password" name="password" type="password" />
+            </div>
+            <Button
+              variant="confirm"
               text="Sign In"
               submittingText="Signing In"
               disabled={isSubmitting}
+              isSubmitting={isSubmitting}
+              className="mb-8"
             />
             <Link href="/request-reset">
-              <StyledForgotPasswordLink>
+              <a className="text-blue-800 text-xs text-center">
                 Forgot password?
-              </StyledForgotPasswordLink>
+              </a>
             </Link>
-          </StyledForm>
+          </Form>
         )}
       </Formik>
-      {loading && <span>Loading...</span>}
-      {error && console.error({ error })}
-    </>
+    </FormWrapper>
   );
 };
 
-export default withRouter(Signin);
+export default SignInForm;

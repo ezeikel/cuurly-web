@@ -1,46 +1,23 @@
-import { FunctionComponent } from "react";
 import Link from "next/link";
-import styled from "styled-components";
-import Signin from "../components/Signin/Signin";
-import LogoText from "../components/svgs/LogoText";
+import SignInForm from "../components/form/forms/SignInForm/SignInForm";
 
-const Wrapper = styled.div`
-  display: grid;
-  justify-items: center;
-  grid-row-gap: var(--spacing-medium);
-  padding: var(--padding-page-wrap);
-`;
-
-const Switch = styled.span`
-  background-color: #fff;
-  border: 1px solid #e6e6e6;
-  border-radius: 1px;
-  padding: var(--spacing-medium);
-  max-width: 350px;
-  width: 100%;
-  display: grid;
-  grid-template-columns: auto auto;
-  justify-content: start;
-  grid-column-gap: var(--spacing-tiny);
-  a {
-    color: #003569;
-    font-weight: bold;
-  }
-`;
-
-const SigninPage: FunctionComponent = () => (
-  <Wrapper>
-    <div>
-      <LogoText fill="var(--color-black)" />
-      <Signin />
+const SigninPage = () => (
+  <div className="flex flex-col items-center">
+    <div className="max-w-xs">
+      <div className="w-full mb-4">
+        <h1 className="text-4xl font-bold text-current my-8 text-center">
+          Cuurly.
+        </h1>
+        <SignInForm className="w-full" />
+      </div>
+      <div className="w-full text-xs rounded bg-white p-8 border border-gray-200">
+        Don&apos;t have an account? &nbsp;
+        <Link href="/">
+          <a className="text-blue-800">Sign up</a>
+        </Link>
+      </div>
     </div>
-    <Switch>
-      Don&apos;t have an account? &nbsp;
-      <Link href="/">
-        <a>Sign up</a>
-      </Link>
-    </Switch>
-  </Wrapper>
+  </div>
 );
 
 export default SigninPage;

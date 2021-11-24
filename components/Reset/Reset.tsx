@@ -5,9 +5,9 @@ import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { RESET_MUTATION } from "../../apollo/queries";
 import formatAPIErrors from "../../utils/formatAPIErrors";
-import SubmitButton from "../SubmitButton/SubmitButton";
 import { StyledForm } from "./Reset.styled";
 import TextInput from "../form/inputs/TextInput/TextInput";
+import Button from "../Button/Button";
 
 const ResetSchema = Yup.object().shape({
   password: Yup.string().required("Please enter a new password."),
@@ -50,7 +50,8 @@ const Reset = ({ resetToken, router }) => {
               label="New Password Confirmation"
             />
           </div>
-          <SubmitButton
+          <Button
+            variant="submit"
             text="Reset Password"
             submittingText="Resetting Password"
             disabled={isSubmitting}

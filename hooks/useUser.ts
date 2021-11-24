@@ -13,13 +13,15 @@ const useUser = () => {
   });
 
   useEffect(() => {
-    Sentry.configureScope((scope) => {
-      scope.setUser({
-        id: user.id,
-        email: user.email,
-        name: `${user.firstName} ${user.lastName}`,
+    if (user) {
+      Sentry.configureScope((scope) => {
+        scope.setUser({
+          id: user.id,
+          email: user.email,
+          name: `${user.firstName} ${user.lastName}`,
+        });
       });
-    });
+    }
   }, [user]);
 
   return {

@@ -4,9 +4,9 @@ import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { REQUEST_RESET_MUTATION } from "../../apollo/queries";
 import formatAPIErrors from "../../utils/formatAPIErrors";
-import SubmitButton from "../SubmitButton/SubmitButton";
 import { StyledForm } from "./RequestReset.styled";
 import TextInput from "../form/inputs/TextInput/TextInput";
+import Button from "../Button/Button";
 
 const ReqeuestResetSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
@@ -39,7 +39,8 @@ const RequestReset = () => {
           <div>
             <TextInput name="email" type="email" label="Email" />
           </div>
-          <SubmitButton
+          <Button
+            variant="submit"
             text="Send Reset Link"
             submittingText="Sending Reset Link"
             disabled={isSubmitting}

@@ -22,7 +22,6 @@ import {
 } from "@fortawesome/pro-solid-svg-icons";
 import { faInboxOut, faEllipsisH } from "@fortawesome/pro-regular-svg-icons";
 import Meta from "../Meta";
-import { StyledPage, Wrapper, Inner } from "./Page.styled";
 import Notification from "../Notification/Notification";
 
 const Header = dynamic(() => import("../Header/Header"));
@@ -67,11 +66,11 @@ const Page = ({ children }) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <StyledPage pathname={pathname}>
+      <div className="min-h-screen flex flex-col">
         <Meta />
         {pathname === "/" || pathname === "/signin" ? null : <Header />}
-        <Wrapper>
-          <Inner>{children}</Inner>
+        <div className="flex flex-col flex-1 bg-gray-50">
+          <main className="flex-1 flex flex-col">{children}</main>
           <Notification
             position="bottom-center"
             draggable
@@ -80,8 +79,8 @@ const Page = ({ children }) => {
             autoClose={3000}
             closeOnClick={false}
           />
-        </Wrapper>
-      </StyledPage>
+        </div>
+      </div>
     </ThemeProvider>
   );
 };

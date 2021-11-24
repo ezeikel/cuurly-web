@@ -1,8 +1,6 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
 import { ServerStyleSheet } from "styled-components";
 import * as Sentry from "@sentry/nextjs";
-import "video.js/dist/video-js.css";
-import "react-toastify/dist/ReactToastify.min.css";
 
 process.on("unhandledRejection", (err) => {
   Sentry.captureException(err);

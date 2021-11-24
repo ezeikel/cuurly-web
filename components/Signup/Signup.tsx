@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import { CURRENT_USER_QUERY, SIGNUP_MUTATION } from "../../apollo/queries";
 import formatAPIErrors from "../../utils/formatAPIErrors";
 import TextInput from "../form/inputs/TextInput/TextInput";
-import SubmitButton from "../SubmitButton/SubmitButton";
+import Button from "../Button/Button";
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string()
@@ -56,7 +56,8 @@ const Signup = ({ router }) => {
             <TextInput label="email" name="email" type="email" />
             <TextInput label="username" name="username" type="text" />
             <TextInput label="password" name="password" type="password" />
-            <SubmitButton
+            <Button
+              variant="submit"
               text="Sign Up"
               submittingText="Signing Up"
               disabled={isSubmitting}

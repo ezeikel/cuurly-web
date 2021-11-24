@@ -1,7 +1,9 @@
 import type { AppProps } from "next/app";
 import { ApolloProvider } from "@apollo/client";
+import "video.js/dist/video-js.css";
+import "react-toastify/dist/ReactToastify.min.css";
+import "tailwindcss/tailwind.css"; // eslint-disable-line import/no-extraneous-dependencies
 import { useApollo } from "../apollo/client";
-import GlobalStyle from "../GlobalStyle";
 import Page from "../components/Page/Page";
 
 const MyApp = ({ Component, pageProps, err }: AppProps & { err: any }) => {
@@ -9,7 +11,6 @@ const MyApp = ({ Component, pageProps, err }: AppProps & { err: any }) => {
 
   return (
     <ApolloProvider client={apolloClient}>
-      <GlobalStyle />
       <Page>
         {/* Workaround for https://github.com/vercel/next.js/issues/8592 */}
         {/* eslint-disable-next-line react/jsx-props-no-spreading */}
