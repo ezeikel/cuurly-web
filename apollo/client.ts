@@ -4,7 +4,7 @@ import { setContext } from "@apollo/client/link/context";
 import { createUploadLink } from "apollo-upload-client";
 import { onError } from "apollo-link-error";
 import merge from "deepmerge";
-import isEqual from "lodash.isEqual";
+import isEqual from "lodash.isequal";
 
 export const APOLLO_STATE_PROP_NAME = "__APOLLO_STATE__";
 
