@@ -1,6 +1,11 @@
 import classNames from "classnames";
 
-const Spinner = ({ className, fill = "#333333" }) => {
+type SpinnerProps = {
+  className?: string;
+  fill?: string;
+};
+
+const Spinner = ({ className, fill = "#333333" }: SpinnerProps) => {
   const wrapperClass = classNames("", {
     [className]: className,
   });

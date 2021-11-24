@@ -12,7 +12,7 @@ type InnerProps = {
 export const StyledPage = styled.div<StyledPageProps>`
   display: grid;
   grid-template-rows: ${({ pathname }) =>
-    pathname === "/" || pathname === "/signin" ? `1fr` : `80px 1fr`};
+    pathname === "/" || pathname === "/sign-in" ? `1fr` : `80px 1fr`};
   min-height: 100vh;
   background-color: ${({ theme }) => theme.default.white};
   color: ${({ theme }) => theme.default.textColor};

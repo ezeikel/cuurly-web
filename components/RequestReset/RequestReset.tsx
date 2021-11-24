@@ -40,7 +40,7 @@ const RequestReset = () => {
             <TextInput name="email" type="email" label="Email" />
           </div>
           <Button
-            variant="submit"
+            variant="confirm"
             text="Send Reset Link"
             submittingText="Sending Reset Link"
             disabled={isSubmitting}

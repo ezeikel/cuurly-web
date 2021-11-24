@@ -32,7 +32,7 @@ const Reset = ({ resetToken, router }) => {
 
           resetForm();
           toast("Your password has been reset.");
-          router.push(`/signin`);
+          router.push("/sign-in");
         } catch (e) {
           setErrors(formatAPIErrors(e));
         }
@@ -51,7 +51,7 @@ const Reset = ({ resetToken, router }) => {
             />
           </div>
           <Button
-            variant="submit"
+            variant="confirm"
             text="Reset Password"
             submittingText="Resetting Password"
             disabled={isSubmitting}

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import { ThemeProvider } from "styled-components";
@@ -23,6 +24,7 @@ import {
 import { faInboxOut, faEllipsisH } from "@fortawesome/pro-regular-svg-icons";
 import Meta from "../Meta";
 import Notification from "../Notification/Notification";
+import useUser from "../../hooks/useUser";
 
 const Header = dynamic(() => import("../Header/Header"));
 
@@ -62,13 +64,34 @@ const theme = {
 };
 
 const Page = ({ children }) => {
-  const { pathname } = useRouter();
+  const router = useRouter();
+  const { pathname } = router;
+  const { user, isError, isLoading } = useUser();
+
+  const userAccessPages = pathname === "/sign-up" || pathname === "/sign-in";
+
+  useEffect(() => {
+    if (!isError && isLoading) {
+      // still trying to fetch user - do nothing
+      return;
+    }
+
+    if (!user) {
+      if (userAccessPages) {
+        // ufo is either trying to sign in/up
+        return;
+      }
+
+      // otherwise redirect anonymous to sign in page
+      router.replace("/sign-in");
+    }
+  }, [user, pathname, isError, isLoading, userAccessPages]);
 
   return (
     <ThemeProvider theme={theme}>
       <div className="min-h-screen flex flex-col">
         <Meta />
-        {pathname === "/" || pathname === "/signin" ? null : <Header />}
+        {pathname === "/" || pathname === "/sign-in" ? null : <Header />}
         <div className="flex flex-col flex-1 bg-gray-50">
           <main className="flex-1 flex flex-col">{children}</main>
           <Notification

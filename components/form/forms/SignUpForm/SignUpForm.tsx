@@ -1,13 +1,18 @@
-import { withRouter } from "next/router";
+import { useRouter } from "next/router";
 import { useMutation } from "@apollo/client";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import { CURRENT_USER_QUERY, SIGNUP_MUTATION } from "../../apollo/queries";
-import formatAPIErrors from "../../utils/formatAPIErrors";
-import TextInput from "../form/inputs/TextInput/TextInput";
-import Button from "../Button/Button";
+import classNames from "classnames";
+import formatAPIErrors from "../../../../utils/formatAPIErrors";
+import {
+  CURRENT_USER_QUERY,
+  SIGNUP_MUTATION,
+} from "../../../../apollo/queries";
+import Button from "../../../Button/Button";
+import FormWrapper from "../../FormWrapper/FormWrapper";
+import TextInput from "../../inputs/TextInput/TextInput";
 
-const SignupSchema = Yup.object().shape({
+const SignUpSchema = Yup.object().shape({
   name: Yup.string()
     .min(2, "That name is too short.")
     .max(50, "That name is too long")
@@ -24,8 +29,9 @@ const SignupSchema = Yup.object().shape({
     .required("Please enter a password."),
 });
 
-const Signup = ({ router }) => {
-  const [signup, { loading, error }] = useMutation(SIGNUP_MUTATION, {
+const SignUpForm = ({ className }) => {
+  const router = useRouter();
+  const [signup] = useMutation(SIGNUP_MUTATION, {
     mutation: SIGNUP_MUTATION,
     refetchQueries: [{ query: CURRENT_USER_QUERY }],
     onCompleted({ signup: { username } }) {
@@ -33,11 +39,15 @@ const Signup = ({ router }) => {
     },
   });
 
+  const wrapperClass = classNames("", {
+    [className]: className,
+  });
+
   return (
-    <>
+    <FormWrapper className={wrapperClass}>
       <Formik
         initialValues={{ email: "", name: "", username: "", password: "" }}
-        validationSchema={SignupSchema}
+        validationSchema={SignUpSchema}
         onSubmit={async (values, { setSubmitting, setErrors, resetForm }) => {
           try {
             await signup({ variables: values });
@@ -51,24 +61,40 @@ const Signup = ({ router }) => {
         }}
       >
         {({ isSubmitting }) => (
-          <Form>
-            <TextInput label="name" name="name" type="text" />
-            <TextInput label="email" name="email" type="email" />
-            <TextInput label="username" name="username" type="text" />
-            <TextInput label="password" name="password" type="password" />
+          <Form className="flex flex-col">
+            <div className="mb-4">
+              <TextInput
+                className="mb-4"
+                label="name"
+                name="name"
+                type="text"
+              />
+              <TextInput
+                className="mb-4"
+                label="email"
+                name="email"
+                type="email"
+              />
+              <TextInput
+                className="mb-4"
+                label="username"
+                name="username"
+                type="text"
+              />
+              <TextInput label="password" name="password" type="password" />
+            </div>
             <Button
-              variant="submit"
+              variant="confirm"
               text="Sign Up"
               submittingText="Signing Up"
               disabled={isSubmitting}
+              isSubmitting={isSubmitting}
             />
           </Form>
         )}
       </Formik>
-      {loading && <span>loading...</span>}
-      {error && console.error({ error })}
-    </>
+    </FormWrapper>
   );
 };
 
-export default withRouter(Signup);
+export default SignUpForm;

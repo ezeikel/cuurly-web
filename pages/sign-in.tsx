@@ -10,9 +10,9 @@ const SigninPage = () => (
         </h1>
         <SignInForm className="w-full" />
       </div>
-      <div className="w-full text-xs rounded bg-white p-8 border border-gray-200">
+      <div className="w-full text-xs rounded bg-white p-8 border border-gray-200 text-center">
         Don&apos;t have an account? &nbsp;
-        <Link href="/">
+        <Link href="/sign-up">
           <a className="text-blue-800">Sign up</a>
         </Link>
       </div>
