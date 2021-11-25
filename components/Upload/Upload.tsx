@@ -1,7 +1,7 @@
 import { useCallback, useState, Fragment, useEffect } from "react";
 import { useMutation } from "@apollo/client";
 import { Formik, Form, ErrorMessage } from "formik";
-import { withRouter } from "next/router";
+import { useRouter } from "next/router";
 import heic2any from "heic2any";
 import { CREATE_POST_MUTATION, CURRENT_USER_QUERY } from "../../apollo/queries";
 import Spinner from "../svgs/Spinner";
@@ -15,7 +15,8 @@ import {
 } from "./Upload.styled";
 import Dropzone from "../Dropzone/Dropzone";
 
-const Upload = ({ router }) => {
+const Upload = () => {
+  const router = useRouter();
   const [files, setFiles] = useState(null);
   const [mounted, setMounted] = useState(false);
   const [convertingImage, setConvertingImage] = useState(false);
@@ -130,4 +131,4 @@ const Upload = ({ router }) => {
   );
 };
 
-export default withRouter(Upload);
+export default Upload;

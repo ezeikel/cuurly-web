@@ -1,8 +1,9 @@
-import { withRouter } from "next/router";
+import { useRouter } from "next/router";
 import { useMutation } from "@apollo/client";
 import { SIGNOUT_MUTATION, CURRENT_USER_QUERY } from "../../apollo/queries";
 
-const Signout = ({ router }) => {
+const Signout = () => {
+  const router = useRouter();
   const [signout] = useMutation(SIGNOUT_MUTATION, {
     update(cache) {
       // manually writing to cache to fix homepage conditional redirect not working
@@ -24,4 +25,4 @@ const Signout = ({ router }) => {
   );
 };
 
-export default withRouter(Signout);
+export default Signout;

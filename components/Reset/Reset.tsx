@@ -1,4 +1,4 @@
-import { withRouter } from "next/router";
+import { useRouter } from "next/router";
 import { useMutation } from "@apollo/client";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -14,7 +14,8 @@ const ResetSchema = Yup.object().shape({
   confirmPassword: Yup.string().required("Please confirm your new password."),
 });
 
-const Reset = ({ resetToken, router }) => {
+const Reset = ({ resetToken }) => {
+  const router = useRouter();
   const [reset] = useMutation(RESET_MUTATION);
 
   return (
@@ -62,4 +63,4 @@ const Reset = ({ resetToken, router }) => {
   );
 };
 
-export default withRouter(Reset);
+export default Reset;

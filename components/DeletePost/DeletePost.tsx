@@ -1,4 +1,4 @@
-import { withRouter } from "next/router";
+import { useRouter } from "next/router";
 import { useMutation } from "@apollo/client";
 import {
   DELETE_POST_MUTATION,
@@ -7,27 +7,28 @@ import {
 } from "../../apollo/queries";
 import useUser from "../../hooks/useUser";
 
-const DeletePost = ({ post, router }) => {
-  const { user: currentUser } = useUser();
+const DeletePost = ({ post }) => {
+  const router = useRouter();
+  const { user } = useUser();
 
-  if (!currentUser && currentUser.id !== post.author.id) return null;
+  if (!user || user.id !== post.author.id) return null;
 
   const [deletePost] = useMutation(DELETE_POST_MUTATION, {
     variables: { id: post.id, publicId: post.content.publicId },
     onCompleted() {
-      router.push("/[username]", `/${currentUser.username}`);
+      router.push("/[username]", `/${user.username}`);
     },
     refetchQueries: [
       {
         query: LIKED_POSTS_QUERY,
         variables: {
-          id: currentUser.id,
+          id: user.id,
         },
       },
       {
         query: SINGLE_USER_QUERY,
         variables: {
-          id: currentUser.id,
+          id: user.id,
         },
       },
     ],
@@ -40,4 +41,4 @@ const DeletePost = ({ post, router }) => {
   );
 };
 
-export default withRouter(DeletePost);
+export default DeletePost;
