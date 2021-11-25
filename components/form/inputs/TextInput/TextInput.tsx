@@ -27,14 +27,14 @@ const TextInput = ({
   );
 
   const inputClass = classNames(
-    "text-base p-2 rounded bg-gray-50 overflow-hidden overflow-ellipsis flex-1 outline-none",
+    "text-base p-2 rounded bg-gray-50 overflow-hidden overflow-ellipsis flex-1 outline-none peer",
     {
       "text-sm pt-4 pb-0.5": isDirty,
     },
   );
 
   const labelClass = classNames(
-    "text-sm leading-9 text-gray-400 origin-left absolute left-2 right-0 h-full pointer-events-none select-none whitespace-nowrap overflow-hidden overflow-ellipsis transition-transform ease-in-out",
+    "text-sm leading-9 text-gray-400 origin-left absolute left-2 right-0 h-full pointer-events-none select-none whitespace-nowrap overflow-hidden overflow-ellipsis transition-transform ease-in-out peer-focus:scale-75 peer-focus:-translate-y-2",
     {
       "transform scale-75 -translate-y-2": isDirty,
     },

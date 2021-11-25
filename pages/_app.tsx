@@ -1,10 +1,52 @@
+import "@fortawesome/fontawesome-svg-core/styles.css";
 import type { AppProps } from "next/app";
 import { ApolloProvider } from "@apollo/client";
+import { library, config } from "@fortawesome/fontawesome-svg-core";
+import {
+  faTimes,
+  faCompass,
+  faBell,
+  faPaperPlane,
+  faUser,
+  faArrowToTop,
+  faLock,
+  faKey,
+  faHeart as falHeart,
+  faCog,
+} from "@fortawesome/pro-light-svg-icons";
+import {
+  faComment,
+  faBadgeCheck,
+  faHeart as fasHeart,
+  faPlay,
+} from "@fortawesome/pro-solid-svg-icons";
+import { faInboxOut, faEllipsisH } from "@fortawesome/pro-regular-svg-icons";
+import { useApollo } from "../apollo/client";
 import "video.js/dist/video-js.css";
 import "react-toastify/dist/ReactToastify.min.css";
 import "tailwindcss/tailwind.css"; // eslint-disable-line import/no-extraneous-dependencies
-import { useApollo } from "../apollo/client";
 import Page from "../components/Page/Page";
+
+config.autoAddCss = false; /* eslint-disable import/first */
+
+library.add(
+  faTimes,
+  faCompass,
+  faBell,
+  faPaperPlane,
+  faUser,
+  faArrowToTop,
+  faLock,
+  faKey,
+  falHeart,
+  faCog,
+  faComment,
+  faBadgeCheck,
+  fasHeart,
+  faPlay,
+  faInboxOut,
+  faEllipsisH,
+);
 
 const MyApp = ({ Component, pageProps, err }: AppProps & { err: any }) => {
   const apolloClient = useApollo(pageProps.initialApolloState);

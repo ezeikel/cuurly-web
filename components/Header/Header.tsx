@@ -1,13 +1,16 @@
-import { useEffect, FunctionComponent } from "react";
-import dynamic from "next/dynamic";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import NProgress from "nprogress";
-import { Wrapper } from "./Header.styled";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import classNames from "classnames";
 import useUser from "../../hooks/useUser";
+import Logo from "../Logo/Logo";
+import Search from "../Search/Search";
 
-const Header: FunctionComponent = () => {
+const Header = ({ className }) => {
   const router = useRouter();
-  const { user: currentUser } = useUser();
+  const { user } = useUser();
 
   useEffect(() => {
     NProgress.configure({
@@ -37,14 +40,69 @@ const Header: FunctionComponent = () => {
     };
   }, []);
 
-  if (!currentUser) return null;
+  const wrapperClass = classNames("flex justify-between items-center p-4", {
+    [className]: className,
+  });
 
-  const Nav = dynamic(() => import("../Nav/Nav"));
+  if (!user) return null;
 
   return (
-    <Wrapper>
-      <Nav />
-    </Wrapper>
+    <header className={wrapperClass}>
+      <Link href="/">
+        <a>
+          <Logo />
+        </a>
+      </Link>
+      <nav className="flex-1 flex justify-around items-center">
+        <Search />
+        <ul className="flex">
+          <li>
+            <Link href={`/explore?id=${user.id}`}>
+              <a>
+                <FontAwesomeIcon
+                  icon={["fal", "compass"]}
+                  color="#333"
+                  size="lg"
+                />
+              </a>
+            </Link>
+          </li>
+          <li className="ml-8">
+            <Link href="/">
+              <a>
+                <FontAwesomeIcon
+                  icon={["fal", "bell"]}
+                  color="#333"
+                  size="lg"
+                />
+              </a>
+            </Link>
+          </li>
+          <li className="ml-8">
+            <Link href="/">
+              <a>
+                <FontAwesomeIcon
+                  icon={["fal", "paper-plane"]}
+                  color="#333"
+                  size="lg"
+                />
+              </a>
+            </Link>
+          </li>
+          <li className="ml-8">
+            <Link href="/[username]" as={`/${user.username}`}>
+              <a>
+                <FontAwesomeIcon
+                  icon={["fal", "user"]}
+                  color="#333"
+                  size="lg"
+                />
+              </a>
+            </Link>
+          </li>
+        </ul>
+      </nav>
+    </header>
   );
 };
 
