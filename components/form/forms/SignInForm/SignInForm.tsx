@@ -41,7 +41,6 @@ const SignInForm = ({ className }) => {
         },
       });
     },
-    refetchQueries: [{ query: CURRENT_USER_QUERY }],
   });
 
   const wrapperClass = classNames("", {

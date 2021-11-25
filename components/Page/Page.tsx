@@ -78,7 +78,7 @@ const Page = ({ children }) => {
 
     if (!user) {
       if (userAccessPages) {
-        // ufo is either trying to sign in/up
+        // ufo is either trying to sign in/up - do nothing
         return;
       }
 

@@ -13,10 +13,14 @@ import FormWrapper from "../../FormWrapper/FormWrapper";
 import TextInput from "../../inputs/TextInput/TextInput";
 
 const SignUpSchema = Yup.object().shape({
-  name: Yup.string()
+  firstName: Yup.string()
     .min(2, "That name is too short.")
     .max(50, "That name is too long")
-    .required("Please enter a name."),
+    .required("Please enter a first name."),
+  lastName: Yup.string()
+    .min(2, "That name is too short.")
+    .max(50, "That name is too long")
+    .required("Please enter a last name."),
   username: Yup.string()
     .min(2, "That username is too short.")
     .max(50, "That username is too long.")
@@ -33,9 +37,20 @@ const SignUpForm = ({ className }) => {
   const router = useRouter();
   const [signup] = useMutation(SIGNUP_MUTATION, {
     mutation: SIGNUP_MUTATION,
-    refetchQueries: [{ query: CURRENT_USER_QUERY }],
     onCompleted({ signup: { username } }) {
       router.push("/[username]", `/${username}`);
+    },
+    update(cache, { data: { signin: cachedUser } }) {
+      // manually writing to cache to fix homepage conditional redirect not working
+      cache.writeQuery({
+        query: CURRENT_USER_QUERY,
+        data: {
+          currentUser: {
+            ...cachedUser,
+            __typename: "CurrentUser",
+          },
+        },
+      });
     },
   });
 
@@ -46,12 +61,29 @@ const SignUpForm = ({ className }) => {
   return (
     <FormWrapper className={wrapperClass}>
       <Formik
-        initialValues={{ email: "", name: "", username: "", password: "" }}
+        initialValues={{
+          firstName: "",
+          lastName: "",
+          email: "",
+          username: "",
+          password: "",
+        }}
         validationSchema={SignUpSchema}
         onSubmit={async (values, { setSubmitting, setErrors, resetForm }) => {
           try {
-            await signup({ variables: values });
-            resetForm();
+            const {
+              data: { signup: user },
+            } = await signup({ variables: values });
+
+            if (user) {
+              // TODO: track sign up
+              // track("Sign up");
+
+              resetForm();
+
+              // take new user to explore page
+              // router.push("/[username]", `/${user.username}`);
+            }
           } catch (e) {
             const formattedErrors = formatAPIErrors(e);
             setErrors(formattedErrors);
@@ -65,8 +97,14 @@ const SignUpForm = ({ className }) => {
             <div className="mb-4">
               <TextInput
                 className="mb-4"
-                label="name"
-                name="name"
+                label="First name"
+                name="firstName"
+                type="text"
+              />
+              <TextInput
+                className="mb-4"
+                label="Last name"
+                name="lastName"
                 type="text"
               />
               <TextInput
