@@ -176,8 +176,8 @@ export const EXPLORE_QUERY = gql`
 `;
 
 export const SEARCH_USERS_QUERY = gql`
-  query SEARCH_USERS_QUERY($searchTerm: String!) {
-    users(where: { username_contains: $searchTerm }) {
+  query SEARCH_USERS_QUERY($query: String!) {
+    users(query: $query) {
       id
       username
       firstName

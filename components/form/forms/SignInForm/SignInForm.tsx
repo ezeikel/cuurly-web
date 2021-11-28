@@ -43,7 +43,7 @@ const SignInForm = ({ className }) => {
     },
   });
 
-  const wrapperClass = classNames("", {
+  const wrapperClass = classNames("p-8 border border-gray-200 rounded", {
     [className]: className,
   });
 

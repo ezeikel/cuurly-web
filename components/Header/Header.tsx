@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import useUser from "../../hooks/useUser";
 import Logo from "../Logo/Logo";
-import Search from "../Search/Search";
+import SearchForm from "../form/forms/SearchForm/SearchForm";
 
 const Header = ({ className }) => {
   const router = useRouter();
@@ -54,7 +54,7 @@ const Header = ({ className }) => {
         </a>
       </Link>
       <nav className="flex-1 flex justify-around items-center">
-        <Search />
+        <SearchForm />
         <ul className="flex">
           <li>
             <Link href={`/explore?id=${user.id}`}>
