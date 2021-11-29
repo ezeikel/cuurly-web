@@ -11,6 +11,7 @@ type TextInputProps = InputHTMLAttributes<HTMLInputElement> & {
   name: string;
   label?: string;
   handleChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   className?: string;
 };
 
@@ -63,13 +64,15 @@ const TextInput = forwardRef(
           {...field} // eslint-disable-line react/jsx-props-no-spreading
           {...props} // eslint-disable-line react/jsx-props-no-spreading
           onChange={(e) => {
-            // custom logic
+            // custom onChange logic
             if (handleChange) {
               handleChange(e);
             }
 
-            // any onChange prop sent e.g. from downshift
-            onChange(e);
+            // any onChange prop sent from another library e.g. downshift
+            if (onChange) {
+              onChange(e);
+            }
 
             field.onChange(e);
           }}
