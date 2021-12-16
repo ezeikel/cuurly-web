@@ -1,7 +1,4 @@
-import { useEffect } from "react";
-import { useRouter } from "next/router";
 import Link from "next/link";
-import NProgress from "nprogress";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import useUser from "../../hooks/useUser";
@@ -9,36 +6,7 @@ import Logo from "../Logo/Logo";
 import SearchForm from "../form/forms/SearchForm/SearchForm";
 
 const Header = ({ className }) => {
-  const router = useRouter();
   const { user } = useUser();
-
-  useEffect(() => {
-    NProgress.configure({
-      showSpinner: false,
-    });
-
-    const handleRouteChangeStart = () => {
-      NProgress.start();
-    };
-
-    const handleRouteChangeComplete = () => {
-      NProgress.done();
-    };
-
-    const handleRouteChangeError = () => {
-      NProgress.done();
-    };
-
-    router.events.on("routeChangeStart", handleRouteChangeStart);
-    router.events.on("routeChangeComplete", handleRouteChangeComplete);
-    router.events.on("routeChangeError", handleRouteChangeError);
-
-    return () => {
-      router.events.off("routeChangeStart", handleRouteChangeStart);
-      router.events.off("routeChangeComplete", handleRouteChangeComplete);
-      router.events.off("routeChangeError", handleRouteChangeError);
-    };
-  }, []);
 
   const wrapperClass = classNames("flex justify-between items-center p-4", {
     [className]: className,
@@ -57,7 +25,7 @@ const Header = ({ className }) => {
         <SearchForm />
         <ul className="flex">
           <li>
-            <Link href={`/explore?id=${user.id}`}>
+            <Link href="explore">
               <a>
                 <FontAwesomeIcon
                   icon={["fal", "compass"]}
@@ -68,7 +36,7 @@ const Header = ({ className }) => {
             </Link>
           </li>
           <li className="ml-8">
-            <Link href="/">
+            <Link href="/notifications">
               <a>
                 <FontAwesomeIcon
                   icon={["fal", "bell"]}
@@ -79,7 +47,7 @@ const Header = ({ className }) => {
             </Link>
           </li>
           <li className="ml-8">
-            <Link href="/">
+            <Link href="/inbox">
               <a>
                 <FontAwesomeIcon
                   icon={["fal", "paper-plane"]}

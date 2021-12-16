@@ -26,6 +26,7 @@ import "video.js/dist/video-js.css";
 import "react-toastify/dist/ReactToastify.min.css";
 import "tailwindcss/tailwind.css"; // eslint-disable-line import/no-extraneous-dependencies
 import Page from "../components/Page/Page";
+import "../main.css";
 
 config.autoAddCss = false; /* eslint-disable import/first */
 

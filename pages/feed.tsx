@@ -1,4 +1,3 @@
-import { FunctionComponent } from "react";
 import styled from "styled-components";
 import { useQuery } from "@apollo/client";
 import { FEED_QUERY } from "../apollo/queries";
@@ -17,25 +16,23 @@ const Wrapper = styled.div`
   }
 `;
 
-const FeedPage: FunctionComponent = () => {
-  const { user: currentUser } = useUser();
-
-  if (!currentUser) return null;
+const FeedPage = () => {
+  const { user } = useUser();
 
   const {
-    data: { feed } = {}, // setting default value when destructing as data is undefined when loading - https://github.com/apollographql/react-apollo/issues/3323#issuecomment-523430331
+    data: { feed: posts } = {}, // setting default value when destructing as data is undefined when loading - https://github.com/apollographql/react-apollo/issues/3323#issuecomment-523430331
   } = useQuery(FEED_QUERY, {
-    variables: { id: currentUser.id },
-    skip: currentUser === null, // wait for currentUser query before executing this one - https://github.com/apollographql/react-apollo/issues/3624#issuecomment-545990545
+    variables: { id: user?.id },
+    skip: !!user, // wait for currentUser query before executing this one - https://github.com/apollographql/react-apollo/issues/3624#issuecomment-545990545
   });
 
-  if (!feed) return null;
+  if (!user) return null;
 
-  if (feed.length === 0) return <span>No posts found.</span>;
+  if (!posts?.length) return <span>No posts found.</span>;
 
   return (
     <Wrapper>
-      {feed.map((post) => (
+      {posts.map((post) => (
         <Post key={post.id} id={post.id} />
       ))}
     </Wrapper>

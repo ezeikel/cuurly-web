@@ -1,9 +1,8 @@
-import { FunctionComponent } from "react";
-import { useRouter } from "next/router";
 import { useQuery } from "@apollo/client";
 import styled from "styled-components";
 import { EXPLORE_QUERY } from "../apollo/queries";
 import Post from "../components/Post/Post";
+import useUser from "../hooks/useUser";
 
 const Wrapper = styled.div`
   display: grid;
@@ -14,24 +13,24 @@ const Wrapper = styled.div`
   }
 `;
 
-const ExplorePage: FunctionComponent = () => {
-  const router = useRouter();
-  const { id } = router.query;
+const ExplorePage = () => {
+  const { user } = useUser();
 
   const {
-    data: { explore } = {}, // setting default value when destructing as data is undefined when loading - https://github.com/apollographql/react-apollo/issues/3323#issuecomment-523430331
+    data: { explore: posts } = {}, // setting default value when destructing as data is undefined when loading - https://github.com/apollographql/react-apollo/issues/3323#issuecomment-523430331
   } = useQuery(EXPLORE_QUERY, {
-    variables: { id },
+    variables: { id: user?.id },
+    skip: !!user,
   });
 
-  if (!explore) return null;
+  if (!user) return null;
 
-  if (!explore.length) return <span>No posts found.</span>;
+  if (!posts?.length) return <span>No posts found.</span>;
 
   return (
     <Wrapper>
       <h1>Explore.</h1>
-      {explore.map((post) => (
+      {posts.map((post) => (
         <Post key={post.id} id={post.id} />
       ))}
     </Wrapper>

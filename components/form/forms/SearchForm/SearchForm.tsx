@@ -26,6 +26,8 @@ const SearchForm = ({ className }: SearchFormProps): ReactElement => {
 
   const itemToString = (user) => (user ? user.username : "");
 
+  console.log({ value: formikRef.current?.values["query-input"] });
+
   const {
     isOpen,
     getMenuProps,
