@@ -61,39 +61,14 @@ module.exports = {
   },
   overrides: [
     {
-      files: "**/*.+(ts|tsx)",
+      files: "**/*.ts?(x)",
       parser: "@typescript-eslint/parser",
       parserOptions: {
         project: "./tsconfig.json",
       },
       plugins: ["@typescript-eslint/eslint-plugin"],
       extends: ["airbnb-typescript", "plugin:prettier/recommended"],
-      rules: {
-        "react/react-in-jsx-scope": 0,
-        "react/prop-types": 0,
-        "react/require-default-props": 0,
-        "import/no-extraneous-dependencies": [
-          "error",
-          {
-            devDependencies: [
-              ".storybook/**",
-              "stories/**",
-              "**/*.stories.+(ts|tsx)",
-              "**/*.test.+(ts|tsx)",
-            ],
-          },
-        ],
-        "no-console": [2, { allow: ["warn", "error"] }],
-        "jsx-a11y/anchor-is-valid": [
-          "error",
-          {
-            components: ["Link"],
-            specialLink: ["hrefLeft", "hrefRight"],
-            aspects: ["invalidHref", "preferButton"],
-          },
-        ],
-        "no-underscore-dangle": [2, { allow: ["_id"] }],
-      },
+      rules: {},
     },
   ],
 };

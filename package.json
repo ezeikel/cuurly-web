@@ -1,7 +1,7 @@
 {
   "name": "cuurly-web",
   "author": "hi@ezeikel.dev",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "license": "ISC",
   "scripts": {
     "dev": "next dev",
@@ -22,21 +22,17 @@
     "test:e2e:run": "start-server-and-test start http://localhost:3000 cy:run",
     "test:e2e:dev": "start-server-and-test dev http://localhost:3000 cy:open",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "prepare": "husky install"
   },
   "jest-runner-eslint": {
     "cliOptions": {
       "ignorePath": "./.gitignore"
     }
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged && yarn test:e2e:run"
-    }
-  },
   "lint-staged": {
     "**/*.+(js|jsx|json|ts|tsx|html|md)": [
-      "prettier --write",
+      "prettier --ignore-path .gitignore --write",
       "jest --findRelatedTests"
     ]
   },
