@@ -3,14 +3,12 @@ import Link from "next/link";
 import { useMutation } from "@apollo/client";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import classNames from "classnames";
 import formatAPIErrors from "../../../../utils/formatAPIErrors";
 import {
   CURRENT_USER_QUERY,
   SIGNIN_MUTATION,
 } from "../../../../apollo/queries";
 import Button from "../../../Button/Button";
-import FormWrapper from "../../FormWrapper/FormWrapper";
 import TextInput from "../../inputs/TextInput/TextInput";
 
 const SignInSchema = Yup.object().shape({
@@ -18,7 +16,7 @@ const SignInSchema = Yup.object().shape({
   password: Yup.string().required("Please enter a Password."),
 });
 
-const SignInForm = ({ className }) => {
+const SignInForm = () => {
   const router = useRouter();
   const [signin] = useMutation(SIGNIN_MUTATION, {
     onCompleted() {
@@ -43,55 +41,68 @@ const SignInForm = ({ className }) => {
     },
   });
 
-  const wrapperClass = classNames("p-8 border border-gray-200 rounded", {
-    [className]: className,
-  });
-
   return (
-    <FormWrapper className={wrapperClass}>
-      <Formik
-        initialValues={{ username: "", password: "" }}
-        validationSchema={SignInSchema}
-        onSubmit={async (values, { setSubmitting, setErrors, resetForm }) => {
-          try {
-            await signin({ variables: values });
-            resetForm();
-          } catch (e) {
-            const formattedErrors = formatAPIErrors(e);
-            setErrors(formattedErrors);
-          }
+    <Formik
+      initialValues={{ username: "", password: "" }}
+      validationSchema={SignInSchema}
+      onSubmit={async (values, { setSubmitting, setErrors, resetForm }) => {
+        try {
+          await signin({ variables: values });
+          resetForm();
+        } catch (e) {
+          const formattedErrors = formatAPIErrors(e);
+          setErrors(formattedErrors);
+        }
 
-          setSubmitting(false);
-        }}
-      >
-        {({ isSubmitting }) => (
-          <Form className="flex flex-col">
-            <div className="mb-4">
-              <TextInput
-                className="mb-4"
-                label="Username"
-                name="username"
-                type="text"
+        setSubmitting(false);
+      }}
+    >
+      {({ isSubmitting }) => (
+        <Form className="space-y-6">
+          <TextInput
+            className="mb-4"
+            label="Username"
+            name="username"
+            type="text"
+          />
+          <TextInput label="Password" name="password" type="password" />
+
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <input
+                id="remember-me"
+                name="remember-me"
+                type="checkbox"
+                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
               />
-              <TextInput label="Password" name="password" type="password" />
+              <label
+                htmlFor="remember-me"
+                className="ml-2 block text-sm text-gray-900"
+              >
+                Remember me
+              </label>
             </div>
-            <Button
-              variant="confirm"
-              text="Sign In"
-              submittingText="Signing In"
-              disabled={isSubmitting}
-              isSubmitting={isSubmitting}
-              className="mb-8"
-            />
-            <Link href="/request-reset">
-              <a className="text-blue-800 text-xs text-center">
-                Forgot password?
-              </a>
-            </Link>
-          </Form>
-        )}
-      </Formik>
-    </FormWrapper>
+
+            <div className="text-sm">
+              <Link href="/request-reset">
+                <a className="font-medium text-indigo-600 hover:text-indigo-500">
+                  Forgot your password?
+                </a>
+              </Link>
+            </div>
+          </div>
+
+          <Button
+            variant="confirm"
+            text="Sign In"
+            submittingText="Signing In"
+            disabled={isSubmitting}
+            isSubmitting={isSubmitting}
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          />
+        </Form>
+      )}
+    </Formik>
   );
 };
 

@@ -46,6 +46,7 @@
     "@fortawesome/pro-solid-svg-icons": "^5.15.4",
     "@fortawesome/react-fontawesome": "^0.1.16",
     "@sentry/nextjs": "^6.16.1",
+    "@tailwindcss/forms": "^0.4.0",
     "apollo-link": "^1.2.14",
     "apollo-link-error": "^1.1.13",
     "apollo-link-http": "^1.5.17",

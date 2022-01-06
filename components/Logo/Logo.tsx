@@ -6,7 +6,7 @@ type LogoProps = {
 
 const Logo = ({ className }: LogoProps) => {
   const wrapperClass = classNames(
-    "text-4xl font-bold text-current text-center",
+    "text-4xl font-extrabold text-center text-gray-900",
     {
       [className]: className,
     },

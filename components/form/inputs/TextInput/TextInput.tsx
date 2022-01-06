@@ -31,58 +31,50 @@ const TextInput = forwardRef(
     }: TextInputProps,
     ref: RefProps,
   ): ReactElement => {
-    const [field, meta] = useField({ ...props, name });
+    const [field] = useField({ ...props, name });
 
-    // TODO: dirty not always being set resulting in label being in the way
-    const isDirty = meta.touched && field.value.length > 0;
-
-    const wrapperClass = classNames(
-      "relative flex h-9 rounded border border-gray-200",
-      {
-        [className]: className,
-      },
-    );
+    const wrapperClass = classNames("", {
+      [className]: className,
+    });
 
     const inputClass = classNames(
-      "text-base p-2 rounded bg-gray-50 overflow-hidden overflow-ellipsis flex-1 outline-none peer",
-      {
-        "text-sm pt-4 pb-0.5": isDirty,
-      },
+      "appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm",
+      {},
     );
 
     const labelClass = classNames(
-      "text-sm leading-9 text-gray-400 origin-left absolute left-2 right-0 h-full pointer-events-none select-none whitespace-nowrap overflow-hidden overflow-ellipsis transition-transform ease-in-out peer-focus:scale-75 peer-focus:-translate-y-2",
-      {
-        "transform scale-75 -translate-y-2": isDirty,
-      },
+      "block text-sm font-medium text-gray-700",
+      {},
     );
 
     return (
       <div className={wrapperClass}>
-        <input
-          className={inputClass}
-          {...field} // eslint-disable-line react/jsx-props-no-spreading
-          {...props} // eslint-disable-line react/jsx-props-no-spreading
-          onChange={(e) => {
-            // custom onChange logic
-            if (handleChange) {
-              handleChange(e);
-            }
-
-            // any onChange prop sent from another library e.g. downshift
-            if (onChange) {
-              onChange(e);
-            }
-
-            field.onChange(e);
-          }}
-          ref={ref}
-        />
         {label && (
           <label className={labelClass} htmlFor={name}>
             {label}
           </label>
         )}
+        <div className="mt-1">
+          <input
+            className={inputClass}
+            {...field} // eslint-disable-line react/jsx-props-no-spreading
+            {...props} // eslint-disable-line react/jsx-props-no-spreading
+            onChange={(e) => {
+              // custom onChange logic
+              if (handleChange) {
+                handleChange(e);
+              }
+
+              // any onChange prop sent from another library e.g. downshift
+              if (onChange) {
+                onChange(e);
+              }
+
+              field.onChange(e);
+            }}
+            ref={ref}
+          />
+        </div>
       </div>
     );
   },
