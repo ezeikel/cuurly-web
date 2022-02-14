@@ -1,5 +1,7 @@
 import gql from "graphql-tag";
 
+// TODO: use fragments where it makes sense
+
 export const CURRENT_USER_QUERY = gql`
   query CURRENT_USER_QUERY {
     currentUser {

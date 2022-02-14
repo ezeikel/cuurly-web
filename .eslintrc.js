@@ -45,11 +45,10 @@ module.exports = {
     "import/no-extraneous-dependencies": [
       "error",
       {
-        devDependencies: [".storybook/**", "stories/**"],
+        devDependencies: [".storybook/**", "./components/**/*.stories.tsx"],
       },
     ],
     "no-console": [2, { allow: ["warn", "error"] }],
-    "no-underscore-dangle": [2, { allow: ["_id"] }],
     "react/function-component-definition": 0,
   },
   settings: {

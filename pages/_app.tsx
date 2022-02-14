@@ -21,12 +21,19 @@ import {
   faPlay,
 } from "@fortawesome/pro-solid-svg-icons";
 import { faInboxOut, faEllipsisH } from "@fortawesome/pro-regular-svg-icons";
+import mixpanel from "mixpanel-browser";
 import { useApollo } from "../apollo/client";
 import "video.js/dist/video-js.css";
 import "react-toastify/dist/ReactToastify.min.css";
 import "tailwindcss/tailwind.css"; // eslint-disable-line import/no-extraneous-dependencies
 import Page from "../components/Page/Page";
 import "../main.css";
+
+mixpanel.init(
+  process.env.NEXT_PUBLIC_MIXPANEL_TOKEN,
+  { api_host: "https://api-eu.mixpanel.com" },
+  "",
+);
 
 config.autoAddCss = false; /* eslint-disable import/first */
 

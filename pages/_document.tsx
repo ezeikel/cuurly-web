@@ -45,7 +45,7 @@ class MyDocument extends Document {
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'UA-139930047-1');
+        gtag('config', ${process.env.GA_MEASUREMENT_ID});
       `,
     };
   }
@@ -57,7 +57,7 @@ class MyDocument extends Document {
           {/* Global site tag (gtag.js) - Google Analytics */}
           <script
             async
-            src="https://www.googletagmanager.com/gtag/js?id=UA-139930047-1"
+            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.GA_MEASUREMENT_ID}`}
           />
           {/* eslint-disable-next-line react/no-danger */}
           <script dangerouslySetInnerHTML={this.setGoogleAnalyticsTags()} />
