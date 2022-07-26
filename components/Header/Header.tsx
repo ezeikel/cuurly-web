@@ -1,9 +1,39 @@
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
+import { IconName, IconPrefix } from "@fortawesome/fontawesome-svg-core";
 import useUser from "../../hooks/useUser";
 import Logo from "../Logo/Logo";
 import SearchForm from "../form/forms/SearchForm/SearchForm";
+
+type NavItems = {
+  name: string;
+  href: string;
+  icon: [IconPrefix, IconName];
+}[];
+
+const NAV_ITEMS: NavItems = [
+  {
+    name: "Explore",
+    href: "/explore",
+    icon: ["fal", "compass"],
+  },
+  {
+    name: "Notifications",
+    href: "/notifications",
+    icon: ["fal", "bell"],
+  },
+  {
+    name: "Inbox",
+    href: "/inbox",
+    icon: ["fal", "paper-plane"],
+  },
+  {
+    name: "Profile",
+    href: "/[username]",
+    icon: ["fal", "user"],
+  },
+];
 
 const Header = ({ className }) => {
   const { user } = useUser();
@@ -23,51 +53,16 @@ const Header = ({ className }) => {
       </Link>
       <nav className="flex-1 flex justify-around items-center">
         <SearchForm />
-        <ul className="flex">
-          <li>
-            <Link href="explore">
-              <a>
-                <FontAwesomeIcon
-                  icon={["fal", "compass"]}
-                  color="#333"
-                  size="lg"
-                />
-              </a>
-            </Link>
-          </li>
-          <li className="ml-8">
-            <Link href="/notifications">
-              <a>
-                <FontAwesomeIcon
-                  icon={["fal", "bell"]}
-                  color="#333"
-                  size="lg"
-                />
-              </a>
-            </Link>
-          </li>
-          <li className="ml-8">
-            <Link href="/inbox">
-              <a>
-                <FontAwesomeIcon
-                  icon={["fal", "paper-plane"]}
-                  color="#333"
-                  size="lg"
-                />
-              </a>
-            </Link>
-          </li>
-          <li className="ml-8">
-            <Link href="/[username]" as={`/${user.username}`}>
-              <a>
-                <FontAwesomeIcon
-                  icon={["fal", "user"]}
-                  color="#333"
-                  size="lg"
-                />
-              </a>
-            </Link>
-          </li>
+        <ul className="flex gap-x-8">
+          {NAV_ITEMS.map(({ name, href, icon }) => (
+            <li key={name}>
+              <Link href={href}>
+                <a>
+                  <FontAwesomeIcon icon={icon} color="#333" size="lg" />
+                </a>
+              </Link>
+            </li>
+          ))}
         </ul>
       </nav>
     </header>
