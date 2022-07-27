@@ -5,6 +5,7 @@ import classNames from "classnames";
 import Meta from "../Meta";
 import Notification from "../Notification/Notification";
 import useUser from "../../hooks/useUser";
+import GlobalStyles from "../GlobalStyles";
 
 const Header = dynamic(() => import("../Header/Header"));
 
@@ -44,21 +45,24 @@ const Page = ({ className, children }: PageProps) => {
   });
 
   return (
-    <div className={wrapperClass}>
-      <Meta />
-      {isUserAccessPage ? null : <Header className="h-20 col-span-1" />}
-      <div className="flex flex-col flex-1 bg-gray-50">
-        <main className="flex-1 flex flex-col">{children}</main>
-        <Notification
-          position="bottom-center"
-          draggable
-          hideProgressBar
-          pauseOnHover
-          autoClose={3000}
-          closeOnClick={false}
-        />
+    <>
+      <GlobalStyles />
+      <div className={wrapperClass}>
+        <Meta />
+        {isUserAccessPage ? null : <Header className="h-20 col-span-1" />}
+        <div className="flex flex-col flex-1 bg-gray-50">
+          <main className="flex-1 flex flex-col">{children}</main>
+          <Notification
+            position="bottom-center"
+            draggable
+            hideProgressBar
+            pauseOnHover
+            autoClose={3000}
+            closeOnClick={false}
+          />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

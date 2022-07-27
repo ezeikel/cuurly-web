@@ -9,8 +9,10 @@ export const CURRENT_USER_QUERY = gql`
       firstName
       lastName
       username
-      profilePicture {
-        url
+      profile {
+        picture {
+          url
+        }
       }
       role
     }
@@ -36,8 +38,10 @@ export const SINGLE_USER_QUERY = gql`
       firstName
       lastName
       username
-      profilePicture {
-        url
+      profile {
+        picture {
+          url
+        }
       }
       bio
       website
@@ -49,8 +53,10 @@ export const SINGLE_USER_QUERY = gql`
         firstName
         lastName
         username
-        profilePicture {
-          url
+        profile {
+          picture {
+            url
+          }
         }
         verified
         followers {
@@ -65,8 +71,10 @@ export const SINGLE_USER_QUERY = gql`
         firstName
         lastName
         username
-        profilePicture {
-          url
+        profile {
+          picture {
+            url
+          }
         }
         verified
         followers {
@@ -91,8 +99,10 @@ export const USER_FOLLOWERS_QUERY = gql`
       firstName
       lastName
       username
-      profilePicture {
-        url
+      profile {
+        picture {
+          url
+        }
       }
       verified
       followers {
@@ -112,8 +122,10 @@ export const USER_FOLLOWING_QUERY = gql`
       firstName
       lastName
       username
-      profilePicture {
-        url
+      profile {
+        picture {
+          url
+        }
       }
       verified
       followers {
@@ -138,8 +150,10 @@ export const SINGLE_POST_QUERY = gql`
       author {
         id
         username
-        profilePicture {
-          url
+        profile {
+          picture {
+            url
+          }
         }
       }
       likes {
@@ -184,8 +198,10 @@ export const SEARCH_USERS_QUERY = gql`
       username
       firstName
       lastName
-      profilePicture {
-        url
+      profile {
+        picture {
+          url
+        }
       }
       verified
     }
@@ -249,8 +265,10 @@ export const SIGNIN_MUTATION = gql`
       firstName
       lastName
       username
-      profilePicture {
-        url
+      profile {
+        picture {
+          url
+        }
       }
       role
     }

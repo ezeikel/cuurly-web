@@ -45,7 +45,7 @@ module.exports = {
     "import/no-extraneous-dependencies": [
       "error",
       {
-        devDependencies: [".storybook/**", "./components/**/*.stories.tsx"],
+        devDependencies: [".storybook/**", "./components/GlobalStyles.js"],
       },
     ],
     "no-console": [2, { allow: ["warn", "error"] }],
@@ -67,7 +67,35 @@ module.exports = {
       },
       plugins: ["@typescript-eslint/eslint-plugin"],
       extends: ["airbnb-typescript", "plugin:prettier/recommended"],
-      rules: {},
+      rules: {
+        "import/no-extraneous-dependencies": [
+          "error",
+          {
+            devDependencies: [
+              "./components/**/*.test.tsx",
+              "./components/**/*.stories.tsx",
+              "./components/**/*.styled.ts",
+            ],
+          },
+        ],
+      },
+    },
+    {
+      files: "./cypress.config.ts",
+      parser: "@typescript-eslint/parser",
+      parserOptions: {
+        project: "./cypress/tsconfig.json",
+      },
+      plugins: ["@typescript-eslint/eslint-plugin"],
+      extends: ["airbnb-typescript", "plugin:prettier/recommended"],
+      rules: {
+        "import/no-extraneous-dependencies": [
+          "error",
+          {
+            devDependencies: ["./cypress.config.ts"],
+          },
+        ],
+      },
     },
   ],
 };

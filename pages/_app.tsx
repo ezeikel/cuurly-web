@@ -13,6 +13,10 @@ import {
   faKey,
   faHeart as falHeart,
   faCog,
+  faHouse,
+  faSquarePlus,
+  faAngleDown,
+  faMagnifyingGlass,
 } from "@fortawesome/pro-light-svg-icons";
 import {
   faComment,
@@ -54,6 +58,10 @@ library.add(
   faPlay,
   faInboxOut,
   faEllipsisH,
+  faHouse,
+  faSquarePlus,
+  faAngleDown,
+  faMagnifyingGlass,
 );
 
 const MyApp = ({ Component, pageProps, err }: AppProps & { err: any }) => {

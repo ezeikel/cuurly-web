@@ -1,5 +1,5 @@
 import Link from "next/link";
-import SignUpForm from "../components/form/forms/SignUpForm/SignUpForm";
+import SignUpForm from "../components/forms/SignUpForm/SignUpForm";
 import Logo from "../components/Logo/Logo";
 
 const SignUpPage = () => (

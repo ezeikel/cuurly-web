@@ -1,5 +1,5 @@
 import Link from "next/link";
-import SignInForm from "../components/form/forms/SignInForm/SignInForm";
+import SignInForm from "../components/forms/SignInForm/SignInForm";
 import Logo from "../components/Logo/Logo";
 
 const SigninPage = () => (

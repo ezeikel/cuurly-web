@@ -3,14 +3,11 @@ import { useMutation } from "@apollo/client";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import classNames from "classnames";
-import formatAPIErrors from "../../../../utils/formatAPIErrors";
-import {
-  CURRENT_USER_QUERY,
-  SIGNUP_MUTATION,
-} from "../../../../apollo/queries";
-import Button from "../../../Button/Button";
-import FormWrapper from "../../FormWrapper/FormWrapper";
-import TextInput from "../../inputs/TextInput/TextInput";
+import formatAPIErrors from "../../../utils/formatAPIErrors";
+import { CURRENT_USER_QUERY, SIGNUP_MUTATION } from "../../../apollo/queries";
+import Button from "../../Button/Button";
+import FormWrapper from "../../form/FormWrapper/FormWrapper";
+import TextInput from "../../form/inputs/TextInput/TextInput";
 
 const SignUpSchema = Yup.object().shape({
   firstName: Yup.string()

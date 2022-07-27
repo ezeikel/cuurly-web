@@ -1,64 +1,84 @@
+import { useState, useEffect } from "react";
+import { components, ControlProps } from "react-select";
+import AsyncSelect from "react-select/async";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import classNames from "classnames";
-import blankProfilePicture from "../../utils/blankProfileImage";
+import { customStyles } from "./SearchDropdown.styled";
+
+type SearchDropdownProps = {
+  placeholder?: string;
+  defaultValue?: { label: string; value: string };
+  handleChange?: (option?: { label: string; value: string }) => void;
+  noOptionsMessage?: string;
+  loadOptions: (inputValue: string) => Promise<any>;
+  label?: string;
+  instanceId?: string;
+  className?: string;
+  isLoading?: boolean;
+};
+
+const Control = ({ children, ...props }: ControlProps) => (
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  <components.Control {...props}>
+    <FontAwesomeIcon
+      icon={["fal", "magnifying-glass"]}
+      color="#333"
+      size="1x"
+      className="mr-2"
+    />
+    {children}
+  </components.Control>
+);
 
 const SearchDropdown = ({
-  users,
-  loading,
-  inputValue,
-  getItemProps,
-  highlightedIndex,
-}) => {
-  const getDropdownItemClass = (index) => {
-    return classNames("flex p-2 items-center bg-white", {
-      "bg-gray-100": index === highlightedIndex,
-    });
-  };
+  placeholder,
+  defaultValue,
+  handleChange,
+  noOptionsMessage,
+  loadOptions,
+  label,
+  instanceId,
+  className,
+  isLoading,
+}: SearchDropdownProps) => {
+  const [selectedOption, setSelectedOption] = useState(defaultValue);
 
-  if (!users.length && !loading) {
-    return <div>Nothing found for {inputValue}</div>;
-  }
+  useEffect(() => {
+    setSelectedOption(defaultValue);
+  }, [defaultValue]);
 
   return (
-    <>
-      {users.map((user, index) => (
-        <li
-          className={getDropdownItemClass(index)}
-          // eslint-disable-next-line react/jsx-props-no-spreading
-          {...getItemProps({
-            item: user,
-            index,
-          })}
-          key={user.id}
+    <div className={className}>
+      {label ? (
+        <label
+          htmlFor={`react-select-${instanceId}-input`}
+          className="mb-2.5 flex text-sm font-medium text-gray-800"
         >
-          <div className="h-8 w-8">
-            <img
-              className="rounded"
-              src={
-                user.profilePicture?.url.replace(
-                  "/upload",
-                  "/upload/w_150,h_150,c_lfill,g_face,dpr_2.0",
-                ) || blankProfilePicture()
-              }
-              alt="profile"
-            />
-          </div>
-          <div className="ml-2">
-            <div>
-              {user.username}
-              {user.verified ? (
-                <FontAwesomeIcon
-                  icon={["fas", "badge-check"]}
-                  color="#3E9AED"
-                  size="sm"
-                />
-              ) : null}
-            </div>
-            <div>{user.name}</div>
-          </div>
-        </li>
-      ))}
-    </>
+          {label}
+        </label>
+      ) : null}
+      <AsyncSelect
+        value={selectedOption}
+        styles={customStyles}
+        placeholder={placeholder}
+        // TODO: should be able to use an Option type from react-select instead of object
+        onChange={(option: { label: string; value: string }) => {
+          setSelectedOption(option);
+
+          // optional prop from parent to handle any extra actions needed
+          if (handleChange) {
+            handleChange(option);
+          }
+        }}
+        components={{
+          Control,
+        }}
+        loadOptions={loadOptions}
+        noOptionsMessage={() => noOptionsMessage}
+        defaultOptions
+        instanceId={instanceId}
+        isLoading={isLoading}
+      />
+    </div>
   );
 };
 

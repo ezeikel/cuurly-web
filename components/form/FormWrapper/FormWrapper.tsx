@@ -1,6 +1,11 @@
 import classNames from "classnames";
 
-const FormWrapper = ({ children, className }) => {
+type FormWrapperProps = {
+  children: React.ReactNode;
+  className?: string;
+};
+
+const FormWrapper = ({ children, className }: FormWrapperProps) => {
   const wrapperClass = classNames("flex flex-col bg-white", {
     [className]: className,
   });

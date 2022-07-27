@@ -3,13 +3,10 @@ import Link from "next/link";
 import { useMutation } from "@apollo/client";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import formatAPIErrors from "../../../../utils/formatAPIErrors";
-import {
-  CURRENT_USER_QUERY,
-  SIGNIN_MUTATION,
-} from "../../../../apollo/queries";
-import Button from "../../../Button/Button";
-import TextInput from "../../inputs/TextInput/TextInput";
+import formatAPIErrors from "../../../utils/formatAPIErrors";
+import { CURRENT_USER_QUERY, SIGNIN_MUTATION } from "../../../apollo/queries";
+import Button from "../../Button/Button";
+import TextInput from "../../form/inputs/TextInput/TextInput";
 
 const SignInSchema = Yup.object().shape({
   username: Yup.string().required("Please enter a Username."),
