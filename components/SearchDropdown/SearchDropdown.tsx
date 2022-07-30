@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { components, ControlProps } from "react-select";
+import { useState, useEffect, CSSProperties } from "react";
+import { ClearIndicatorProps, components, ControlProps } from "react-select";
 import AsyncSelect from "react-select/async";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { customStyles } from "./SearchDropdown.styled";
@@ -28,6 +28,26 @@ const Control = ({ children, ...props }: ControlProps) => (
     {children}
   </components.Control>
 );
+
+const ClearIndicator = (props: ClearIndicatorProps) => {
+  const {
+    children = (
+      <FontAwesomeIcon icon={["fal", "times"]} color="#333" size="1x" />
+    ),
+    getStyles,
+    innerProps: { ref, ...restInnerProps },
+  } = props;
+  return (
+    <div
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      {...restInnerProps}
+      ref={ref}
+      style={getStyles("clearIndicator", props) as CSSProperties}
+    >
+      <div style={{ padding: "0px 5px" }}>{children}</div>
+    </div>
+  );
+};
 
 const SearchDropdown = ({
   placeholder,
@@ -71,12 +91,13 @@ const SearchDropdown = ({
         }}
         components={{
           Control,
+          ClearIndicator,
         }}
         loadOptions={loadOptions}
         noOptionsMessage={() => noOptionsMessage}
-        defaultOptions
         instanceId={instanceId}
         isLoading={isLoading}
+        isClearable
       />
     </div>
   );

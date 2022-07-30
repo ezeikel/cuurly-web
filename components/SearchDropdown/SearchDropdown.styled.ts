@@ -1,9 +1,18 @@
 /* eslint-disable import/prefer-default-export */
 
 export const customStyles = {
-  indicatorsContainer: (provided) => ({
+  indicatorSeparator: (provided) => ({
     ...provided,
     display: "none",
+  }),
+  dropdownIndicator: (provided) => ({
+    ...provided,
+    display: "none",
+  }),
+  clearIndicator: (provided) => ({
+    ...provided,
+    padding: 0,
+    cursor: "pointer",
   }),
   control: (provided) => ({
     ...provided,
