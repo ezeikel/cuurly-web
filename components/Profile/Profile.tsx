@@ -1,12 +1,12 @@
 import { useQuery } from "@apollo/client";
 import { SINGLE_USER_QUERY } from "../../apollo/queries";
 import PostPreview from "../PostPreview/PostPreview";
-import UserAvatar from "../UserAvatar/UserAvatar";
 import Spinner from "../svgs/Spinner";
 import UserNumbers from "../UserNumbers/UserNumbers";
 import UserBio from "../UserBio/UserBio";
 import ProfileNav from "../ProfileNav/ProfileNav";
 import { Wrapper, Header, PostsWrapper, Posts } from "./Profile.styled";
+import Avatar from "../Avatar/Avatar";
 
 type SingleUser = {
   id: string;
@@ -55,7 +55,11 @@ const Profile = ({ username }) => {
   return (
     <Wrapper>
       <Header>
-        <UserAvatar photo={profilePicture} />
+        <Avatar
+          src={profilePicture?.url}
+          context="profile"
+          className="w-40 h-40"
+        />
         <ProfileNav
           id={id}
           username={username}

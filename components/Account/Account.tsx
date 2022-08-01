@@ -11,12 +11,10 @@ import {
   SINGLE_USER_QUERY,
   UPDATE_USER_MUTATION,
 } from "../../apollo/queries";
-import blankProfilePicture from "../../utils/blankProfileImage";
 import {
   Wrapper,
   Edit,
   EditHeader,
-  ProfilePicture,
   ChangeProfilePicture,
   ActionList,
   Action,
@@ -32,6 +30,7 @@ import {
 import ChangeProfilePictureModal from "../modals/ChangeProfilePictureModal/ChangeProfilePictureModal";
 import { PHONE_REGEX, GENDER_OPTIONS } from "../../constants";
 import useUser from "../../hooks/useUser";
+import Avatar from "../Avatar/Avatar";
 
 function isEqual(a, b) {
   // Create arrays of property names
@@ -196,22 +195,16 @@ const Account = ({ mode }) => {
         {mode === "edit" ? (
           <Edit>
             <EditHeader>
-              <ProfilePicture>
-                <img
-                  src={
-                    fileUrl ||
-                    profilePicture?.url.replace(
-                      "/upload",
-                      "/upload/w_38,h_38,c_lfill,g_face,dpr_2.0",
-                    ) ||
-                    blankProfilePicture()
-                  }
-                  alt="profile"
-                />
-                {/* <form>
-                                <input type="file" accept="image/jpeg,image/png" />
-                              </form> */}
-              </ProfilePicture>
+              <Avatar
+                src={
+                  fileUrl ||
+                  profilePicture?.url.replace(
+                    "/upload",
+                    "/upload/w_38,h_38,c_lfill,g_face,dpr_2.0",
+                  )
+                }
+                className="h-8 w-8"
+              />
               <ChangeProfilePicture>
                 <span>{username}</span>
                 <button type="button" onClick={openChangeProfilePictureModal}>
@@ -338,19 +331,16 @@ const Account = ({ mode }) => {
         {mode === "password-change" ? (
           <PasswordChange>
             <EditHeader>
-              <ProfilePicture>
-                <img
-                  src={
-                    (profilePicture &&
-                      profilePicture.url.replace(
-                        "/upload",
-                        "/upload/w_38,h_38,c_lfill,g_face,dpr_2.0",
-                      )) ||
-                    blankProfilePicture()
-                  }
-                  alt="profile"
-                />
-              </ProfilePicture>
+              <Avatar
+                src={
+                  fileUrl ||
+                  profilePicture?.url.replace(
+                    "/upload",
+                    "/upload/w_38,h_38,c_lfill,g_face,dpr_2.0",
+                  )
+                }
+                className="h-8 w-8"
+              />
               <Username>
                 <span>{username}</span>
               </Username>

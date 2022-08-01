@@ -1,11 +1,10 @@
 import Link from "next/link";
-import blankProfilePicture from "../../utils/blankProfileImage";
+import Avatar from "../Avatar/Avatar";
 import FollowButton from "../FollowButton/FollowButton";
 import {
   Wrapper,
   FollowerWrapper,
   Follower,
-  FollowerPhoto,
   FollowerName,
   FollowerAction,
 } from "./UserList.styled";
@@ -18,17 +17,13 @@ const UserList = ({ username, users }) => {
       {users.map((user) => (
         <FollowerWrapper key={user.id}>
           <Follower>
-            <FollowerPhoto>
-              <img
-                src={
-                  user.profilePicture?.url.replace(
-                    "/upload",
-                    "/upload/w_30,h_30,c_lfill,g_face,dpr_2.0",
-                  ) || blankProfilePicture()
-                }
-                alt="profile-pic"
-              />
-            </FollowerPhoto>
+            <Avatar
+              src={user.profilePicture?.url.replace(
+                "/upload",
+                "/upload/w_30,h_30,c_lfill,g_face,dpr_2.0",
+              )}
+              className="h-8 w-8"
+            />
             <FollowerName>
               <span>
                 <Link href="/[username]" as={`/${user.username}`}>

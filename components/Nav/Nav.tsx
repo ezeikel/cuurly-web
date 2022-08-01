@@ -2,7 +2,7 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconName, IconPrefix } from "@fortawesome/fontawesome-svg-core";
 import useUser from "../../hooks/useUser";
-import Search from "../Search/Search";
+import SearchBox from "../SearchBox/SearchBox";
 
 type NavItems = {
   name: string;
@@ -49,7 +49,7 @@ const Nav = () => {
   ];
   return (
     <nav className="flex-1 flex justify-between items-center">
-      <Search className="m-auto" />
+      <SearchBox className="m-auto" />
       <ul className="flex gap-x-8">
         {NAV_ITEMS.map(({ name, href, as, icon }) => (
           <li key={name}>

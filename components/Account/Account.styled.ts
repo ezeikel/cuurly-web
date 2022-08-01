@@ -25,15 +25,6 @@ export const EditHeader = styled.div`
   align-items: center;
 `;
 
-export const ProfilePicture = styled.div`
-  display: grid;
-  img {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-  }
-`;
-
 export const ChangeProfilePicture = styled.div`
   display: grid;
   grid-template-rows: 1fr 1fr;

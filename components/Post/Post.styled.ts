@@ -25,13 +25,6 @@ export const PostHeader = styled.header`
   border-bottom-width: 0.5px;
 `;
 
-export const Photo = styled.div`
-  display: grid;
-  img {
-    border-radius: 50%;
-  }
-`;
-
 export const Details = styled.div`
   display: grid;
   grid-template-rows: 1fr 1fr;

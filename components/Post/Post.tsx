@@ -9,12 +9,10 @@ import PostComment from "../PostComment/PostComment";
 import Comment from "../Comment/Comment";
 import DeletePost from "../DeletePost/DeletePost";
 import { SINGLE_POST_QUERY } from "../../apollo/queries";
-import blankProfilePicture from "../../utils/blankProfileImage";
 import VideoPlayer from "../VideoPlayer/VideoPlayer";
 import {
   Wrapper,
   PostHeader,
-  Photo,
   Details,
   Username,
   Location,
@@ -32,6 +30,7 @@ import {
 } from "./Post.styled";
 import GenericModal from "../GenericModal/GenericModal";
 import useUser from "../../hooks/useUser";
+import Avatar from "../Avatar/Avatar";
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
   cursor: pointer;
@@ -70,19 +69,16 @@ const Post = ({ id }) => {
   return (
     <Wrapper>
       <PostHeader>
-        <Photo>
-          <img
-            src={
-              (post.author.profilePicture &&
-                post.author.profilePicture.url.replace(
-                  "/upload",
-                  "/upload/w_30,h_30,c_lfill,g_face,dpr_2.0",
-                )) ||
-              blankProfilePicture()
-            }
-            alt="post"
-          />
-        </Photo>
+        <Avatar
+          src={
+            post.author.profilePicture &&
+            post.author.profilePicture.url.replace(
+              "/upload",
+              "/upload/w_30,h_30,c_lfill,g_face,dpr_2.0",
+            )
+          }
+          className="h-8 w-8"
+        />
         <Details>
           <Username>{post.author.username}</Username>
           <Location>Random post location</Location>
