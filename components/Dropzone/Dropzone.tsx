@@ -7,15 +7,15 @@ import NotificationMessage from "../NotificationMessage/NotificationMessage";
 import { Wrapper, StyledInput, TextWrapper } from "./Dropzone.styled";
 
 const imageMaxSize = 10000000; // 10mb in bytes
-const acceptedFileTypes = [
-  "image/x-png",
-  "image/png",
-  "image/jpg",
-  "image/jpeg",
-  "image/gif",
-  "image/heic",
-  "video/*",
-];
+const acceptedFileTypes = {
+  "image/x-png": [],
+  "image/png": [],
+  "image/jpg": [],
+  "image/jpeg": [],
+  "image/gif": [],
+  "image/heic": [],
+  "video/*": [],
+};
 
 const onDropRejected = (fileRejections) => {
   const [rejection] = fileRejections;
@@ -62,7 +62,7 @@ const Dropzone = ({ onDrop }): ReactElement => {
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     onDropRejected,
-    accept: acceptedFileTypes.join(","),
+    accept: acceptedFileTypes,
     multiple: false,
     maxSize: imageMaxSize,
   });
