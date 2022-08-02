@@ -28,6 +28,7 @@ const TextareaInput = ({
   minRows,
   handleChange,
   className,
+  style, // BUG: TypeScript bug. Maybe related to https://github.com/Andarist/react-textarea-autosize/issues/269
   ...props
 }: TextareaInputProps) => {
   const [field] = useField(props);

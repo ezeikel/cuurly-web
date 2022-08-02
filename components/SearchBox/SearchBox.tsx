@@ -1,12 +1,7 @@
 import { ReactElement, CSSProperties, useState } from "react";
 import { useRouter } from "next/router";
 import { useLazyQuery } from "@apollo/client";
-import {
-  ClearIndicatorProps,
-  components,
-  ControlProps,
-  OptionProps,
-} from "react-select";
+import { ClearIndicatorProps, components, ControlProps } from "react-select";
 import AsyncSelect from "react-select/async";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -51,7 +46,8 @@ const ClearIndicator = (props: ClearIndicatorProps) => {
   );
 };
 
-const Option = (props: OptionProps) => {
+// should be using OptionProps here but extra properties on data are causing errors
+const Option = (props) => {
   const { data } = props;
 
   return (
@@ -94,7 +90,12 @@ const SearchBox = ({ className }: SearchProps): ReactElement => {
           styles={customStyles}
           placeholder="Search"
           // TODO: should be able to use an Option type from react-select instead of object
-          onChange={(option: { label: string; value: string }) => {
+          onChange={(option: {
+            label: string;
+            value: string;
+            avatar?: string;
+            verified?: boolean;
+          }) => {
             setSelectedOption(option);
 
             if (option?.value) {
