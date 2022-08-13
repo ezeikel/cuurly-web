@@ -2,7 +2,7 @@ import { useState } from "react";
 import Link from "next/link";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import GenericModal from "../GenericModal/GenericModal";
+import BaseModal from "../BaseModal/BaseModal";
 import SettingsOptions from "../SettingsOptions/SettingsOptions";
 import Username from "../Username/Username";
 import Button from "../Button/Button";
@@ -42,14 +42,14 @@ const ProfileNav = ({ id, username, verified, followerIds }) => {
         color="var(--color-black)"
         size="2x"
       />
-      <GenericModal
+      <BaseModal
         isOpen={settingsModalIsOpen}
         onRequestClose={closeSettingsModal}
         contentLabel="Settings Modal"
         close={closeSettingsModal}
       >
         <SettingsOptions close={closeSettingsModal} />
-      </GenericModal>
+      </BaseModal>
     </Wrapper>
   );
 };

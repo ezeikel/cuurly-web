@@ -38,16 +38,16 @@ const Page = ({ className, children }: PageProps) => {
     }
   }, [user, pathname, isError, isLoading, isUserAccessPage]);
 
-  const wrapperClass = classNames("min-h-screen grid", {
-    "grid-rows-1": isUserAccessPage,
-    "grid-rows-user-page-layout": !isUserAccessPage,
-    [className]: className,
-  });
-
   return (
     <>
       <GlobalStyles />
-      <div className={wrapperClass}>
+      <div
+        className={classNames("min-h-screen grid", {
+          "grid-rows-1": isUserAccessPage,
+          "grid-rows-user-page-layout": !isUserAccessPage,
+          [className]: className,
+        })}
+      >
         <Meta />
         {isUserAccessPage ? null : <Header className="h-20 col-span-1" />}
         <div className="flex flex-col flex-1 bg-gray-50">

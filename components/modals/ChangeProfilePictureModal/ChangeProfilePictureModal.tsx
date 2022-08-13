@@ -1,4 +1,4 @@
-import GenericModal from "../../GenericModal/GenericModal";
+import BaseModal from "../../BaseModal/BaseModal";
 import {
   Wrapper,
   ModalHeader,
@@ -10,7 +10,7 @@ import {
 
 const ChangeProfilePictureModal = ({ isOpen, handleClose, handleChange }) => {
   return (
-    <GenericModal
+    <BaseModal
       isOpen={isOpen}
       onRequestClose={handleClose}
       contentLabel="Change Profile Picture Modal"
@@ -46,7 +46,7 @@ const ChangeProfilePictureModal = ({ isOpen, handleClose, handleChange }) => {
           </SettingsActions>
         </ModalBody>
       </Wrapper>
-    </GenericModal>
+    </BaseModal>
   );
 };
 

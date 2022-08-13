@@ -1,66 +1,45 @@
-import { HTMLProps, MouseEvent, ReactElement, ReactNode } from "react";
+import { HTMLProps, MouseEvent } from "react";
 import classNames from "classnames";
-import Spinner from "../svgs/Spinner";
+import Spinner from "../Spinner/Spinner";
 
 export type ButtonProps = HTMLProps<HTMLButtonElement> & {
-  text?: string;
-  isSubmitting?: boolean;
-  submittingText?: string;
+  text: string;
   disabled?: boolean;
-  variant?: "default" | "confirm" | "cancel" | "link";
+  type?: "button" | "submit";
+  variant?: "primary" | "outline" | "link";
+  isLoading?: boolean;
   onClick?: (event?: MouseEvent) => void;
-  children?: ReactNode;
   className?: string;
 };
 
 const Button = ({
   text,
-  isSubmitting = false,
-  submittingText,
-  variant = "default",
+  type = "button",
+  variant = "primary",
+  isLoading,
   disabled = false,
   onClick,
-  children,
   className,
-}: ButtonProps): ReactElement => {
-  const buttonClass = classNames(
-    "bg-blue-500 hover:bg-blue-700 text-white font-bold leading-none p-2 rounded flex items-center justify-center",
-    {
-      [className]: className,
-    },
+}: ButtonProps) => {
+  return (
+    <button
+      className={classNames(
+        "font-bold leading-none p-2 rounded flex items-center justify-center",
+        {
+          "bg-blue-500 hover:bg-blue-700 text-white": variant === "primary",
+          "border-border-gray-300 border bg-white text-grey-700":
+            variant === "outline",
+          "border border-transparent text-blue-700": variant === "link",
+          [className]: !!className,
+        },
+      )}
+      type={type === "submit" ? "submit" : "button"}
+      onClick={onClick}
+      disabled={disabled || isLoading}
+    >
+      {isLoading ? <Spinner /> : text}
+    </button>
   );
-
-  const renderButton = () => {
-    if (variant === "confirm") {
-      return (
-        <button
-          className={buttonClass}
-          disabled={disabled}
-          onClick={onClick}
-          type="submit"
-        >
-          {isSubmitting ? submittingText : text}
-          {isSubmitting ? (
-            <Spinner className="ml-4 h-4 w-4" fill="#FFFFFF" />
-          ) : null}
-        </button>
-      );
-    }
-
-    return (
-      <button
-        className={buttonClass}
-        disabled={disabled}
-        onClick={onClick}
-        type="button"
-      >
-        {children}
-        {text}
-      </button>
-    );
-  };
-
-  return renderButton();
 };
 
 export default Button;

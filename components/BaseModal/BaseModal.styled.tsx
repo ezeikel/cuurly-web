@@ -46,7 +46,6 @@ export const StyledModal = styled(ReactModalAdapter).attrs({
   overlayClassName: "overlay",
   modalClassName: "modal",
 })<StyledModalProps>`
-  /* Portal styles here (though usually you will have none) */
   .overlay {
     position: fixed;
     top: 0;
@@ -58,51 +57,21 @@ export const StyledModal = styled(ReactModalAdapter).attrs({
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 24px;
-    z-index: 6;
-    ${({ center }) =>
-      center
-        ? ""
-        : `
-    @media (min-width: 768px) {
-      justify-content: start;
-    }
-    `}
+    padding: 32px;
+    z-index: 1;
   }
   .modal {
     display: flex;
-    padding: ${({ padding }) => (padding ? `${padding}px` : "20px")};
-    background-color: var(--color-white);
-    border-radius: var(--border-radius-small);
+    padding: 32px;
+    background-color: #ffffff;
+    border-radius: 4px;
     outline: 0;
-    width: ${({ autoWidth }) => (autoWidth ? "auto" : "100%")};
+    width: 100%;
     max-height: 100%;
     @media (min-width: 768px) {
-      max-width: ${({ maxWidth }) => maxWidth || "640"}px;
+      max-width: 640px;
       min-height: 200px;
       max-height: 921px;
     }
   }
-`;
-
-export const Header = styled.section`
-  display: grid;
-  grid-template-columns: 1fr 42px;
-  align-items: center;
-  border-bottom: 1px solid #efefef;
-  h1 {
-    justify-self: center;
-    font-size: 1.6rem;
-    line-height: 2.4rem;
-    margin: 0;
-  }
-  svg {
-    align-self: center;
-    justify-self: center;
-    cursor: pointer;
-  }
-`;
-
-export const Body = styled.div`
-  flex: 1;
 `;

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import GenericModal from "../GenericModal/GenericModal";
+import BaseModal from "../BaseModal/BaseModal";
 import NumberOf from "../NumberOf/NumberOf";
 import UserList from "../UserList/UserList";
 import { Wrapper } from "./UserNumbers.styled";
@@ -22,7 +22,7 @@ const UserNumbers = ({ username, posts, followers, following }) => {
         length={followers?.length}
         clickHandler={openFollowersModal}
       />
-      <GenericModal
+      <BaseModal
         isOpen={followersModalIsOpen}
         onRequestClose={closeFollowersModal}
         contentLabel="Followers Modal"
@@ -30,13 +30,13 @@ const UserNumbers = ({ username, posts, followers, following }) => {
         close={closeFollowersModal}
       >
         <UserList username={username} users={followers} />
-      </GenericModal>
+      </BaseModal>
       <NumberOf
         name="following"
         length={following?.length}
         clickHandler={openFollowingModal}
       />
-      <GenericModal
+      <BaseModal
         isOpen={followingModalIsOpen}
         onRequestClose={closeFollowingModal}
         contentLabel="Following Modal"
@@ -44,7 +44,7 @@ const UserNumbers = ({ username, posts, followers, following }) => {
         close={closeFollowingModal}
       >
         <UserList username={username} users={following} />
-      </GenericModal>
+      </BaseModal>
     </Wrapper>
   );
 };

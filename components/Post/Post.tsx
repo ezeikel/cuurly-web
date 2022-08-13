@@ -28,7 +28,7 @@ import {
   PostActions,
   PostAction,
 } from "./Post.styled";
-import GenericModal from "../GenericModal/GenericModal";
+import BaseModal from "../BaseModal/BaseModal";
 import useUser from "../../hooks/useUser";
 import Avatar from "../Avatar/Avatar";
 
@@ -89,7 +89,7 @@ const Post = ({ id }) => {
           color="var(--color-black)"
           size="lg"
         />
-        <GenericModal
+        <BaseModal
           isOpen={modalIsOpen}
           close={closeModal}
           contentLabel="Post Actions"
@@ -144,7 +144,7 @@ const Post = ({ id }) => {
               </PostAction>
             </PostActions>
           </ModalBody>
-        </GenericModal>
+        </BaseModal>
       </PostHeader>
       <PostContent>
         {/(\.png$|\.jpg$|\.heic$)/.test(post.content.url) ? (

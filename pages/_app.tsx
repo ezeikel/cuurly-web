@@ -17,6 +17,8 @@ import {
   faSquarePlus,
   faAngleDown,
   faMagnifyingGlass,
+  faPhotoFilm,
+  faSpinner,
 } from "@fortawesome/pro-light-svg-icons";
 import {
   faComment,
@@ -62,6 +64,8 @@ library.add(
   faSquarePlus,
   faAngleDown,
   faMagnifyingGlass,
+  faPhotoFilm,
+  faSpinner,
 );
 
 const MyApp = ({ Component, pageProps, err }: AppProps & { err: any }) => {

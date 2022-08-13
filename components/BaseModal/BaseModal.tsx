@@ -7,11 +7,11 @@ import {
 } from "body-scroll-lock";
 import Modal from "react-modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { StyledModal, Header, Body } from "./GenericModal.styled";
+import { StyledModal } from "./BaseModal.styled";
 
 Modal.setAppElement("body");
 
-type GenericModalProps = {
+type BaseModalProps = {
   heading?: string;
   autoWidth?: boolean;
   maxWidth?: number;
@@ -25,7 +25,7 @@ type GenericModalProps = {
   className?: string;
 };
 
-const GenericModal = ({
+const BaseModal = ({
   heading,
   autoWidth,
   maxWidth,
@@ -37,7 +37,7 @@ const GenericModal = ({
   close,
   children,
   className,
-}: GenericModalProps): ReactElement => {
+}: BaseModalProps): ReactElement => {
   const modalEl = useRef(null);
 
   const router = useRouter();
@@ -68,6 +68,24 @@ const GenericModal = ({
     };
   }, [isOpen, modalEl.current]);
 
+  // export const Header = styled.section`
+  //   display: grid;
+  //   grid-template-columns: 1fr 42px;
+  //   align-items: center;
+  //   border-bottom: 1px solid #efefef;
+  //   h1 {
+  //     justify-self: center;
+  //     font-size: 1.6rem;
+  //     line-height: 2.4rem;
+  //     margin: 0;
+  //   }
+  //   svg {
+  //     align-self: center;
+  //     justify-self: center;
+  //     cursor: pointer;
+  //   }
+  // `;
+
   return (
     <StyledModal
       isOpen={isOpen}
@@ -80,19 +98,21 @@ const GenericModal = ({
       className={className}
     >
       {heading ? (
-        <Header>
-          <h1>{heading}</h1>
+        <header className="flex items-center justify-between">
+          <h3 className="text-lg">{heading}</h3>
           <FontAwesomeIcon
             icon={["fal", "times"]}
-            color="var(--color-black)"
+            color="#000000"
             size="lg"
             onClick={close}
           />
-        </Header>
+        </header>
       ) : null}
-      <Body ref={modalEl}>{children}</Body>
+      <div className="flex-1" ref={modalEl}>
+        {children}
+      </div>
     </StyledModal>
   );
 };
 
-export default GenericModal;
+export default BaseModal;

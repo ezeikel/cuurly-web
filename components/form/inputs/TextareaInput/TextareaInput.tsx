@@ -1,12 +1,6 @@
 import React, { ChangeEvent, InputHTMLAttributes } from "react";
 import { useField } from "formik";
-import {
-  Wrapper,
-  Textarea,
-  TextareaResize,
-  Label,
-  HelpText,
-} from "./TextareaInput.styled";
+import TextareaAutosize from "react-textarea-autosize";
 
 type TextareaInputProps = InputHTMLAttributes<HTMLTextAreaElement> & {
   id?: string;
@@ -34,16 +28,18 @@ const TextareaInput = ({
   const [field] = useField(props);
 
   return (
-    <Wrapper className={`input-wrapper input-wrapper--textarea ${className}`}>
-      {label && <Label htmlFor={props.id || props.name}>{label}</Label>}
-      {helpText && (
-        <HelpText>
-          <p>{helpText}</p>
-        </HelpText>
-      )}
+    <div className="relative flex flex-col w-full h-full">
+      {label ? (
+        <label
+          className="flex mb-3 font-medium"
+          htmlFor={props.id || props.name}
+        >
+          {label}
+        </label>
+      ) : null}
       {autoResize ? (
-        <TextareaResize
-          className="input input--textarea"
+        <TextareaAutosize
+          className="rounded p-4 border border-gray-300 focus:outline-none focus:border-blue-500 resize-none"
           minRows={minRows || 4}
           onChange={(e) => {
             // custom logic
@@ -57,8 +53,8 @@ const TextareaInput = ({
           {...props} // eslint-disable-line react/jsx-props-no-spreading
         />
       ) : (
-        <Textarea
-          className="input input--textarea"
+        <textarea
+          className="rounded p-4 border border-gray-300 focus:outline-none focus:border-blue-500 resize-none"
           onChange={(e) => {
             // custom logic
             if (handleChange) {
@@ -71,7 +67,7 @@ const TextareaInput = ({
           {...props} // eslint-disable-line react/jsx-props-no-spreading
         />
       )}
-    </Wrapper>
+    </div>
   );
 };
 
