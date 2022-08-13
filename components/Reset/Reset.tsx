@@ -51,12 +51,7 @@ const Reset = ({ resetToken }) => {
               label="New Password Confirmation"
             />
           </div>
-          <Button
-            variant="confirm"
-            text="Reset Password"
-            submittingText="Resetting Password"
-            disabled={isSubmitting}
-          />
+          <Button text="Reset Password" isLoading={isSubmitting} />
         </StyledForm>
       )}
     </Formik>

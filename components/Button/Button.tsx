@@ -1,4 +1,4 @@
-import { HTMLProps, MouseEvent } from "react";
+import { HTMLProps } from "react";
 import classNames from "classnames";
 import Spinner from "../Spinner/Spinner";
 
@@ -8,7 +8,7 @@ export type ButtonProps = HTMLProps<HTMLButtonElement> & {
   type?: "button" | "submit";
   variant?: "primary" | "outline" | "link";
   isLoading?: boolean;
-  onClick?: (event?: MouseEvent) => void;
+  onClick?: () => void;
   className?: string;
 };
 

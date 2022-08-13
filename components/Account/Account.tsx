@@ -304,11 +304,10 @@ const Account = ({ mode }) => {
                       </FormRow>
                       <FormRow>
                         <Button
+                          text="Submit"
                           type="submit"
-                          disabled={
-                            isSubmitting ||
-                            (!fileUrl && isEqual(values, initialValues))
-                          }
+                          isLoading={isSubmitting}
+                          disabled={!fileUrl && isEqual(values, initialValues)}
                         >
                           {`Submit${isSubmitting ? "ting" : ""}`}
                           {isSubmitting ? <Spinner /> : null}
@@ -379,10 +378,11 @@ const Account = ({ mode }) => {
                     <FormInput type="password" name="passwordConfirmation" />
                   </FormRow>
                   <FormRow>
-                    <Button type="submit" disabled={isSubmitting}>
-                      Change Password
-                      {isSubmitting ? <Spinner /> : null}
-                    </Button>
+                    <Button
+                      text="Change Password"
+                      type="submit"
+                      isLoading={isSubmitting}
+                    />
                   </FormRow>
                   <FormRow>
                     <Link href="reset-password">

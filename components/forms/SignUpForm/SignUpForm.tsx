@@ -118,13 +118,7 @@ const SignUpForm = ({ className }) => {
               />
               <TextInput label="password" name="password" type="password" />
             </div>
-            <Button
-              variant="confirm"
-              text="Sign Up"
-              submittingText="Signing Up"
-              disabled={isSubmitting}
-              isSubmitting={isSubmitting}
-            />
+            <Button text="Sign Up" isLoading={isSubmitting} />
           </Form>
         )}
       </Formik>

@@ -5,8 +5,7 @@ import {
   UNFOLLOW_MUTATION,
 } from "../../apollo/queries";
 import useUser from "../../hooks/useUser";
-import Spinner from "../svgs/Spinner";
-import { Wrapper } from "./FollowButton.styled";
+import Button from "../Button/Button";
 
 // username - needed to refetch single user query
 // userId - the user we are looking at in lists userId - need it to for the nutation
@@ -28,25 +27,13 @@ const FollowButton = ({ username, userId, userFollowers }) => {
     refetchQueries: [{ query: SINGLE_USER_QUERY, variables: { username } }],
   });
 
-  const renderButtonContent = () => {
-    if (loading) {
-      return <Spinner />;
-    }
-
-    if (userFollowers.includes(currentUser.id)) {
-      return "Unfollow";
-    }
-
-    return "Follow";
-  };
-
   return (
-    <Wrapper
-      mode={userFollowers.includes(currentUser.id) ? "unfollow" : "follow"}
-      onClick={() => follow()}
-    >
-      {renderButtonContent()}
-    </Wrapper>
+    <Button
+      variant={userFollowers.includes(currentUser.id) ? "outline" : "primary"}
+      text={userFollowers.includes(currentUser.id) ? "Unfollow" : "Follow"}
+      onClick={() => follow()} // TODO: need to fix type Button onClick
+      isLoading={loading}
+    />
   );
 };
 

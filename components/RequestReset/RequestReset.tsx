@@ -39,12 +39,7 @@ const RequestReset = () => {
           <div>
             <TextInput name="email" type="email" label="Email" />
           </div>
-          <Button
-            variant="confirm"
-            text="Send Reset Link"
-            submittingText="Sending Reset Link"
-            disabled={isSubmitting}
-          />
+          <Button text="Send Reset Link" isLoading={isSubmitting} />
         </StyledForm>
       )}
     </Formik>

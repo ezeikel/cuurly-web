@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import BaseModal from "../BaseModal/BaseModal";
 import SettingsOptions from "../SettingsOptions/SettingsOptions";
 import Username from "../Username/Username";
-import Button from "../Button/Button";
 import FollowButton from "../FollowButton/FollowButton";
 import { Wrapper } from "./ProfileNav.styled";
 import useUser from "../../hooks/useUser";
@@ -24,11 +23,9 @@ const ProfileNav = ({ id, username, verified, followerIds }) => {
     <Wrapper>
       <Username user={{ username, verified }} />
       {currentUser?.id === id ? (
-        <Button>
-          <Link href="/account?edit">
-            <a>Edit profile</a>
-          </Link>
-        </Button>
+        <Link href="/account?edit">
+          <a>Edit profile</a>
+        </Link>
       ) : (
         <FollowButton
           username={username}
