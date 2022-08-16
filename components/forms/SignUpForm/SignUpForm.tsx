@@ -7,7 +7,7 @@ import formatAPIErrors from "../../../utils/formatAPIErrors";
 import { CURRENT_USER_QUERY, SIGNUP_MUTATION } from "../../../apollo/queries";
 import Button from "../../Button/Button";
 import FormWrapper from "../../form/FormWrapper/FormWrapper";
-import TextInput from "../../form/inputs/TextInput/TextInput";
+import TextInput from "../../form/inputs/formik/TextInput/TextInput";
 
 const SignUpSchema = Yup.object().shape({
   firstName: Yup.string()

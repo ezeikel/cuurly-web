@@ -1,6 +1,7 @@
 import React, { ChangeEvent, InputHTMLAttributes } from "react";
 import { useField } from "formik";
 import TextareaAutosize from "react-textarea-autosize";
+import classNames from "classnames";
 
 type TextareaInputProps = InputHTMLAttributes<HTMLTextAreaElement> & {
   id?: string;
@@ -13,6 +14,7 @@ type TextareaInputProps = InputHTMLAttributes<HTMLTextAreaElement> & {
   minRows?: number;
   handleChange?: (e: ChangeEvent) => void;
   className?: string;
+  noBorder?: boolean;
 };
 
 const TextareaInput = ({
@@ -22,6 +24,7 @@ const TextareaInput = ({
   minRows,
   handleChange,
   className,
+  noBorder,
   style, // BUG: TypeScript bug. Maybe related to https://github.com/Andarist/react-textarea-autosize/issues/269
   ...props
 }: TextareaInputProps) => {
@@ -39,7 +42,13 @@ const TextareaInput = ({
       ) : null}
       {autoResize ? (
         <TextareaAutosize
-          className="rounded p-4 border border-gray-300 focus:outline-none focus:border-blue-500 resize-none"
+          className={classNames(
+            "rounded p-4 focus:outline-none focus:border-blue-500 resize-none",
+            {
+              "border border-gray-300 shadow-sm": !noBorder,
+              [className]: !!className,
+            },
+          )}
           minRows={minRows || 4}
           onChange={(e) => {
             // custom logic
@@ -54,7 +63,13 @@ const TextareaInput = ({
         />
       ) : (
         <textarea
-          className="rounded p-4 border border-gray-300 focus:outline-none focus:border-blue-500 resize-none"
+          className={classNames(
+            "rounded p-4 focus:outline-none focus:border-blue-500 resize-none",
+            {
+              "border border-gray-300 shadow-sm": !noBorder,
+              [className]: !!className,
+            },
+          )}
           onChange={(e) => {
             // custom logic
             if (handleChange) {

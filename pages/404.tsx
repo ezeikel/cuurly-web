@@ -1,7 +1,6 @@
-import { FunctionComponent } from "react";
 import Error from "next/error";
 
-const NotFound: FunctionComponent = () => {
+const NotFound = () => {
   return <Error statusCode={404} />;
 };
 

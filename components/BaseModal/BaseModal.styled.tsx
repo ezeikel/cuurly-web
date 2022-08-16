@@ -5,10 +5,13 @@ import styled from "styled-components";
 import Modal from "react-modal";
 
 type StyledModalProps = {
-  center: boolean;
-  padding: number;
-  autoWidth: boolean;
-  maxWidth: number;
+  center?: boolean;
+  padding?: number;
+  autoWidth?: boolean;
+  autoHeight?: boolean;
+  maxWidth?: number;
+  noPadding?: boolean;
+  width?: string;
 };
 
 type ReactModalAdapterProps = {
@@ -62,15 +65,20 @@ export const StyledModal = styled(ReactModalAdapter).attrs({
   }
   .modal {
     display: flex;
-    padding: 32px;
+    padding: ${({ padding, noPadding }) =>
+      // eslint-disable-next-line no-nested-ternary
+      noPadding ? 0 : padding ? `${padding}px` : "32px"};
     background-color: #ffffff;
     border-radius: 4px;
     outline: 0;
-    width: 100%;
+    width: ${({ autoWidth, width }) =>
+      // eslint-disable-next-line no-nested-ternary, no-unneeded-ternary
+      width ? width : autoWidth ? "auto" : "100%"};
+    /* height: ${({ autoHeight }) => (autoHeight ? "auto" : "100%")}; */
     max-height: 100%;
     @media (min-width: 768px) {
-      max-width: 640px;
-      min-height: 200px;
+      max-width: ${({ maxWidth }) => maxWidth || "640"}px;
+      min-height: ${({ autoHeight }) => (autoHeight ? 0 : "200px")};
       max-height: 921px;
     }
   }

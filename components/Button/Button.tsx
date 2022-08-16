@@ -10,6 +10,7 @@ export type ButtonProps = HTMLProps<HTMLButtonElement> & {
   isLoading?: boolean;
   onClick?: () => void;
   className?: string;
+  noPadding?: boolean;
 };
 
 const Button = ({
@@ -20,16 +21,19 @@ const Button = ({
   disabled = false,
   onClick,
   className,
+  noPadding,
 }: ButtonProps) => {
   return (
     <button
       className={classNames(
-        "font-bold leading-none p-2 rounded flex items-center justify-center",
+        "leading-none rounded flex items-center justify-center",
         {
-          "bg-blue-500 hover:bg-blue-700 text-white": variant === "primary",
+          "bg-blue-500 hover:bg-blue-700 text-white font-bold":
+            variant === "primary",
           "border-border-gray-300 border bg-white text-grey-700":
             variant === "outline",
-          "border border-transparent text-blue-700": variant === "link",
+          "border border-transparent": variant === "link",
+          "p-2": !noPadding,
           [className]: !!className,
         },
       )}

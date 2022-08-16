@@ -6,7 +6,7 @@ import classNames from "classnames";
 import { CREATE_POST_MUTATION, CURRENT_USER_QUERY } from "../../apollo/queries";
 import Spinner from "../Spinner/Spinner";
 import UploadMedia from "../UploadMedia/UploadMedia";
-import TextareaInput from "../form/inputs/TextareaInput/TextareaInput";
+import TextareaInput from "../form/inputs/formik/TextareaInput/TextareaInput";
 import Button from "../Button/Button";
 
 const NUMBER_OF_STEPS = 2;

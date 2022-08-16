@@ -19,7 +19,7 @@ const PostPreview = ({ id }) => {
     fill: true,
     sources: [
       {
-        src: post.content.url,
+        src: post.media.url,
         type: "video/mp4",
       },
     ],
@@ -30,9 +30,9 @@ const PostPreview = ({ id }) => {
       <Link href="/post/[postId]" as={`/post/${post.id}`}>
         <a>
           <Preview key={post.id}>
-            {/(\.png$|\.jpg$|\.heic$)/.test(post.content.url) ? (
+            {/(\.png$|\.jpg$|\.heic$)/.test(post.media.url) ? (
               <img
-                src={post.content.url
+                src={post.media.url
                   .replace(/(\.png$|\.heic$)/, ".jpg")
                   .replace(
                     "/upload",

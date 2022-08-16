@@ -1,6 +1,6 @@
-import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMutation } from "@apollo/client";
+import classNames from "classnames";
 import {
   SINGLE_POST_QUERY,
   LIKE_POST_MUTATION,
@@ -10,69 +10,49 @@ import {
 } from "../../apollo/queries";
 import useUser from "../../hooks/useUser";
 
-const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-  cursor: pointer;
-`;
-
 const LikeButton = ({ postId, postLikes }) => {
-  const { user: currentUser } = useUser();
+  const { user } = useUser();
 
-  if (!currentUser) return null;
+  const liked = postLikes.map((like) => like.user.id).includes(user.id);
 
-  const mutate = postLikes.map((like) => like.user.id).includes(currentUser.id)
-    ? "unlikePost"
-    : "likePost";
-  const id = postLikes.map((like) => like.user.id).includes(currentUser.id)
-    ? postLikes.filter((like) => like.user.id === currentUser.id)[0].id
-    : postId;
+  const mutation = liked ? UNLIKE_POST_MUTATION : LIKE_POST_MUTATION;
 
-  const mutation = postLikes
-    .map((like) => like.user.id)
-    .includes(currentUser.id)
-    ? UNLIKE_POST_MUTATION
-    : LIKE_POST_MUTATION;
-
-  const [mutateFunc] = useMutation(mutation, {
-    variables: postLikes.map((like) => like.user.id).includes(currentUser.id)
+  const [mutateFunc, { loading }] = useMutation(mutation, {
+    variables: liked
       ? {
-          id: postLikes.filter((like) => like.user.id === currentUser.id)[0].id,
+          // either deleting an existing like using the like id
+          id: postLikes.filter((like) => like.user.id === user.id)[0].id,
         }
-      : { id: postId },
-    optimisticResponse: {
-      // https://www.apollographql.com/docs/react/features/optimistic-ui
-      __typeName: "Mutation", // TODO: Not sure if doing this right ~ no increase in speed it seems
-      [mutate]: {
-        __typename: "Like",
-        id,
-      },
-    },
+      : // or creating a new like asscoiated with the post id
+        { id: postId },
     refetchQueries: [
+      // TODO: UI update is really slow - can we have optimistic response for refetchedQuery
       { query: SINGLE_POST_QUERY, variables: { id: postId } },
       {
         query: LIKED_POSTS_QUERY,
-        variables: { id: currentUser.id },
+        variables: { id: user.id },
       },
       {
         query: SINGLE_USER_QUERY,
-        variables: { id: currentUser.id },
+        variables: { id: user.id },
       },
     ],
   });
 
+  if (!user) return null;
+
   return (
-    <StyledFontAwesomeIcon
-      icon={
-        postLikes.map((like) => like.user.id).includes(currentUser.id)
-          ? ["fas", "heart"]
-          : ["fal", "heart"]
-      }
-      color={
-        postLikes.map((like) => like.user.id).includes(currentUser.id)
-          ? "var(--color-red)"
-          : "var(--color-black)"
-      }
+    <FontAwesomeIcon
+      icon={liked ? ["fas", "heart"] : ["fal", "heart"]}
       size="lg"
-      onClick={() => mutateFunc()}
+      onClick={() => {
+        if (!loading) {
+          mutateFunc();
+        }
+      }}
+      className={classNames("cursor-pointer", {
+        "text-red-500": liked,
+      })}
     />
   );
 };

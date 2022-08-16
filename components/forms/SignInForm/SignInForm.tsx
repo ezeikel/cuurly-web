@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import formatAPIErrors from "../../../utils/formatAPIErrors";
 import { CURRENT_USER_QUERY, SIGNIN_MUTATION } from "../../../apollo/queries";
 import Button from "../../Button/Button";
-import TextInput from "../../form/inputs/TextInput/TextInput";
+import TextInput from "../../form/inputs/formik/TextInput/TextInput";
 
 const SignInSchema = Yup.object().shape({
   username: Yup.string().required("Please enter a Username."),
@@ -91,6 +91,7 @@ const SignInForm = () => {
 
           <Button
             text="Sign In"
+            type="submit"
             isLoading={isSubmitting}
             className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           />

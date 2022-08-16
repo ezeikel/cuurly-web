@@ -14,6 +14,7 @@ Modal.setAppElement("body");
 type BaseModalProps = {
   heading?: string;
   autoWidth?: boolean;
+  autoHeight?: boolean;
   maxWidth?: number;
   isOpen: boolean;
   padding?: number;
@@ -23,11 +24,14 @@ type BaseModalProps = {
   close: () => void;
   children: ReactNode;
   className?: string;
+  noPadding?: boolean;
+  width?: string;
 };
 
 const BaseModal = ({
   heading,
   autoWidth,
+  autoHeight,
   maxWidth,
   isOpen = false,
   padding,
@@ -37,6 +41,8 @@ const BaseModal = ({
   close,
   children,
   className,
+  noPadding,
+  width,
 }: BaseModalProps): ReactElement => {
   const modalEl = useRef(null);
 
@@ -68,34 +74,19 @@ const BaseModal = ({
     };
   }, [isOpen, modalEl.current]);
 
-  // export const Header = styled.section`
-  //   display: grid;
-  //   grid-template-columns: 1fr 42px;
-  //   align-items: center;
-  //   border-bottom: 1px solid #efefef;
-  //   h1 {
-  //     justify-self: center;
-  //     font-size: 1.6rem;
-  //     line-height: 2.4rem;
-  //     margin: 0;
-  //   }
-  //   svg {
-  //     align-self: center;
-  //     justify-self: center;
-  //     cursor: pointer;
-  //   }
-  // `;
-
   return (
     <StyledModal
       isOpen={isOpen}
       contentLabel={contentLabel}
       onRequestClose={onRequestClose}
       autoWidth={autoWidth}
+      autoHeight={autoHeight}
       maxWidth={maxWidth}
       padding={padding}
       center={center}
       className={className}
+      noPadding={noPadding}
+      width={width}
     >
       {heading ? (
         <header className="flex items-center justify-between">

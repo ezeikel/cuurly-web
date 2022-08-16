@@ -1,4 +1,3 @@
-import { FunctionComponent } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import RequestReset from "../components/RequestReset/RequestReset";
@@ -25,7 +24,7 @@ const StyledFormWrapper = styled.div`
   justify-items: center;
 `;
 
-const requestResetPage: FunctionComponent = () => (
+const RequestResetPage = () => (
   <Wrapper>
     <StyledFormWrapper>
       <FontAwesomeIcon
@@ -43,4 +42,4 @@ const requestResetPage: FunctionComponent = () => (
   </Wrapper>
 );
 
-export default requestResetPage;
+export default RequestResetPage;

@@ -18,7 +18,6 @@ import {
   faAngleDown,
   faMagnifyingGlass,
   faPhotoFilm,
-  faSpinner,
 } from "@fortawesome/pro-light-svg-icons";
 import {
   faComment,
@@ -26,6 +25,7 @@ import {
   faHeart as fasHeart,
   faPlay,
 } from "@fortawesome/pro-solid-svg-icons";
+import { faSpinnerThird } from "@fortawesome/pro-duotone-svg-icons";
 import { faInboxOut, faEllipsisH } from "@fortawesome/pro-regular-svg-icons";
 import mixpanel from "mixpanel-browser";
 import { useApollo } from "../apollo/client";
@@ -65,7 +65,7 @@ library.add(
   faAngleDown,
   faMagnifyingGlass,
   faPhotoFilm,
-  faSpinner,
+  faSpinnerThird,
 );
 
 const MyApp = ({ Component, pageProps, err }: AppProps & { err: any }) => {

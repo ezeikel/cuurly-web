@@ -1,4 +1,3 @@
-import { FunctionComponent } from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import Profile from "../components/Profile/Profile";
@@ -8,7 +7,7 @@ const Wrapper = styled.div`
   flex-direction: column;
 `;
 
-const ProfilePage: FunctionComponent = () => {
+const ProfilePage = () => {
   const router = useRouter();
   const { username } = router.query;
 

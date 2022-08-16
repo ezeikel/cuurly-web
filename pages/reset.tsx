@@ -1,4 +1,3 @@
-import { FunctionComponent } from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -26,7 +25,7 @@ const StyledFormWrapper = styled.div`
   justify-items: center;
 `;
 
-const resetPage: FunctionComponent = () => {
+const ResetPage = () => {
   const router = useRouter();
   const { resetToken } = router.query;
 
@@ -49,4 +48,4 @@ const resetPage: FunctionComponent = () => {
   );
 };
 
-export default resetPage;
+export default ResetPage;

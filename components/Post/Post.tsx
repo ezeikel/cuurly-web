@@ -1,201 +1,124 @@
 import { useState } from "react";
-import Link from "next/link";
 import { useQuery } from "@apollo/client";
-import styled from "styled-components";
 import formatDistance from "date-fns/formatDistance";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import LikeButton from "../LikeButton/LikeButton";
-import PostComment from "../PostComment/PostComment";
-import Comment from "../Comment/Comment";
-import DeletePost from "../DeletePost/DeletePost";
+import classNames from "classnames";
 import { SINGLE_POST_QUERY } from "../../apollo/queries";
 import VideoPlayer from "../VideoPlayer/VideoPlayer";
-import {
-  Wrapper,
-  PostHeader,
-  Details,
-  Username,
-  Location,
-  PostContent,
-  PostInteraction,
-  Buttons,
-  Likes,
-  Caption,
-  PostTime,
-  AddComment,
-  ModalBody,
-  CommentList,
-  PostActions,
-  PostAction,
-} from "./Post.styled";
-import BaseModal from "../BaseModal/BaseModal";
-import useUser from "../../hooks/useUser";
 import Avatar from "../Avatar/Avatar";
+import PostActionsModal from "../modals/PostActionsModal/PostActionsModal";
+import Spinner from "../Spinner/Spinner";
+import PostInteractions from "../PostInteractions/PostInteractions";
+import PostCommentForm from "../forms/PostCommentForm/PostCommentForm";
+import PostLikes from "../PostLikes/PostLikes";
+import PostCaption from "../PostCaption/PostCaption";
+import PostComments from "../PostComments/PostComments";
 
-const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-  cursor: pointer;
-`;
+type PostProps = {
+  id?: string;
+  post?: any;
+  className?: string;
+};
 
-const Post = ({ id }) => {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const openModal = () => setModalIsOpen(true);
-  const closeModal = () => setModalIsOpen(false);
-  const { user: currentUser } = useUser();
-
-  if (!id || !currentUser) return null;
+const Post = ({ id, post: postData, className }: PostProps) => {
+  const [postActionsModalIsOpen, setPostActionsModalIsOpen] = useState(false);
+  const openPostActionsModal = () => setPostActionsModalIsOpen(true);
+  const closePostActionsModal = () => setPostActionsModalIsOpen(false);
 
   const {
-    loading,
-    data: { post } = {}, // setting default value when destructing as data is undefined when loading - https://github.com/apollographql/react-apollo/issues/3323#issuecomment-523430331
+    loading: loadingPost,
+    data: { post: fetchedPostData } = {}, // setting default value when destructing as data is undefined when loading - https://github.com/apollographql/react-apollo/issues/3323#issuecomment-523430331
   } = useQuery(SINGLE_POST_QUERY, {
     variables: { id },
+    skip: !id,
   });
 
-  if (loading || !post) return null;
-
-  const isCurrentUsersPost = currentUser && currentUser.id === post.author.id;
+  // either post from feed query or fetched post from single post query
+  const post = postData || fetchedPostData;
 
   const videoJsOptions = {
     autoplay: false,
     fluid: true,
     sources: [
       {
-        src: post.content.url,
+        src: post?.media.url,
         type: "video/mp4",
       },
     ],
   };
 
+  if (loadingPost) {
+    return <Spinner />;
+  }
+
+  if (!post) return null;
+
   return (
-    <Wrapper>
-      <PostHeader>
-        <Avatar
-          src={
-            post.author.profilePicture &&
-            post.author.profilePicture.url.replace(
+    <>
+      <div
+        className={classNames(
+          "flex flex-col rounded border border-slate-200 bg-white",
+          {
+            [className]: !!className,
+          },
+        )}
+      >
+        <header className="grid grid-cols-[30px_1fr_auto] grid-rows-[30px] gap-x-2 items-center p-4 border-[#efefef] border-b-[0.5px]">
+          <Avatar
+            src={post.author?.profilePicture?.url.replace(
               "/upload",
               "/upload/w_30,h_30,c_lfill,g_face,dpr_2.0",
-            )
-          }
-          className="h-8 w-8"
-        />
-        <Details>
-          <Username>{post.author.username}</Username>
-          <Location>Random post location</Location>
-        </Details>
-        <StyledFontAwesomeIcon
-          onClick={openModal}
-          icon={["far", "ellipsis-h"]}
-          color="var(--color-black)"
-          size="lg"
-        />
-        <BaseModal
-          isOpen={modalIsOpen}
-          close={closeModal}
-          contentLabel="Post Actions"
-        >
-          <ModalBody>
-            <PostActions>
-              <PostAction>
-                <Link href="/post/[postId]" as={`/post/${post.id}`}>
-                  <a>
-                    <span>Go to Post</span>
-                  </a>
-                </Link>
-              </PostAction>
-              {isCurrentUsersPost ? (
-                <>
-                  <PostAction disabled>
-                    <span>Archive</span>
-                  </PostAction>
-                  <PostAction disabled>
-                    <span>Edit</span>
-                  </PostAction>
-                </>
-              ) : null}
-              <PostAction disabled>
-                <span>Copy Link</span>
-              </PostAction>
-              <PostAction disabled>
-                <span>Share</span>
-              </PostAction>
-              {isCurrentUsersPost ? (
-                <PostAction actionType="negative">
-                  <DeletePost post={post} />
-                </PostAction>
-              ) : null}
-              {!isCurrentUsersPost ? (
-                <>
-                  <PostAction disabled>
-                    <span>Mute</span>
-                  </PostAction>
-                  <PostAction disabled actionType="negative">
-                    <span>Report</span>
-                  </PostAction>
-                  <PostAction actionType="negative">
-                    <span>Unfollow</span>
-                  </PostAction>
-                </>
-              ) : null}
-              <PostAction>
-                <button type="button" onClick={closeModal}>
-                  Cancel
-                </button>
-              </PostAction>
-            </PostActions>
-          </ModalBody>
-        </BaseModal>
-      </PostHeader>
-      <PostContent>
-        {/(\.png$|\.jpg$|\.heic$)/.test(post.content.url) ? (
+            )}
+            className="h-8 w-8"
+          />
+          <div className="grid grid-rows-2 gap-y-0.5">
+            <div className="text-sm font-bold">{post.author?.username}</div>
+            <div className="text-xs">Random post location</div>
+          </div>
+          <FontAwesomeIcon
+            onClick={openPostActionsModal}
+            icon={["far", "ellipsis-h"]}
+            color="var(--color-black)"
+            size="lg"
+            className="cursor-pointer"
+          />
+        </header>
+        {/** TODO: support multiple media */}
+        {/(\.png$|\.jpg$|\.heic$|\.webp$)/.test(post.media[0].url) ? (
           <img
-            src={post.content.url
-              .replace(/(\.png$|\.heic$)/, ".jpg")
+            className="aspect-square w-full"
+            src={post.media[0].url
+              .replace(/(\.png$|\.heic$|\.webp$)/, ".jpg")
               .replace("/upload", "/upload/w_350,h_350,ar_1:1,c_fill,dpr_2.0")}
             alt="post"
           />
         ) : (
           <VideoPlayer {...videoJsOptions} /> // eslint-disable-line react/jsx-props-no-spreading
         )}
-      </PostContent>
-      <PostInteraction>
-        {currentUser ? (
-          <Buttons>
-            <LikeButton postId={id} postLikes={post.likes} />
-          </Buttons>
-        ) : null}
-        {post.likes.length ? (
-          <Likes>
-            {post.likes.length} like
-            {post.likes.length > 1 ? "s" : null}
-          </Likes>
-        ) : null}
-        <Caption>
-          <Link href="/[username]" as={`/${post.author.username}`}>
-            <a>{post.author.username}</a>
-          </Link>
-          {post.caption}
-        </Caption>
-        <CommentList>
-          {post.comments.map((comment) => (
-            <Comment key={comment.id} comment={comment} post={post} />
-          ))}
-        </CommentList>
-        <PostTime>
-          {formatDistance(post.createdAt, new Date(), {
-            includeSeconds: true,
-          })}{" "}
-          ago
-        </PostTime>
-        {currentUser ? (
-          <AddComment>
-            <PostComment postId={post.id} />
-          </AddComment>
-        ) : (
-          <span>Log in to comment.</span>
-        )}
-      </PostInteraction>
-    </Wrapper>
+        <div className="p-4 border-b-[1px] border-slate-200">
+          <PostInteractions className="mb-2" post={post} />
+          <PostLikes className="mb-2" likes={post.likes} />
+          <PostCaption
+            caption={post.caption}
+            author={post.author}
+            className="mb-2"
+          />
+          <PostComments post={post} className="mb-4" />
+          <div className="text-xs leading-3 text-[#999]">
+            {formatDistance(post.createdAt, new Date(), {
+              includeSeconds: true,
+            })}
+            &nbsp;ago
+          </div>
+        </div>
+        <PostCommentForm postId={post.id} />
+      </div>
+      <PostActionsModal
+        post={post}
+        isOpen={postActionsModalIsOpen}
+        handleClose={closePostActionsModal}
+      />
+    </>
   );
 };
 

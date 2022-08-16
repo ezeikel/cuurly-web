@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { REQUEST_RESET_MUTATION } from "../../apollo/queries";
 import formatAPIErrors from "../../utils/formatAPIErrors";
 import { StyledForm } from "./RequestReset.styled";
-import TextInput from "../form/inputs/TextInput/TextInput";
+import TextInput from "../form/inputs/formik/TextInput/TextInput";
 import Button from "../Button/Button";
 
 const ReqeuestResetSchema = Yup.object().shape({

@@ -1,47 +1,46 @@
-import { Formik, ErrorMessage } from "formik";
-import * as Yup from "yup";
+import Link from "next/link";
 import { useMutation } from "@apollo/client";
-import { SINGLE_POST_QUERY, ADD_COMMENT_MUTATION } from "../../apollo/queries";
-import { StyledField, StyledForm } from "./PostComment.styled";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import classNames from "classnames";
+import {
+  SINGLE_POST_QUERY,
+  DELETE_COMMENT_MUTATION,
+} from "../../apollo/queries";
 import useUser from "../../hooks/useUser";
 
-const CommentSchema = Yup.object().shape({
-  text: Yup.string().required("Comment can not be blank."),
-  // .min(1, 'Comment can not be blank.')
-});
-
-const PostComment = ({ postId }) => {
+const Comment = ({ comment, post }) => {
   const { user: currentUser } = useUser();
+
+  const [deleteComment] = useMutation(DELETE_COMMENT_MUTATION, {
+    variables: { id: comment.id },
+    refetchQueries: [{ query: SINGLE_POST_QUERY, variables: { id: post.id } }],
+  });
+
+  const canDelete =
+    currentUser?.id === comment.writtenBy.id ||
+    currentUser?.id === post.author.id;
 
   if (!currentUser) return null;
 
-  const [addComment] = useMutation(ADD_COMMENT_MUTATION, {
-    refetchQueries: [{ query: SINGLE_POST_QUERY, variables: { id: postId } }],
-  });
-
   return (
-    <Formik
-      initialValues={{ text: "" }}
-      validationSchema={CommentSchema}
-      onSubmit={async (values, { resetForm }) => {
-        try {
-          await addComment({
-            variables: { ...values, id: postId },
-          });
-          resetForm();
-        } catch (e) {
-          console.error(`Formik Error: ${e}`);
-        }
-      }}
-    >
-      {() => (
-        <StyledForm>
-          <StyledField type="text" name="text" placeholder="Add a comment..." />
-          <ErrorMessage name="text" />
-        </StyledForm>
-      )}
-    </Formik>
+    <div className="flex gap-x-3 items-center">
+      <div className={classNames("flex gap-x-1 items-center")}>
+        <Link href="/[username]" as={`/${comment.writtenBy.username}`}>
+          <a className="text-sm font-bold">{comment.writtenBy.username}</a>
+        </Link>
+        <span className="text-sm">{comment.text}</span>
+      </div>
+      {canDelete ? (
+        <FontAwesomeIcon
+          onClick={() => deleteComment()}
+          icon={["fal", "times"]}
+          color="#c7c7c7"
+          size="sm"
+          className="cursor-pointer"
+        />
+      ) : null}
+    </div>
   );
 };
 
-export default PostComment;
+export default Comment;

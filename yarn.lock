@@ -1387,10 +1387,10 @@
   dependencies:
     "@fortawesome/fontawesome-common-types" "6.1.2"
 
-"@fortawesome/free-solid-svg-icons@^6.1.2":
+"@fortawesome/pro-duotone-svg-icons@^6.1.2":
   version "6.1.2"
-  resolved "https://npm.fontawesome.com/@fortawesome/free-solid-svg-icons/-/6.1.2/free-solid-svg-icons-6.1.2.tgz#491d668b8a6603698d0ce1ac620f66fd22b74c84"
-  integrity sha512-lTgZz+cMpzjkHmCwOG3E1ilUZrnINYdqMmrkv30EC3XbRsGlbIOL8H9LaNp5SV4g0pNJDfQ4EdTWWaMvdwyLiQ==
+  resolved "https://npm.fontawesome.com/@fortawesome/pro-duotone-svg-icons/-/6.1.2/pro-duotone-svg-icons-6.1.2.tgz#a562da19bacbb58da355bb4ad27f53f13702053a"
+  integrity sha512-sUB+nVtY32XC2P/xkaG481csWfZ0MKXzDycwl3YEEi7POx77eF+qnD7HnaKaDNrln7H+ntEelnvRdVti59tQ/Q==
   dependencies:
     "@fortawesome/fontawesome-common-types" "6.1.2"
 
@@ -1412,6 +1412,13 @@
   version "6.1.2"
   resolved "https://npm.fontawesome.com/@fortawesome/pro-solid-svg-icons/-/6.1.2/pro-solid-svg-icons-6.1.2.tgz#ecdab98c3e901c72e99c5a1a961070b3b80e05d6"
   integrity sha512-E1TzmbuO0Klch/EqAjh4WPs93Oss8KwY5MUi2pcSyflN8sq5UqnMZFLWGlLQy24BXeMwgMDw4Aa9xH6lVNg1ig==
+  dependencies:
+    "@fortawesome/fontawesome-common-types" "6.1.2"
+
+"@fortawesome/pro-thin-svg-icons@^6.1.2":
+  version "6.1.2"
+  resolved "https://npm.fontawesome.com/@fortawesome/pro-thin-svg-icons/-/6.1.2/pro-thin-svg-icons-6.1.2.tgz#20dd695caffccc27bf983e6a89b5404588b2767d"
+  integrity sha512-X4zq1SPqs6wK3QcK/6maLUVfqKHdx5hh9IwBreDCZfCncJH09stmpVEU+BvjlhxXGgt2Fb8v+UJbz410z3XOtg==
   dependencies:
     "@fortawesome/fontawesome-common-types" "6.1.2"
 

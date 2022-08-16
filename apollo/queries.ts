@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client";
+import { CORE_POST_FIELDS } from "./fragments";
 
 // TODO: use fragments where it makes sense
 
@@ -139,46 +140,19 @@ export const USER_FOLLOWING_QUERY = gql`
 `;
 
 export const SINGLE_POST_QUERY = gql`
+  ${CORE_POST_FIELDS}
   query SINGLE_POST_QUERY($id: ID!) {
     post(id: $id) {
-      id
-      content {
-        url
-        publicId
-      }
-      caption
-      author {
-        id
-        username
-        profile {
-          picture {
-            url
-          }
-        }
-      }
-      likes {
-        id
-        user {
-          id
-        }
-      }
-      comments {
-        id
-        text
-        writtenBy {
-          id
-          username
-        }
-      }
-      createdAt
+      ...CorePostFields
     }
   }
 `;
 
 export const FEED_QUERY = gql`
+  ${CORE_POST_FIELDS}
   query FEED_QUERY($id: ID!) {
     feed(id: $id) {
-      id
+      ...CorePostFields
     }
   }
 `;
@@ -216,7 +190,7 @@ export const LIKED_POSTS_QUERY = gql`
         id
         post {
           id
-          content {
+          media {
             url
           }
           caption

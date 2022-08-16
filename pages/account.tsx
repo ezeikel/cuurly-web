@@ -1,4 +1,3 @@
-import { FunctionComponent } from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import Account from "../components/Account/Account";
@@ -8,7 +7,7 @@ const Wrapper = styled.div`
   padding: var(--padding-page-wrap);
 `;
 
-const AccountPage: FunctionComponent = () => {
+const AccountPage = () => {
   const router = useRouter();
   const { mode } = router.query;
 
