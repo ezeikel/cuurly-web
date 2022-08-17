@@ -3,7 +3,13 @@ import { useEffect, useRef } from "react";
 import videojs from "video.js";
 import { Wrapper } from "./VideoPlayer.styled";
 
-const VideoPlayer = ({ options, onReady, className }) => {
+type VidepPlayerProps = {
+  options: videojs.PlayerOptions;
+  onReady?: (player: videojs.Player) => void;
+  className?: string;
+};
+
+const VideoPlayer = ({ options, onReady, className }: VidepPlayerProps) => {
   const videoRef = useRef(null);
   const playerRef = useRef(null);
 
