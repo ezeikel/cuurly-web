@@ -38,14 +38,15 @@ export const SINGLE_USER_QUERY = gql`
       id
       firstName
       lastName
+      name
       username
       profile {
+        bio
+        website
         picture {
           url
         }
       }
-      bio
-      website
       email
       phoneNumber
       gender

@@ -10,7 +10,7 @@ const Feed = ({ posts }) => {
   }
 
   return (
-    <div className="flex flex-col gap-x-4 p-8 items-center">
+    <div className="flex flex-col gap-y-8 p-8 items-center">
       <Posts posts={posts} />
     </div>
   );

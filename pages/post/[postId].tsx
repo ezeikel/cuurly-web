@@ -9,7 +9,10 @@ const PostPage = () => {
 
   return (
     <div className="flex p-4 items-center justify-center md:h-full">
-      <Post id={postId as string} className="w-86 md:w-[760px]" />
+      <Post
+        id={postId as string}
+        mediaClasses="w-full md:w-[600px] md:h-[600px]"
+      />
     </div>
   );
 };

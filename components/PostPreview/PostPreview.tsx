@@ -1,11 +1,11 @@
 import { useQuery } from "@apollo/client";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import classNames from "classnames";
 import { SINGLE_POST_QUERY } from "../../apollo/queries";
 import VideoPlayer from "../VideoPlayer/VideoPlayer";
-import { Wrapper, Preview, Overlay, Stats, Stat } from "./PostPreview.styled";
 
-const PostPreview = ({ id }) => {
+const PostPreview = ({ id, className }) => {
   const {
     data: { post } = {}, // setting default value when destructing as data is undefined when loading - https://github.com/apollographql/react-apollo/issues/3323#issuecomment-523430331
   } = useQuery(SINGLE_POST_QUERY, {
@@ -26,14 +26,19 @@ const PostPreview = ({ id }) => {
   };
 
   return (
-    <Wrapper>
+    <li
+      className={classNames("relative cursor-pointer", {
+        [className]: !!className,
+      })}
+    >
       <Link href="/post/[postId]" as={`/post/${post.id}`}>
         <a>
-          <Preview key={post.id}>
-            {/(\.png$|\.jpg$|\.heic$)/.test(post.media.url) ? (
+          <div className="h-full" key={post.id}>
+            {/(\.png$|\.jpg$|\.heic$|\.webp$)/.test(post.media[0].url) ? (
               <img
-                src={post.media.url
-                  .replace(/(\.png$|\.heic$)/, ".jpg")
+                className="object-cover h-full w-full"
+                src={post.media[0].url
+                  .replace(/(\.png$|\.heic$|\.webp$)/, ".jpg")
                   .replace(
                     "/upload",
                     "/upload/w_350,h_350,ar_1:1,c_fill,dpr_2.0",
@@ -43,33 +48,34 @@ const PostPreview = ({ id }) => {
             ) : (
               /* TODO: instagram uses the poster <img /> here instead of the actual video element */
               <VideoPlayer
+                className="object-cover h-full w-full"
                 {...videoJsOptions} /* eslint-disable-line react/jsx-props-no-spreading */
               />
             )}
-          </Preview>
-          <Overlay>
-            <Stats>
-              <Stat>
+          </div>
+          <div className="grid place-items-center absolute top-0 bg-black/30 w-full h-full opacity-0 hover:opacity-100 transition-opacity">
+            <div className="grid grid-cols-2 gap-x-4">
+              <span className="grid grid-cols-2 gap-x-2 place-items-center text-white text-lg font-bold">
                 <FontAwesomeIcon
                   icon={["fas", "heart"]}
-                  color="var(--color-white)"
+                  className="text-white"
                   size="lg"
                 />
                 {post.likes.length}
-              </Stat>
-              <Stat>
+              </span>
+              <span className="grid grid-cols-2 gap-x-2 place-items-center text-white text-lg font-bold">
                 <FontAwesomeIcon
                   icon={["fas", "comment"]}
-                  color="var(--color-white)"
+                  className="text-white"
                   size="lg"
                 />
                 {post.comments.length}
-              </Stat>
-            </Stats>
-          </Overlay>
+              </span>
+            </div>
+          </div>
         </a>
       </Link>
-    </Wrapper>
+    </li>
   );
 };
 

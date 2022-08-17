@@ -18,9 +18,10 @@ type PostProps = {
   id?: string;
   post?: any;
   className?: string;
+  mediaClasses?: string;
 };
 
-const Post = ({ id, post: postData, className }: PostProps) => {
+const Post = ({ id, post: postData, className, mediaClasses }: PostProps) => {
   const [postActionsModalIsOpen, setPostActionsModalIsOpen] = useState(false);
   const openPostActionsModal = () => setPostActionsModalIsOpen(true);
   const closePostActionsModal = () => setPostActionsModalIsOpen(false);
@@ -86,7 +87,9 @@ const Post = ({ id, post: postData, className }: PostProps) => {
         {/** TODO: support multiple media */}
         {/(\.png$|\.jpg$|\.heic$|\.webp$)/.test(post.media[0].url) ? (
           <img
-            className="aspect-square w-full"
+            className={classNames("aspect-square w-full", {
+              [mediaClasses]: !!mediaClasses,
+            })}
             src={post.media[0].url
               .replace(/(\.png$|\.heic$|\.webp$)/, ".jpg")
               .replace("/upload", "/upload/w_350,h_350,ar_1:1,c_fill,dpr_2.0")}

@@ -1,11 +1,11 @@
+import classNames from "classnames";
 import { useEffect, useRef } from "react";
 import videojs from "video.js";
 import { Wrapper } from "./VideoPlayer.styled";
 
-const VideoPlayer = (props) => {
+const VideoPlayer = ({ options, onReady, className }) => {
   const videoRef = useRef(null);
   const playerRef = useRef(null);
-  const { options, onReady } = props;
 
   useEffect(() => {
     // make sure Video.js player is only initialized once
@@ -39,7 +39,11 @@ const VideoPlayer = (props) => {
   }, [playerRef]);
 
   return (
-    <Wrapper>
+    <Wrapper
+      className={classNames({
+        [className]: !!className,
+      })}
+    >
       <div data-vjs-player>
         <video
           ref={videoRef}

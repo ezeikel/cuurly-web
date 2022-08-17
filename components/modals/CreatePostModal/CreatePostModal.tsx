@@ -14,7 +14,7 @@ const CreatePostModal = ({ isOpen, handleClose }) => {
     <BaseModal
       isOpen={isOpen}
       onRequestClose={handleClose}
-      contentLabel="Change Profile Picture Modal"
+      contentLabel="Create Post Modal"
       close={handleClose}
     >
       <CreatePostForm />
