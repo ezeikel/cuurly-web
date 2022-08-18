@@ -49,7 +49,7 @@ const PostPreview = ({ id, className }) => {
               /* TODO: instagram uses the poster <img /> here instead of the actual video element */
               <VideoPlayer
                 className="object-cover h-full w-full"
-                {...videoJsOptions} /* eslint-disable-line react/jsx-props-no-spreading */
+                options={videoJsOptions}
               />
             )}
           </div>

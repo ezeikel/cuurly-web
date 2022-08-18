@@ -96,7 +96,7 @@ const Post = ({ id, post: postData, className, mediaClasses }: PostProps) => {
             alt="post"
           />
         ) : (
-          <VideoPlayer {...videoJsOptions} /> // eslint-disable-line react/jsx-props-no-spreading
+          <VideoPlayer options={videoJsOptions} />
         )}
         <div className="p-4 border-b-[1px] border-slate-200">
           <PostInteractions className="mb-2" post={post} />
