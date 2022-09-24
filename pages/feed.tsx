@@ -15,7 +15,12 @@ const FeedPage = () => {
     },
   );
 
-  if (isLoadingUser || isLoadingPosts) return <Spinner />;
+  if (isLoadingUser || isLoadingPosts)
+    return (
+      <div className="flex justify-center items-center h-full">
+        <Spinner />
+      </div>
+    );
 
   if (!user) return null;
 

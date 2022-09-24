@@ -4,7 +4,6 @@ import { useQuery, useMutation } from "@apollo/client";
 import { Formik } from "formik";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
-import Spinner from "../svgs/Spinner";
 import Button from "../Button/Button";
 import {
   CURRENT_USER_QUERY,
@@ -31,6 +30,7 @@ import ChangeProfilePictureModal from "../modals/ChangeProfilePictureModal/Chang
 import { PHONE_REGEX, GENDER_OPTIONS } from "../../constants";
 import useUser from "../../hooks/useUser";
 import Avatar from "../Avatar/Avatar";
+import Spinner from "../Spinner/Spinner";
 
 function isEqual(a, b) {
   // Create arrays of property names

@@ -1,22 +1,26 @@
 import { useRouter } from "next/router";
-import styled from "styled-components";
+import { useQuery } from "@apollo/client";
+import { SINGLE_USER_QUERY } from "../apollo/queries";
 import Profile from "../components/Profile/Profile";
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
+import Spinner from "../components/Spinner/Spinner";
 
 const ProfilePage = () => {
   const router = useRouter();
   const { username } = router.query;
 
-  if (!username) return null;
+  const { loading: loadingUser, data: { user } = {} } = useQuery(
+    SINGLE_USER_QUERY,
+    {
+      variables: { username },
+    },
+  );
+
+  if (loadingUser) return <Spinner />;
 
   return (
-    <Wrapper>
-      <Profile username={username} />
-    </Wrapper>
+    <div className="flex flex-col">
+      <Profile user={user} />
+    </div>
   );
 };
 

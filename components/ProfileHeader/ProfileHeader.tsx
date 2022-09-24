@@ -43,7 +43,7 @@ const ProfileHeader = ({
 
   return (
     <>
-      <header className="flex justify-center gap-x-16">
+      <section className="flex justify-center gap-x-16">
         <Avatar
           src={profile.picture?.url}
           context="profile"
@@ -121,7 +121,7 @@ const ProfileHeader = ({
             ) : null}
           </div>
         </div>
-      </header>
+      </section>
       <UserSettingsModal
         isOpen={settingsModalIsOpen}
         handleClose={closeSettingsModal}

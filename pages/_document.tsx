@@ -54,6 +54,10 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
+          <link
+            rel="stylesheet"
+            href={`https://use.typekit.net/${process.env.TYPEKIT_ID}.css`}
+          />
           {/* Global site tag (gtag.js) - Google Analytics */}
           <script
             async

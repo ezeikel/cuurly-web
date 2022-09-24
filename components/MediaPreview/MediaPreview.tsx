@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import Image from "next/future/image";
 
 const MediaPreview = ({ files, convertingImage, className }) => {
   if (convertingImage) {
@@ -25,7 +26,9 @@ const MediaPreview = ({ files, convertingImage, className }) => {
           }
 
           return (
-            <img
+            <Image
+              width={200}
+              height={200}
               className="object-cover w-full h-full"
               key={file.preview}
               src={file.preview}

@@ -2,6 +2,7 @@ import { useQuery } from "@apollo/client";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
+import Image from "next/future/image";
 import { SINGLE_POST_QUERY } from "../../apollo/queries";
 import VideoPlayer from "../VideoPlayer/VideoPlayer";
 
@@ -35,7 +36,9 @@ const PostPreview = ({ id, className }) => {
         <a>
           <div className="h-full" key={post.id}>
             {/(\.png$|\.jpg$|\.heic$|\.webp$)/.test(post.media[0].url) ? (
-              <img
+              <Image
+                width={350}
+                height={350}
                 className="object-cover h-full w-full"
                 src={post.media[0].url
                   .replace(/(\.png$|\.heic$|\.webp$)/, ".jpg")

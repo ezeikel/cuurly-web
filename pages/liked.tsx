@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useQuery } from "@apollo/client";
+import Image from "next/future/image";
 import { LIKED_POSTS_QUERY } from "../apollo/queries";
 
 const LikedPage = () => {
@@ -26,7 +27,12 @@ const LikedPage = () => {
             <Link href="/post/[postId]" as={`/post/${like.post.id}`}>
               <a>{like.post.author.username}</a>
             </Link>
-            <img src={like.post.media.url} alt="post" />
+            <Image
+              width={350}
+              height={350}
+              src={like.post.media.url}
+              alt="post"
+            />
             <span>{like.post.caption}</span>
           </div>
         ))}

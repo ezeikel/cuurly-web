@@ -41,6 +41,7 @@ const Page = ({ className, children }: PageProps) => {
   return (
     <>
       <GlobalStyles />
+      <Meta />
       <div
         className={classNames("min-h-screen grid", {
           "grid-rows-1": isUserAccessPage,
@@ -48,7 +49,6 @@ const Page = ({ className, children }: PageProps) => {
           [className]: className,
         })}
       >
-        <Meta />
         {isUserAccessPage ? null : <Header className="h-20 col-span-1" />}
         <div className="flex flex-col flex-1 bg-gray-50">
           <main className="flex-1 flex flex-col">{children}</main>

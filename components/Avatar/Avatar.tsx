@@ -1,5 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/pro-light-svg-icons";
 import classNames from "classnames";
+import Image from "next/future/image";
 
 type AvatarProps = {
   src?: string;
@@ -9,7 +11,7 @@ type AvatarProps = {
 
 const Avatar = ({ src, context, className }: AvatarProps) =>
   src ? (
-    <img
+    <Image
       src={src}
       alt="avatar"
       className={classNames("rounded-full", {
@@ -26,7 +28,7 @@ const Avatar = ({ src, context, className }: AvatarProps) =>
       )}
     >
       <FontAwesomeIcon
-        icon={["fal", "user"]}
+        icon={faUser}
         color="#FFFFFF"
         size={context === "profile" ? "3x" : "sm"}
       />

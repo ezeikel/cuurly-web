@@ -3,6 +3,7 @@ import { useQuery } from "@apollo/client";
 import formatDistance from "date-fns/formatDistance";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
+import Image from "next/future/image";
 import { SINGLE_POST_QUERY } from "../../apollo/queries";
 import VideoPlayer from "../VideoPlayer/VideoPlayer";
 import Avatar from "../Avatar/Avatar";
@@ -86,7 +87,9 @@ const Post = ({ id, post: postData, className, mediaClasses }: PostProps) => {
         </header>
         {/** TODO: support multiple media */}
         {/(\.png$|\.jpg$|\.heic$|\.webp$)/.test(post.media[0].url) ? (
-          <img
+          <Image
+            width={350}
+            height={350}
             className={classNames("aspect-square w-full", {
               [mediaClasses]: !!mediaClasses,
             })}
