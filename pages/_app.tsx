@@ -68,7 +68,15 @@ library.add(
   faSpinnerThird,
 );
 
-const MyApp = ({ Component, pageProps, err }: AppProps & { err: any }) => {
+type CustomPageProps = {
+  initialApolloState?: any;
+};
+
+const MyApp = ({
+  Component,
+  pageProps,
+  err,
+}: AppProps<CustomPageProps> & { err: any }) => {
   const apolloClient = useApollo(pageProps.initialApolloState);
 
   return (
