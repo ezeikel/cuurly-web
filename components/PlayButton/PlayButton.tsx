@@ -1,8 +1,12 @@
-import { StyledIcon } from "./PlayButton.styled";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const PlayButton = () => {
   return (
-    <StyledIcon icon={["fas", "play"]} color="var(--color-white)" size="3x" />
+    <FontAwesomeIcon
+      icon={["fas", "play"]}
+      className="w-full h-full text-white opacity-60"
+      size="3x"
+    />
   );
 };
 

@@ -1,20 +1,14 @@
 import { useRouter } from "next/router";
-import styled from "styled-components";
 import Account from "../components/Account/Account";
-
-const Wrapper = styled.div`
-  display: grid;
-  padding: var(--padding-page-wrap);
-`;
 
 const AccountPage = () => {
   const router = useRouter();
   const { mode } = router.query;
 
   return (
-    <Wrapper>
+    <div className="grid p-[var(--padding-page-wrap)]">
       <Account mode={mode} />
-    </Wrapper>
+    </div>
   );
 };
 

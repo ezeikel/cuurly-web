@@ -1,15 +1,10 @@
-import {
-  ToastWrapper,
-  Message,
-  CloseButtonWrapper,
-} from "./NotificationMessage.styled";
-
 const CloseIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="16"
     height="16"
     viewBox="0 0 16 16"
+    className="fill-[#357433]"
   >
     <g fill="none" fillRule="evenodd">
       <g fill="#357433" fillRule="nonzero">
@@ -35,16 +30,21 @@ const NotificationMessage = ({
   message,
   closeToast,
 }: NotificationMessageProps) => (
-  <ToastWrapper>
-    <Message>{message}</Message>
+  <div className="flex justify-between">
+    <div className="flex items-center">
+      {message}
+    </div>
     {type === "success" ||
       (type === "delete" && (
-        <CloseButtonWrapper onClick={closeToast}>
+        <span
+          className="flex items-center text-[var(--font-size-tiny)] leading-5 text-[#357433] cursor-pointer"
+          onClick={closeToast}
+        >
           Hide
           <CloseIcon />
-        </CloseButtonWrapper>
+        </span>
       ))}
-  </ToastWrapper>
+  </div>
 );
 
 export default NotificationMessage;

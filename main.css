@@ -1,3 +1,10 @@
+/* Add these styles at the top of your main.css file */
+body {
+  -webkit-tap-highlight-color: #8B5CF6; /* Equivalent to theme`colors.purple.500` */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 /* clears the ‘X’ from Internet Explorer */
 input[type="search"]::-ms-clear {
   display: none;
@@ -19,4 +26,37 @@ input[type="search"]::-webkit-search-results-decoration {
 
 .wf-loading {
   visibility: hidden;
+}
+
+/* Add these styles to your global CSS file */
+.search-select .react-select__control {
+  @apply p-2 border-gray-300 rounded-md shadow-sm;
+}
+
+.search-select .react-select__input {
+  @apply p-0 m-0;
+}
+
+.search-select .react-select__placeholder {
+  @apply m-0;
+}
+
+.search-select .react-select__value-container {
+  @apply p-0;
+}
+
+.search-select .react-select__single-value {
+  @apply m-0;
+}
+
+.search-select .react-select__indicator-separator {
+  @apply hidden;
+}
+
+.search-select .react-select__dropdown-indicator {
+  @apply hidden;
+}
+
+.search-select .react-select__clear-indicator {
+  @apply p-0 cursor-pointer;
 }

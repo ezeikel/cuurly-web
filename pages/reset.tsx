@@ -1,50 +1,26 @@
 import { useRouter } from "next/router";
-import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Reset from "../components/Reset/Reset";
-
-const Wrapper = styled.div`
-  display: grid;
-  justify-items: center;
-  grid-row-gap: var(--spacing-medium);
-  h1 {
-    margin: 0;
-    font-size: 16px;
-    line-height: 24px;
-  }
-`;
-
-const Copy = styled.span`
-  font-size: 14px;
-  line-height: 18px;
-  text-align: center;
-  color: #999999;
-`;
-
-const StyledFormWrapper = styled.div`
-  justify-items: center;
-`;
 
 const ResetPage = () => {
   const router = useRouter();
   const { resetToken } = router.query;
 
   return (
-    <Wrapper>
-      <StyledFormWrapper>
+    <div className="grid justify-items-center gap-y-4">
+      <div className="text-center">
         <FontAwesomeIcon
           icon={["fal", "key"]}
-          color="var(--color-black)"
-          size="3x"
+          className="text-black text-3xl mb-4"
         />
-        <h1>Set New Password</h1>
-        <Copy>
+        <h1 className="text-base leading-6 m-0">Set New Password</h1>
+        <span className="text-sm leading-[18px] text-[#999999]">
           Enter your new password and we&apos;ll get you back into your account
           in no time!
-        </Copy>
-        <Reset resetToken={resetToken} />
-      </StyledFormWrapper>
-    </Wrapper>
+        </span>
+      </div>
+      <Reset resetToken={resetToken} />
+    </div>
   );
 };
 

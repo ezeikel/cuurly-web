@@ -1,10 +1,9 @@
 import { useMutation } from "@apollo/client";
-import { Formik } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { REQUEST_RESET_MUTATION } from "../../apollo/queries";
 import formatAPIErrors from "../../utils/formatAPIErrors";
-import { StyledForm } from "./RequestReset.styled";
 import TextInput from "../form/inputs/formik/TextInput/TextInput";
 import Button from "../Button/Button";
 
@@ -35,12 +34,12 @@ const RequestReset = () => {
       }}
     >
       {({ isSubmitting }) => (
-        <StyledForm>
+        <Form className="w-full">
           <div>
             <TextInput name="email" type="email" label="Email" />
           </div>
           <Button text="Send Reset Link" isLoading={isSubmitting} />
-        </StyledForm>
+        </Form>
       )}
     </Formik>
   );

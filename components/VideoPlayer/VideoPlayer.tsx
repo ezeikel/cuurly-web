@@ -1,7 +1,6 @@
 import classNames from "classnames";
 import { useEffect, useRef } from "react";
 import videojs from "video.js";
-import { Wrapper } from "./VideoPlayer.styled";
 
 type VidepPlayerProps = {
   options: videojs.PlayerOptions;
@@ -45,21 +44,24 @@ const VideoPlayer = ({ options, onReady, className }: VidepPlayerProps) => {
   }, [playerRef]);
 
   return (
-    <Wrapper
-      className={classNames({
-        [className]: !!className,
-      })}
+    <div
+      className={classNames(
+        "w-full h-full",
+        {
+          [className]: !!className,
+        }
+      )}
     >
       <div data-vjs-player>
         <video
           ref={videoRef}
-          className="video-js vjs-big-play-centered"
+          className="video-js vjs-big-play-centered cursor-pointer focus:outline-none"
           playsInline
         >
           <track kind="captions" />
         </video>
       </div>
-    </Wrapper>
+    </div>
   );
 };
 

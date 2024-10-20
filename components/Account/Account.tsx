@@ -10,22 +10,6 @@ import {
   SINGLE_USER_QUERY,
   UPDATE_USER_MUTATION,
 } from "../../apollo/queries";
-import {
-  Wrapper,
-  Edit,
-  EditHeader,
-  ChangeProfilePicture,
-  ActionList,
-  Action,
-  Content,
-  PasswordChange,
-  Username,
-  StyledForm,
-  FormRow,
-  FormInput,
-  FormLabel,
-  ForgotPasswordLink,
-} from "./Account.styled";
 import ChangeProfilePictureModal from "../modals/ChangeProfilePictureModal/ChangeProfilePictureModal";
 import { PHONE_REGEX, GENDER_OPTIONS } from "../../constants";
 import useUser from "../../hooks/useUser";
@@ -130,7 +114,7 @@ const Account = ({ mode }) => {
         profilePicture,
         email,
       } = {},
-    } = {}, // setting default value when destructing as data is undefined when loading - https://github.com/apollographql/react-apollo/issues/3323#issuecomment-523430331
+    } = {},
   } = useQuery<SingleUserData, SingleUserVars>(SINGLE_USER_QUERY, {
     variables: { id: currentUser.id },
     fetchPolicy: "cache-and-network",
@@ -158,43 +142,43 @@ const Account = ({ mode }) => {
   };
 
   return (
-    <Wrapper>
-      <ActionList>
-        <Action active={mode === "edit"}>
+    <div className="grid grid-cols-[236px_1fr] bg-white border border-[#dbdbdb]">
+      <ul className="border-r border-[#dbdbdb]">
+        <li className={`border-l-2 ${mode === "edit" ? "border-l-[#262626] font-semibold" : "border-l-transparent hover:bg-[#fafafa] hover:border-l-[#dbdbdb]"} text-base leading-5 py-4 px-4 pl-8 cursor-pointer transition-all duration-200`}>
           <Link href="/account?edit">
             <a>Edit Profile</a>
           </Link>
-        </Action>
-        <Action active={mode === "password-change"}>
+        </li>
+        <li className={`border-l-2 ${mode === "password-change" ? "border-l-[#262626] font-semibold" : "border-l-transparent hover:bg-[#fafafa] hover:border-l-[#dbdbdb]"} text-base leading-5 py-4 px-4 pl-8 cursor-pointer transition-all duration-200`}>
           <Link href="/account?password-change">
             <a>Change Password</a>
           </Link>
-        </Action>
-        <Action disabled active={mode === "manage-access"}>
+        </li>
+        <li className="border-l-2 border-l-transparent hover:bg-[#fafafa] hover:border-l-[#dbdbdb] text-base leading-5 py-4 px-4 pl-8 cursor-pointer transition-all duration-200 opacity-30 pointer-events-none">
           <Link href="/account?manage-access">
             <a>Authorized Applications</a>
           </Link>
-        </Action>
-        <Action disabled active={mode === "email-settingss"}>
+        </li>
+        <li className="border-l-2 border-l-transparent hover:bg-[#fafafa] hover:border-l-[#dbdbdb] text-base leading-5 py-4 px-4 pl-8 cursor-pointer transition-all duration-200 opacity-30 pointer-events-none">
           <Link href="/account?email-settings">
             <a>Email and SMS</a>
           </Link>
-        </Action>
-        <Action disabled active={mode === "contact-history"}>
+        </li>
+        <li className="border-l-2 border-l-transparent hover:bg-[#fafafa] hover:border-l-[#dbdbdb] text-base leading-5 py-4 px-4 pl-8 cursor-pointer transition-all duration-200 opacity-30 pointer-events-none">
           <Link href="/account?contact-history">
             <a>Manage Contacts</a>
           </Link>
-        </Action>
-        <Action disabled active={mode === "privacy-and-security"}>
+        </li>
+        <li className="border-l-2 border-l-transparent hover:bg-[#fafafa] hover:border-l-[#dbdbdb] text-base leading-5 py-4 px-4 pl-8 cursor-pointer transition-all duration-200 opacity-30 pointer-events-none">
           <Link href="/account?privacy-and-security">
             <a>Privacy and Security</a>
           </Link>
-        </Action>
-      </ActionList>
-      <Content>
+        </li>
+      </ul>
+      <div className="p-8 pl-[124px]">
         {mode === "edit" ? (
-          <Edit>
-            <EditHeader>
+          <div className="grid gap-y-8">
+            <div className="grid grid-cols-[auto_1fr] gap-x-8 items-center">
               <Avatar
                 src={
                   fileUrl ||
@@ -205,18 +189,22 @@ const Account = ({ mode }) => {
                 }
                 className="h-8 w-8"
               />
-              <ChangeProfilePicture>
-                <span>{username}</span>
-                <button type="button" onClick={openChangeProfilePictureModal}>
+              <div className="grid grid-rows-2 gap-y-1">
+                <span className="text-2xl leading-[2.2rem]">{username}</span>
+                <button
+                  type="button"
+                  onClick={openChangeProfilePictureModal}
+                  className="text-sm leading-[1.8rem] font-semibold text-[#3897f0]"
+                >
                   Change Profile Photo
                 </button>
-              </ChangeProfilePicture>
+              </div>
               <ChangeProfilePictureModal
                 isOpen={isChangeProfilePictureModalOpen}
                 handleClose={closeChangeProfilePictureModal}
                 handleChange={handleChange}
               />
-            </EditHeader>
+            </div>
             <div>
               <Formik
                 initialValues={{
@@ -233,12 +221,10 @@ const Account = ({ mode }) => {
                 onSubmit={async (values, { setSubmitting, setErrors }) => {
                   const submittedValues = { ...values };
 
-                  // add the updated profile picture to the data to be sent to the mutation
                   if (fileUrl) {
                     submittedValues.profilePicture = file;
                   }
 
-                  // removed values that havent changed
                   Object.keys(values).forEach((field) => {
                     if (
                       initialEditDetailsValues[field] === submittedValues[field]
@@ -260,37 +246,37 @@ const Account = ({ mode }) => {
               >
                 {({ isSubmitting, initialValues, values }) => {
                   return (
-                    <StyledForm>
-                      <FormRow>
-                        <FormLabel>Name</FormLabel>
-                        <FormInput type="text" name="name" />
-                      </FormRow>
-                      <FormRow>
-                        <FormLabel>Username</FormLabel>
-                        <FormInput type="text" name="username" />
-                      </FormRow>
-                      <FormRow>
-                        <FormLabel>Website</FormLabel>
-                        <FormInput type="text" name="website" />
-                      </FormRow>
-                      <FormRow>
-                        <FormLabel>Bio</FormLabel>
-                        <FormInput component="textarea" name="bio" />
-                      </FormRow>
-                      <FormRow>
-                        <FormLabel>Email</FormLabel>
-                        <FormInput type="email" name="email" />
-                      </FormRow>
-                      <FormRow>
-                        <FormLabel>Phone Number</FormLabel>
-                        <FormInput type="tel" name="phoneNumber" />
-                      </FormRow>
-                      <FormRow>
-                        <FormLabel>Gender</FormLabel>
-                        <FormInput
-                          component="select"
+                    <form className="grid gap-y-4">
+                      <div className="grid grid-cols-[1fr_4fr] gap-x-8 items-center">
+                        <label className="text-base leading-[1.8rem]">Name</label>
+                        <input type="text" name="name" className="bg-[#fafafa] rounded-md border border-[#efefef] text-[#262626] flex-grow text-sm leading-[30px] p-1 px-3 outline-none transition-border duration-200 focus:border-[#b2b2b2]" />
+                      </div>
+                      <div className="grid grid-cols-[1fr_4fr] gap-x-8 items-center">
+                        <label className="text-base leading-[1.8rem]">Username</label>
+                        <input type="text" name="username" className="bg-[#fafafa] rounded-md border border-[#efefef] text-[#262626] flex-grow text-sm leading-[30px] p-1 px-3 outline-none transition-border duration-200 focus:border-[#b2b2b2]" />
+                      </div>
+                      <div className="grid grid-cols-[1fr_4fr] gap-x-8 items-center">
+                        <label className="text-base leading-[1.8rem]">Website</label>
+                        <input type="text" name="website" className="bg-[#fafafa] rounded-md border border-[#efefef] text-[#262626] flex-grow text-sm leading-[30px] p-1 px-3 outline-none transition-border duration-200 focus:border-[#b2b2b2]" />
+                      </div>
+                      <div className="grid grid-cols-[1fr_4fr] gap-x-8 items-center">
+                        <label className="text-base leading-[1.8rem]">Bio</label>
+                        <textarea name="bio" className="bg-[#fafafa] rounded-md border border-[#efefef] text-[#262626] flex-grow text-sm leading-[30px] p-1 px-3 outline-none transition-border duration-200 focus:border-[#b2b2b2] resize-none" />
+                      </div>
+                      <div className="grid grid-cols-[1fr_4fr] gap-x-8 items-center">
+                        <label className="text-base leading-[1.8rem]">Email</label>
+                        <input type="email" name="email" className="bg-[#fafafa] rounded-md border border-[#efefef] text-[#262626] flex-grow text-sm leading-[30px] p-1 px-3 outline-none transition-border duration-200 focus:border-[#b2b2b2]" />
+                      </div>
+                      <div className="grid grid-cols-[1fr_4fr] gap-x-8 items-center">
+                        <label className="text-base leading-[1.8rem]">Phone Number</label>
+                        <input type="tel" name="phoneNumber" className="bg-[#fafafa] rounded-md border border-[#efefef] text-[#262626] flex-grow text-sm leading-[30px] p-1 px-3 outline-none transition-border duration-200 focus:border-[#b2b2b2]" />
+                      </div>
+                      <div className="grid grid-cols-[1fr_4fr] gap-x-8 items-center">
+                        <label className="text-base leading-[1.8rem]">Gender</label>
+                        <select
                           name="gender"
                           value={values.gender}
+                          className="bg-[#fafafa] rounded-md border border-[#efefef] text-[#262626] flex-grow text-sm leading-[30px] p-1 px-3 outline-none transition-border duration-200 focus:border-[#b2b2b2] h-[38px]"
                         >
                           {GENDER_OPTIONS.map((option) => (
                             <option
@@ -300,36 +286,37 @@ const Account = ({ mode }) => {
                               {option.charAt(0) + option.slice(1).toLowerCase()}
                             </option>
                           ))}
-                        </FormInput>
-                      </FormRow>
-                      <FormRow>
+                        </select>
+                      </div>
+                      <div className="grid grid-cols-[1fr_4fr] gap-x-8">
                         <Button
                           text="Submit"
                           type="submit"
                           isLoading={isSubmitting}
                           disabled={!fileUrl && isEqual(values, initialValues)}
+                          className="col-start-2 bg-[#3897f0] border border-[#3897f0] text-white"
                         >
                           {`Submit${isSubmitting ? "ting" : ""}`}
                           {isSubmitting ? <Spinner /> : null}
                         </Button>
-                      </FormRow>
-                      <FormRow>
+                      </div>
+                      <div className="grid grid-cols-[1fr_4fr] gap-x-8">
                         <Link href="/account?action=disable">
-                          <ForgotPasswordLink>
+                          <a className="col-start-2 text-[#3897f0] text-sm leading-[1.8rem]">
                             Temporarily disable my account
-                          </ForgotPasswordLink>
+                          </a>
                         </Link>
-                      </FormRow>
-                    </StyledForm>
+                      </div>
+                    </form>
                   );
                 }}
               </Formik>
             </div>
-          </Edit>
+          </div>
         ) : null}
         {mode === "password-change" ? (
-          <PasswordChange>
-            <EditHeader>
+          <div className="grid gap-y-8">
+            <div className="grid grid-cols-[auto_1fr] gap-x-8 items-center">
               <Avatar
                 src={
                   fileUrl ||
@@ -340,10 +327,10 @@ const Account = ({ mode }) => {
                 }
                 className="h-8 w-8"
               />
-              <Username>
+              <div className="text-2xl leading-8">
                 <span>{username}</span>
-              </Username>
-            </EditHeader>
+              </div>
+            </div>
             <Formik
               initialValues={{
                 oldPassword: "",
@@ -364,38 +351,41 @@ const Account = ({ mode }) => {
               }}
             >
               {({ isSubmitting }) => (
-                <StyledForm>
-                  <FormRow>
-                    <FormLabel>Old Password</FormLabel>
-                    <FormInput type="password" name="oldPassword" />
-                  </FormRow>
-                  <FormRow>
-                    <FormLabel>New Password</FormLabel>
-                    <FormInput type="password" name="password" />
-                  </FormRow>
-                  <FormRow>
-                    <FormLabel>Confirm New Password</FormLabel>
-                    <FormInput type="password" name="passwordConfirmation" />
-                  </FormRow>
-                  <FormRow>
+                <form className="grid gap-y-4">
+                  <div className="grid grid-cols-[1fr_4fr] gap-x-8 items-center">
+                    <label className="text-base leading-[1.8rem]">Old Password</label>
+                    <input type="password" name="oldPassword" className="bg-[#fafafa] rounded-md border border-[#efefef] text-[#262626] flex-grow text-sm leading-[30px] p-1 px-3 outline-none transition-border duration-200 focus:border-[#b2b2b2]" />
+                  </div>
+                  <div className="grid grid-cols-[1fr_4fr] gap-x-8 items-center">
+                    <label className="text-base leading-[1.8rem]">New Password</label>
+                    <input type="password" name="password" className="bg-[#fafafa] rounded-md border border-[#efefef] text-[#262626] flex-grow text-sm leading-[30px] p-1 px-3 outline-none transition-border duration-200 focus:border-[#b2b2b2]" />
+                  </div>
+                  <div className="grid grid-cols-[1fr_4fr] gap-x-8 items-center">
+                    <label className="text-base leading-[1.8rem]">Confirm New Password</label>
+                    <input type="password" name="passwordConfirmation" className="bg-[#fafafa] rounded-md border border-[#efefef] text-[#262626] flex-grow text-sm leading-[30px] p-1 px-3 outline-none transition-border duration-200 focus:border-[#b2b2b2]" />
+                  </div>
+                  <div className="grid grid-cols-[1fr_4fr] gap-x-8">
                     <Button
                       text="Change Password"
                       type="submit"
                       isLoading={isSubmitting}
+                      className="col-start-2 bg-[#3897f0] border border-[#3897f0] text-white"
                     />
-                  </FormRow>
-                  <FormRow>
+                  </div>
+                  <div className="grid grid-cols-[1fr_4fr] gap-x-8">
                     <Link href="reset-password">
-                      <ForgotPasswordLink>Forgot password?</ForgotPasswordLink>
+                      <a className="col-start-2 text-[#3897f0] text-sm leading-[1.8rem]">
+                        Forgot password?
+                      </a>
                     </Link>
-                  </FormRow>
-                </StyledForm>
+                  </div>
+                </form>
               )}
             </Formik>
-          </PasswordChange>
+          </div>
         ) : null}
-      </Content>
-    </Wrapper>
+      </div>
+    </div>
   );
 };
 

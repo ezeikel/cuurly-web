@@ -28,7 +28,7 @@ const PostPreview = ({ id, className }) => {
 
   return (
     <li
-      className={classNames("relative cursor-pointer", {
+      className={classNames("relative cursor-pointer w-full h-full", {
         [className]: !!className,
       })}
     >
@@ -56,7 +56,7 @@ const PostPreview = ({ id, className }) => {
               />
             )}
           </div>
-          <div className="grid place-items-center absolute top-0 bg-black/30 w-full h-full opacity-0 hover:opacity-100 transition-opacity">
+          <div className="grid place-items-center absolute top-0 bg-black/30 w-full h-full opacity-0 hover:opacity-100 transition-opacity duration-200">
             <div className="grid grid-cols-2 gap-x-4">
               <span className="grid grid-cols-2 gap-x-2 place-items-center text-white text-lg font-bold">
                 <FontAwesomeIcon

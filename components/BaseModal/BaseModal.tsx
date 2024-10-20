@@ -7,7 +7,6 @@ import {
 } from "body-scroll-lock";
 import Modal from "react-modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { StyledModal } from "./BaseModal.styled";
 
 Modal.setAppElement("body");
 
@@ -74,35 +73,44 @@ const BaseModal = ({
     };
   }, [isOpen, modalEl.current]);
 
+  const modalClasses = `
+    fixed inset-0 flex flex-col justify-center items-center p-8 z-10
+    ${center ? "items-center" : ""}
+  `;
+
+  const contentClasses = `
+    flex flex-col bg-white rounded-md outline-none
+    ${autoWidth ? "w-auto" : width ? width : "w-full"}
+    ${autoHeight ? "h-auto" : "h-full"}
+    ${maxWidth ? `max-w-[${maxWidth}px]` : "max-w-[640px]"}
+    ${noPadding ? "p-0" : padding ? `p-${padding}` : "p-8"}
+    ${className || ""}
+  `;
+
   return (
-    <StyledModal
+    <Modal
       isOpen={isOpen}
-      contentLabel={contentLabel}
       onRequestClose={onRequestClose}
-      autoWidth={autoWidth}
-      autoHeight={autoHeight}
-      maxWidth={maxWidth}
-      padding={padding}
-      center={center}
-      className={className}
-      noPadding={noPadding}
-      width={width}
+      contentLabel={contentLabel}
+      className={contentClasses}
+      overlayClassName={modalClasses}
     >
       {heading ? (
-        <header className="flex items-center justify-between">
+        <header className="flex items-center justify-between mb-4">
           <h3 className="text-lg">{heading}</h3>
           <FontAwesomeIcon
             icon={["fal", "times"]}
             color="#000000"
             size="lg"
             onClick={close}
+            className="cursor-pointer"
           />
         </header>
       ) : null}
-      <div className="flex-1" ref={modalEl}>
+      <div className="flex-1 overflow-auto" ref={modalEl}>
         {children}
       </div>
-    </StyledModal>
+    </Modal>
   );
 };
 

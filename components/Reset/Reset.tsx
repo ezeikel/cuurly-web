@@ -1,11 +1,10 @@
 import { useRouter } from "next/router";
 import { useMutation } from "@apollo/client";
-import { Formik } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { RESET_MUTATION } from "../../apollo/queries";
 import formatAPIErrors from "../../utils/formatAPIErrors";
-import { StyledForm } from "./Reset.styled";
 import TextInput from "../form/inputs/formik/TextInput/TextInput";
 import Button from "../Button/Button";
 
@@ -40,11 +39,11 @@ const Reset = ({ resetToken }) => {
       }}
     >
       {({ isSubmitting }) => (
-        <StyledForm>
-          <div>
+        <Form className="w-full">
+          <div className="mb-4">
             <TextInput name="password" type="password" label="New Password" />
           </div>
-          <div>
+          <div className="mb-4">
             <TextInput
               name="confirmPassword"
               type="password"
@@ -52,7 +51,7 @@ const Reset = ({ resetToken }) => {
             />
           </div>
           <Button text="Reset Password" isLoading={isSubmitting} />
-        </StyledForm>
+        </Form>
       )}
     </Formik>
   );

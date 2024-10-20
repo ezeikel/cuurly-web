@@ -1,45 +1,21 @@
-import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import RequestReset from "../components/RequestReset/RequestReset";
 
-const Wrapper = styled.div`
-  display: grid;
-  justify-items: center;
-  grid-row-gap: var(--spacing-medium);
-  h1 {
-    margin: 0;
-    font-size: 16px;
-    line-height: 24px;
-  }
-`;
-
-const Copy = styled.span`
-  font-size: 14px;
-  line-height: 18px;
-  text-align: center;
-  color: #999999;
-`;
-
-const StyledFormWrapper = styled.div`
-  justify-items: center;
-`;
-
 const RequestResetPage = () => (
-  <Wrapper>
-    <StyledFormWrapper>
+  <div className="grid justify-items-center gap-y-4">
+    <div className="text-center">
       <FontAwesomeIcon
         icon={["fal", "lock"]}
-        color="var(--color-black)"
-        size="3x"
+        className="text-black text-4xl mb-4"
       />
-      <h1>Trouble Logging In?</h1>
-      <Copy>
+      <h1 className="text-base leading-6 m-0">Trouble Logging In?</h1>
+      <span className="text-sm leading-[18px] text-gray-500">
         Enter your email address and we&apos;ll send you a link to reset your
         password and get back into your account.
-      </Copy>
-      <RequestReset />
-    </StyledFormWrapper>
-  </Wrapper>
+      </span>
+    </div>
+    <RequestReset />
+  </div>
 );
 
 export default RequestResetPage;

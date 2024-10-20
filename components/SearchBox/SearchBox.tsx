@@ -6,7 +6,6 @@ import AsyncSelect from "react-select/async";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { SEARCH_USERS_QUERY } from "../../apollo/queries";
-import { customStyles } from "./SearchBox.styles";
 import Avatar from "../Avatar/Avatar";
 
 type SearchProps = {
@@ -87,9 +86,7 @@ const SearchBox = ({ className }: SearchProps): ReactElement => {
       <div>
         <AsyncSelect
           value={selectedOption}
-          styles={customStyles}
           placeholder="Search"
-          // TODO: should be able to use an Option type from react-select instead of object
           onChange={(option: {
             label: string;
             value: string;
@@ -131,6 +128,7 @@ const SearchBox = ({ className }: SearchProps): ReactElement => {
           noOptionsMessage={() => "No results found"}
           instanceId="search"
           isClearable
+          className="search-select"
         />
       </div>
     </div>

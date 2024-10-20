@@ -5,7 +5,6 @@ import classNames from "classnames";
 import Meta from "../Meta";
 import Notification from "../Notification/Notification";
 import useUser from "../../hooks/useUser";
-import GlobalStyles from "../GlobalStyles";
 
 const Header = dynamic(() => import("../Header/Header"));
 
@@ -40,7 +39,6 @@ const Page = ({ className, children }: PageProps) => {
 
   return (
     <>
-      <GlobalStyles />
       <Meta />
       <div
         className={classNames("min-h-screen grid", {

@@ -10,19 +10,6 @@ export const APOLLO_STATE_PROP_NAME = "__APOLLO_STATE__";
 
 let apolloClient;
 
-// errors from the server
-const errorLink = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors)
-    graphQLErrors.map(({ message, locations, path }) =>
-      console.error(
-        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-      ),
-    );
-  if (networkError) {
-    console.error(`[Network error]: ${networkError}`);
-  }
-});
-
 const uploadLink = createUploadLink({
   uri: process.env.NEXT_PUBLIC_API_URL,
   credentials: "include",
@@ -45,7 +32,9 @@ const authLink = setContext((_, { headers }) => {
 const createApolloClient = () => {
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
-    link: ApolloLink.from([authLink, errorLink, uploadLink]),
+    link: new HttpLink({
+      uri: "https://rickandmortyapi.com/graphql",
+    }),
     cache: new InMemoryCache(),
   });
 };

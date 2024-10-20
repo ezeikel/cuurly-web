@@ -3,7 +3,7 @@ import UserPosts from "../UserPosts/UserPosts";
 
 const Profile = ({ user }) => {
   return (
-    <div className="flex flex-col p-8 gap-y-10">
+    <div className="grid gap-y-8 p-8 sm:pt-16 sm:gap-y-12">
       <ProfileHeader user={user} />
       <UserPosts posts={user.posts} />
     </div>

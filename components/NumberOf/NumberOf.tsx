@@ -1,4 +1,4 @@
-import { Wrapper, Number } from "./NumberOf.styled";
+import React from 'react';
 
 type NumberOfProps = {
   name: string;
@@ -7,13 +7,18 @@ type NumberOfProps = {
 };
 
 const NumberOf = ({ name, length, clickHandler }: NumberOfProps) => {
+  const wrapperClasses = `
+    text-[1.6rem] leading-[1.8rem]
+    ${clickHandler ? 'cursor-pointer' : 'cursor-auto'}
+    grid grid-rows-2 place-items-center
+    text-[#999]
+    md:block md:text-black
+  `;
+
   return (
-    <Wrapper
-      onClick={clickHandler}
-      disableClick={typeof clickHandler === "undefined"}
-    >
-      <Number>{length || 0}</Number> {name}
-    </Wrapper>
+    <div className={wrapperClasses} onClick={clickHandler}>
+      <span className="font-bold text-black">{length || 0}</span> {name}
+    </div>
   );
 };
 

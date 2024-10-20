@@ -1,6 +1,4 @@
-/* eslint-disable global-require */
-
-module.exports = {
+const config = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
@@ -14,3 +12,5 @@ module.exports = {
     },
   },
 };
+
+export default config;

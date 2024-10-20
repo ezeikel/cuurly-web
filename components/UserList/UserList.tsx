@@ -1,22 +1,15 @@
 import Link from "next/link";
 import Avatar from "../Avatar/Avatar";
 import FollowButton from "../FollowButton/FollowButton";
-import {
-  Wrapper,
-  FollowerWrapper,
-  Follower,
-  FollowerName,
-  FollowerAction,
-} from "./UserList.styled";
 
 const UserList = ({ username, users }) => {
   if (!users) return null;
 
   return (
-    <Wrapper>
+    <ul className="grid">
       {users.map((user) => (
-        <FollowerWrapper key={user.id}>
-          <Follower>
+        <li key={user.id} className="grid">
+          <div className="grid grid-cols-[auto_1fr_auto] gap-x-2 items-center p-2 sm:p-4">
             <Avatar
               src={user.profilePicture?.url.replace(
                 "/upload",
@@ -24,25 +17,25 @@ const UserList = ({ username, users }) => {
               )}
               className="h-8 w-8"
             />
-            <FollowerName>
+            <div className="grid grid-rows-2 text-sm leading-[1.8rem]">
               <span>
                 <Link href="/[username]" as={`/${user.username}`}>
                   <a>{user.username}</a>
                 </Link>
               </span>
               <span>{user.name}</span>
-            </FollowerName>
-            <FollowerAction>
+            </div>
+            <div className="grid">
               <FollowButton
                 username={username}
                 userId={user.id}
                 userFollowers={user.followers?.map((follower) => follower.id)}
               />
-            </FollowerAction>
-          </Follower>
-        </FollowerWrapper>
+            </div>
+          </div>
+        </li>
       ))}
-    </Wrapper>
+    </ul>
   );
 };
 

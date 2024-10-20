@@ -1,18 +1,17 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Wrapper } from "./Username.styled";
 
 const Username = ({ user: { username, verified } }) => {
   return (
-    <Wrapper verified={verified}>
+    <span className={`text-[28px] leading-[32px] ${verified ? 'grid grid-cols-[auto_auto] gap-x-[var(--spacing-small)] place-items-center' : ''}`}>
       {username}
-      {verified ? (
+      {verified && (
         <FontAwesomeIcon
           icon={["fas", "badge-check"]}
           color="#3E9AED"
           size="xs"
         />
-      ) : null}
-    </Wrapper>
+      )}
+    </span>
   );
 };
 
