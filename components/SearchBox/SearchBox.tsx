@@ -14,7 +14,7 @@ type SearchProps = {
 
 const Control = ({ children, ...props }: ControlProps) => (
   // eslint-disable-next-line react/jsx-props-no-spreading
-  <components.Control {...props}>
+  (<components.Control {...props}>
     <FontAwesomeIcon
       icon={["fal", "magnifying-glass"]}
       color="#333"
@@ -22,7 +22,7 @@ const Control = ({ children, ...props }: ControlProps) => (
       className="mr-2"
     />
     {children}
-  </components.Control>
+  </components.Control>)
 );
 
 const ClearIndicator = (props: ClearIndicatorProps) => {
@@ -51,7 +51,7 @@ const Option = (props) => {
 
   return (
     // eslint-disable-next-line react/jsx-props-no-spreading
-    <components.Option {...props}>
+    (<components.Option {...props}>
       <div className="flex items-center gap-x-2 cursor-pointer">
         <Avatar src={data.avatar} className="h-8 w-8" />
         <div>
@@ -68,7 +68,7 @@ const Option = (props) => {
           <div className="text-slate-500">{data.name}</div>
         </div>
       </div>
-    </components.Option>
+    </components.Option>)
   );
 };
 

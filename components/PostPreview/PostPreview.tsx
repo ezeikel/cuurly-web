@@ -27,11 +27,11 @@ const PostPreview = ({ id, className }) => {
   };
 
   return (
-    <li
-      className={classNames("relative cursor-pointer w-full h-full", {
-        [className]: !!className,
-      })}
-    >
+    (<li
+        className={classNames("relative cursor-pointer w-full h-full", {
+          [className]: !!className,
+        })}
+      >
       <Link href="/post/[postId]" as={`/post/${post.id}`}>
         <a>
           <div className="h-full" key={post.id}>
@@ -50,10 +50,10 @@ const PostPreview = ({ id, className }) => {
               />
             ) : (
               /* TODO: instagram uses the poster <img /> here instead of the actual video element */
-              <VideoPlayer
+              (<VideoPlayer
                 className="object-cover h-full w-full"
                 options={videoJsOptions}
-              />
+              />)
             )}
           </div>
           <div className="grid place-items-center absolute top-0 bg-black/30 w-full h-full opacity-0 hover:opacity-100 transition-opacity duration-200">
@@ -78,7 +78,7 @@ const PostPreview = ({ id, className }) => {
           </div>
         </a>
       </Link>
-    </li>
+    </li>)
   );
 };
 

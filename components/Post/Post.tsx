@@ -55,77 +55,75 @@ const Post = ({ id, post: postData, className, mediaClasses }: PostProps) => {
 
   if (!post) return null;
 
-  return (
-    <>
-      <div
-        className={classNames(
-          "flex flex-col rounded border border-slate-200 bg-white",
-          {
-            [className]: !!className,
-          },
-        )}
-      >
-        <header className="grid grid-cols-[30px_1fr_auto] grid-rows-[30px] gap-x-2 items-center p-4 border-[#efefef] border-b-[0.5px]">
-          <Avatar
-            src={post.author?.profilePicture?.url.replace(
-              "/upload",
-              "/upload/w_30,h_30,c_lfill,g_face,dpr_2.0",
-            )}
-            className="h-8 w-8"
-          />
-          <div className="grid grid-rows-2 gap-y-0.5">
-            <div className="text-sm font-bold">{post.author?.username}</div>
-            <div className="text-xs">Random post location</div>
-          </div>
-          <FontAwesomeIcon
-            onClick={openPostActionsModal}
-            icon={["far", "ellipsis-h"]}
-            color="var(--color-black)"
-            size="lg"
-            className="cursor-pointer"
-          />
-        </header>
-        {/** TODO: support multiple media */}
-        {/(\.png$|\.jpg$|\.heic$|\.webp$)/.test(post.media[0].url) ? (
-          <Image
-            width={350}
-            height={350}
-            className={classNames("aspect-square w-full", {
-              [mediaClasses]: !!mediaClasses,
-            })}
-            src={post.media[0].url
-              .replace(/(\.png$|\.heic$|\.webp$)/, ".jpg")
-              .replace("/upload", "/upload/w_350,h_350,ar_1:1,c_fill,dpr_2.0")}
-            alt="post"
-          />
-        ) : (
-          <VideoPlayer options={videoJsOptions} />
-        )}
-        <div className="p-4 border-b-[1px] border-slate-200">
-          <PostInteractions className="mb-2" post={post} />
-          <PostLikes className="mb-2" likes={post.likes} />
-          <PostCaption
-            caption={post.caption}
-            author={post.author}
-            className="mb-2"
-          />
-          <PostComments post={post} className="mb-4" />
-          <div className="text-xs leading-3 text-[#999]">
-            {formatDistance(post.createdAt, new Date(), {
-              includeSeconds: true,
-            })}
-            &nbsp;ago
-          </div>
+  return (<>
+    <div
+      className={classNames(
+        "flex flex-col rounded border border-slate-200 bg-white",
+        {
+          [className]: !!className,
+        },
+      )}
+    >
+      <header className="grid grid-cols-[30px_1fr_auto] grid-rows-[30px] gap-x-2 items-center p-4 border-[#efefef] border-b-[0.5px]">
+        <Avatar
+          src={post.author?.profilePicture?.url.replace(
+            "/upload",
+            "/upload/w_30,h_30,c_lfill,g_face,dpr_2.0",
+          )}
+          className="h-8 w-8"
+        />
+        <div className="grid grid-rows-2 gap-y-0.5">
+          <div className="text-sm font-bold">{post.author?.username}</div>
+          <div className="text-xs">Random post location</div>
         </div>
-        <PostCommentForm postId={post.id} />
+        <FontAwesomeIcon
+          onClick={openPostActionsModal}
+          icon={["far", "ellipsis-h"]}
+          color="var(--color-black)"
+          size="lg"
+          className="cursor-pointer"
+        />
+      </header>
+      {/** TODO: support multiple media */}
+      {/(\.png$|\.jpg$|\.heic$|\.webp$)/.test(post.media[0].url) ? (
+        <Image
+          width={350}
+          height={350}
+          className={classNames("aspect-square w-full", {
+            [mediaClasses]: !!mediaClasses,
+          })}
+          src={post.media[0].url
+            .replace(/(\.png$|\.heic$|\.webp$)/, ".jpg")
+            .replace("/upload", "/upload/w_350,h_350,ar_1:1,c_fill,dpr_2.0")}
+          alt="post"
+        />
+      ) : (
+        <VideoPlayer options={videoJsOptions} />
+      )}
+      <div className="p-4 border-b-[1px] border-slate-200">
+        <PostInteractions className="mb-2" post={post} />
+        <PostLikes className="mb-2" likes={post.likes} />
+        <PostCaption
+          caption={post.caption}
+          author={post.author}
+          className="mb-2"
+        />
+        <PostComments post={post} className="mb-4" />
+        <div className="text-xs leading-3 text-[#999]">
+          {formatDistance(post.createdAt, new Date(), {
+            includeSeconds: true,
+          })}
+          &nbsp;ago
+        </div>
       </div>
-      <PostActionsModal
-        post={post}
-        isOpen={postActionsModalIsOpen}
-        handleClose={closePostActionsModal}
-      />
-    </>
-  );
+      <PostCommentForm postId={post.id} />
+    </div>
+    <PostActionsModal
+      post={post}
+      isOpen={postActionsModalIsOpen}
+      handleClose={closePostActionsModal}
+    />
+  </>);
 };
 
 export default Post;

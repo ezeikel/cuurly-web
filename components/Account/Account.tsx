@@ -142,7 +142,7 @@ const Account = ({ mode }) => {
   };
 
   return (
-    <div className="grid grid-cols-[236px_1fr] bg-white border border-[#dbdbdb]">
+    (<div className="grid grid-cols-[236px_1fr] bg-white border border-[#dbdbdb]">
       <ul className="border-r border-[#dbdbdb]">
         <li className={`border-l-2 ${mode === "edit" ? "border-l-[#262626] font-semibold" : "border-l-transparent hover:bg-[#fafafa] hover:border-l-[#dbdbdb]"} text-base leading-5 py-4 px-4 pl-8 cursor-pointer transition-all duration-200`}>
           <Link href="/account?edit">
@@ -246,7 +246,7 @@ const Account = ({ mode }) => {
               >
                 {({ isSubmitting, initialValues, values }) => {
                   return (
-                    <form className="grid gap-y-4">
+                    (<form className="grid gap-y-4">
                       <div className="grid grid-cols-[1fr_4fr] gap-x-8 items-center">
                         <label className="text-base leading-[1.8rem]">Name</label>
                         <input type="text" name="name" className="bg-[#fafafa] rounded-md border border-[#efefef] text-[#262626] flex-grow text-sm leading-[30px] p-1 px-3 outline-none transition-border duration-200 focus:border-[#b2b2b2]" />
@@ -307,7 +307,7 @@ const Account = ({ mode }) => {
                           </a>
                         </Link>
                       </div>
-                    </form>
+                    </form>)
                   );
                 }}
               </Formik>
@@ -385,7 +385,7 @@ const Account = ({ mode }) => {
           </div>
         ) : null}
       </div>
-    </div>
+    </div>)
   );
 };
 

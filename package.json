@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "license": "ISC",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "jest --config test/jest.lint.js",
@@ -47,6 +47,7 @@
     "@fortawesome/pro-thin-svg-icons": "^6.2.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@sentry/nextjs": "^7.13.0",
+    "@vercel/functions": "^1.4.2",
     "apollo-link": "^1.2.14",
     "apollo-link-error": "^1.1.13",
     "apollo-link-http": "^1.5.17",
@@ -62,9 +63,9 @@
     "lodash.debounce": "^4.0.8",
     "lodash.isequal": "^4.5.0",
     "mixpanel-browser": "^2.45.0",
-    "next": "^12.3.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "next": "15.0.0-rc.1",
+    "react": "19.0.0-rc-cd22717c-20241013",
+    "react-dom": "19.0.0-rc-cd22717c-20241013",
     "react-dropzone": "^14.2.2",
     "react-modal": "^3.15.1",
     "react-responsive": "^9.0.0-beta.4",
@@ -89,7 +90,7 @@
     "@types/lodash.debounce": "^4.0.7",
     "@types/lodash.isequal": "^4.5.6",
     "@types/node": "^18.7.18",
-    "@types/react": "^18.0.21",
+    "@types/react": "npm:types-react@19.0.0-rc.1",
     "@types/react-fontawesome": "^1.6.5",
     "@types/react-modal": "^3.13.1",
     "@types/react-responsive": "^8.0.5",
@@ -125,5 +126,8 @@
     "tailwindcss": "^3.4.4",
     "test-data-bot": "^0.8.0",
     "typescript": "^4.8.3"
+  },
+  "resolutions": {
+    "@types/react": "npm:types-react@19.0.0-rc.1"
   }
 }

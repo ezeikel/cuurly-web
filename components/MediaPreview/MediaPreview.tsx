@@ -8,11 +8,11 @@ const MediaPreview = ({ files, convertingImage, className }) => {
   }
 
   return (
-    <div
-      className={classNames({
-        [className]: !!className,
-      })}
-    >
+    (<div
+        className={classNames({
+          [className]: !!className,
+        })}
+      >
       {files?.length > 0 &&
         files.map((file) => {
           if (/^video/.test(file.type)) {
@@ -36,7 +36,7 @@ const MediaPreview = ({ files, convertingImage, className }) => {
             />
           );
         })}
-    </div>
+    </div>)
   );
 };
 
