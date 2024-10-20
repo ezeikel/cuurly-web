@@ -146,32 +146,32 @@ const Account = ({ mode }) => {
       <ul className="border-r border-[#dbdbdb]">
         <li className={`border-l-2 ${mode === "edit" ? "border-l-[#262626] font-semibold" : "border-l-transparent hover:bg-[#fafafa] hover:border-l-[#dbdbdb]"} text-base leading-5 py-4 px-4 pl-8 cursor-pointer transition-all duration-200`}>
           <Link href="/account?edit">
-            <a>Edit Profile</a>
+            Edit Profile
           </Link>
         </li>
         <li className={`border-l-2 ${mode === "password-change" ? "border-l-[#262626] font-semibold" : "border-l-transparent hover:bg-[#fafafa] hover:border-l-[#dbdbdb]"} text-base leading-5 py-4 px-4 pl-8 cursor-pointer transition-all duration-200`}>
           <Link href="/account?password-change">
-            <a>Change Password</a>
+            Change Password
           </Link>
         </li>
         <li className="border-l-2 border-l-transparent hover:bg-[#fafafa] hover:border-l-[#dbdbdb] text-base leading-5 py-4 px-4 pl-8 cursor-pointer transition-all duration-200 opacity-30 pointer-events-none">
           <Link href="/account?manage-access">
-            <a>Authorized Applications</a>
+            Authorized Applications
           </Link>
         </li>
         <li className="border-l-2 border-l-transparent hover:bg-[#fafafa] hover:border-l-[#dbdbdb] text-base leading-5 py-4 px-4 pl-8 cursor-pointer transition-all duration-200 opacity-30 pointer-events-none">
           <Link href="/account?email-settings">
-            <a>Email and SMS</a>
+            Email and SMS
           </Link>
         </li>
         <li className="border-l-2 border-l-transparent hover:bg-[#fafafa] hover:border-l-[#dbdbdb] text-base leading-5 py-4 px-4 pl-8 cursor-pointer transition-all duration-200 opacity-30 pointer-events-none">
           <Link href="/account?contact-history">
-            <a>Manage Contacts</a>
+            Manage Contacts
           </Link>
         </li>
         <li className="border-l-2 border-l-transparent hover:bg-[#fafafa] hover:border-l-[#dbdbdb] text-base leading-5 py-4 px-4 pl-8 cursor-pointer transition-all duration-200 opacity-30 pointer-events-none">
           <Link href="/account?privacy-and-security">
-            <a>Privacy and Security</a>
+            Privacy and Security
           </Link>
         </li>
       </ul>
@@ -301,10 +301,8 @@ const Account = ({ mode }) => {
                         </Button>
                       </div>
                       <div className="grid grid-cols-[1fr_4fr] gap-x-8">
-                        <Link href="/account?action=disable">
-                          <a className="col-start-2 text-[#3897f0] text-sm leading-[1.8rem]">
-                            Temporarily disable my account
-                          </a>
+                        <Link href="/account?action=disable" className="col-start-2 text-[#3897f0] text-sm leading-[1.8rem]">
+                          Temporarily disable my account
                         </Link>
                       </div>
                     </form>)
@@ -373,10 +371,8 @@ const Account = ({ mode }) => {
                     />
                   </div>
                   <div className="grid grid-cols-[1fr_4fr] gap-x-8">
-                    <Link href="reset-password">
-                      <a className="col-start-2 text-[#3897f0] text-sm leading-[1.8rem]">
-                        Forgot password?
-                      </a>
+                    <Link href="reset-password" className="col-start-2 text-[#3897f0] text-sm leading-[1.8rem]">
+                      Forgot password?
                     </Link>
                   </div>
                 </form>

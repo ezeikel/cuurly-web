@@ -25,8 +25,8 @@ const Comment = ({ comment, post }) => {
   return (
     <div className="flex gap-x-3 items-center">
       <div className={classNames("flex gap-x-1 items-center")}>
-        <Link href="/[username]" as={`/${comment.writtenBy.username}`}>
-          <a className="text-sm font-bold">{comment.writtenBy.username}</a>
+        <Link href="/[username]" as={`/${comment.writtenBy.username}`} className="text-sm font-bold">
+          {comment.writtenBy.username}
         </Link>
         <span className="text-sm">{comment.text}</span>
       </div>

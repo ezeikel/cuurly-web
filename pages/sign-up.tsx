@@ -11,8 +11,8 @@ const SignUpPage = () => (
       </div>
       <div className="w-full text-xs rounded bg-white p-8 border border-gray-200 text-center">
         Have an account? &nbsp;
-        <Link href="/sign-in">
-          <a className="text-blue-800">Sign in</a>
+        <Link href="/sign-in" className="text-blue-800">
+          Sign in
         </Link>
       </div>
     </div>

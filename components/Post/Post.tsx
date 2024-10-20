@@ -3,7 +3,7 @@ import { useQuery } from "@apollo/client";
 import formatDistance from "date-fns/formatDistance";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
-import Image from "next/future/image";
+import Image from "next/image";
 import { SINGLE_POST_QUERY } from "../../apollo/queries";
 import VideoPlayer from "../VideoPlayer/VideoPlayer";
 import Avatar from "../Avatar/Avatar";

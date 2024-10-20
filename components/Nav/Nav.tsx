@@ -63,9 +63,7 @@ const Nav = () => {
             <li key={name}>
               {href ? (
                 <Link href={href} as={as}>
-                  <a>
-                    <FontAwesomeIcon icon={icon} color="#333" size="lg" />
-                  </a>
+                  <FontAwesomeIcon icon={icon} color="#333" size="lg" />
                 </Link>
               ) : (
                 <button type="button" onClick={onClick}>

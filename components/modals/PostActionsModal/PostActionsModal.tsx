@@ -75,29 +75,25 @@ const PostActionsModal = ({ post, isOpen, handleClose }) => {
               >
                 {/* eslint-disable-next-line no-nested-ternary */}
                 {item.type === "link" ? (
-                  <Link href={item.href} as={item.as}>
-                    <a
+                  <Link href={item.href} as={item.as} className={classNames({
+                    [item.className]: !!item.className,
+                  })}>
+                    {item.label}
+                  </Link>
+                ) : // eslint-disable-next-line no-nested-ternary
+                  item.type === "button" ? (
+                    <Button
+                      text={item.label}
+                      onClick={item.onClick}
+                      variant="link"
                       className={classNames({
                         [item.className]: !!item.className,
                       })}
-                    >
-                      {item.label}
-                    </a>
-                  </Link>
-                ) : // eslint-disable-next-line no-nested-ternary
-                item.type === "button" ? (
-                  <Button
-                    text={item.label}
-                    onClick={item.onClick}
-                    variant="link"
-                    className={classNames({
-                      [item.className]: !!item.className,
-                    })}
-                    noPadding
-                  />
-                ) : item.type === "component" ? (
-                  item.component
-                ) : null}
+                      noPadding
+                    />
+                  ) : item.type === "component" ? (
+                    item.component
+                  ) : null}
               </li>
             );
           })}

@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import Image from "next/future/image";
+import Image from "next/image";
 
 const MediaPreview = ({ files, convertingImage, className }) => {
   if (convertingImage) {
@@ -9,10 +9,10 @@ const MediaPreview = ({ files, convertingImage, className }) => {
 
   return (
     (<div
-        className={classNames({
-          [className]: !!className,
-        })}
-      >
+      className={classNames({
+        [className]: !!className,
+      })}
+    >
       {files?.length > 0 &&
         files.map((file) => {
           if (/^video/.test(file.type)) {

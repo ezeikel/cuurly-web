@@ -16,9 +16,7 @@ const Header = ({ className }) => {
       })}
     >
       <Link href="/">
-        <a>
-          <Logo />
-        </a>
+        <Logo />
       </Link>
       <Nav />
     </header>

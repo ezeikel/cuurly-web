@@ -11,10 +11,8 @@ const SigninPage = () => (
       </h2>
       <p className="mt-2 text-center text-sm text-gray-600">
         Don&apos;t have an account?{" "}
-        <Link href="/sign-up">
-          <a className="font-medium text-indigo-600 hover:text-indigo-500">
-            get one here
-          </a>
+        <Link href="/sign-up" className="font-medium text-indigo-600 hover:text-indigo-500">
+          get one here
         </Link>
       </p>
     </div>

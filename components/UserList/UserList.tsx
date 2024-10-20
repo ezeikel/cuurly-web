@@ -20,7 +20,7 @@ const UserList = ({ username, users }) => {
             <div className="grid grid-rows-2 text-sm leading-[1.8rem]">
               <span>
                 <Link href="/[username]" as={`/${user.username}`}>
-                  <a>{user.username}</a>
+                  {user.username}
                 </Link>
               </span>
               <span>{user.name}</span>

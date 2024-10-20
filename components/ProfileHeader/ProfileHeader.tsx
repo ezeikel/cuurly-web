@@ -62,10 +62,8 @@ const ProfileHeader = ({
               ) : null}
             </div>
             {user?.id === id ? (
-              <Link href="/account?edit">
-                <a className="p-2 border border-gray-300 rounded">
-                  Edit profile
-                </a>
+              <Link href="/account?edit" className="p-2 border border-gray-300 rounded">
+                Edit profile
               </Link>
             ) : (
               <FollowButton

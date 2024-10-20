@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/pro-light-svg-icons";
 import classNames from "classnames";
-import Image from "next/future/image";
+import Image from "next/image";
 
 type AvatarProps = {
   src?: string;
