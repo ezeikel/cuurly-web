@@ -1,6 +1,8 @@
-import Posts from "../Posts/Posts";
+import { getFeed } from "@/app/actions";
 
-const Feed = ({ posts }) => {
+const Feed = async () => {
+  const posts = await getFeed();
+
   if (!posts?.length) {
     return (
       <div className="p-8">
@@ -11,7 +13,12 @@ const Feed = ({ posts }) => {
 
   return (
     <div className="flex flex-col gap-y-8 p-8 items-center">
-      <Posts posts={posts} />
+      <p>Feed</p>
+      {posts.map((post) => (
+        <div key={post.id}>
+          <p>{post.id}</p>
+        </div>
+      ))}
     </div>
   );
 };

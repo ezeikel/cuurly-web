@@ -1,3 +1,0 @@
-const GENDER_OPTIONS = ["MALE", "FEMALE", "NON BINARY", "NOT SPECIFIED"];
-
-export default GENDER_OPTIONS;

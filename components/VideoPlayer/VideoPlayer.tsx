@@ -1,3 +1,5 @@
+"use client";
+
 import classNames from "classnames";
 import { useEffect, useRef } from "react";
 import videojs from "video.js";
@@ -9,8 +11,8 @@ type VidepPlayerProps = {
 };
 
 const VideoPlayer = ({ options, onReady, className }: VidepPlayerProps) => {
-  const videoRef = useRef(null);
-  const playerRef = useRef(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const playerRef = useRef<videojs.Player | null>(null);
 
   useEffect(() => {
     // make sure Video.js player is only initialized once
@@ -18,11 +20,10 @@ const VideoPlayer = ({ options, onReady, className }: VidepPlayerProps) => {
       const videoElement = videoRef.current;
       if (!videoElement) return;
 
-      // eslint-disable-next-line no-multi-assign
-      const player = (playerRef.current = videojs(videoElement, options, () => {
+      playerRef.current = videojs(videoElement, options, () => {
         console.log("player is ready"); // eslint-disable-line no-console
-        onReady && onReady(player); // eslint-disable-line @typescript-eslint/no-unused-expressions
-      }));
+        onReady?.(playerRef.current as videojs.Player); // eslint-disable-line @typescript-eslint/no-unused-expressions
+      });
     } else {
       // you can update player here [update player through props]
       // const player = playerRef.current;
@@ -45,12 +46,9 @@ const VideoPlayer = ({ options, onReady, className }: VidepPlayerProps) => {
 
   return (
     <div
-      className={classNames(
-        "w-full h-full",
-        {
-          [className]: !!className,
-        }
-      )}
+      className={classNames("w-full h-full", {
+        [className as string]: !!className,
+      })}
     >
       <div data-vjs-player>
         <video

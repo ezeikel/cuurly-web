@@ -1,23 +1,24 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
 # dependencies
-node_modules/
+/node_modules
+/.pnp
+.pnp.js
+.yarn/install-state.gz
 
 # testing
-coverage/
-
-# vercel
-.now/
-.vercel/
+/coverage
 
 # next.js
-.next/
-out/
+/.next/
+/out/
 
 # production
-build/
+/build
 
 # misc
 .DS_Store
-.idea/*
+*.pem
 
 # debug
 npm-debug.log*
@@ -25,14 +26,19 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
-.env
-.env.*
+.env*.local
 
-# cypress
-cypress/results/*
-cypress/reports/*
-cypress/screenshots/*
-cypress/videos/*
+# vercel
+.vercel
 
-# TypeScript incremental compilation cache
+# typescript
 *.tsbuildinfo
+next-env.d.ts
+
+# Sentry Config File
+.sentryclirc
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

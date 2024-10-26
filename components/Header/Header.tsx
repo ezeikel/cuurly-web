@@ -1,26 +1,22 @@
 import Link from "next/link";
 import classNames from "classnames";
-import useUser from "../../hooks/useUser";
-import Logo from "../Logo/Logo";
 import Nav from "../Nav/Nav";
 
-const Header = ({ className }) => {
-  const { user } = useUser();
-
-  if (!user) return null;
-
-  return (
-    <header
-      className={classNames("flex justify-between items-center p-4", {
-        [className]: !!className,
-      })}
-    >
-      <Link href="/">
-        <Logo />
-      </Link>
-      <Nav />
-    </header>
-  );
+type HeaderProps = {
+  className?: string;
 };
+
+const Header = ({ className }: HeaderProps) => (
+  <header
+    className={classNames("flex justify-between items-center p-4", {
+      [className as string]: !!className,
+    })}
+  >
+    <Link href="/">
+      <h1>Cuurly</h1>
+    </Link>
+    <Nav />
+  </header>
+);
 
 export default Header;

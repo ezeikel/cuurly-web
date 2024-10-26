@@ -1,48 +1,61 @@
 module.exports = {
-  extends: ["next", "airbnb", "plugin:prettier/recommended"],
   env: {
     browser: true,
     es2021: true,
     jest: true,
   },
+  extends: ["next/core-web-vitals", "airbnb", "plugin:prettier/recommended"],
   rules: {
-    "react/react-in-jsx-scope": 0,
-    "react/state-in-constructor": 0,
-    "react/function-component-definition": 0,
-    "react/prop-types": 0,
-    "react/require-default-props": 0,
+    "react/state-in-constructor": "off",
+    "react/function-component-definition": "off",
+    "react/prop-types": "off",
+    "react/require-default-props": "off",
+    "react/jsx-uses-react": "off", // Not needed with React 17+
+    "react/react-in-jsx-scope": "off", // Not needed with React 17+
+
     "jsx-a11y/anchor-is-valid": [
-      2,
+      "error",
       {
         components: ["Link"],
         specialLink: ["hrefLeft", "hrefRight"],
         aspects: ["invalidHref", "preferButton"],
       },
     ],
-    "no-console": [2, { allow: ["warn", "error"] }],
+
+    "no-console": ["error", { allow: ["warn", "error"] }],
   },
   overrides: [
     {
-      files: "**/*.ts?(x)",
+      // apply to TypeScript files
+      files: ["**/*.ts", "**/*.tsx"],
       parser: "@typescript-eslint/parser",
       parserOptions: {
         project: "./tsconfig.json",
+        tsconfigRootDir: __dirname,
       },
-      plugins: ["@typescript-eslint/eslint-plugin"],
-      extends: ["airbnb-typescript", "plugin:prettier/recommended"],
+      plugins: ["@typescript-eslint"],
+      extends: [
+        "airbnb-typescript",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:prettier/recommended",
+      ],
       rules: {
+        // TypeScript-specific rules
+        "@typescript-eslint/explicit-function-return-type": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "@typescript-eslint/no-explicit-any": "warn",
+
+        // Import rules for TypeScript
         "import/no-extraneous-dependencies": [
           "error",
           {
             devDependencies: [
-              "./jest.config.ts",
-              "./test/jest.common.ts",
-              "./test/jest.client.ts",
-              "./test/jest.lint.ts",
-              "./test/jest.setup.ts",
-              "./lib/utils.ts",
               "**/*.test.ts",
               "**/*.test.tsx",
+              "**/*.spec.ts",
+              "**/*.spec.tsx",
+              "jest.setup.ts",
+              "jest.config.ts",
               "tailwind.config.ts",
             ],
           },

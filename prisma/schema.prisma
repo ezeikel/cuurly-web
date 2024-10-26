@@ -1,0 +1,144 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  NONBINARY
+  NOTSPECIFIED
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+}
+
+enum HairType {
+  STRAIGHT
+  WAVY
+  CURLY
+  COILY
+  OTHER
+}
+
+enum HairLength {
+  SHORT
+  MEDIUM
+  LONG
+  EXTRALONG
+}
+
+model Media {
+  id       String    @id @default(uuid())
+  type     MediaType @default(IMAGE)
+  url      String
+  publicId String
+  Post     Post?     @relation(fields: [postId], references: [id])
+  postId   String?
+  Profile  Profile?
+}
+
+model Profile {
+  id         String      @id @default(uuid())
+  bio        String      @default("")
+  website    String?
+  picture    Media?      @relation(fields: [pictureId], references: [id])
+  pictureId  String?     @unique
+  hairType   HairType?
+  hairLength HairLength?
+  User       User?
+}
+
+model Comment {
+  id        String    @id @default(uuid())
+  text      String
+  writtenBy User      @relation(fields: [userId], references: [id])
+  userId    String
+  post      Post      @relation(fields: [postId], references: [id])
+  postId    String
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@map("comments")
+}
+
+model Like {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("likes")
+}
+
+model Post {
+  id         String      @id @default(uuid())
+  caption    String?
+  media      Media[]
+  published  Boolean     @default(false)
+  archived   Boolean     @default(false)
+  author     User        @relation(fields: [authorId], references: [id])
+  authorId   String
+  likes      Like[]
+  comments   Comment[]
+  hairType   HairType?
+  hairLength HairLength?
+  products   Product[]   @relation("PostProducts")
+  deletedAt  DateTime?
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  @@map("posts")
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  name        String
+  brand       String
+  description String?
+  posts       Post[]   @relation("PostProducts")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("products")
+}
+
+model User {
+  id          String    @id @default(uuid())
+  name        String
+  email       String    @unique
+  username    String    @unique
+  role        Role      @default(USER)
+  profile     Profile   @relation(fields: [profileId], references: [id])
+  profileId   String    @unique
+  followers   User[]    @relation("UserFollows")
+  following   User[]    @relation("UserFollows")
+  gender      Gender    @default(NOTSPECIFIED)
+  phoneNumber String?
+  posts       Post[]
+  likes       Like[]
+  comments    Comment[]
+  verified    Boolean   @default(false)
+  deletedAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("users")
+}
