@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
 };
 
 const sentryOptions = {
-  silent: true,
+  silent: false,
   org: "ezeikel",
   project: "cuurly-web",
   authToken: process.env.SENTRY_AUTH_TOKEN,
