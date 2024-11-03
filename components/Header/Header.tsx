@@ -8,9 +8,7 @@ type HeaderProps = {
 
 const Header = ({ className }: HeaderProps) => (
   <header
-    className={classNames("flex justify-between items-center p-4", {
-      [className as string]: !!className,
-    })}
+    className={classNames("flex justify-between items-center p-4", className)}
   >
     <Link href="/">
       <h1>Cuurly</h1>

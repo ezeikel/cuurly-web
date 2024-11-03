@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { AUTHENTICATED_PATHS } from "./constants";
 
 export default function middleware(req: NextRequest) {
@@ -38,4 +39,6 @@ export default function middleware(req: NextRequest) {
       return NextResponse.redirect(new URL("/", req.url));
     }
   }
+
+  return NextResponse.next();
 }

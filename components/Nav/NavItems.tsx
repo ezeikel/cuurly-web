@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { User } from "@prisma/client";
+import type { User } from "@prisma/client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
   faHome,
   faCompass,

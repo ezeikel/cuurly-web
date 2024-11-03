@@ -1,16 +1,16 @@
 import NextAuth from "next-auth";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import type { AuthConfig, Account, Profile, Session } from "@auth/core/types";
 import GoogleProvider from "next-auth/providers/google";
+import type { JWT } from "next-auth/jwt";
+
 import prisma from "./lib/prisma";
 
 // function to generate a random username
-function randomUsername() {
-  return Math.random().toString(36).substring(2, 15);
-}
+const randomUsername = () => Math.random().toString(36).substring(2, 15);
 
-export const {
-  handlers: { GET, POST },
-  auth,
-} = NextAuth({
+// Create the configuration object first
+const config = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -18,7 +18,13 @@ export const {
     }),
   ],
   callbacks: {
-    async signIn({ account, profile }) {
+    async signIn({
+      account,
+      profile,
+    }: {
+      account: Account | null;
+      profile?: Profile;
+    }) {
       if (account?.provider === "google") {
         const existingUser = profile?.email
           ? await prisma.user.findUnique({ where: { email: profile.email } })
@@ -27,8 +33,6 @@ export const {
         if (existingUser) {
           return true;
         }
-
-        console.log("Creating new user");
 
         await prisma.user.create({
           data: {
@@ -39,25 +43,35 @@ export const {
               create: {}, // create an empty profile for the user
             },
           },
-        }); // Create a new user with these details
+        });
         return true;
       }
-
-      // TODO: handle other providers
       return false;
     },
-    async session({ session, token }) {
+    async session({ session, token }: { session: Session; token: JWT }) {
       const dbUser = token.email
         ? await prisma.user.findUnique({
-            where: { email: token.email },
+            where: { email: token.email as string },
           })
         : null;
 
-      // eslint-disable-next-line no-param-reassign
-      session.userId = dbUser?.id as string;
-      return session;
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          dbId: dbUser?.id,
+        },
+      };
     },
   },
-  // TODO: this wasnt in docs but seems to be required
   secret: process.env.NEXT_AUTH_SECRET,
-});
+} satisfies AuthConfig;
+
+// pass the config to NextAuth
+export const {
+  handlers: { GET, POST },
+  auth,
+  signIn,
+  signOut,
+  // @ts-ignore - Type 'typeof import("next-auth")' has no call signatures
+} = NextAuth(config);

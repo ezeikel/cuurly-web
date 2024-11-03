@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getCurrentUser } from "@/app/actions";
-import { User } from "@prisma/client";
+import type { User } from "@prisma/client";
 
 type UserResponse = User | null;
 

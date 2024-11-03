@@ -5,14 +5,15 @@ import type { Gender, Prisma, User } from "@prisma/client";
 import prisma from "@/lib/prisma";
 import { auth } from "@/auth";
 import processFile from "@/utils/processFile";
-import { GetPost } from "@/types";
+import type { GetPost } from "@/types";
 
 export const getUserId = async (action?: string) => {
   const session = await auth();
   const headersList = await headers();
-  const userId = session?.userId || headersList.get("x-user-id");
+  const userId = session?.user.dbId || headersList.get("x-user-id");
 
   if (!userId) {
+    // eslint-disable-next-line no-console
     console.error(
       `You need to be logged in to ${action || "perform this action"}. `,
     );

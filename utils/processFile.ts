@@ -1,4 +1,4 @@
-import { MediaType } from "@prisma/client";
+import type { MediaType } from "@prisma/client";
 import processUpload from "./processUpload";
 
 const processFile = async ({
