@@ -3,8 +3,7 @@ import NextAuth from "next-auth";
 import type { AuthConfig, Account, Profile, Session } from "@auth/core/types";
 import GoogleProvider from "next-auth/providers/google";
 import type { JWT } from "next-auth/jwt";
-
-import prisma from "./lib/prisma";
+import { db } from "@cuurly/db";
 
 // function to generate a random username
 const randomUsername = () => Math.random().toString(36).substring(2, 15);
@@ -27,14 +26,14 @@ const config = {
     }) {
       if (account?.provider === "google") {
         const existingUser = profile?.email
-          ? await prisma.user.findUnique({ where: { email: profile.email } })
+          ? await db.user.findUnique({ where: { email: profile.email } })
           : null;
 
         if (existingUser) {
           return true;
         }
 
-        await prisma.user.create({
+        await db.user.create({
           data: {
             email: profile?.email as string,
             name: profile?.name as string,

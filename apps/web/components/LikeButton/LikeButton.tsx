@@ -5,7 +5,6 @@ import classNames from "classnames";
 import useUser from "@/hooks/api/useUser";
 
 type LikeButtonProps = {
-  // eslint-disable-next-line react/no-unused-prop-types
   postId: string;
   postLikes: { user: { id: string } }[];
 };

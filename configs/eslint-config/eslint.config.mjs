@@ -1,7 +1,7 @@
-import baseConfig from "./eslint/base.mjs";
-import nextjsConfig from "./eslint/next.mjs";
-import reactConfig from "./eslint/react.mjs";
-import typescriptConfig from "./eslint/typescript.mjs";
+import baseConfig from "./base.mjs";
+import nextjsConfig from "./next.mjs";
+import reactConfig from "./react.mjs";
+import typescriptConfig from "./typescript.mjs";
 
 /** @type {import('typescript-eslint').Config} */
 export default [

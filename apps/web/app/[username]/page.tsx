@@ -1,4 +1,4 @@
-import prisma from "@/lib/prisma";
+import { db } from "@cuurly/db";
 
 type ProfilePageProps = {
   searchParams: Promise<{
@@ -11,7 +11,7 @@ const ProfilePage = async ({ searchParams }: ProfilePageProps) => {
 
   if (!username) return null;
 
-  const user = await prisma.user.findUnique({
+  const user = await db.user.findUnique({
     where: { username },
     select: {
       id: true,

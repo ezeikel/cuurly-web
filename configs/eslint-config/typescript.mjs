@@ -57,6 +57,14 @@ export default [
           checksVoidReturn: false,
         },
       ],
+      "@typescript-eslint/no-unused-expressions": [
+        "error",
+        {
+          allowShortCircuit: true,
+          allowTernary: true,
+          allowTaggedTemplates: true,
+        },
+      ],
       // Disable JS rules that TS handles better
       "no-unused-vars": "off",
       "no-shadow": "off",

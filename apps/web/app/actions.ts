@@ -1,8 +1,8 @@
 "use server";
 
 import { headers } from "next/headers";
-import type { Gender, Prisma, User } from "@prisma/client";
-import prisma from "@/lib/prisma";
+import type { Prisma, DbGenderType, DbUserType } from "@cuurly/db";
+import { db } from "@cuurly/db";
 import { auth } from "@/auth";
 import processFile from "@/utils/processFile";
 import type { GetPost } from "@/types";
@@ -24,14 +24,14 @@ export const getUserId = async (action?: string) => {
   return userId;
 };
 
-export const getCurrentUser = async (): Promise<User | null> => {
+export const getCurrentUser = async (): Promise<DbUserType | null> => {
   const userId = await getUserId("get the current user");
 
   if (!userId) {
     return null;
   }
 
-  return prisma.user.findUnique({
+  return db.user.findUnique({
     where: { id: userId },
   });
 };
@@ -51,7 +51,7 @@ export const getCurrentUserLikes = async (): Promise<
   const userId = await getUserId("get the current user's likes");
   if (!userId) return [];
 
-  return prisma.like.findMany({
+  return db.like.findMany({
     where: { userId },
     include: {
       post: {
@@ -65,7 +65,7 @@ export const getCurrentUserLikes = async (): Promise<
 };
 
 export const getAllUsers = async (query?: string) => {
-  return prisma.user.findMany({
+  return db.user.findMany({
     where: query
       ? {
           username: {
@@ -85,7 +85,7 @@ export const getUser = async ({
   username?: string;
   email?: string;
 }) => {
-  return prisma.user.findUnique({
+  return db.user.findUnique({
     where: { id, username, email },
     select: {
       id: true,
@@ -127,7 +127,7 @@ export const getUser = async ({
 };
 
 export const getPost = async (id: string): Promise<GetPost | null> => {
-  return prisma.post.findUnique({
+  return db.post.findUnique({
     where: { id },
     select: {
       id: true,
@@ -203,13 +203,13 @@ export const getFeed = async () => {
   const userId = await getUserId("get the user's feed");
   if (!userId) return null;
 
-  const followedUsers = await prisma.user
+  const followedUsers = await db.user
     .findUnique({ where: { id: userId } })
     ?.following();
   const followedUserIds =
     followedUsers?.map((user: { id: string }) => user.id) ?? [];
 
-  return prisma.post.findMany({
+  return db.post.findMany({
     where: {
       author: { id: { in: [...followedUserIds, userId] } },
       deletedAt: null,
@@ -268,13 +268,13 @@ export const getExploreFeed = async () => {
 
   if (!userId) return null;
 
-  const following = await prisma.user
+  const following = await db.user
     .findUnique({ where: { id: userId } })
     .following();
   const followingIds =
     following?.map((follower: { id: string }) => follower.id) ?? [];
 
-  return prisma.post.findMany({
+  return db.post.findMany({
     where: {
       author: { id: { notIn: [...followingIds, userId] } },
     },
@@ -315,14 +315,14 @@ export const updateUser = async ({
     updatedProfilePicture = { url, publicId };
   }
 
-  return prisma.user.update({
+  return db.user.update({
     where: { id: userId },
     data: {
       name: input.name,
       username: input.username,
       email: input.email,
       phoneNumber: input.phoneNumber,
-      gender: input.gender as Gender,
+      gender: input.gender as DbGenderType,
       profile: {
         update: {
           bio: input.bio,

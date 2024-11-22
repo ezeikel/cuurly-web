@@ -1,0 +1,20 @@
+{
+  "extends": "@cuurly/tsconfig/next.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "next-auth.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "jest.config.ts",
+    "jest.setup.ts",
+    "./eslint/*.mjs",
+    "../../configs/eslint-config/base.mjs"
+  ]
+}
