@@ -10,7 +10,7 @@ import type { GetPost } from "@/types";
 export const getUserId = async (action?: string) => {
   const session = await auth();
   const headersList = await headers();
-  const userId = session?.user.dbId || headersList.get("x-user-id");
+  const userId = session?.user?.dbId || headersList.get("x-user-id");
 
   if (!userId) {
     // eslint-disable-next-line no-console
