@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import type { User } from "@prisma/client";
+import type { DbUserType } from "@cuurly/db";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -12,7 +12,7 @@ import {
 } from "@fortawesome/pro-light-svg-icons";
 
 type NavItemsProps = {
-  user: User;
+  user: DbUserType;
 };
 
 type NavItemType = {

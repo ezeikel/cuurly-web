@@ -1,4 +1,4 @@
-import type { Prisma } from "@prisma/client";
+import type { Prisma } from "@cuurly/db";
 
 export type GetPost = Prisma.PostGetPayload<{
   select: {

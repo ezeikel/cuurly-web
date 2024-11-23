@@ -1,4 +1,4 @@
-import type { MediaType } from "@prisma/client";
+import type { DbMediaType } from "@cuurly/db";
 import processUpload from "./processUpload";
 
 const processFile = async ({
@@ -10,7 +10,7 @@ const processFile = async ({
   tags: string[];
   userId: string;
 }) => {
-  let fileType: MediaType;
+  let fileType: DbMediaType;
   const { createReadStream, mimetype } = await file;
 
   switch (mimetype) {

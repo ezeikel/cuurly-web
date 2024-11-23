@@ -1,10 +1,10 @@
 {
   "name": "@cuurly/web",
-  "author": "hi@ezeikel.dev",
   "version": "0.1.0",
+  "private": true,
   "scripts": {
     "clean": "git clean -xdf .next .turbo node_modules",
-    "dev": "next dev --turbo",
+    "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -56,10 +56,10 @@
     "jsonwebtoken": "^9.0.2",
     "lodash.debounce": "^4.0.8",
     "lodash.isequal": "^4.5.0",
-    "next": "15.0.1",
+    "next": "15.0.3",
     "next-auth": "beta",
-    "react": "19.0.0-rc-69d4b800-20241021",
-    "react-dom": "19.0.0-rc-69d4b800-20241021",
+    "react": "19.0.0-rc-66855b96-20241106",
+    "react-dom": "19.0.0-rc-66855b96-20241106",
     "react-dropzone": "^14.2.10",
     "react-modal": "^3.16.1",
     "react-responsive": "^10.0.0",
@@ -82,7 +82,7 @@
     "@types/lodash.debounce": "^4.0.9",
     "@types/lodash.isequal": "^4.5.8",
     "@types/node": "^22.8.1",
-    "@types/react": "18.3.12",
+    "@types/react": "npm:types-react@19.0.0-rc.1",
     "@types/react-fontawesome": "^1.6.8",
     "@types/react-modal": "^3.16.3",
     "@types/react-responsive": "^8.0.8",
@@ -107,7 +107,8 @@
     "typescript": "^5.6.3",
     "typescript-eslint": "latest"
   },
-  "resolutions": {
-    "@types/react": "npm:types-react@19.0.0-rc.1"
+  "overrides": {
+    "@types/react": "npm:types-react@19.0.0-rc.1",
+    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"
   }
 }

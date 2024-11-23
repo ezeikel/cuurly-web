@@ -49,7 +49,7 @@ const config = {
     },
     async session({ session, token }: { session: Session; token: JWT }) {
       const dbUser = token.email
-        ? await prisma.user.findUnique({
+        ? await db.user.findUnique({
             where: { email: token.email as string },
           })
         : null;
