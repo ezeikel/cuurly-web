@@ -1,5 +1,5 @@
 import { Pool, neonConfig } from "@neondatabase/serverless";
-import type { User, Gender } from "@prisma/client";
+import type { User, Gender, MediaType } from "@prisma/client";
 import { $Enums, Prisma, PrismaClient } from "@prisma/client";
 import { PrismaNeon } from "@prisma/adapter-neon";
 import dotenv from "dotenv";
@@ -38,6 +38,10 @@ export const db =
 
 export { $Enums, Prisma };
 
-export type { User as DbUserType, Gender as DbGenderType };
+export type {
+  User as DbUserType,
+  Gender as DbGenderType,
+  MediaType as DbMediaType,
+};
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = db;

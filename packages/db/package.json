@@ -19,7 +19,8 @@
     "db:reset": "bunx prisma migrate reset",
     "db:studio": "bunx prisma studio",
     "db:generate": "bunx prisma generate",
-    "db:migrate:deploy": "bunx prisma migrate deploy"
+    "db:migrate:deploy": "bunx prisma migrate deploy",
+    "postinstall": "bunx prisma generate"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.10.3",
@@ -29,9 +30,9 @@
     "ws": "^8.18.0"
   },
   "devDependencies": {
-    "@cuurly/eslint-config": "workspace:*",
-    "@cuurly/prettier-config": "workspace:*",
-    "@cuurly/tsconfig": "workspace:*",
+    "@cuurly/eslint-config": "*",
+    "@cuurly/prettier-config": "*",
+    "@cuurly/tsconfig": "*",
     "@types/ws": "^8.5.13",
     "eslint": "^9.0.0",
     "prettier": "^3.2.5",
