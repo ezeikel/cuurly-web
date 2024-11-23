@@ -32,7 +32,7 @@
     ]
   },
   "dependencies": {
-    "@cuurly/db": "workspace:*",
+    "@cuurly/db": "*",
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
     "@fortawesome/free-brands-svg-icons": "^6.6.0",
     "@fortawesome/pro-duotone-svg-icons": "^6.6.0",
@@ -70,9 +70,9 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
-    "@cuurly/eslint-config": "workspace:*",
-    "@cuurly/prettier-config": "workspace:*",
-    "@cuurly/tsconfig": "workspace:*",
+    "@cuurly/eslint-config": "*",
+    "@cuurly/prettier-config": "*",
+    "@cuurly/tsconfig": "*",
     "@playwright/test": "^1.48.2",
     "@testing-library/jest-dom": "^6.6.2",
     "@testing-library/react": "^16.0.1",
