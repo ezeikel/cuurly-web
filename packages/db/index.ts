@@ -1,9 +1,7 @@
-import { Pool, neonConfig } from "@neondatabase/serverless";
+import { Pool } from "@neondatabase/serverless";
 import type { User, Gender, MediaType } from "@prisma/client";
 import { $Enums, Prisma, PrismaClient } from "@prisma/client";
 import { PrismaNeon } from "@prisma/adapter-neon";
-import dotenv from "dotenv";
-import ws from "ws";
 
 // PrismaClient is attached to the `global` object in development to prevent
 // exhausting your database connection limit.
@@ -11,8 +9,6 @@ import ws from "ws";
 // Learn more:
 // https://pris.ly/d/help/next-js-best-practices
 
-dotenv.config();
-neonConfig.webSocketConstructor = ws;
 const connectionString = process.env.POSTGRES_PRISMA_URL;
 
 const pool = new Pool({ connectionString });
@@ -25,15 +21,12 @@ export const db =
   new PrismaClient({
     adapter,
     // TODO: maybe should limit query logging to non production evironments only
-    log:
-      process.env.NODE_ENV === "development"
-        ? [
-            {
-              emit: "event",
-              level: "query",
-            },
-          ]
-        : [],
+    log: [
+      {
+        emit: "event",
+        level: "query",
+      },
+    ],
   });
 
 export { $Enums, Prisma };

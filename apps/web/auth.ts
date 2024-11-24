@@ -68,7 +68,7 @@ const config = {
 
 // pass the config to NextAuth
 export const {
-  handlers: { GET, POST },
+  handlers,
   auth,
   signIn,
   signOut,
