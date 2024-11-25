@@ -23,6 +23,9 @@
     "eslint-plugin-react-hooks": "latest",
     "globals": "latest"
   },
+  "devDependencies": {
+    "@cuurly/tsconfig": "*"
+  },
   "peerDependencies": {
     "eslint": "^8.0.0",
     "prettier": "^3.0.0",

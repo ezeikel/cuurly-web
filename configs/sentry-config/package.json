@@ -1,0 +1,40 @@
+{
+  "name": "@cuurly/sentry-config",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.mjs",
+    "./client": "./client.mjs",
+    "./server": "./server.mjs",
+    "./edge": "./edge.mjs",
+    "./next": "./next.mjs"
+  },
+  "scripts": {
+    "clean": "git clean -xdf .next .turbo node_modules",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write . --ignore-path ../../.gitignore --cache",
+    "check-format": "prettier --check . --ignore-path ../../.gitignore --cache",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "**/*.+(js|jsx|json|ts|tsx|css|html|md)": [
+      "prettier --ignore-path .gitignore --write",
+      "jest --findRelatedTests --passWithNoTests"
+    ]
+  },
+  "dependencies": {
+    "@sentry/nextjs": "^8.35.0"
+  },
+  "devDependencies": {
+    "@cuurly/eslint-config": "*",
+    "@cuurly/prettier-config": "*",
+    "@cuurly/tsconfig": "*"
+  },
+  "peerDependencies": {
+    "@sentry/nextjs": "^8.35.0"
+  }
+}

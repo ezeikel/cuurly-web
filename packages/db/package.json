@@ -20,7 +20,7 @@
     "db:studio": "bunx prisma studio",
     "db:generate": "bunx prisma generate",
     "db:migrate:deploy": "bunx prisma migrate deploy",
-    "postinstall": "bunx prisma generate --schema=\"./packages/db/prisma/schema.prisma\""
+    "postinstall": "bunx prisma generate --schema=\"./prisma/schema.prisma\""
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.10.3",

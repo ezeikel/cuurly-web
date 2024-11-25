@@ -2,5 +2,9 @@
   "name": "@cuurly/prettier-config",
   "version": "0.1.0",
   "private": true,
-  "main": "index.json"
+  "main": "index.json",
+  "devDependencies": {
+    "@cuurly/eslint-config": "*",
+    "@cuurly/tsconfig": "*"
+  }
 }

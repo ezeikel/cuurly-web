@@ -1,0 +1,15 @@
+{
+  "extends": "@cuurly/tsconfig/base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json",
+    "target": "es2019",
+    "module": "esnext",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["./**/*.ts", "index.mjs, "server.mjs", "next.mjs"", "edge.mjs", "client.mjs", "base.mjs"],
+  "exclude": ["node_modules", "dist"]
+}
