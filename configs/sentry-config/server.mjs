@@ -5,5 +5,6 @@ import { getBaseConfig } from "./base.mjs";
 export const initServerSentry = (dsn) => {
   Sentry.init({
     ...getBaseConfig(dsn),
+    integrations: [Sentry.prismaIntegration()],
   });
 };

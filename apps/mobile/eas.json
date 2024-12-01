@@ -1,0 +1,62 @@
+{
+  "cli": {
+    "version": ">= 4.1.2",
+    "promptToConfigurePushNotifications": false
+  },
+  "build": {
+    "base": {
+      "ios": {
+        "resourceClass": "m-medium"
+      }
+    },
+    "development": {
+      "extends": "base",
+      "developmentClient": true,
+      "distribution": "internal",
+      "android": {
+        "image": "latest"
+      },
+      "ios": {
+        "simulator": true,
+        "image": "latest"
+      },
+      "env": {
+        "EXPO_PUBLIC_ENVIRONMENT": "development"
+      },
+      "autoIncrement": false
+    },
+    "preview": {
+      "extends": "base",
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "ios": {
+        "simulator": false
+      },
+      "env": {
+        "EXPO_PUBLIC_ENVIRONMENT": "preview"
+      },
+      "autoIncrement": false
+    },
+    "production": {
+      "extends": "base",
+      "distribution": "store",
+      "env": {
+        "EXPO_PUBLIC_ENVIRONMENT": "production"
+      },
+      "autoIncrement": true,
+      "channel": "production"
+    },
+    "beta": {
+      "extends": "production",
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_ENVIRONMENT": "beta"
+      },
+      "autoIncrement": true,
+      "channel": "beta"
+    }
+  },
+  "submit": {}
+}
