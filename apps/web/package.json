@@ -5,7 +5,7 @@
   "scripts": {
     "clean": "git clean -xdf .next .turbo node_modules",
     "dev": "next dev",
-    "build": "pnpm with-env bash scripts/build.sh",
+    "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
@@ -112,14 +112,5 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.7.2",
     "typescript-eslint": "latest"
-  },
-  "overrides": {
-    "@types/react": "npm:types-react@19.0.1",
-    "@types/react-dom": "npm:types-react-dom@19.0.1"
-  },
-  "pnpm": {
-    "overrides": {
-      "@types/react": "19.0.1"
-    }
   }
 }

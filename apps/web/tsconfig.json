@@ -3,9 +3,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"],
-      "@configs/*": ["../../configs/*"],
-      "@packages/*": ["../../packages/*"]
+      "@/*": ["./*"]
     },
     "allowJs": true,
     "moduleResolution": "bundler",
