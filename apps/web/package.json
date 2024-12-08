@@ -22,6 +22,7 @@
     "test:e2e:run": "start-server-and-test start http://localhost:3000 'playwright test'",
     "test:e2e:dev": "start-server-and-test dev http://localhost:3000 'playwright test --ui'",
     "pw:codegen": "playwright codegen http://localhost:3000",
+    "with-env": "dotenv -e ../../.env --",
     "db:generate": "pnpm -F db db:generate",
     "prepare": "husky"
   },
@@ -94,6 +95,7 @@
     "@types/video.js": "^7.3.58",
     "@types/yup": "^0.32.0",
     "autoprefixer": "^10.4.20",
+    "dotenv-cli": "^7.4.4",
     "eslint": "^9.16.0",
     "globals": "latest",
     "husky": "^9.1.6",
