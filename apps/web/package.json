@@ -5,7 +5,7 @@
   "scripts": {
     "clean": "git clean -xdf .next .turbo node_modules",
     "dev": "next dev",
-    "build": "next build",
+    "build": "pnpm with-env bash scripts/build.sh",
     "start": "next start",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
