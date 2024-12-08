@@ -1,1 +1,1 @@
-bun test
+pnpm test

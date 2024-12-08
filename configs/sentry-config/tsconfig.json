@@ -10,6 +10,6 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["./**/*.ts", "index.mjs, "server.mjs", "next.mjs"", "edge.mjs", "client.mjs", "base.mjs"],
+  "include": ["./**/*.ts", "index.mjs", "server.mjs", "next.mjs", "edge.mjs", "client.mjs", "base.mjs"],
   "exclude": ["node_modules", "dist"]
 }

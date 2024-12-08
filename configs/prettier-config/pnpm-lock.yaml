@@ -1,0 +1,16 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    devDependencies:
+      '@cuurly/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@cuurly/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig

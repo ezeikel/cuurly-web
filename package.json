@@ -1,37 +1,32 @@
 {
   "name": "cuurly",
   "private": true,
+  "engines": {
+    "node": "20.x",
+    "pnpm": "9.x"
+  },
+  "packageManager": "pnpm@9.12.0",
   "scripts": {
     "clean": "git clean -xdf node_modules",
     "clean:workspace": "turbo clean",
-    "db:studio": "bun run --cwd ./packages/db db:studio",
-    "db:migrate": "bun run --cwd ./packages/db db:migrate",
-    "db:reset": "bun run --cwd ./packages/db db:reset",
-    "db:generate": "bun run --cwd ./packages/db db:generate",
-    "db:seed": "bun run --cwd ./packages/db db:seed",
-    "db:update": "bun run --cwd ./packages/db db:update",
+    "db:studio": "pnpm -F ./packages/db db:studio",
+    "db:migrate": "pnpm -F ./packages/db db:migrate",
+    "db:reset": "pnpm -F ./packages/db db:reset",
+    "db:generate": "pnpm -F ./packages/db db:generate",
+    "db:seed": "pnpm -F ./packages/db db:seed",
+    "db:update": "pnpm -F ./packages/db db:update",
     "dev": "turbo dev --parallel",
     "lint": "turbo lint",
     "lint:fix": "turbo lint --fix",
     "typecheck": "turbo typecheck",
+    "validate": "turbo run typecheck lint test",
     "test": "turbo test",
     "format": "turbo format",
     "build": "turbo build"
   },
   "devDependencies": {
-    "@eslint/compat": "^1.2.3",
     "prettier": "^3.3.3",
     "turbo": "^2.2.3",
     "typescript": "^5.7.2"
-  },
-  "engines": {
-    "node": ">=18",
-    "bun": ">=1.0.0"
-  },
-  "packageManager": "bun@1.0.21",
-  "workspaces": [
-    "apps/*",
-    "packages/*",
-    "configs/*"
-  ]
+  }
 }

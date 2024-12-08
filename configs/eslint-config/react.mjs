@@ -1,25 +1,37 @@
-import reactPlugin from "eslint-plugin-react";
-import hooksPlugin from "eslint-plugin-react-hooks";
-import jsxA11yPlugin from "eslint-plugin-jsx-a11y";
-import { fixupPluginRules } from "@eslint/compat";
+import js from "@eslint/js";
+import eslintConfigPrettier from "eslint-config-prettier";
+import tseslint from "typescript-eslint";
+import pluginReactHooks from "eslint-plugin-react-hooks";
+import pluginReact from "eslint-plugin-react";
+import globals from "globals";
+import baseConfig from "./base.mjs";
 
 export default [
+  ...baseConfig,
+  js.configs.recommended,
+  eslintConfigPrettier,
+  ...tseslint.configs.recommended,
+  pluginReact.configs.flat.recommended,
+  {
+    languageOptions: {
+      ...pluginReact.configs.flat.recommended.languageOptions,
+      globals: {
+        ...globals.serviceworker,
+        ...globals.browser,
+      },
+    },
+  },
   {
     files: ["**/*.tsx", "**/*.jsx"],
     plugins: {
-      react: reactPlugin,
-      "react-hooks": fixupPluginRules(hooksPlugin),
-      "jsx-a11y": jsxA11yPlugin,
+      "react-hooks": pluginReactHooks,
     },
     settings: {
-      react: {
-        version: "detect",
-      },
+      react: { version: "detect" },
     },
     rules: {
-      ...reactPlugin.configs.recommended.rules,
-      ...reactPlugin.configs["jsx-runtime"].rules,
-      ...hooksPlugin.configs.recommended.rules,
+      ...pluginReactHooks.configs.recommended.rules,
+      "react/react-in-jsx-scope": "off",
       "react/jsx-filename-extension": [
         "error",
         { extensions: [".jsx", ".tsx"] },
@@ -36,7 +48,6 @@ export default [
       "react/require-default-props": "off",
       "react/jsx-props-no-spreading": "off",
       "react/jsx-uses-react": "off",
-      "react/react-in-jsx-scope": "off",
       "jsx-a11y/anchor-is-valid": [
         "error",
         {
@@ -47,16 +58,6 @@ export default [
       ],
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
-    },
-    languageOptions: {
-      globals: {
-        React: "writable",
-      },
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
-        },
-      },
     },
   },
 ];

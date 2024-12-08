@@ -14,6 +14,7 @@
       "outputs": ["node_modules/.cache/.eslintcache"]
     },
     "typecheck": {
+      "dependsOn": ["lint"],
       "outputs": ["node_modules/.cache/tsbuildinfo.json"]
     },
     "build": {
@@ -28,7 +29,11 @@
         ".vercel/output/**"
       ]
     },
-    "test": {},
+    "test": {
+      "dependsOn": ["build"],
+      "outputs": ["coverage/**"],
+      "cache": true
+    },
     "test:watch": {
       "cache": false,
       "persistent": true
@@ -40,6 +45,12 @@
       "dependsOn": ["^build"]
     },
     "clean": {
+      "cache": false
+    },
+    "db:generate": {
+      "cache": false
+    },
+    "db:push": {
       "cache": false
     }
   }

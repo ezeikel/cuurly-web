@@ -5,7 +5,8 @@
   "type": "module",
   "exports": {
     ".": {
-      "default": "./index.ts"
+      "types": "./dist/index.d.ts",
+      "default": "./src/index.ts"
     }
   },
   "scripts": {
@@ -14,27 +15,27 @@
     "clean": "rm -rf .turbo node_modules",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit",
-    "db:migrate": "bunx prisma migrate dev",
-    "db:reset": "bunx prisma migrate reset",
-    "db:studio": "bunx prisma studio",
-    "db:generate": "bunx prisma generate",
-    "db:migrate:deploy": "bunx prisma migrate deploy",
-    "postinstall": "bunx prisma generate --schema=\"./prisma/schema.prisma\""
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
+    "with-env": "dotenv -e ../../.env --",
+    "db:migrate": "pnpm with-env prisma migrate dev",
+    "db:reset": "pnpm with-env prisma migrate reset",
+    "db:studio": "pnpm with-env prisma studio",
+    "db:generate": "pnpm with-env prisma generate",
+    "db:migrate:deploy": "pnpm with-env prisma migrate deploy"
   },
   "dependencies": {
-    "@neondatabase/serverless": "^0.10.3",
-    "@prisma/adapter-neon": "^5.22.0",
-    "@prisma/client": "^5.22.0"
+    "@neondatabase/serverless": "^0.10.4",
+    "@prisma/adapter-neon": "^6.0.1",
+    "@prisma/client": "^6.0.1"
   },
   "devDependencies": {
-    "@cuurly/eslint-config": "*",
-    "@cuurly/prettier-config": "*",
-    "@cuurly/tsconfig": "*",
-    "@types/ws": "^8.5.13",
-    "eslint": "^9.0.0",
+    "@cuurly/eslint-config": "workspace:*",
+    "@cuurly/prettier-config": "workspace:*",
+    "@cuurly/tsconfig": "workspace:*",
+    "dotenv-cli": "^7.4.4",
+    "eslint": "^9.16.0",
     "prettier": "^3.2.5",
-    "prisma": "^5.22.0",
-    "typescript": "^5.4.5"
+    "prisma": "^6.0.1",
+    "typescript": "^5.7.2"
   }
 }

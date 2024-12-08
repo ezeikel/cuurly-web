@@ -1,6 +1,12 @@
 import NextAuth from "next-auth";
 // eslint-disable-next-line import/no-extraneous-dependencies
-import type { AuthConfig, Account, Profile, Session } from "@auth/core/types";
+import type {
+  AuthConfig,
+  Account,
+  Profile,
+  Session,
+  User,
+} from "@auth/core/types";
 import GoogleProvider from "next-auth/providers/google";
 import type { JWT } from "next-auth/jwt";
 import { db } from "@cuurly/db";
@@ -21,7 +27,8 @@ const config = {
       account,
       profile,
     }: {
-      account: Account | null;
+      user: User;
+      account?: Account | null;
       profile?: Profile;
     }) {
       if (account?.provider === "google") {

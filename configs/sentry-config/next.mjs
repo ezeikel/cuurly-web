@@ -2,7 +2,7 @@ import { withSentryConfig } from "@sentry/nextjs";
 
 export const getSentryWebpackPluginOptions = ({ org, project }) => ({
   silent: false,
-  org: org || "ezeikel",
+  org: org || "chewybytes",
   project: project || "cuurly-web",
   authToken: process.env.SENTRY_AUTH_TOKEN,
   widenClientFileUpload: true,

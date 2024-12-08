@@ -20,13 +20,15 @@ export const db =
   globalForPrisma.prisma ||
   new PrismaClient({
     adapter,
-    // TODO: maybe should limit query logging to non production evironments only
-    log: [
-      {
-        emit: "event",
-        level: "query",
-      },
-    ],
+    log:
+      process.env.NODE_ENV === "development"
+        ? [
+            {
+              emit: "event",
+              level: "query",
+            },
+          ]
+        : undefined,
   });
 
 export { $Enums, Prisma };

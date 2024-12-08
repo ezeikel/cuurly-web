@@ -1,6 +1,10 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Default",
+  "paths": {
+    "@configs/*": ["../../configs/*"],
+    "@packages/*": ["../../packages/*"]
+  },
   "compilerOptions": {
     "allowJs": true,
     "skipLibCheck": true,

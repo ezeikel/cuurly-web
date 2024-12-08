@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "main": "index.js",
+  "main": "index.mjs",
   "exports": {
     ".": "./index.mjs",
     "./client": "./client.mjs",
@@ -13,12 +13,10 @@
   },
   "scripts": {
     "clean": "git clean -xdf .next .turbo node_modules",
-    "lint": "eslint",
-    "lint:fix": "eslint --fix",
-    "typecheck": "tsc --noEmit",
+    "format:check": "prettier --check . --ignore-path ../../.gitignore --cache",
     "format": "prettier --write . --ignore-path ../../.gitignore --cache",
-    "check-format": "prettier --check . --ignore-path ../../.gitignore --cache",
-    "prepare": "husky"
+    "lint": "eslint",
+    "lint:fix": "eslint --fix"
   },
   "lint-staged": {
     "**/*.+(js|jsx|json|ts|tsx|css|html|md)": [
@@ -30,11 +28,9 @@
     "@sentry/nextjs": "^8.35.0"
   },
   "devDependencies": {
-    "@cuurly/eslint-config": "*",
-    "@cuurly/prettier-config": "*",
-    "@cuurly/tsconfig": "*"
-  },
-  "peerDependencies": {
-    "@sentry/nextjs": "^8.35.0"
+    "@cuurly/eslint-config": "workspace:*",
+    "@cuurly/prettier-config": "workspace:*",
+    "@cuurly/tsconfig": "workspace:*",
+    "eslint": "^9.16.0"
   }
 }
