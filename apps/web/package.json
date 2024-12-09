@@ -26,12 +26,6 @@
     "db:generate": "pnpm -F db db:generate",
     "prepare": "husky"
   },
-  "lint-staged": {
-    "**/*.+(js|jsx|json|ts|tsx|css|html|md)": [
-      "prettier --ignore-path .gitignore --write",
-      "jest --findRelatedTests --passWithNoTests"
-    ]
-  },
   "dependencies": {
     "@auth/core": "^0.37.4",
     "@cuurly/db": "workspace:*",
@@ -104,7 +98,6 @@
     "jest-environment-jsdom": "^29.7.0",
     "jest-watch-select-projects": "^2.0.0",
     "jest-watch-typeahead": "^2.2.2",
-    "lint-staged": "^15.2.10",
     "postcss": "^8.4.47",
     "prettier": "^3.3.3",
     "start-server-and-test": "^2.0.8",

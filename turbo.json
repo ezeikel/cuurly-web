@@ -52,6 +52,9 @@
     },
     "db:push": {
       "cache": false
+    },
+    "lint-staged": {
+      "outputs": ["node_modules/.cache/.lint-staged"]
     }
   }
 }

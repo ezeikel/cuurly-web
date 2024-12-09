@@ -18,12 +18,6 @@
     "lint": "eslint",
     "lint:fix": "eslint --fix"
   },
-  "lint-staged": {
-    "**/*.+(js|jsx|json|ts|tsx|css|html|md)": [
-      "prettier --ignore-path .gitignore --write",
-      "jest --findRelatedTests --passWithNoTests"
-    ]
-  },
   "dependencies": {
     "@sentry/nextjs": "^8.35.0"
   },

@@ -17,10 +17,15 @@
     "validate": "turbo run typecheck lint test",
     "test": "turbo test",
     "format": "turbo format",
-    "build": "turbo build"
+    "build": "turbo build",
+    "prepare": "husky install",
+    "pre-commit": "lint-staged"
   },
   "devDependencies": {
-    "prettier": "^3.3.3",
+    "eslint": "9.16.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.10",
+    "prettier": "^3.4.2",
     "turbo": "^2.2.3",
     "typescript": "^5.7.2"
   },
