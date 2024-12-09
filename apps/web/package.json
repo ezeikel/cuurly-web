@@ -23,8 +23,7 @@
     "test:e2e:dev": "start-server-and-test dev http://localhost:3000 'playwright test --ui'",
     "pw:codegen": "playwright codegen http://localhost:3000",
     "with-env": "dotenv -e ../../.env --",
-    "db:generate": "pnpm -F db db:generate",
-    "prepare": "husky"
+    "db:generate": "pnpm -F db db:generate"
   },
   "dependencies": {
     "@auth/core": "^0.37.4",
