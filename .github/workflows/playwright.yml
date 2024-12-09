@@ -21,8 +21,10 @@ jobs:
         version: latest
     - name: Install dependencies
       run: pnpm install --no-frozen-lockfile
+    - name: Install Playwright
+      run: pnpm add -D @playwright/test
     - name: Install Playwright Browsers
-      run: pnpm exec playwright install --with-deps
+      run: pnpm dlx playwright install --with-deps
     - name: Run Playwright tests
       run: pnpm exec playwright test
     - uses: actions/upload-artifact@v4
