@@ -1,0 +1,80 @@
+name: E2E Tests
+
+on:
+  pull_request:
+    branches: ["*"]
+  push:
+    branches: ["main"]
+  merge_group:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+env:
+  FONTAWESOME_NPM_AUTH_TOKEN: ${{ secrets.FONTAWESOME_NPM_AUTH_TOKEN }}
+  POSTGRES_PRISMA_URL: postgresql://postgres:postgres@localhost:5432/test_db
+  POSTGRES_URL_NON_POOLING: postgresql://postgres:postgres@localhost:5432/test_db
+  NEXT_PUBLIC_BASE_URL: http://localhost:3000
+  NEXTAUTH_SECRET: "test-secret"
+  GOOGLE_CLIENT_ID: "test-client-id"
+  GOOGLE_CLIENT_SECRET: "test-client-secret"
+  CLOUDINARY_KEY: "test-key"
+  CLOUDINARY_SECRET: "test-secret"
+
+jobs:
+  e2e:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Install Playwright Browsers
+        run: pnpm dlx playwright install --with-deps
+
+      - name: Generate Prisma Client
+        run: pnpm db:generate
+
+      - name: Run database migrations
+        run: pnpm -F db db:migrate:deploy
+
+      # - name: Seed database
+      #   run: pnpm db:seed
+
+      - name: Run E2E tests
+        run: pnpm e2e:run
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30

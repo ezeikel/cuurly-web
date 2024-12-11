@@ -56,5 +56,19 @@
     "lint-staged": {
       "outputs": ["node_modules/.cache/.lint-staged"]
     }
-  }
+  },
+  "globalEnv": [
+    "FONTAWESOME_NPM_AUTH_TOKEN",
+    "POSTGRES_PRISMA_URL",
+    "POSTGRES_URL_NON_POOLING",
+    "NEXT_PUBLIC_BASE_URL",
+    "NEXTAUTH_SECRET",
+    "GOOGLE_CLIENT_ID",
+    "GOOGLE_CLIENT_SECRET",
+    "CLOUDINARY_KEY",
+    "CLOUDINARY_SECRET",
+    "NODE_ENV",
+    "VERCEL_ENV",
+    "SENTRY_AUTH_TOKEN"
+  ]
 }

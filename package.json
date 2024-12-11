@@ -18,6 +18,8 @@
     "test": "turbo test",
     "format": "turbo format",
     "build": "turbo build",
+    "e2e:dev": "turbo e2e:dev",
+    "e2e:ci": "turbo e2e:ci",
     "prepare": "husky install",
     "pre-commit": "lint-staged"
   },
