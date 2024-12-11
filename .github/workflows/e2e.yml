@@ -70,7 +70,7 @@ jobs:
       #   run: pnpm db:seed
 
       - name: Run E2E tests
-        run: pnpm e2e:run
+        run: pnpm e2e:ci
 
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
