@@ -1,24 +1,14 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": [".env"],
   "ui": "tui",
   "tasks": {
     "dev": {
       "persistent": true,
       "cache": false
     },
-    "format": {
-      "outputs": ["node_modules/.cache/.prettiercache", ".prettierCache"],
-      "cache": true
-    },
-    "lint": {
-      "outputs": ["node_modules/.cache/.eslintcache"]
-    },
-    "typecheck": {
-      "dependsOn": ["lint"],
-      "outputs": ["node_modules/.cache/tsbuildinfo.json"]
-    },
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "db:generate"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": [
         ".next/**",
@@ -26,7 +16,8 @@
         "next-env.d.ts",
         ".expo/**",
         ".output/**",
-        ".vercel/output/**"
+        ".vercel/output/**",
+        "dist/**"
       ]
     },
     "test": {
@@ -44,8 +35,17 @@
     "e2e:ci": {
       "dependsOn": ["^build"]
     },
-    "clean": {
-      "cache": false
+    "lint": {
+      "outputs": ["node_modules/.cache/.eslintcache"]
+    },
+    "typecheck": {
+      "outputs": ["node_modules/.cache/tsbuildinfo.json"]
+    },
+    "format": {
+      "outputs": ["node_modules/.cache/.prettiercache"]
+    },
+    "lint-staged": {
+      "outputs": ["node_modules/.cache/.lint-staged"]
     },
     "db:generate": {
       "cache": false
@@ -53,22 +53,22 @@
     "db:push": {
       "cache": false
     },
-    "lint-staged": {
-      "outputs": ["node_modules/.cache/.lint-staged"]
+    "clean": {
+      "cache": false
     }
   },
   "globalEnv": [
-    "FONTAWESOME_NPM_AUTH_TOKEN",
-    "POSTGRES_PRISMA_URL",
-    "POSTGRES_URL_NON_POOLING",
-    "NEXT_PUBLIC_BASE_URL",
     "NEXTAUTH_SECRET",
     "GOOGLE_CLIENT_ID",
     "GOOGLE_CLIENT_SECRET",
+    "POSTGRES_PRISMA_URL",
+    "POSTGRES_URL_NON_POOLING",
     "CLOUDINARY_KEY",
     "CLOUDINARY_SECRET",
+    "FONTAWESOME_NPM_AUTH_TOKEN",
+    "SENTRY_AUTH_TOKEN",
+    "NEXT_PUBLIC_BASE_URL",
     "NODE_ENV",
-    "VERCEL_ENV",
-    "SENTRY_AUTH_TOKEN"
+    "VERCEL_ENV"
   ]
 }
