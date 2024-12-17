@@ -1,0 +1,29 @@
+# Package manager files
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Build outputs
+.next
+build
+dist
+coverage
+.turbo
+.expo
+
+# Generated files
+next-env.d.ts
+expo-env.d.ts
+*.d.ts
+*.tsbuildinfo
+
+# Test reports
+playwright-report
+test-results
+
+# Cache
+node_modules
+.cache
+
+# Misc
+.DS_Store 
