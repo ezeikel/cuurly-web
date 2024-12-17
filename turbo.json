@@ -3,10 +3,6 @@
   "globalDependencies": [".env"],
   "ui": "tui",
   "tasks": {
-    "dev": {
-      "persistent": true,
-      "cache": false
-    },
     "build": {
       "dependsOn": ["^build", "db:generate"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
@@ -19,6 +15,25 @@
         ".vercel/output/**",
         "dist/**"
       ]
+    },
+    "lint": {
+      "dependsOn": ["^lint"],
+      "outputs": ["node_modules/.cache/.eslintcache"]
+    },
+    "lint-staged": {
+      "dependsOn": ["^lint-staged"],
+      "outputs": ["node_modules/.cache/.lint-staged"]
+    },
+    "typecheck": {
+      "dependsOn": ["^typecheck"],
+      "outputs": ["node_modules/.cache/tsbuildinfo.json"]
+    },
+    "format": {
+      "outputs": ["node_modules/.cache/.prettiercache"]
+    },
+    "dev": {
+      "persistent": true,
+      "cache": false
     },
     "test": {
       "dependsOn": ["build"],
@@ -33,19 +48,8 @@
       "cache": false
     },
     "e2e:ci": {
-      "dependsOn": ["^build"]
-    },
-    "lint": {
-      "outputs": ["node_modules/.cache/.eslintcache"]
-    },
-    "typecheck": {
-      "outputs": ["node_modules/.cache/tsbuildinfo.json"]
-    },
-    "format": {
-      "outputs": ["node_modules/.cache/.prettiercache"]
-    },
-    "lint-staged": {
-      "outputs": ["node_modules/.cache/.lint-staged"]
+      "dependsOn": ["^build"],
+      "outputs": ["playwright-report/**", "test-results/**"]
     },
     "db:generate": {
       "cache": false

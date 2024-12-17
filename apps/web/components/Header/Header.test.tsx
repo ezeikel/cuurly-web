@@ -3,9 +3,9 @@ import Header from "./Header";
 
 // Mock the Nav component
 jest.mock("../Nav/Nav", () => ({
-    __esModule: true,
-    default: () => <nav data-testid="mock-nav">Mock Nav</nav>,
-  }));
+  __esModule: true,
+  default: () => <nav data-testid="mock-nav">Mock Nav</nav>,
+}));
 
 describe("Header", () => {
   it("renders with default className", () => {
